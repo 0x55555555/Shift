@@ -65,12 +65,11 @@ void GCViewableTransform::createTypeInformation(SPropertyInformationTyped<GCView
     {
     auto ifc = info->apiInterface();
 
-    XInterfaceBase::Function fn;
-    fn = XScript::MethodToInCa<GCViewableTransform, void(float, float, float), &GCViewableTransform::setFocalPoint>::Call;
-    ifc->addFunction("setFocalPoint", fn);
+    typedef XScript::MethodToInCa<GCViewableTransform, void(float, float, float), &GCViewableTransform::setFocalPoint> Fn1;
+    ifc->addFunction("setFocalPoint", 1, Fn1::Arity, Fn1::Call, Fn1::CallDart);
 
-    fn = XScript::MethodToInCa<GCViewableTransform, void(float, float, float), &GCViewableTransform::setPosition>::Call;
-    ifc->addFunction("setPosition", fn);
+    typedef XScript::MethodToInCa<GCViewableTransform, void(float, float, float), &GCViewableTransform::setPosition> Fn2;
+    ifc->addFunction("setPosition", 1, Fn2::Arity, Fn2::Call, Fn2::CallDart);
     }
   }
 
