@@ -33,8 +33,7 @@ SOURCES += \
     MCCGALTimer.cpp \
     MCDensityShape.cpp \
     MCSphere.cpp \
-    MCShape.cpp \
-    MCDensityShape.cpp
+    MCShape.cpp
 
 
 

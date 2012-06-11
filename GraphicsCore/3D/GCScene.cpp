@@ -326,7 +326,7 @@ void GCManipulatableScene::raySelect(const XVector3D &dir)
     XROProperty(Hit, hit);
 
   public:
-    InternalSelector(const XVector3D &cP) : camPos(cP), oldDistSq(HUGE_VAL)
+    InternalSelector(const XVector3D &cP) : oldDistSq(HUGE_VAL), camPos(cP)
       {
       Hit h = { XVector3D::Zero(), XVector3D::Zero(), 0x0 };
       _hit = h;

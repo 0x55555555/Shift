@@ -1,5 +1,6 @@
 #include "mcmathsoperation.h"
 #include "spropertyinformationhelpers.h"
+#include "shandlerimpl.h"
 #include "QImage"
 
 S_IMPLEMENT_PROPERTY(MCMathsOperation, MathsCore)

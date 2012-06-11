@@ -7,6 +7,7 @@
 #include "XShader.h"
 #include "XLine.h"
 #include "XCuboid.h"
+#include "shandlerimpl.h"
 
 class DistanceDelegate : public GCVisualManipulator::Delegate
   {

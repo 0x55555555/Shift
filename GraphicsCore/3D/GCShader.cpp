@@ -2,6 +2,7 @@
 #include "spropertyinformationhelpers.h"
 #include "XRenderer.h"
 #include "sprocessmanager.h"
+#include "shandlerimpl.h"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCShaderComponentPointer, GraphicsCore)
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCShaderPointer, GraphicsCore)

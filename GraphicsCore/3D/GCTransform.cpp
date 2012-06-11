@@ -6,6 +6,7 @@
 #include "XFrustum.h"
 #include "XRenderer.h"
 #include "spropertyinformationhelpers.h"
+#include "shandlerimpl.h"
 
 void unionTransformedBounds(const SPropertyInstanceInformation*, GCTransform* tr)
   {

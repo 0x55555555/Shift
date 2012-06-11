@@ -1,5 +1,6 @@
 #include "GCComposeVector3.h"
 #include "spropertyinformationhelpers.h"
+#include "shandlerimpl.h"
 
 void computeVector(const SPropertyInstanceInformation *, GCComposeVector3 *vec)
   {
