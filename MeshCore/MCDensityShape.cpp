@@ -1,4 +1,3 @@
-
 #include "MCDensityShape.h"
 #include "spropertyinformationhelpers.h"
 #include "MCPolyhedron.h"
@@ -45,7 +44,7 @@ float MCDensityShape::evaluate(const XVector3D &) const
   return 0;
   }
 
-void MCDensityShape::computeGeometry(const SPropertyInstanceInformation*, MCDensityShape* shape)
+void MCDensityShape::computeGeometry(MCDensityShape* shape)
   {
   MCGeometry& geo = shape->geometry;
 

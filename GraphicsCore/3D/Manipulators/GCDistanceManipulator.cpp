@@ -80,7 +80,7 @@ private:
 
 S_IMPLEMENT_PROPERTY(GCDistanceManipulator, GraphicsCore)
 
-void computeAbsDisp(const SPropertyInstanceInformation *, GCDistanceManipulator *d)
+void computeAbsDisp(GCDistanceManipulator *d)
   {
   d->absoluteDisplacement = d->lockDirection().normalized() * (d->distance() * d->scaleFactor());
   }

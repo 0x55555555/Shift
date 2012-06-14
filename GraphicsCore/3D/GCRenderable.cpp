@@ -30,7 +30,7 @@ void GCRenderable::intersect(const XFrustum &, Selector *)
 
 S_IMPLEMENT_PROPERTY(GCRenderArray, GraphicsCore)
 
-void unionBounds(const SPropertyInstanceInformation*, GCRenderArray* array)
+void unionBounds(GCRenderArray* array)
   {
   GCBoundingBox::ComputeLock l(&array->bounds);
   XCuboid *data = l.data();

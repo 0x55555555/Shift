@@ -10,7 +10,7 @@ S_IMPLEMENT_TYPED_POINTER_TYPE(GCCameraPointer, GraphicsCore)
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCViewableTransform, GraphicsCore)
 
-void computeView(const SPropertyInstanceInformation *, GCViewableTransform *tr)
+void computeView(GCViewableTransform *tr)
   {
   XTransform inv;
 
@@ -21,7 +21,7 @@ void computeView(const SPropertyInstanceInformation *, GCViewableTransform *tr)
   tr->viewTransform = inv;
   }
 
-void computeInverseProjection(const SPropertyInstanceInformation *, GCViewableTransform *tr)
+void computeInverseProjection(GCViewableTransform *tr)
   {
   XTransform inv;
 
@@ -252,7 +252,7 @@ GCCamera::GCCamera()
 
 S_IMPLEMENT_PROPERTY(GCPerspectiveCamera, GraphicsCore)
 
-void computePerspective(const SPropertyInstanceInformation *, GCPerspectiveCamera *c)
+void computePerspective(GCPerspectiveCamera *c)
   {
   c->projection = XTransformUtilities::perspective(c->fieldOfView(), (float)c->viewportWidth() / (float)c->viewportHeight(), c->nearClip(), c->farClip());
   }

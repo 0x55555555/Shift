@@ -2,7 +2,7 @@
 #include "spropertyinformationhelpers.h"
 #include "QImage"
 
-void MCImage::computeImageOutput(const SPropertyInstanceInformation* , MCImage *image)
+void MCImage::computeImageOutput(MCImage *image)
   {
   QImage imInput(image->filename());
 

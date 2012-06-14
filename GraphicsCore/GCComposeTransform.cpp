@@ -3,7 +3,7 @@
 #include "XMacroHelpers"
 #include "shandlerimpl.h"
 
-void computeTransform(const SPropertyInstanceInformation *, GCComposeTransform *vec)
+void computeTransform(GCComposeTransform *vec)
   {
   XTransform tr = XTransform::Identity();
   tr *= Eigen::AngleAxisf(X_DEGTORAD(vec->rotationAngleIn()), vec->rotationAxisIn());

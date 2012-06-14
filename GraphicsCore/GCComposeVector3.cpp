@@ -2,7 +2,7 @@
 #include "spropertyinformationhelpers.h"
 #include "shandlerimpl.h"
 
-void computeVector(const SPropertyInstanceInformation *, GCComposeVector3 *vec)
+void computeVector(GCComposeVector3 *vec)
   {
   Vector3DProperty::ComputeLock l(&vec->vectorOut);
   *l.data() = XVector3D(vec->xIn(), vec->yIn(), vec->zIn());

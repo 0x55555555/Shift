@@ -5,7 +5,7 @@
 
 S_IMPLEMENT_PROPERTY(MCGeometry, MeshCore)
 
-void computeRuntimeGeometry(const SPropertyInstanceInformation *, MCGeometry *rtGeo)
+void computeRuntimeGeometry(MCGeometry *rtGeo)
   {
   xAssert(SProcessManager::isMainThread());
 

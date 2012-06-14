@@ -19,7 +19,7 @@ public:
   virtual float evaluate(const XVector3D &fn) const;
 
 private:
-  static void computeGeometry(const SPropertyInstanceInformation*, MCDensityShape* cube);
+  static void computeGeometry(MCDensityShape* cube);
   };
 
 S_PROPERTY_INTERFACE(MCDensityShape);

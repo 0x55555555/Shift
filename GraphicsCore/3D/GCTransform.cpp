@@ -8,7 +8,7 @@
 #include "spropertyinformationhelpers.h"
 #include "shandlerimpl.h"
 
-void unionTransformedBounds(const SPropertyInstanceInformation*, GCTransform* tr)
+void unionTransformedBounds(GCTransform* tr)
   {
   GCBoundingBox::ComputeLock l(&tr->bounds);
   XCuboid *data = l.data();

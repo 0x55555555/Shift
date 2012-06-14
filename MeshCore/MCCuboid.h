@@ -17,7 +17,7 @@ public:
 
 private:
   virtual void addManipulators(SPropertyArray *, const GCTransform *tr=0);
-  static void computeGeometry(const SPropertyInstanceInformation*, MCCuboid* cube);
+  static void computeGeometry(MCCuboid* cube);
   };
 
 S_PROPERTY_INTERFACE(MCCuboid);

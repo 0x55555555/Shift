@@ -59,7 +59,7 @@ public:
 private:
   bool _rebuildShader;
   bool _setVariables;
-  static void computeShaderRuntime(const SPropertyInstanceInformation *info, GCShader *cont);
+  static void computeShaderRuntime(GCShader *cont);
   };
 
 S_PROPERTY_INTERFACE(GCShader)

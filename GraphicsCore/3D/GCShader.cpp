@@ -35,7 +35,7 @@ void GCVertexShaderComponent::createTypeInformation(SPropertyInformationTyped<GC
 
 S_IMPLEMENT_PROPERTY(GCShader, GraphicsCore)
 
-void GCShader::computeShaderRuntime(const SPropertyInstanceInformation *, GCShader *shader)
+void GCShader::computeShaderRuntime(GCShader *shader)
   {
   xAssert(SProcessManager::isMainThread());
 

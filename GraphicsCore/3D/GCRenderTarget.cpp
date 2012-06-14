@@ -5,7 +5,7 @@
 
 S_IMPLEMENT_PROPERTY(GCRenderTarget, GraphicsCore)
 
-void computeAspectRatio(const SPropertyInstanceInformation *, GCRenderTarget *vp)
+void computeAspectRatio(GCRenderTarget *vp)
   {
   vp->aspectRatio = (float)vp->width() / (float)vp->height();
   }

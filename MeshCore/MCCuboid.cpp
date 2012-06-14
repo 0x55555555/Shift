@@ -2,6 +2,7 @@
 #include "spropertyinformationhelpers.h"
 #include "3D/Manipulators/GCDistanceManipulator.h"
 #include "3D/GCTransform.h"
+#include "shandlerimpl.h"
 
 #include "MCPolyhedron.h"
 
@@ -38,7 +39,7 @@ MCCuboid::MCCuboid()
   {
   }
 
-void MCCuboid::computeGeometry(const SPropertyInstanceInformation*, MCCuboid* cube)
+void MCCuboid::computeGeometry(MCCuboid* cube)
   {
   MCPolyhedronProperty& geo = cube->geometry.polygons;
 

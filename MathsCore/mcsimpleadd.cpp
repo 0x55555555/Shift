@@ -2,7 +2,7 @@
 #include "spropertyinformationhelpers.h"
 #include "shandlerimpl.h"
 
-void computeAddOutput(const SPropertyInstanceInformation *, MCSimpleAdd *add)
+void computeAddOutput(MCSimpleAdd *add)
   {
   FloatProperty::ComputeLock l(&add->output);
 

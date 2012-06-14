@@ -1,7 +1,7 @@
 #include "mcsimplemultiply.h"
 #include "spropertyinformationhelpers.h"
 
-void computeAddOutput(const SPropertyInstanceInformation *, MCSimpleMultiply *add)
+void computeAddOutput(MCSimpleMultiply *add)
   {
   FloatProperty::ComputeLock l(&add->output);
 

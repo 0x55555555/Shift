@@ -15,7 +15,7 @@ public:
   StringProperty filename;
 
 private:
-  static void computeImageOutput(const SPropertyInstanceInformation* inst, MCImage *image);
+  static void computeImageOutput(MCImage *image);
   XMathsOperation _preOperation;
   };
 
