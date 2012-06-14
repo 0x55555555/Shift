@@ -64,9 +64,9 @@ GCRenderArray::GCRenderArray()
 
 void GCRenderArray::render(XRenderer *renderer) const
   {
-  for(GCRenderablePointer* r = renderGroup.firstChild<GCRenderablePointer>(); r; r = r->nextSibling<GCRenderablePointer>())
+  xForeach(auto r, renderGroup.walker<GCRenderablePointer>())
     {
-    GCRenderable* ptd = r->pointed();
+    const GCRenderable* ptd = r->pointed();
     if(ptd)
       {
       ptd->render(renderer);
@@ -76,7 +76,7 @@ void GCRenderArray::render(XRenderer *renderer) const
 
 void GCRenderArray::intersect(const XLine &line, Selector *s)
   {
-  for(GCRenderablePointer* r = renderGroup.firstChild<GCRenderablePointer>(); r; r = r->nextSibling<GCRenderablePointer>())
+  xForeach(auto r, renderGroup.walker<GCRenderablePointer>())
     {
     GCRenderable* ptd = r->pointed();
     if(ptd)
@@ -88,7 +88,7 @@ void GCRenderArray::intersect(const XLine &line, Selector *s)
 
 void GCRenderArray::intersect(const XFrustum &frus, Selector *s)
   {
-  for(GCRenderablePointer* r = renderGroup.firstChild<GCRenderablePointer>(); r; r = r->nextSibling<GCRenderablePointer>())
+  xForeach(auto r, renderGroup.walker<GCRenderablePointer>())
     {
     GCRenderable* ptd = r->pointed();
     if(ptd)
