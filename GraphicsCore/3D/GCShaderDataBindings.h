@@ -5,6 +5,13 @@
 
 namespace GCShaderDataBindings
 {
+class Vector3 : public GCShaderBindableData
+  {
+public:
+  Vector3();
+  virtual void bindData(XShader *, const SProperty *) const;
+  };
+
 class Vector4 : public GCShaderBindableData
   {
 public:

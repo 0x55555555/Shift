@@ -15,6 +15,9 @@ void initiate()
   SPropertyInformation *colInfo = const_cast<SPropertyInformation *>(ColourProperty::staticTypeInformation());
   colInfo->addStaticInterface(new GCShaderDataBindings::Vector4);
 
+  SPropertyInformation *vec3Info = const_cast<SPropertyInformation *>(Vector3DProperty::staticTypeInformation());
+  vec3Info->addStaticInterface(new GCShaderDataBindings::Vector3);
+
   SPropertyInformation *texInfo = const_cast<SPropertyInformation *>(GCTexturePointer::staticTypeInformation());
   texInfo->addStaticInterface(new GCShaderDataBindings::TextureRef);
   }
