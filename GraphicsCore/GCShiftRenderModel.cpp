@@ -35,7 +35,7 @@ void GCShiftRenderModel::setEntity(SEntity *entity)
     {
     _entity->removeTreeObserver(this);
 
-    for(SEntity *child=_entity->children.firstChild<SEntity>(); child; child=child->nextSibling<SEntity>())
+    xForeach(auto child, _entity->children.walker<SEntity>())
       {
       child->removeConnectionObserver(this);
       }
@@ -47,7 +47,7 @@ void GCShiftRenderModel::setEntity(SEntity *entity)
     {
     _entity->addTreeObserver(this);
 
-    for(SEntity *child=_entity->children.firstChild<SEntity>(); child; child=child->nextSibling<SEntity>())
+    xForeach(auto child, _entity->children.walker<SEntity>())
       {
       child->addConnectionObserver(this);
       }

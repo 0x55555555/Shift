@@ -81,7 +81,8 @@ bool GCVisualCompoundManipulator::hitTest(
   *distance = HUGE_VAL;
 
   float tempDistance = HUGE_VAL;
-  for(GCVisualManipulator *m = firstChild<GCVisualManipulator>(); m; m = m->nextSibling<GCVisualManipulator>())
+
+  xForeach(auto m, walker<GCVisualManipulator>())
     {
     if(m->hitTest(widgetSpacePoint, camera, clickDirection, &tempDistance, clicked) &&
        tempDistance < *distance)
@@ -95,7 +96,7 @@ bool GCVisualCompoundManipulator::hitTest(
 
 void GCVisualCompoundManipulator::render(const GCCamera *camera, XRenderer *r) const
   {
-  for(GCVisualManipulator *m = firstChild<GCVisualManipulator>(); m; m = m->nextSibling<GCVisualManipulator>())
+  xForeach(auto m, walker<GCVisualManipulator>())
     {
     m->render(camera, r);
     }

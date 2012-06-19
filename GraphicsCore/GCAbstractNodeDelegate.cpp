@@ -59,7 +59,7 @@ void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::Prope
     data.childProperties.resize(cont->size());
 
     int i = 0;
-    for(SProperty *child=cont->firstChild(); child; child=child->nextSibling(), ++i)
+    xForeach(auto child, cont->walker())
       {
       RenderData::PropertyData& childData = data.childProperties[i];
 
@@ -69,6 +69,7 @@ void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::Prope
 
       yOffset += childData.renderSize.height();
       fillHeight += childData.renderSize.height();
+      ++i;
       }
     }
 
@@ -85,7 +86,7 @@ void GCSimpleNodeDelegate::postSetupProperty(const QFont& font, RenderData::Prop
     int newMaxWidth = maxWidth - 2 * OUTER_PADDING;
 
     int i = 0;
-    for(SProperty *child=cont->firstChild(); child; child=child->nextSibling(), ++i)
+    xForeach(auto child, cont->walker())
       {
       RenderData::PropertyData& childData = data.childProperties[i];
 
@@ -99,6 +100,8 @@ void GCSimpleNodeDelegate::postSetupProperty(const QFont& font, RenderData::Prop
         {
         childData.position.setX(newMinX);
         }
+
+      ++i;
       }
     }
   }
@@ -133,7 +136,7 @@ void GCSimpleNodeDelegate::updateRenderData(const SEntity *ent) const
 
   int i = 0;
   rd.properties.resize(numProperties);
-  for(SProperty *prop=ent->firstChild(); prop; prop=prop->nextSibling(), ++i)
+  xForeach(auto prop, ent->walker())
     {
     RenderData::PropertyData& data = rd.properties[i];
 
@@ -143,6 +146,8 @@ void GCSimpleNodeDelegate::updateRenderData(const SEntity *ent) const
     propYStart += data.renderSize.height();
 
     fillWidth = qMax(fillWidth, data.renderSize.width());
+
+    ++i;
     }
 
 
@@ -156,7 +161,7 @@ void GCSimpleNodeDelegate::updateRenderData(const SEntity *ent) const
               _titleFntMetrics.height() + TITLE_PADDING + OUTER_PADDING));
 
   i = 0;
-  for(SProperty *prop=ent->firstChild(); prop; prop=prop->nextSibling(), ++i)
+  xForeach(auto prop, ent->walker())
     {
     RenderData::PropertyData& data = rd.properties[i];
 
@@ -170,6 +175,8 @@ void GCSimpleNodeDelegate::updateRenderData(const SEntity *ent) const
       {
       data.position.setX(OUTER_PADDING);
       }
+
+    ++i;
     }
 
 
@@ -221,7 +228,7 @@ void GCSimpleNodeDelegate::paint(xuint32 pass,
   if(pass == ConnectionPass)
     {
     xsize index = 0;
-    for(SProperty *prop=ent->firstChild(); prop; prop=prop->nextSibling(), ++index)
+    xForeach(auto prop, ent->walker())
       {
       if(prop->hasInput())
         {
@@ -276,7 +283,9 @@ void GCSimpleNodeDelegate::paint(xuint32 pass,
                      inputPosition);
         ptr->drawPath(path);
         }
+      ++index;
       }
+
     }
   else if(pass == ShadowPass)
     {

@@ -36,7 +36,7 @@ void unionBounds(GCRenderArray* array)
   XCuboid *data = l.data();
   *data = XCuboid();
 
-  for(GCRenderablePointer* r = array->renderGroup.firstChild<GCRenderablePointer>(); r; r = r->nextSibling<GCRenderablePointer>())
+  xForeach(auto r, array->renderGroup.walker<GCRenderablePointer>())
     {
     const GCRenderable* ptd = r->pointed();
 

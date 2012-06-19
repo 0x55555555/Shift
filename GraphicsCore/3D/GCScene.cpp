@@ -123,7 +123,7 @@ void GCManipulatableScene::refreshManipulators()
 
   clearManipulators();
 
-  for(GCRenderablePointer* groupPtr = renderGroup.firstChild<GCRenderablePointer>(); groupPtr; groupPtr = groupPtr->nextSibling<GCRenderablePointer>())
+  xForeach(auto groupPtr, renderGroup.walker<GCRenderablePointer>())
     {
     SProperty* inp = groupPtr->input();
 
@@ -151,7 +151,7 @@ void GCManipulatableScene::render(XRenderer *x) const
     x->pushTransform(cameraTransform());
 
     x->setShader(&_boundsShader);
-    for(Pointer* m = selection.firstChild<Pointer>(); m; m = m->nextSibling<Pointer>())
+    xForeach(auto m, selection.walker<Pointer>())
       {
       const GCRenderable* ren = m->pointed<GCRenderable>();
 
@@ -170,11 +170,11 @@ void GCManipulatableScene::render(XRenderer *x) const
         }
       }
 
-    if(manipulators.firstChild())
+    if(!manipulators.isEmpty())
       {
       x->clear(XRenderer::ClearDepth);
 
-      for(GCVisualManipulator* m = manipulators.firstChild<GCVisualManipulator>(); m; m = m->nextSibling<GCVisualManipulator>())
+      xForeach(auto m, manipulators.walker<GCVisualManipulator>())
         {
         m->render(cam, x);
         }
@@ -207,7 +207,7 @@ GCManipulatableScene::UsedFlags GCManipulatableScene::mouseEvent(const MouseEven
       float chosenDistance = HUGE_VAL;
       GCVisualManipulator *chosenManip = 0;
 
-      for(GCVisualManipulator* m = manipulators.firstChild<GCVisualManipulator>(); m; m = m->nextSibling<GCVisualManipulator>())
+      xForeach(auto m, manipulators.walker<GCVisualManipulator>())
         {
         float tempDistance = HUGE_VAL;
         GCVisualManipulator *clicked = 0;

@@ -14,7 +14,7 @@ void unionTransformedBounds(GCTransform* tr)
   XCuboid *data = l.data();
   *data = XCuboid();
 
-  for(GCRenderablePointer* r = tr->renderGroup.firstChild<GCRenderablePointer>(); r; r = r->nextSibling<GCRenderablePointer>())
+  xForeach(auto r, tr->renderGroup.walker<GCRenderablePointer>())
     {
     const GCRenderable* ptd = r->pointed();
 

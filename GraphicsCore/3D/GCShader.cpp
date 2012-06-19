@@ -44,7 +44,8 @@ void GCShader::computeShaderRuntime(GCShader *shader)
   if(shader->_rebuildShader)
     {
     lock.data()->clear();
-    for(const GCShaderComponentPointer* cmpPtr = shader->components.firstChild<GCShaderComponentPointer>(); cmpPtr; cmpPtr = cmpPtr->nextSibling<GCShaderComponentPointer>())
+
+    xForeach(auto cmpPtr, shader->components.walker<GCShaderComponentPointer>())
       {
       const GCShaderComponent* cmp = cmpPtr->pointed();
       if(cmp)
@@ -71,7 +72,7 @@ void GCShader::computeShaderRuntime(GCShader *shader)
 
   if(shader->_setVariables)
     {
-    for(const SProperty* p = shader->components.nextSibling(); p; p = p->nextSibling())
+    xForeach(auto p, shader->walkerFrom(&shader->components))
       {
       const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
       if(binder)
