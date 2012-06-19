@@ -1,7 +1,7 @@
 #include "GCShiftRenderModel.h"
 #include "sentity.h"
 
-GCShiftRenderModel::Iterator::Iterator(const GCShiftRenderModel *m) : _model(m), _cache(0)
+GCShiftRenderModel::Iterator::Iterator(const GCShiftRenderModel *m) : _model(m)
   {
   }
 
@@ -9,22 +9,18 @@ bool GCShiftRenderModel::Iterator::next()
   {
   xAssert(_model);
 
-  SIterator::FilterFunction filter(_model->filter());
-  xAssert(filter);
 
-  setProperty(filter(_cache));
+  setProperty(0);
   return property() != 0;
   }
 
 void GCShiftRenderModel::Iterator::reset()
   {
   _property = 0;
-  _cache.reset(_model->entity());
   }
 
-GCShiftRenderModel::GCShiftRenderModel(SEntity *ent, SIterator::FilterFunction func) : _entity(0), _filter(func)
+GCShiftRenderModel::GCShiftRenderModel(SEntity *ent) : _entity(0)
   {
-  xAssert(func);
   setEntity(ent);
   }
 

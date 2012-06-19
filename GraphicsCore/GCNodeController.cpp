@@ -164,7 +164,7 @@ GCNodeController::UsedFlags GCNodeController::mouseEvent(const MouseEvent &e)
     }
   else if(e.type == Press && e.triggerButton == Qt::RightButton)
     {
-    emit onContextMenu(e.point);
+    Q_EMIT onContextMenu(e.point);
     }
   return result;
   }

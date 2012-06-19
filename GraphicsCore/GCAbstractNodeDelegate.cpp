@@ -194,7 +194,7 @@ void GCSimpleNodeDelegate::update(const XAbstractCanvas *,
 
 void GCSimpleNodeDelegate::paintProperties(QPainter *ptr, QPoint nodePos, const QVector<RenderData::PropertyData> &props) const
   {
-  foreach(const RenderData::PropertyData &prop, props)
+  Q_FOREACH(const RenderData::PropertyData &prop, props)
     {
     ptr->drawStaticText(nodePos + prop.position, prop.text);
 
@@ -343,7 +343,7 @@ GCAbstractNodeDelegate::HitArea GCSimpleNodeDelegate::hitTest(const QPoint &poin
     else
       {
       xsize i = 0;
-      foreach(const RenderData::PropertyData &prop, rd.properties)
+      Q_FOREACH(const RenderData::PropertyData &prop, rd.properties)
         {
         QRect left(rd.position + prop.position, QSize(rd.size.width() / 2, _propFntMetrics.height()));
         left.moveLeft(rd.position.x());

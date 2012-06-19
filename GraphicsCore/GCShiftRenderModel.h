@@ -13,14 +13,12 @@ class GRAPHICSCORE_EXPORT GCShiftRenderModel : public XAbstractRenderModel, SCon
   {
 XProperties:
   XROProperty(SEntityWeakPointer, entity);
-  XROProperty(SIterator::FilterFunction, filter);
 
 public:
   class GRAPHICSCORE_EXPORT Iterator : public XAbstractRenderModel::Iterator
     {
   XProperties:
     XROProperty(const GCShiftRenderModel *, model);
-    XROProperty(SIterator::DataCache, cache);
     XROProperty(SProperty *, property);
 
   public:
@@ -45,7 +43,7 @@ public:
     friend class GCShiftRenderModel;
     };
 
-  GCShiftRenderModel(SEntity *ent=0, SIterator::FilterFunction=0);
+  GCShiftRenderModel(SEntity *ent=0);
   ~GCShiftRenderModel();
 
   void setEntity(SEntity *entity);

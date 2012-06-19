@@ -126,7 +126,7 @@ void GCDistanceManipulator::onDrag(const MouseMoveEvent &e)
     rel *= -1.0f;
     }
 
-  foreach(FloatProperty *f, _driven)
+  Q_FOREACH(FloatProperty *f, _driven)
     {
     float newVal = f->value() + rel;
     if(newVal == newVal && newVal < HUGE_VAL)

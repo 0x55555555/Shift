@@ -182,7 +182,7 @@ void GCSingularTranslateManipulator::onDrag(const MouseMoveEvent &e)
   XVector3D relativeDisp;
   GCLinearDragManipulator::onDrag(e, relativeDisp);
 
-  foreach(TransformProperty *t, _driven)
+  Q_FOREACH(TransformProperty *t, _driven)
     {
     XTransform trans = t->value();
     trans.translation() += relativeDisp;
