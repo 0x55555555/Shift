@@ -344,8 +344,8 @@ void GCManipulatableScene::raySelect(const XVector3D &dir)
       }
 
   private:
-    float oldDistSq;
     XVector3D camPos;
+    float oldDistSq;
     };
 
   InternalSelector interface(camPos);
