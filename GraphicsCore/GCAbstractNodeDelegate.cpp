@@ -37,7 +37,7 @@ void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::Prope
   QString name = prop->name();
   if(name.isEmpty())
     {
-    name = "[" + QString::number(prop->index()) + "]";
+    name = "[" + QString::number(prop->parent()->index(prop)) + "]";
     }
 
   QString elided = propFntMetrics.elidedText(name, Qt::ElideRight, MAX_WIDTH - 2*OUTER_PADDING);
@@ -264,7 +264,8 @@ void GCSimpleNodeDelegate::paint(xuint32 pass,
           }
         else
           {
-          outputPosition = inputRD.position + inputRD.properties[input->index()].position + QPoint(-OUTER_PADDING, _propFntMetrics.height() / 2);
+          xsize idx = input->parent()->index(input);
+          outputPosition = inputRD.position + inputRD.properties[idx].position + QPoint(-OUTER_PADDING, _propFntMetrics.height() / 2);
           }
 
         inputPosition.setX(rd.position.x());
