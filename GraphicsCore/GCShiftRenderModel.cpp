@@ -83,11 +83,11 @@ void GCShiftRenderModel::onTreeChange(const SChange *c)
     {
     if(t->before() && t->before()->isDescendedFrom(_entity))
       {
-      t->before()->entity()->removeConnectionObserver(this);
+      const_cast<SEntity*>(t->before()->entity())->removeConnectionObserver(this);
       }
     if(t->after() && t->after()->isDescendedFrom(_entity))
       {
-      t->property()->entity()->addConnectionObserver(this);
+      const_cast<SEntity*>(t->property()->entity())->addConnectionObserver(this);
       }
     }
   }
