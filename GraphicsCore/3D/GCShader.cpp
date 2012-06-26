@@ -72,7 +72,7 @@ void GCShader::computeShaderRuntime(GCShader *shader)
 
   if(shader->_setVariables)
     {
-    xForeach(auto p, shader->walkerFrom(&shader->components))
+    xForeach(auto p, shader->walkerFrom((SProperty*)&shader->components))
       {
       const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
       if(binder)
