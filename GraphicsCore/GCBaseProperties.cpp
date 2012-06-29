@@ -21,6 +21,7 @@ IMPLEMENT_POD_GC_PROPERTY(GCRuntimeShader)
 IMPLEMENT_POD_GC_PROPERTY(GCQImage)
 IMPLEMENT_POD_GC_PROPERTY(GCRuntimeGeometry)
 IMPLEMENT_POD_GC_PROPERTY(GCBoundingBox)
+IMPLEMENT_POD_GC_PROPERTY(GCRuntimeShaderInstance)
 
 void GCBoundingBox::assignProperty(const SProperty *f, SProperty *t)
   {
@@ -62,6 +63,17 @@ void GCRuntimeShader::assignProperty(const SProperty *f, SProperty *t)
   GCRuntimeShader *to = t->uncheckedCastTo<GCRuntimeShader>();
 
   const GCRuntimeShader *sProp = f->castTo<GCRuntimeShader>();
+  if(sProp)
+    {
+    to->assign(sProp->value());
+    return;
+    }
+  }
+void GCRuntimeShaderInstance::assignProperty(const SProperty *f, SProperty *t)
+  {
+  GCRuntimeShaderInstance *to = t->uncheckedCastTo<GCRuntimeShaderInstance>();
+
+  const GCRuntimeShaderInstance *sProp = f->castTo<GCRuntimeShaderInstance>();
   if(sProp)
     {
     to->assign(sProp->value());

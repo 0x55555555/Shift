@@ -9,6 +9,19 @@
 #include "XGeometry.h"
 #include "XCuboid.h"
 
+class XShaderInstance
+  {
+public:
+  XShader *instance;
+
+  bool operator !=(const XShaderInstance& i) const
+    {
+    return i.instance != instance;
+    }
+  };
+
+Q_DECLARE_METATYPE(XShaderInstance)
+
 namespace
 {
 QTextStream &operator <<(QTextStream &str, const QImage &data)
@@ -45,6 +58,31 @@ QTextStream &operator>>(QTextStream &s, const XGeometry &)
   return s;
   }
 
+
+QDataStream &operator>>(QDataStream& s, XShaderInstance&)
+  {
+  xAssertFail();
+  return s;
+  }
+
+QDataStream &operator<<(QDataStream& s, const XShaderInstance&)
+  {
+  xAssertFail();
+  return s;
+  }
+
+
+QTextStream &operator>>(QTextStream& s, XShaderInstance&)
+  {
+  xAssertFail();
+  return s;
+  }
+
+QTextStream &operator<<(QTextStream& s, const XShaderInstance&)
+  {
+  xAssertFail();
+  return s;
+  }
 }
 
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, XTransform, XTransform::Identity(), 150);
@@ -53,5 +91,6 @@ DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShader, XShader, XShader(), 15
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCQImage, QImage, QImage(), 153)
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeGeometry, XGeometry, XGeometry(), 154)
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, XCuboid, XCuboid(), 155)
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShaderInstance, XShaderInstance, XShaderInstance(), 156)
 
 #endif // GCBASEPROPERTIES_H
