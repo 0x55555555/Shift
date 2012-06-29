@@ -1,6 +1,7 @@
 #include "GCAbstractNodeDelegate.h"
 #include "GCShiftRenderModel.h"
 #include "X2DCanvas.h"
+#include "spropertycontaineriterators.h"
 #include "QPen"
 #include "QPainter"
 #include "sentity.h"

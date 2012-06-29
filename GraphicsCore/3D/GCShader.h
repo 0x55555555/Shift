@@ -47,19 +47,16 @@ class GRAPHICSCORE_EXPORT GCShader : public SEntity
   {
   S_ENTITY(GCShader, SEntity, 0)
 public:
-  GCShader();
 
   void bind(XRenderer *r) const;
-
-  GCRuntimeShader runtimeShader;
+  GCRuntimeShaderInstance runtimeShader;
   GCShaderComponentPointerArray components;
 
-  static void postChildSet(SPropertyContainer *, SProperty *);
-
 private:
-  bool _rebuildShader;
-  bool _setVariables;
+  GCRuntimeShader runtimeShaderCore;
+
   static void computeShaderRuntime(GCShader *cont);
+  static void setupShaderRuntime(GCShader *cont);
   };
 
 S_PROPERTY_INTERFACE(GCShader)
