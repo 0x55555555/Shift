@@ -45,7 +45,21 @@ void TextureRef::bindData(XShader *s, const SProperty *p) const
 
   if(c->input())
     {
-    v->setValue(c->pointed()->value());
+    const XTexture* newValue = &(c->pointed()->value());
+    const QVariant& value = v->value();
+
+    bool set = true;
+    if(value.userType() == qMetaTypeId<const XTexture*>())
+      {
+      const XTexture* tex = value.value<const XTexture*>();
+
+      set = tex != newValue;
+      }
+
+    if(set)
+      {
+      v->setValue(newValue);
+      }
     }
   }
 
