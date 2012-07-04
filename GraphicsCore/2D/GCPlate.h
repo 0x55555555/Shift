@@ -1,16 +1,15 @@
 #ifndef GCPLATE_H
 #define GCPLATE_H
 
-#include "GCRenderable.h"
+#include "3D/GCTransform.h"
 #include "GCGlobal.h"
+#include "GCBaseProperties.h"
 
-class GRAPHICSCORE_EXPORT GCPlate : public GCRenderable
+class GRAPHICSCORE_EXPORT GCPlate : public GCTransform
   {
-  S_ENTITY(GCPlate, GCRenderable, 0)
+  S_ENTITY(GCPlate, GCTransform, 0)
 
 public:
-  GCPlate();
-
   virtual void render(XRenderer *) const;
   };
 

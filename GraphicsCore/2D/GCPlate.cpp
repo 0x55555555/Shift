@@ -9,11 +9,20 @@ void GCPlate::createTypeInformation(SPropertyInformationTyped<GCPlate> *info,
   {
   }
 
-GCPlate::GCPlate()
-  {
-  }
-
 void GCPlate::render(XRenderer *r) const
   {
+  r->pushTransform(transform());
+
+  {
+  XTransform tr = XTransform::Identity();
+  tr.scale(100);
+
+  r->pushTransform(tr);
+
   r->debugRenderLocator(XRenderer::ClearShader);
+
+  r->popTransform();
+  }
+
+  r->popTransform();
   }
