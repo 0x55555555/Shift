@@ -16,12 +16,12 @@ void computeTransform(GCCameraAlignedPlate *plate)
 
   tr.translate(XVector3D(0.0f, 0.0f, -dist));
 
-  float worldWidth = 2.0f * (tan(X_DEGTORAD(fov)) * dist);
-  float scale = worldWidth / width;
+  float worldHeight = 2.0f * tan(X_DEGTORAD(fov * 0.5f)) * dist;
+  float scale = worldHeight / height;
 
   tr.scale(scale);
 
-  tr.translate(XVector3D(width/4, height/4, 0));
+  tr.translate(XVector3D(-(int)width/2, -(int)height/2, 0));
 
   plate->transform = tr;
   }
