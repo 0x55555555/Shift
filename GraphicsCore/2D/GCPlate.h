@@ -4,6 +4,7 @@
 #include "3D/GCTransform.h"
 #include "GCGlobal.h"
 #include "GCBaseProperties.h"
+#include "GCElement.h"
 
 class GRAPHICSCORE_EXPORT GCPlate : public GCTransform
   {
@@ -11,6 +12,11 @@ class GRAPHICSCORE_EXPORT GCPlate : public GCTransform
 
 public:
   virtual void render(XRenderer *) const;
+
+  UnsignedIntProperty viewportWidth;
+  UnsignedIntProperty viewportHeight;
+
+  GCElement element;
   };
 
 S_PROPERTY_INTERFACE(GCPlate)

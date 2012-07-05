@@ -7,22 +7,28 @@ S_IMPLEMENT_PROPERTY(GCPlate, GraphicsCore)
 void GCPlate::createTypeInformation(SPropertyInformationTyped<GCPlate> *info,
                                     const SPropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    auto w = info->add(&GCPlate::viewportWidth, "viewportWidth");
+
+    auto h = info->add(&GCPlate::viewportHeight, "viewportHeight");
+
+    SPropertyInstanceInformationTyped<GCPlate, GCElement>* el = info->add(&GCPlate::element, "element");
+    SPropertyInformationTyped<GCElement>* elEx = info->extendContainedProperty(el);
+
+    auto elW = elEx->child(&GCElement::width);
+    elW->setDefaultInput(w);
+
+    auto elH = elEx->child(&GCElement::height);
+    elH->setDefaultInput(h);
+    }
   }
 
 void GCPlate::render(XRenderer *r) const
   {
   r->pushTransform(transform());
 
-  {
-  XTransform tr = XTransform::Identity();
-  tr.scale(100);
-
-  r->pushTransform(tr);
-
-  r->debugRenderLocator(XRenderer::ClearShader);
-
-  r->popTransform();
-  }
+  element.render(r);
 
   r->popTransform();
   }

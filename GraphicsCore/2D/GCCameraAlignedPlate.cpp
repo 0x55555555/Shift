@@ -46,16 +46,10 @@ void GCCameraAlignedPlate::createTypeInformation(SPropertyInformationTyped<GCCam
     auto fov = info->add(&GCCameraAlignedPlate::cameraFieldOfView, "cameraFieldOfView");
     fov->setAffects(tr);
 
-    auto x = info->add(&GCCameraAlignedPlate::viewportX, "viewportX");
-    x->setAffects(tr);
-
-    auto y = info->add(&GCCameraAlignedPlate::viewportY, "viewportY");
-    y->setAffects(tr);
-
-    auto w = info->add(&GCCameraAlignedPlate::viewportWidth, "viewportWidth");
+    auto w = info->child(&GCCameraAlignedPlate::viewportWidth);
     w->setAffects(tr);
 
-    auto h = info->add(&GCCameraAlignedPlate::viewportHeight, "viewportHeight");
+    auto h = info->child(&GCCameraAlignedPlate::viewportHeight);
     h->setAffects(tr);
     }
   }

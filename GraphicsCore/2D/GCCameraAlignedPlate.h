@@ -13,11 +13,6 @@ public:
 
   FloatProperty distanceFromCamera;
   FloatProperty cameraFieldOfView;
-
-  UnsignedIntProperty viewportX;
-  UnsignedIntProperty viewportY;
-  UnsignedIntProperty viewportWidth;
-  UnsignedIntProperty viewportHeight;
   };
 
 S_PROPERTY_INTERFACE(GCCameraAlignedPlate)
