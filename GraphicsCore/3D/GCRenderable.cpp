@@ -2,6 +2,7 @@
 #include "spropertyinformationhelpers.h"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCRenderablePointer, GraphicsCore)
+S_IMPLEMENT_TYPED_POINTER_TYPE(GCRenderArrayPointer, GraphicsCore)
 S_IMPLEMENT_TYPED_POINTER_ARRAY_TYPE(GCRenderablePointerArray, GraphicsCore)
 
 S_IMPLEMENT_PROPERTY(GCRenderable, GraphicsCore)
