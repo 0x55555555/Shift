@@ -68,10 +68,13 @@ void GCRenderArray::render(XRenderer *renderer) const
   xForeach(auto r, renderGroup.walker<GCRenderablePointer>())
     {
     const GCRenderable* ptd = r->pointed();
-    if(ptd)
+    if(!ptd)
       {
-      ptd->render(renderer);
+      qWarning() << "Null renderable";
+      continue;
       }
+    
+    ptd->render(renderer);
     }
   }
 
