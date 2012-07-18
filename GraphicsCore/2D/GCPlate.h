@@ -5,6 +5,7 @@
 #include "GCGlobal.h"
 #include "GCBaseProperties.h"
 #include "GCElement.h"
+#include "GCElementContainer.h"
 
 class GRAPHICSCORE_EXPORT GCPlate : public GCTransform
   {
@@ -16,7 +17,7 @@ public:
   UnsignedIntProperty viewportWidth;
   UnsignedIntProperty viewportHeight;
 
-  GCElement element;
+  GCElementContainer element;
   };
 
 S_PROPERTY_INTERFACE(GCPlate)

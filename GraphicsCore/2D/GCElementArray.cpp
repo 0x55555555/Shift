@@ -2,6 +2,8 @@
 #include "spropertyinformationhelpers.h"
 #include "spropertycontaineriterators.h"
 
+S_IMPLEMENT_PROPERTY(GCElementArray, GraphicsCore)
+
 void GCElementArray::createTypeInformation(SPropertyInformationTyped<GCElementArray> *,
                                            const SPropertyInformationCreateData &)
   {

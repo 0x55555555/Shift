@@ -13,8 +13,8 @@ void GCPlate::createTypeInformation(SPropertyInformationTyped<GCPlate> *info,
 
     auto h = info->add(&GCPlate::viewportHeight, "viewportHeight");
 
-    SPropertyInstanceInformationTyped<GCPlate, GCElement>* el = info->add(&GCPlate::element, "element");
-    SPropertyInformationTyped<GCElement>* elEx = info->extendContainedProperty(el);
+    auto el = info->add(&GCPlate::element, "element");
+    auto elEx = info->extendContainedProperty(el);
 
     auto elW = elEx->child(&GCElement::width);
     elW->setDefaultInput(w);

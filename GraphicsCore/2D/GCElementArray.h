@@ -13,4 +13,6 @@ public:
   virtual void render(XRenderer *) const;
   };
 
+S_PROPERTY_INTERFACE(GCElementArray)
+
 #endif // GCELEMENTARRAY_H

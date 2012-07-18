@@ -13,11 +13,13 @@ class GRAPHICSCORE_EXPORT GCElement : public SEntity
 
 public:
 
-  FloatProperty top;
+  FloatProperty bottom;
   FloatProperty left;
 
   FloatProperty width;
   FloatProperty height;
+
+  FloatProperty* right();
 
   virtual void render(XRenderer *) const;
   };

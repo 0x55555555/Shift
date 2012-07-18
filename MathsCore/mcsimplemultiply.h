@@ -4,7 +4,7 @@
 #include "mcsimple.h"
 #include "sbaseproperties.h"
 
-class MCSimpleMultiply : public MCSimple
+class MATHSCORE_EXPORT MCSimpleMultiply : public MCSimple
   {
   S_ENTITY(MCSimpleMultiply, MCSimple, 0)
 

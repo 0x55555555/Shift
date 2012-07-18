@@ -1,7 +1,6 @@
 #include "GCElement.h"
 #include "spropertyinformationhelpers.h"
-#include "XTransform.h"
-#include "XGLRenderer.h"
+#include "mcsimpleadd.h"
 
 S_IMPLEMENT_PROPERTY(GCElement, GraphicsCore)
 
@@ -11,7 +10,7 @@ void GCElement::createTypeInformation(SPropertyInformationTyped<GCElement> *info
   if(data.registerAttributes)
     {
     info->add(&GCElement::left, "left");
-    info->add(&GCElement::top, "top");
+    info->add(&GCElement::bottom, "bottom");
 
     info->add(&GCElement::width, "width");
     info->add(&GCElement::height, "height");
@@ -20,12 +19,18 @@ void GCElement::createTypeInformation(SPropertyInformationTyped<GCElement> *info
 
 void GCElement::render(XRenderer *r) const
   {
-  XTransform tr = XTransform::Identity();
-  tr.scale(100);
+  }
 
-  r->pushTransform(tr);
+FloatProperty* GCElement::right()
+  {
+  MCSimpleAdd* adder = children.findChild<MCSimpleAdd>("right");
+  if(!adder)
+    {
+    adder = addChild<MCSimpleAdd>("right");
+    xAssert(adder->name() == "right");
+    }
 
-  r->debugRenderLocator(XRenderer::ClearShader);
-
-  r->popTransform();
+  adder->inputA.setInput(&left);
+  adder->inputB.setInput(&width);
+  return &adder->output;
   }
