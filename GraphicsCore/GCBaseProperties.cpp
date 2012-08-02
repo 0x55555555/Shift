@@ -15,6 +15,7 @@ void readValue(SLoader &, XShader &)
 
 #define IMPLEMENT_POD_GC_PROPERTY(name) IMPLEMENT_POD_PROPERTY(name, GraphicsCore)
 
+IMPLEMENT_POD_GC_PROPERTY(Matrix3x3Property);
 IMPLEMENT_POD_GC_PROPERTY(TransformProperty);
 IMPLEMENT_POD_GC_PROPERTY(ComplexTransformProperty);
 IMPLEMENT_POD_GC_PROPERTY(GCRuntimeShader)
@@ -74,6 +75,18 @@ void GCRuntimeShaderInstance::assignProperty(const SProperty *f, SProperty *t)
   GCRuntimeShaderInstance *to = t->uncheckedCastTo<GCRuntimeShaderInstance>();
 
   const GCRuntimeShaderInstance *sProp = f->castTo<GCRuntimeShaderInstance>();
+  if(sProp)
+    {
+    to->assign(sProp->value());
+    return;
+    }
+  }
+
+void Matrix3x3Property::assignProperty(const SProperty *f, SProperty *t)
+  {
+  Matrix3x3Property *to = t->uncheckedCastTo<Matrix3x3Property>();
+
+  const Matrix3x3Property *sProp = f->castTo<Matrix3x3Property>();
   if(sProp)
     {
     to->assign(sProp->value());
