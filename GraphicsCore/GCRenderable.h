@@ -51,5 +51,6 @@ public:
   };
 
 S_PROPERTY_INTERFACE(GCRenderArray)
+S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCRenderArrayPointer, GCRenderArray)
 
 #endif // GCRENDERABLE_H

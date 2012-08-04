@@ -86,6 +86,7 @@ QTextStream &operator<<(QTextStream& s, const XShaderInstance&)
 }
 
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, XTransform, XTransform::Identity(), 150);
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, XMatrix3x3, XMatrix3x3::Identity(), 157);
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, XComplexTransform, XComplexTransform(), 151);
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShader, XShader, XShader(), 152)
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCQImage, QImage, QImage(), 153)
