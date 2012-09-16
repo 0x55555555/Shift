@@ -8,8 +8,8 @@ void computeTransform(GCCameraAlignedPlate *plate)
   XTransform tr = plate->cameraTransform();
   tr = tr * plate->offsetTransform();
 
-  const xuint32 width = plate->viewportWidth();
-  const xuint32 height = plate->viewportHeight();
+  const xuint32 width = plate->width();
+  const xuint32 height = plate->height();
 
   const float dist = plate->distanceFromCamera();
   const float fov = plate->cameraFieldOfView();
@@ -45,11 +45,5 @@ void GCCameraAlignedPlate::createTypeInformation(SPropertyInformationTyped<GCCam
 
     auto fov = info->add(&GCCameraAlignedPlate::cameraFieldOfView, "cameraFieldOfView");
     fov->setAffects(tr);
-
-    auto w = info->child(&GCCameraAlignedPlate::viewportWidth);
-    w->setAffects(tr);
-
-    auto h = info->child(&GCCameraAlignedPlate::viewportHeight);
-    h->setAffects(tr);
     }
   }

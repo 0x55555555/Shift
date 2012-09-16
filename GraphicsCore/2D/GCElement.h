@@ -2,7 +2,7 @@
 #define GCELEMENT_H
 
 #include "GCGlobal.h"
-#include "sentity.h"
+#include "3D/GCTransform.h"
 #include "sbaseproperties.h"
 #include "mcsimple.h"
 
@@ -18,15 +18,14 @@ class GCElementUnCentre : public MCSimple
   S_ENTITY(GCElementUnCentre, MCSimple, 0)
   };
 
-class GRAPHICSCORE_EXPORT GCElement : public SEntity
+class GRAPHICSCORE_EXPORT GCElement : public GCTransform
   {
-  S_ENTITY(GCElement, SEntity, 0)
+  S_ENTITY(GCElement, GCTransform, 0)
 
 public:
 
   FloatProperty bottom;
   FloatProperty left;
-
   FloatProperty width;
   FloatProperty height;
 
@@ -37,11 +36,21 @@ public:
 
   void setHorizontalCentreInput(FloatProperty* input);
   void setVerticalCentreInput(FloatProperty* input);
-
-  virtual void render(XRenderer *) const;
   };
 
+
+
+class GRAPHICSCORE_EXPORT GCUnitElement : public GCElement
+  {
+  S_ENTITY(GCUnitElement, GCElement, 0)
+
+public:
+  };
+
+
+
 S_PROPERTY_INTERFACE(GCElement)
+S_PROPERTY_INTERFACE(GCUnitElement)
 S_PROPERTY_INTERFACE(GCElementCentre)
 S_PROPERTY_INTERFACE(GCElementUnCentre)
 

@@ -1,6 +1,7 @@
 #include "GCElement.h"
 #include "spropertyinformationhelpers.h"
 #include "mcsimpleadd.h"
+#include "XRenderer.h"
 
 void computeCentreOutput(GCElementCentre *e)
   {
@@ -40,6 +41,15 @@ void GCElementUnCentre::createTypeInformation(SPropertyInformationTyped<GCElemen
     }
   }
 
+void computeElementTransform(GCElement *e)
+  {
+  XTransform t = XTransform::Identity();
+
+  t.translate(XVector3D(e->left(), e->bottom(), 0.0f));
+
+  e->transform = t;
+  }
+
 S_IMPLEMENT_PROPERTY(GCElement, GraphicsCore)
 
 void GCElement::createTypeInformation(SPropertyInformationTyped<GCElement> *info,
@@ -47,16 +57,19 @@ void GCElement::createTypeInformation(SPropertyInformationTyped<GCElement> *info
   {
   if(data.registerAttributes)
     {
-    info->add(&GCElement::left, "left");
-    info->add(&GCElement::bottom, "bottom");
+    auto tr = info->child(&GCElement::transform);
+    tr->setCompute<computeElementTransform>();
 
-    info->add(&GCElement::width, "width");
-    info->add(&GCElement::height, "height");
+    auto w = info->add(&GCElement::width, "width");
+    w->setAffects(tr);
+    auto h = info->add(&GCElement::height, "height");
+    h->setAffects(tr);
+
+    auto l = info->add(&GCElement::left, "left");
+    l->setAffects(tr);
+    auto b = info->add(&GCElement::bottom, "bottom");
+    b->setAffects(tr);
     }
-  }
-
-void GCElement::render(XRenderer *r) const
-  {
   }
 
 FloatProperty* GCElement::right()
@@ -123,4 +136,28 @@ void GCElement::setVerticalCentreInput(FloatProperty* input)
   centre->inputB.setInput(&height);
 
   bottom.setInput(&centre->output);
+  }
+
+
+void computeUnitElementTransform(GCUnitElement *e)
+  {
+  XTransform t = XTransform::Identity();
+
+  t.translate(XVector3D(e->left(), e->bottom(), 0.0f));
+
+  t.scale(XVector3D(e->width(), e->height(), 1.0f));
+
+  e->transform = t;
+  }
+
+S_IMPLEMENT_PROPERTY(GCUnitElement, GraphicsCore)
+
+void GCUnitElement::createTypeInformation(SPropertyInformationTyped<GCUnitElement> *info,
+                                      const SPropertyInformationCreateData &data)
+  {
+  if(data.registerAttributes)
+    {
+    auto tr = info->child(&GCElement::transform);
+    tr->setCompute<computeUnitElementTransform>();
+    }
   }

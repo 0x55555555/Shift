@@ -1,23 +1,39 @@
 #ifndef GCPLATE_H
 #define GCPLATE_H
 
+#include "XSignature.h"
 #include "3D/GCTransform.h"
 #include "GCGlobal.h"
 #include "GCBaseProperties.h"
 #include "GCElement.h"
-#include "GCElementContainer.h"
+#include "3D/GCShadingGroup.h"
 
-class GRAPHICSCORE_EXPORT GCPlate : public GCTransform
+#include "XOptionalPointer"
+
+class GRAPHICSCORE_EXPORT GCPlate : public GCElement
   {
-  S_ENTITY(GCPlate, GCTransform, 0)
+  S_ENTITY(GCPlate, GCElement, 0)
 
-public:
-  virtual void render(XRenderer *) const;
+  template <typename T> typename GCElement *addChildElement(T **out = 0, GCShadingGroup *material = 0)
+    {
+    GCElement *el = T::addAsChild(this, material, out);
+    return el;
+    }
 
-  UnsignedIntProperty viewportWidth;
-  UnsignedIntProperty viewportHeight;
+  template <typename T> GCShadingGroup *addMaterial(T **matOut = 0)
+    {
+    XOptionalPointer<T> mat(matOut);
 
-  GCElementContainer element;
+    GCShadingGroup* grp = addChild<GCShadingGroup>();
+    renderGroup.addPointer(grp);
+
+    mat = addChild<T>();
+    grp->shader.setPointed(mat);
+
+    return grp;
+    }
+
+  void render(XRenderer *) const X_OVERRIDE;
   };
 
 S_PROPERTY_INTERFACE(GCPlate)
