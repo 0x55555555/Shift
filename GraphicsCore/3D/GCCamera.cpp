@@ -162,14 +162,48 @@ bool GCViewableTransform::unitViewportCoordinates(xuint32 x, xuint32 y, float &x
   return true;
   }
 
+bool GCViewableTransform::screenViewportCoordinates(float xUnit, float yUnit, float &x, float &y) const
+  {
+  xUnit += 1.0f;
+  yUnit += 1.0f;
+
+  xUnit /= 2.0f;
+  yUnit /= -2.0f;
+
+  xUnit *= viewportWidth();
+  yUnit *= viewportHeight();
+
+  x = viewportX() + xUnit;
+  y = viewportY() + yUnit;
+
+  return true;
+  }
+
 XVector3D GCViewableTransform::worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const
   {
   XVector4D vpSpace(0.0f, 0.0f, 1.0f, 1.0f);
   unitViewportCoordinates(x, y, vpSpace(0), vpSpace(1));
 
-  XVector4D downZAxisWorld = inverseProjection() * vpSpace;
-  XVector3D world = transform() * downZAxisWorld.head<3>();
+  auto downZAxisWorld = inverseProjection() * vpSpace;
+  auto world = transform() * downZAxisWorld.head<3>();
   return world;
+  }
+
+XVector3D GCViewableTransform::screenSpaceFromWorldSpace(const XVector3D &worldPos)
+  {
+  auto eye = viewTransform() * worldPos;
+
+  XVector4D eyeH;
+  eyeH.head<3>() = eye;
+  eyeH(3) = 1.0f;
+
+  XVector4D projected = projection() * eyeH;
+  float w = projected.w();
+
+  float x, y;
+  screenViewportCoordinates(projected.x() / w, projected.y() / w, x, y);
+
+  return XVector3D(x, y, projected.z());
   }
 
 void GCViewableTransform::zoom(float factor, float, float)

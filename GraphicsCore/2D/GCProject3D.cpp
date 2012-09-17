@@ -1,0 +1,44 @@
+#include "GCProject3D.h"
+#include "spropertyinformationhelpers.h"
+
+#include "XOptionalPointer"
+
+void computeAlignTransform(GCProject3D *el)
+  {
+  GCCamera *c = el->camera();
+
+  if(!c)
+    {
+    el->xPosition = 0.0f;
+    el->yPosition = 0.0f;
+    return;
+    }
+
+  const XVector3D &pos = el->targetTransform().translation();
+
+  XVector3D screenPosition = c->screenSpaceFromWorldSpace(pos);
+  el->xPosition = screenPosition.x();
+  el->yPosition = -screenPosition.y();
+  }
+
+S_IMPLEMENT_PROPERTY(GCProject3D, GraphicsCore)
+
+void GCProject3D::createTypeInformation(SPropertyInformationTyped<GCProject3D> *info,
+                                    const SPropertyInformationCreateData &data)
+  {
+  if(data.registerAttributes)
+    {
+    auto x = info->add(&GCProject3D::xPosition, "xPosition");
+    x->setCompute<computeAlignTransform>();
+
+    auto y = info->add(&GCProject3D::yPosition, "yPosition");
+    y->setCompute<computeAlignTransform>();
+
+    const SPropertyInstanceInformation *aff[] = { x, y };
+
+    auto cam = info->add(&GCProject3D::camera, "camera");
+    cam->setAffects(aff, X_ARRAY_COUNT(aff));
+    auto taTr = info->add(&GCProject3D::targetTransform, "targetTransform");
+    taTr->setAffects(aff, X_ARRAY_COUNT(aff));
+    }
+  }

@@ -43,6 +43,10 @@ public:
   XTransform getPixelScaleFacingTransform(const XVector3D &worldPosition) const;
 
   bool unitViewportCoordinates(xuint32 x, xuint32 y, float &xUnit, float &yUnit) const;
+  bool screenViewportCoordinates(float xUnit, float yUnit, float &x, float &y) const;
+
+  XVector3D screenSpaceFromWorldSpace(const XVector3D &worldPos);
+
   XVector3D worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const;
   virtual XVector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const = 0;
 

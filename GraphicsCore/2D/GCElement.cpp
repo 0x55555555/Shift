@@ -150,6 +150,34 @@ void computeUnitElementTransform(GCUnitElement *e)
   e->transform = t;
   }
 
+S_IMPLEMENT_PROPERTY(GCElementArray, GraphicsCore)
+
+void GCElementArray::createTypeInformation(SPropertyInformationTyped<GCElementArray> *info,
+                                      const SPropertyInformationCreateData &data)
+  {
+  if(data.registerAttributes)
+    {
+    info->add(&GCElementArray::elements, "elements");
+    }
+  }
+
+void GCElementArray::render(XRenderer *renderer) const
+  {
+  GCElement::render(renderer);
+
+  xForeach(auto r, elements.walker<GCRenderablePointer>())
+    {
+    const GCRenderable* ptd = r->pointed();
+    if(!ptd)
+      {
+      qWarning() << "Null element";
+      continue;
+      }
+
+    ptd->render(renderer);
+    }
+  }
+
 S_IMPLEMENT_PROPERTY(GCUnitElement, GraphicsCore)
 
 void GCUnitElement::createTypeInformation(SPropertyInformationTyped<GCUnitElement> *info,

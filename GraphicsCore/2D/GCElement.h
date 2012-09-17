@@ -7,6 +7,7 @@
 #include "mcsimple.h"
 
 class XRenderer;
+class GCShadingGroup;
 
 class GCElementCentre : public MCSimple
   {
@@ -38,6 +39,21 @@ public:
   void setVerticalCentreInput(FloatProperty* input);
   };
 
+class GRAPHICSCORE_EXPORT GCElementArray : public GCElement
+  {
+  S_ENTITY(GCElementArray, GCElement, 0)
+
+  template <typename T> typename GCElement *addChildElement(T **out = 0, GCShadingGroup *material = 0)
+    {
+    GCElement *el = T::addAsChild(this, material, out);
+    return el;
+    }
+
+  GCRenderablePointerArray elements;
+
+  void render(XRenderer *) const X_OVERRIDE;
+  };
+
 
 
 class GRAPHICSCORE_EXPORT GCUnitElement : public GCElement
@@ -50,6 +66,7 @@ public:
 
 
 S_PROPERTY_INTERFACE(GCElement)
+S_PROPERTY_INTERFACE(GCElementArray)
 S_PROPERTY_INTERFACE(GCUnitElement)
 S_PROPERTY_INTERFACE(GCElementCentre)
 S_PROPERTY_INTERFACE(GCElementUnCentre)

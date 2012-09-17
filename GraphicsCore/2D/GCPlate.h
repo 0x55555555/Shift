@@ -1,7 +1,6 @@
 #ifndef GCPLATE_H
 #define GCPLATE_H
 
-#include "XSignature.h"
 #include "3D/GCTransform.h"
 #include "GCGlobal.h"
 #include "GCBaseProperties.h"
@@ -10,15 +9,9 @@
 
 #include "XOptionalPointer"
 
-class GRAPHICSCORE_EXPORT GCPlate : public GCElement
+class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
   {
-  S_ENTITY(GCPlate, GCElement, 0)
-
-  template <typename T> typename GCElement *addChildElement(T **out = 0, GCShadingGroup *material = 0)
-    {
-    GCElement *el = T::addAsChild(this, material, out);
-    return el;
-    }
+  S_ENTITY(GCPlate, GCElementArray, 0)
 
   template <typename T> GCShadingGroup *addMaterial(T **matOut = 0)
     {

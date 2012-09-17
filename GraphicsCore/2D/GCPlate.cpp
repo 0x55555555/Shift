@@ -9,11 +9,30 @@ void GCPlate::createTypeInformation(SPropertyInformationTyped<GCPlate> *info,
   {
   }
 
-void GCPlate::render(XRenderer *r) const
+void GCPlate::render(XRenderer *renderer) const
   {
-  r->clear(XRenderer::ClearDepth);
+  renderer->clear(XRenderer::ClearDepth);
 
-  XRendererFlagBlock f(r, XRenderer::AlphaBlending);
+  XRendererFlagBlock f(renderer, XRenderer::AlphaBlending);
 
-  GCElement::render(r);
+
+
+  renderer->pushTransform(transform());
+
+  // render all elements and embedded and attached elements with the transform applied
+  GCRenderArray::render(renderer);
+
+  xForeach(auto r, elements.walker<GCRenderablePointer>())
+    {
+    const GCRenderable* ptd = r->pointed();
+    if(!ptd)
+      {
+      qWarning() << "Null element";
+      continue;
+      }
+
+    ptd->render(renderer);
+    }
+
+  renderer->popTransform();
   }
