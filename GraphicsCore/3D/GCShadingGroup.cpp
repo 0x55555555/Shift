@@ -33,7 +33,7 @@ void GCShadingGroup::render(XRenderer *r) const
   {
   xAssert(SProcessManager::isMainThread());
 
-  const GCShader *s = shader.pointed();
+  const GCStaticShader *s = shader.pointed();
   if(s)
     {
     s->bind(r);

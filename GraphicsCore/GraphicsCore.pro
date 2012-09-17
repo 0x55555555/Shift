@@ -36,7 +36,8 @@ HEADERS += GCGlobal.h \
     GCComposeVector3.h \
     2D/GCPlate.h \
     2D/GCCameraAlignedPlate.h \
-    2D/GCElement.h
+    2D/GCElement.h \
+    2D/GCAlign3DElement.h
 
 INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift
 
@@ -69,7 +70,8 @@ SOURCES += \
     GCGlobal.cpp \
     2D/GCPlate.cpp \
     2D/GCCameraAlignedPlate.cpp \
-    2D/GCElement.cpp
+    2D/GCElement.cpp \
+    2D/GCAlign3DElement.cpp
 
 
 
