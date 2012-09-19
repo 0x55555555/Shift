@@ -60,6 +60,9 @@ void GCElement::createTypeInformation(SPropertyInformationTyped<GCElement> *info
     auto tr = info->child(&GCElement::transform);
     tr->setCompute<computeElementTransform>();
 
+    auto vis = info->add(&GCElement::visible, "visible");
+    vis->setDefaultValue(true);
+
     auto w = info->add(&GCElement::width, "width");
     w->setAffects(tr);
     auto h = info->add(&GCElement::height, "height");
@@ -136,6 +139,16 @@ void GCElement::setVerticalCentreInput(FloatProperty* input)
   centre->inputB.setInput(&height);
 
   bottom.setInput(&centre->output);
+  }
+
+void GCElement::render(XRenderer *r) const
+  {
+  if(!visible())
+    {
+    return;
+    }
+
+  GCTransform::render(r);
   }
 
 

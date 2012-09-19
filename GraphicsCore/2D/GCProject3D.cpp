@@ -5,20 +5,30 @@
 
 void computeAlignTransform(GCProject3D *el)
   {
+  SPointerComputeLock cLock(&el->camera);
   GCCamera *c = el->camera();
+  const XVector3D &pos = el->targetTransform().translation();
 
   if(!c)
     {
     el->xPosition = 0.0f;
     el->yPosition = 0.0f;
+    el->validPosition = false;
     return;
     }
 
-  const XVector3D &pos = el->targetTransform().translation();
+  XVector3D screenPosition;
+  if(!c->screenSpaceFromWorldSpace(pos, screenPosition))
+    {
+    el->xPosition = 0.0f;
+    el->yPosition = 0.0f;
+    el->validPosition = false;
+    return;
+    }
 
-  XVector3D screenPosition = c->screenSpaceFromWorldSpace(pos);
   el->xPosition = screenPosition.x();
   el->yPosition = -screenPosition.y();
+  el->validPosition = true;
   }
 
 S_IMPLEMENT_PROPERTY(GCProject3D, GraphicsCore)
@@ -33,6 +43,9 @@ void GCProject3D::createTypeInformation(SPropertyInformationTyped<GCProject3D> *
 
     auto y = info->add(&GCProject3D::yPosition, "yPosition");
     y->setCompute<computeAlignTransform>();
+
+    auto v = info->add(&GCProject3D::validPosition, "validPosition");
+    v->setCompute<computeAlignTransform>();
 
     const SPropertyInstanceInformation *aff[] = { x, y };
 

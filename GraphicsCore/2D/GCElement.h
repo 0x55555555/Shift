@@ -25,6 +25,8 @@ class GRAPHICSCORE_EXPORT GCElement : public GCTransform
 
 public:
 
+  BoolProperty visible;
+
   FloatProperty bottom;
   FloatProperty left;
   FloatProperty width;
@@ -37,6 +39,8 @@ public:
 
   void setHorizontalCentreInput(FloatProperty* input);
   void setVerticalCentreInput(FloatProperty* input);
+
+  void render(XRenderer *) const X_OVERRIDE;
   };
 
 class GRAPHICSCORE_EXPORT GCElementArray : public GCElement

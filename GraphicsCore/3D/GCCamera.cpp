@@ -189,9 +189,14 @@ XVector3D GCViewableTransform::worldSpaceFromScreenSpace(xuint32 x, xuint32 y) c
   return world;
   }
 
-XVector3D GCViewableTransform::screenSpaceFromWorldSpace(const XVector3D &worldPos)
+bool GCViewableTransform::screenSpaceFromWorldSpace(const XVector3D &worldPos, XVector3D &posOut)
   {
   auto eye = viewTransform() * worldPos;
+
+  if(eye.z() > 0.0f)
+    {
+    return false;
+    }
 
   XVector4D eyeH;
   eyeH.head<3>() = eye;
@@ -203,7 +208,8 @@ XVector3D GCViewableTransform::screenSpaceFromWorldSpace(const XVector3D &worldP
   float x, y;
   screenViewportCoordinates(projected.x() / w, projected.y() / w, x, y);
 
-  return XVector3D(x, y, projected.z());
+  posOut = XVector3D(x, y, projected.z());
+  return true;
   }
 
 void GCViewableTransform::zoom(float factor, float, float)
