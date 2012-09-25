@@ -13,7 +13,6 @@ void MCImage::computeImageOutput(MCImage *image)
     }
 
   XVectorI2D transform = XVectorI2D::Zero();
-  bool useShuffle = true;
 
   xsize channels = 3;
   if(imInput.hasAlphaChannel())

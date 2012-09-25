@@ -47,7 +47,7 @@ class GRAPHICSCORE_EXPORT GCElementArray : public GCElement
   {
   S_ENTITY(GCElementArray, GCElement, 0)
 
-  template <typename T> typename GCElement *addChildElement(T **out = 0, GCShadingGroup *material = 0)
+  template <typename T> GCElement *addChildElement(T **out = 0, GCShadingGroup *material = 0)
     {
     GCElement *el = T::addAsChild(this, material, out);
     return el;
