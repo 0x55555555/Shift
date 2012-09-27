@@ -2,6 +2,7 @@
 #include "spropertyinformationhelpers.h"
 #include "mcsimpleadd.h"
 #include "XRenderer.h"
+#include "XOptionalPointer"
 
 void computeCentreOutput(GCElementCentre *e)
   {
@@ -75,7 +76,7 @@ void GCElement::createTypeInformation(SPropertyInformationTyped<GCElement> *info
     }
   }
 
-FloatProperty* GCElement::right()
+const FloatProperty* GCElement::right()
   {
   MCSimpleAdd* adder = children.findChild<MCSimpleAdd>("right");
   if(!adder)
@@ -89,7 +90,7 @@ FloatProperty* GCElement::right()
   return &adder->output;
   }
 
-FloatProperty* GCElement::horizontalCentre()
+const FloatProperty* GCElement::horizontalCentre()
   {
   GCElementCentre* centre = children.findChild<GCElementCentre>("hCentre");
   if(!centre)
@@ -103,7 +104,7 @@ FloatProperty* GCElement::horizontalCentre()
   return &centre->output;
   }
 
-FloatProperty* GCElement::verticalCentre()
+const FloatProperty* GCElement::verticalCentre()
   {
   GCElementCentre* centre = children.findChild<GCElementCentre>("vCentre");
   if(!centre)
@@ -117,7 +118,19 @@ FloatProperty* GCElement::verticalCentre()
   return &centre->output;
   }
 
-void GCElement::setHorizontalCentreInput(FloatProperty* input)
+void GCElement::setTopInput(const FloatProperty* input)
+{
+  xAssert(!bottom.hasInput());
+
+  MCSimpleSubtract* top = addChild<MCSimpleSubtract>();
+  top->inputA.setInput(input);
+
+  top->inputB.setInput(&height);
+
+  bottom.setInput(&top->output);
+  }
+
+void GCElement::setHorizontalCentreInput(const FloatProperty* input)
   {
   xAssert(!left.hasInput());
 
@@ -129,7 +142,7 @@ void GCElement::setHorizontalCentreInput(FloatProperty* input)
   left.setInput(&centre->output);
   }
 
-void GCElement::setVerticalCentreInput(FloatProperty* input)
+void GCElement::setVerticalCentreInput(const FloatProperty* input)
   {
   xAssert(!bottom.hasInput());
 
@@ -172,6 +185,17 @@ void GCElementArray::createTypeInformation(SPropertyInformationTyped<GCElementAr
     {
     info->add(&GCElementArray::elements, "elements");
     }
+  }
+
+GCElement *GCElementArray::addAsChild(GCElementArray *parent, GCShadingGroup *material, GCElementArray **arrOpt)
+  {
+  XOptionalPointer<GCElementArray> arr(arrOpt);
+
+  arr = parent->addChild<GCElementArray>();
+
+  parent->elements.addPointer(arr);
+
+  return arr;
   }
 
 void GCElementArray::render(XRenderer *renderer) const

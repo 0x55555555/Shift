@@ -32,13 +32,14 @@ public:
   FloatProperty width;
   FloatProperty height;
 
-  FloatProperty* right();
+  const FloatProperty* right();
 
-  FloatProperty* horizontalCentre();
-  FloatProperty* verticalCentre();
+  const FloatProperty* horizontalCentre();
+  const FloatProperty* verticalCentre();
 
-  void setHorizontalCentreInput(FloatProperty* input);
-  void setVerticalCentreInput(FloatProperty* input);
+  void setTopInput(const FloatProperty* input);
+  void setHorizontalCentreInput(const FloatProperty* input);
+  void setVerticalCentreInput(const FloatProperty* input);
 
   void render(XRenderer *) const X_OVERRIDE;
   };
@@ -52,6 +53,8 @@ class GRAPHICSCORE_EXPORT GCElementArray : public GCElement
     GCElement *el = T::addAsChild(this, material, out);
     return el;
     }
+
+  static GCElement *addAsChild(GCElementArray *parent, GCShadingGroup *material, GCElementArray **arr);
 
   GCRenderablePointerArray elements;
 
