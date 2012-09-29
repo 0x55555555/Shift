@@ -4,6 +4,15 @@
 #include "XRenderer.h"
 #include "XOptionalPointer"
 
+S_IMPLEMENT_TYPED_POINTER_TYPE(GCInteractionHandlerPointer, GraphicsCore)
+
+S_IMPLEMENT_PROPERTY(GCInteractionHandler, GraphicsCore)
+
+void GCInteractionHandler::createTypeInformation(SPropertyInformationTyped<GCInteractionHandler> *,
+                                      const SPropertyInformationCreateData &)
+  {
+  }
+
 void computeCentreOutput(GCElementCentre *e)
   {
   FloatProperty::ComputeLock l(&e->output);
@@ -73,6 +82,8 @@ void GCElement::createTypeInformation(SPropertyInformationTyped<GCElement> *info
     l->setAffects(tr);
     auto b = info->add(&GCElement::bottom, "bottom");
     b->setAffects(tr);
+
+    info->add(&GCElement::interactionHandler, "interactionHandler");
     }
   }
 
@@ -164,6 +175,16 @@ void GCElement::render(XRenderer *r) const
   GCTransform::render(r);
   }
 
+bool GCElement::hitTest(int x, int y) const
+  {
+  float l = left();
+  float b = bottom();
+
+  return x >= l &&
+         y >= b &&
+         x < l + width() &&
+         y < b + height();
+  }
 
 void computeUnitElementTransform(GCUnitElement *e)
   {
@@ -187,7 +208,7 @@ void GCElementArray::createTypeInformation(SPropertyInformationTyped<GCElementAr
     }
   }
 
-GCElement *GCElementArray::addAsChild(GCElementArray *parent, GCShadingGroup *material, GCElementArray **arrOpt)
+GCElement *GCElementArray::addAsChild(GCElementArray *parent, GCShadingGroup *, GCElementArray **arrOpt)
   {
   XOptionalPointer<GCElementArray> arr(arrOpt);
 

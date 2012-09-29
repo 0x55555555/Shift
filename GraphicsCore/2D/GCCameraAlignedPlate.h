@@ -13,6 +13,8 @@ public:
 
   FloatProperty distanceFromCamera;
   FloatProperty cameraFieldOfView;
+
+  void transformPoint(int &x, int &y);
   };
 
 S_PROPERTY_INTERFACE(GCCameraAlignedPlate)

@@ -47,3 +47,9 @@ void GCCameraAlignedPlate::createTypeInformation(SPropertyInformationTyped<GCCam
     fov->setAffects(tr);
     }
   }
+
+void GCCameraAlignedPlate::transformPoint(int &x, int &y)
+  {
+  (void)x;
+  y = height() - y;
+  }

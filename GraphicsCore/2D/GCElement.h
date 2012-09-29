@@ -5,9 +5,11 @@
 #include "3D/GCTransform.h"
 #include "sbaseproperties.h"
 #include "mcsimple.h"
+#include "siterator.h"
 
 class XRenderer;
 class GCShadingGroup;
+class GCElement;
 
 class GCElementCentre : public MCSimple
   {
@@ -18,6 +20,16 @@ class GCElementUnCentre : public MCSimple
   {
   S_ENTITY(GCElementUnCentre, MCSimple, 0)
   };
+
+class GRAPHICSCORE_EXPORT GCInteractionHandler : public SPropertyContainer
+  {
+  S_ABSTRACT_PROPERTY_CONTAINER(GCInteractionHandler, SPropertyContainer, 0)
+
+public:
+  virtual void onMouseRelease(GCElement *e, int x, int y) = 0;
+  };
+
+S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCInteractionHandlerPointer, GCInteractionHandler)
 
 class GRAPHICSCORE_EXPORT GCElement : public GCTransform
   {
@@ -32,6 +44,8 @@ public:
   FloatProperty width;
   FloatProperty height;
 
+  GCInteractionHandlerPointer interactionHandler;
+
   const FloatProperty* right();
 
   const FloatProperty* horizontalCentre();
@@ -42,6 +56,8 @@ public:
   void setVerticalCentreInput(const FloatProperty* input);
 
   void render(XRenderer *) const X_OVERRIDE;
+
+  virtual bool hitTest(int x, int y) const;
   };
 
 class GRAPHICSCORE_EXPORT GCElementArray : public GCElement
@@ -70,8 +86,35 @@ class GRAPHICSCORE_EXPORT GCUnitElement : public GCElement
 public:
   };
 
+namespace SIterator
+{
+class GCElementWithUIHandler : public Base<GCElementWithUIHandler, GCElement, NilExtraData>
+  {
+public:
+  typedef Base<GCElementWithUIHandler, GCElement, NilExtraData>::Iterator Iterator;
+
+  inline void first(Iterator &i) const
+    {
+    SProperty *prop = Base<GCElementWithUIHandler, GCElement, NilExtraData>::property();
+    GCElement *el = prop->castTo<GCElement>();
+    if(el && el->interactionHandler() != 0)
+      {
+      i.setProperty(el);
+      return;
+      }
+    i.setProperty(0);
+    }
+
+  inline static void next(Iterator &i)
+    {
+    i.setProperty(0);
+    }
+  };
+}
 
 
+
+S_PROPERTY_INTERFACE(GCInteractionHandler)
 S_PROPERTY_INTERFACE(GCElement)
 S_PROPERTY_INTERFACE(GCElementArray)
 S_PROPERTY_INTERFACE(GCUnitElement)
