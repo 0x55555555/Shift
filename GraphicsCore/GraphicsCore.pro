@@ -21,7 +21,7 @@ HEADERS += GCGlobal.h \
     3D/GCScreenRenderTarget.h \
     3D/GCGeometry.h \
     3D/GCCamera.h \
-    3D/GCRenderable.h \
+    GCRenderable.h \
     3D/GCScene.h \
     3D/GCViewport.h \
     3D/GCShadingGroup.h \
@@ -33,11 +33,15 @@ HEADERS += GCGlobal.h \
     3D/GCShaderDataBindings.h \
     3D/GCTexture.h \
     GCComposeTransform.h \
-    GCComposeVector3.h
+    GCComposeVector3.h \
+    2D/GCPlate.h \
+    2D/GCCameraAlignedPlate.h \
+    2D/GCElement.h \
+    2D/GCProject3D.h
 
-INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift
+INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift
 
-LIBS += -lshift -lEksCore -lEks3D -lEksScript
+LIBS += -lshift -lEksCore -lEks3D -lEksScript -lShiftMathsCore
 
 SOURCES += \
     GCShiftRenderModel.cpp \
@@ -50,7 +54,7 @@ SOURCES += \
     3D/GCScreenRenderTarget.cpp \
     3D/GCGeometry.cpp \
     3D/GCCamera.cpp \
-    3D/GCRenderable.cpp \
+    GCRenderable.cpp \
     3D/GCScene.cpp \
     3D/GCViewport.cpp \
     3D/GCShadingGroup.cpp \
@@ -63,7 +67,11 @@ SOURCES += \
     3D/GCTexture.cpp \
     GCComposeTransform.cpp \
     GCComposeVector3.cpp \
-    GCGlobal.cpp
+    GCGlobal.cpp \
+    2D/GCPlate.cpp \
+    2D/GCCameraAlignedPlate.cpp \
+    2D/GCElement.cpp \
+    2D/GCProject3D.cpp
 
 
 

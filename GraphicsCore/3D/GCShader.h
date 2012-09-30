@@ -43,24 +43,37 @@ S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShaderComponentPointer, GCShaderComp
 
 S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCShaderComponentPointerArray, GCShaderComponentPointer);
 
-class GRAPHICSCORE_EXPORT GCShader : public SEntity
+class GRAPHICSCORE_EXPORT GCStaticShader : public SEntity
   {
-  S_ENTITY(GCShader, SEntity, 0)
+  S_ENTITY(GCStaticShader, SEntity, 0)
 public:
 
   void bind(XRenderer *r) const;
   GCRuntimeShaderInstance runtimeShader;
+
+protected:
+  GCRuntimeShader runtimeShaderCore;
+
+private:
+  static void computeShaderRuntime(GCStaticShader *cont);
+  static void setupShaderRuntime(GCStaticShader *cont);
+  };
+
+class GRAPHICSCORE_EXPORT GCShader : public GCStaticShader
+  {
+  S_ENTITY(GCShader, GCStaticShader, 0)
+public:
+
   GCShaderComponentPointerArray components;
 
 private:
-  GCRuntimeShader runtimeShaderCore;
-
   static void computeShaderRuntime(GCShader *cont);
   static void setupShaderRuntime(GCShader *cont);
   };
 
 S_PROPERTY_INTERFACE(GCShader)
+S_PROPERTY_INTERFACE(GCStaticShader)
 
-S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShaderPointer, GCShader);
+S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShaderPointer, GCStaticShader);
 
 #endif // GCSHADER_H

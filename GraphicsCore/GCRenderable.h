@@ -37,7 +37,7 @@ S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCRenderablePointerArray, GCRend
 
 class GRAPHICSCORE_EXPORT GCRenderArray : public GCRenderable
   {
-  S_ABSTRACT_ENTITY(GCRenderArray, GCRenderable, 0)
+  S_ENTITY(GCRenderArray, GCRenderable, 0)
 
 public:
   GCRenderArray();
