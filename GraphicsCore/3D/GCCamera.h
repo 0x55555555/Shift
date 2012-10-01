@@ -37,6 +37,7 @@ public:
 
   void setFocalPoint(float x, float y, float z) {setFocalPoint(XVector3D(x, y, z)); }
   void setFocalPoint(const XVector3D &point);
+  static XTransform calculateTransform(const XVector3D &camPos, const XVector3D &camAimPos, const XVector3D &upVector);
   XVector3D focalPoint() const;
 
   void approximatePixelSizeAtDistance(float distance, float &x, float &y) const;

@@ -88,16 +88,27 @@ void GCViewableTransform::setFocalPoint(const XVector3D &aim)
   {
   XTransform t = transform();
 
-  XVector3D forward = (aim - t.translation()).normalized();
-  XVector3D side = forward.cross(upVector()).normalized();
+  transform = calculateTransform(t.translation(), aim, upVector());
+
+  focalDistance = (aim - t.translation()).norm();
+  transform = t;
+  }
+
+XTransform GCViewableTransform::calculateTransform(const XVector3D &camPos, const XVector3D &camAimPos, const XVector3D &upVector)
+  {
+  XTransform t = XTransform::Identity();
+
+  XVector3D forward = (camAimPos - camPos).normalized();
+  XVector3D side = forward.cross(upVector).normalized();
   XVector3D up = side.cross(forward);
 
   t.matrix().col(0).head<3>() = side;
   t.matrix().col(1).head<3>() = up;
   t.matrix().col(2).head<3>() = -forward;
 
-  focalDistance = (aim - t.translation()).norm();
-  transform = t;
+  t.translation() = camPos;
+
+  return t;
   }
 
 XVector3D GCViewableTransform::focalPoint() const
