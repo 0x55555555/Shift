@@ -13,7 +13,6 @@ void MCImage::computeImageOutput(MCImage *image)
     }
 
   XVectorI2D transform = XVectorI2D::Zero();
-  bool useShuffle = true;
 
   xsize channels = 3;
   if(imInput.hasAlphaChannel())
@@ -37,7 +36,6 @@ void MCImage::computeImageOutput(MCImage *image)
     else
       {
       imInput.convertToFormat(QImage::Format_RGB32);
-      useShuffle = false;
       }
     }
 
