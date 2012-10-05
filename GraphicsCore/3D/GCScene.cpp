@@ -24,7 +24,14 @@ void GCScene::createTypeInformation(SPropertyInformationTyped<GCScene> *info,
   if(data.registerInterfaces)
     {
     auto ifc = info->apiInterface();
-    ifc->addMethod<void(GCViewableTransform*), &GCScene::setCamera>("setCamera");
+
+    static XScript::ClassDef<0,0,1> cls = {
+      {
+      ifc->method<void(GCViewableTransform*), &GCScene::setCamera>("setCamera"),
+      }
+    };
+
+    ifc->buildInterface(cls);
     }
   }
 
