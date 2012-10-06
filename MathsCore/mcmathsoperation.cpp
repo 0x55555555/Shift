@@ -11,7 +11,14 @@ void MCMathsOperation::createTypeInformation(SPropertyInformationTyped<MCMathsOp
   if(data.registerInterfaces)
     {
     auto ifc = info->apiInterface();
-    ifc->addMethod<bool (QString), &MCMathsOperation::saveResultToFile>("saveResultToFile");
+
+    XScript::ClassDef<0,0,1> cls = {
+      {
+        ifc->method<bool (QString), &MCMathsOperation::saveResultToFile>("saveResultToFile")
+      }
+    };
+
+    ifc->buildInterface(cls);
     }
   }
 

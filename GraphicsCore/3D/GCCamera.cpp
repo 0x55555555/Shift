@@ -63,7 +63,7 @@ void GCViewableTransform::createTypeInformation(SPropertyInformationTyped<GCView
 
   if(data.registerInterfaces)
     {
-    auto ifc = info->apiInterface();
+    XScript::InterfaceBase *ifc = info->apiInterface();
 
     typedef XScript::MethodToInCa<GCViewableTransform,
                                   void(float, float, float),
