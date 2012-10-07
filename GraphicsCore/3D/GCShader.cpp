@@ -37,8 +37,6 @@ S_IMPLEMENT_PROPERTY(GCStaticShader, GraphicsCore)
 
 void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
   {
-  xAssert(SProcessManager::isMainThread());
-
   GCRuntimeShader::ComputeLock lock(&shader->runtimeShaderCore);
 
   lock.data()->clear();
@@ -102,8 +100,6 @@ S_IMPLEMENT_PROPERTY(GCShader, GraphicsCore)
 
 void GCShader::computeShaderRuntime(GCShader *shader)
   {
-  xAssert(SProcessManager::isMainThread());
-
   GCRuntimeShader::ComputeLock lock(&shader->runtimeShaderCore);
 
   lock.data()->clear();

@@ -31,8 +31,6 @@ GCShadingGroup::GCShadingGroup()
 
 void GCShadingGroup::render(XRenderer *r) const
   {
-  xAssert(SProcessManager::isMainThread());
-
   const GCStaticShader *s = shader.pointed();
   if(s)
     {

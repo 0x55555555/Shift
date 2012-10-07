@@ -147,8 +147,6 @@ void GCManipulatableScene::refreshManipulators()
 
 void GCManipulatableScene::render(XRenderer *x) const
   {
-  xAssert(SProcessManager::isMainThread());
-
   GCScene::render(x);
 
   const GCCamera *cam = activeCamera();
