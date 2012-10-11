@@ -1,6 +1,7 @@
 #include "GCShiftRenderModel.h"
 #include "sentity.h"
 #include "spropertycontaineriterators.h"
+#include "sproperty.inl"
 
 GCShiftRenderModel::Iterator::Iterator(const GCShiftRenderModel *m) : _model(m)
   {

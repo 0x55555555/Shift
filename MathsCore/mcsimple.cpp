@@ -8,10 +8,10 @@ void MCSimple::createTypeInformation(SPropertyInformationTyped<MCSimple> *info,
   {
   if(data.registerAttributes)
     {
-    FloatProperty::InstanceInformation *outInst = info->add(&MCSimple::output, "output");
+    auto outInst = info->add(&MCSimple::output, "output");
 
-    FloatProperty::InstanceInformation *aInst = info->add(&MCSimple::inputA, "inputA");
-    FloatProperty::InstanceInformation *bInst = info->add(&MCSimple::inputB, "inputB");
+    auto aInst = info->add(&MCSimple::inputA, "inputA");
+    auto bInst = info->add(&MCSimple::inputB, "inputB");
 
     aInst->setAffects(outInst);
     bInst->setAffects(outInst);

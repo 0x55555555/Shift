@@ -40,7 +40,7 @@ void GCShadingGroup::render(XRenderer *r) const
   GCRenderArray::render(r);
   }
 
-void GCShadingGroup::addManipulators(SPropertyArray *a, const GCTransform *tr)
+void GCShadingGroup::addManipulators(SPropertyArray *, const GCTransform *)
   {/*
   xAssert(tr == 0);
   //a->add<GCButtonManipulator>();
