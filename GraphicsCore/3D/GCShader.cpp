@@ -82,11 +82,9 @@ void GCStaticShader::createTypeInformation(SPropertyInformationTyped<GCStaticSha
     {
     auto rtInfoCore = info->add(&GCStaticShader::runtimeShaderCore, "runtimeShaderCore");
     rtInfoCore->setCompute<computeShaderRuntime>();
-    rtInfoCore->setComputeLockedToMainThread(true);
 
     auto rtInfo = info->add(&GCStaticShader::runtimeShader, "runtimeShader");
     rtInfo->setCompute<setupShaderRuntime>();
-    rtInfo->setComputeLockedToMainThread(true);
     }
   }
 

@@ -47,7 +47,7 @@ void GCProject3D::createTypeInformation(SPropertyInformationTyped<GCProject3D> *
     auto v = info->add(&GCProject3D::validPosition, "validPosition");
     v->setCompute<computeAlignTransform>();
 
-    const SPropertyInstanceInformation *aff[] = { x, y };
+    const SEmbeddedPropertyInstanceInformation *aff[] = { x, y };
 
     auto cam = info->add(&GCProject3D::camera, "camera");
     cam->setAffects(aff, X_ARRAY_COUNT(aff));
