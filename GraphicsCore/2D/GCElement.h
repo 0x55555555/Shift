@@ -26,7 +26,7 @@ class GRAPHICSCORE_EXPORT GCInteractionHandler : public SPropertyContainer
   S_ABSTRACT_PROPERTY_CONTAINER(GCInteractionHandler, SPropertyContainer, 0)
 
 public:
-  virtual void onMouseRelease(GCElement *e, int x, int y) = 0;
+  virtual void onRelease(GCElement *e, int x, int y) = 0;
   };
 
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCInteractionHandlerPointer, GCInteractionHandler)

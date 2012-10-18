@@ -7,6 +7,7 @@
 #include "XCameraCanvasController.h"
 
 class XRenderer;
+class XPlane;
 
 class GRAPHICSCORE_EXPORT GCViewableTransform : public GCTransform, public XCameraCanvasController::CameraInterface
   {
@@ -48,6 +49,7 @@ public:
 
   bool screenSpaceFromWorldSpace(const XVector3D &worldPos, XVector3D &coord);
 
+  XVector3D worldSpaceInPlaneFromScreenSpace(xuint32 x, xuint32 y, const XPlane& plane) const;
   XVector3D worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const;
   virtual XVector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const = 0;
 
@@ -64,9 +66,6 @@ S_PROPERTY_ABSTRACT_INTERFACE(GCViewableTransform)
 class GRAPHICSCORE_EXPORT GCCamera : public GCViewableTransform
   {
   S_ABSTRACT_ENTITY(GCCamera, GCViewableTransform, 0)
-
-public:
-  GCCamera();
   };
 
 S_PROPERTY_ABSTRACT_INTERFACE(GCCamera)
@@ -76,9 +75,7 @@ class GRAPHICSCORE_EXPORT GCPerspectiveCamera : public GCCamera
   S_ENTITY(GCPerspectiveCamera, GCCamera, 0)
 
 public:
-  GCPerspectiveCamera();
-
-  virtual XVector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const;
+  XVector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const;
 
   FloatProperty fieldOfView;
 

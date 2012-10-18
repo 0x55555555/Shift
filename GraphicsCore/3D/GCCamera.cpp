@@ -4,6 +4,7 @@
 #include "XCamera.h"
 #include "Eigen/Geometry"
 #include "spropertyinformationhelpers.h"
+#include "XLine.h"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCViewableTransformPointer, GraphicsCore)
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCCameraPointer, GraphicsCore)
@@ -200,6 +201,16 @@ bool GCViewableTransform::screenViewportCoordinates(float xUnit, float yUnit, fl
   return true;
   }
 
+XVector3D GCViewableTransform::worldSpaceInPlaneFromScreenSpace(xuint32 x, xuint32 y, const XPlane& plane) const
+  {
+  const XVector3D &camPos = transform().translation();
+  XVector3D pos = worldSpaceFromScreenSpace(x, y);
+
+  XLine l(camPos, pos);
+  float t = plane.intersection(l);
+  return l.sample(t);
+  }
+
 XVector3D GCViewableTransform::worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const
   {
   XVector4D vpSpace(0.0f, 0.0f, 1.0f, 1.0f);
@@ -307,10 +318,6 @@ void GCCamera::createTypeInformation(SPropertyInformationTyped<GCCamera> *,
   {
   }
 
-GCCamera::GCCamera()
-  {
-  }
-
 S_IMPLEMENT_PROPERTY(GCPerspectiveCamera, GraphicsCore)
 
 void computePerspective(GCPerspectiveCamera *c)
@@ -344,10 +351,6 @@ void GCPerspectiveCamera::createTypeInformation(SPropertyInformationTyped<GCPers
     fC->setDefault(100.0f);
     fC->setAffects(proj);
     }
-  }
-
-GCPerspectiveCamera::GCPerspectiveCamera()
-  {
   }
 
 XVector3D GCPerspectiveCamera::worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const
