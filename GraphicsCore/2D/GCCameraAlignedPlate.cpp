@@ -48,8 +48,8 @@ void GCCameraAlignedPlate::createTypeInformation(SPropertyInformationTyped<GCCam
     }
   }
 
-void GCCameraAlignedPlate::transformPoint(int &x, int &y)
+void GCCameraAlignedPlate::transformPoint(float inX, float inY, float &x, float &y)
   {
-  (void)x;
-  y = height() - y;
+  x = inX;
+  y = height() - inY;
   }

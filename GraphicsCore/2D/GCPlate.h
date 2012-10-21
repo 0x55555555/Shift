@@ -11,7 +11,7 @@
 
 class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
   {
-  S_ENTITY(GCPlate, GCElementArray, 0)
+  S_ABSTRACT_ENTITY(GCPlate, GCElementArray, 0)
 
   template <typename T> GCShadingGroup *addMaterial(T **matOut = 0)
     {
@@ -27,6 +27,8 @@ class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
     }
 
   void render(XRenderer *) const X_OVERRIDE;
+
+  virtual void transformPoint(float inX, float inY, float &x, float &y) = 0;
   };
 
 S_PROPERTY_INTERFACE(GCPlate)
