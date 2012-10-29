@@ -210,7 +210,7 @@ void GCElementArray::createTypeInformation(SPropertyInformationTyped<GCElementAr
 
 GCElement *GCElementArray::addAsChild(GCElementArray *parent, GCShadingGroup *, GCElementArray **arrOpt)
   {
-  XOptionalPointer<GCElementArray> arr(arrOpt);
+  XOptional<GCElementArray*> arr(arrOpt);
 
   arr = parent->addChild<GCElementArray>();
 
