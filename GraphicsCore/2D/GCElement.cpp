@@ -2,7 +2,7 @@
 #include "spropertyinformationhelpers.h"
 #include "mcsimpleadd.h"
 #include "XRenderer.h"
-#include "XOptionalPointer"
+#include "XOptional"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCInteractionHandlerPointer, GraphicsCore)
 

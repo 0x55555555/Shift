@@ -1,7 +1,7 @@
 #include "GCProject3D.h"
 #include "spropertyinformationhelpers.h"
 
-#include "XOptionalPointer"
+#include "XOptional"
 
 void computeAlignTransform(GCProject3D *el)
   {

@@ -7,7 +7,7 @@
 #include "GCElement.h"
 #include "3D/GCShadingGroup.h"
 
-#include "XOptionalPointer"
+#include "XOptional"
 
 class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
   {
