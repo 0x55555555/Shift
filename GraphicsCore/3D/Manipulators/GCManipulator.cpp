@@ -6,8 +6,8 @@
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualManipulator, GraphicsCore)
 
-void GCVisualManipulator::createTypeInformation(SPropertyInformationTyped<GCVisualManipulator> *info,
-                                                const SPropertyInformationCreateData &data)
+void GCVisualManipulator::createTypeInformation(PropertyInformationTyped<GCVisualManipulator> *info,
+                                                const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -58,8 +58,8 @@ bool GCVisualManipulator::hitTest(
 
 S_IMPLEMENT_PROPERTY(GCVisualCompoundManipulator, GraphicsCore)
 
-void GCVisualCompoundManipulator::createTypeInformation(SPropertyInformationTyped<GCVisualCompoundManipulator> *,
-                                                        const SPropertyInformationCreateData &)
+void GCVisualCompoundManipulator::createTypeInformation(PropertyInformationTyped<GCVisualCompoundManipulator> *,
+                                                        const PropertyInformationCreateData &)
   {
   }
 
@@ -125,8 +125,8 @@ void GCVisualCompoundManipulator::onMouseRelease(const MouseEvent &)
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualDragManipulator, GraphicsCore)
 
-void GCVisualDragManipulator::createTypeInformation(SPropertyInformationTyped<GCVisualDragManipulator> *,
-                                                    const SPropertyInformationCreateData &)
+void GCVisualDragManipulator::createTypeInformation(PropertyInformationTyped<GCVisualDragManipulator> *,
+                                                    const PropertyInformationCreateData &)
   {
   }
 
@@ -154,8 +154,8 @@ void GCVisualDragManipulator::onMouseRelease(const MouseEvent &)
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualClickManipulator, GraphicsCore)
 
-void GCVisualClickManipulator::createTypeInformation(SPropertyInformationTyped<GCVisualClickManipulator> *,
-                                                     const SPropertyInformationCreateData &)
+void GCVisualClickManipulator::createTypeInformation(PropertyInformationTyped<GCVisualClickManipulator> *,
+                                                     const PropertyInformationCreateData &)
   {
   }
 
@@ -183,8 +183,8 @@ void GCVisualClickManipulator::onMouseRelease(const MouseEvent &)
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCLinearDragManipulator, GraphicsCore)
 
-void GCLinearDragManipulator::createTypeInformation(SPropertyInformationTyped<GCLinearDragManipulator> *info,
-                                                    const SPropertyInformationCreateData &data)
+void GCLinearDragManipulator::createTypeInformation(PropertyInformationTyped<GCLinearDragManipulator> *info,
+                                                    const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

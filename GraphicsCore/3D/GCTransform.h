@@ -19,7 +19,7 @@ public:
 
   virtual void render(XRenderer *) const;
 
-  virtual void addManipulators(SPropertyArray *, const GCTransform *tr=0);
+  virtual void addManipulators(PropertyArray *, const GCTransform *tr=0);
 
   virtual void intersect(const XLine& line, Selector *);
   virtual void intersect(const XFrustum& frus, Selector *);

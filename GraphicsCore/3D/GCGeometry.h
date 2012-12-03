@@ -10,9 +10,9 @@
 #include "sbasepointerproperties.h"
 #include "GCBaseProperties.h"
 
-class GRAPHICSCORE_EXPORT GCGeometry : public SPropertyContainer
+class GRAPHICSCORE_EXPORT GCGeometry : public PropertyContainer
   {
-  S_PROPERTY_CONTAINER(GCGeometry, SPropertyContainer, 0)
+  S_PROPERTY_CONTAINER(GCGeometry, PropertyContainer, 0)
 
 public:
   GCGeometry();

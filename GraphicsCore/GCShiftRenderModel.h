@@ -7,29 +7,29 @@
 #include "sentityweakpointer.h"
 #include "siterator.h"
 
-class SEntity;
+class Entity;
 
-class GRAPHICSCORE_EXPORT GCShiftRenderModel : public XAbstractRenderModel, SConnectionObserver, STreeObserver
+class GRAPHICSCORE_EXPORT GCShiftRenderModel : public XAbstractRenderModel, ConnectionObserver, TreeObserver
   {
 XProperties:
-  XROProperty(SEntityWeakPointer, entity);
+  XROProperty(EntityWeakPointer, entity);
 
 public:
   class GRAPHICSCORE_EXPORT Iterator : public XAbstractRenderModel::Iterator
     {
   XProperties:
     XROProperty(const GCShiftRenderModel *, model);
-    XROProperty(SProperty *, property);
+    XROProperty(Property *, property);
 
   public:
     Iterator(const GCShiftRenderModel *model);
     virtual bool next();
 
-    SEntity *entity() const
+    Entity *entity() const
       {
       if(property())
         {
-        SEntity *ent = property()->castTo<SEntity>();
+        Entity *ent = property()->castTo<Entity>();
         xAssert(ent);
         return ent;
         }
@@ -38,23 +38,23 @@ public:
 
   protected:
     void reset();
-    void setProperty(SProperty *p) { _property = p; }
+    void setProperty(Property *p) { _property = p; }
 
     friend class GCShiftRenderModel;
     };
 
-  GCShiftRenderModel(SEntity *ent=0);
+  GCShiftRenderModel(Entity *ent=0);
   ~GCShiftRenderModel();
 
-  void setEntity(SEntity *entity);
+  void setEntity(Entity *entity);
 
   virtual XAbstractRenderModel::Iterator *createIterator() const;
 
   virtual void resetIterator(XAbstractRenderModel::Iterator *) const;
 
   void actOnChanges();
-  void onConnectionChange(const SChange *);
-  void onTreeChange(const SChange *);
+  void onConnectionChange(const Change *);
+  void onTreeChange(const Change *);
   };
 
 #endif // GCSHIFTRENDERMODEL_H

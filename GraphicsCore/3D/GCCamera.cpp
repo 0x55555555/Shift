@@ -33,8 +33,8 @@ void computeInverseProjection(GCViewableTransform *tr)
   tr->inverseProjection = inv;
   }
 
-void GCViewableTransform::createTypeInformation(SPropertyInformationTyped<GCViewableTransform> *info,
-                                                const SPropertyInformationCreateData &data)
+void GCViewableTransform::createTypeInformation(PropertyInformationTyped<GCViewableTransform> *info,
+                                                const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -313,8 +313,8 @@ void GCViewableTransform::rotateAboutPoint(const XVector3D &point, float x, floa
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCCamera, GraphicsCore)
 
-void GCCamera::createTypeInformation(SPropertyInformationTyped<GCCamera> *,
-                                     const SPropertyInformationCreateData &)
+void GCCamera::createTypeInformation(PropertyInformationTyped<GCCamera> *,
+                                     const PropertyInformationCreateData &)
   {
   }
 
@@ -325,8 +325,8 @@ void computePerspective(GCPerspectiveCamera *c)
   c->projection = XTransformUtilities::perspective(c->fieldOfView(), (float)c->viewportWidth() / (float)c->viewportHeight(), c->nearClip(), c->farClip());
   }
 
-void GCPerspectiveCamera::createTypeInformation(SPropertyInformationTyped<GCPerspectiveCamera> *info,
-                                                const SPropertyInformationCreateData &data)
+void GCPerspectiveCamera::createTypeInformation(PropertyInformationTyped<GCPerspectiveCamera> *info,
+                                                const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

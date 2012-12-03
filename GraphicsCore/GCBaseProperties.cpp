@@ -3,12 +3,12 @@
 #include "spropertyinformationhelpers.h"
 #include "shandlerimpl.h"
 
-void writeValue(SSaver &, const XShader &)
+void writeValue(Saver &, const XShader &)
   {
   xAssertFail();
   }
 
-void readValue(SLoader &, XShader &)
+void readValue(Loader &, XShader &)
   {
   xAssertFail();
   }
@@ -24,7 +24,7 @@ IMPLEMENT_POD_GC_PROPERTY(GCRuntimeGeometry)
 IMPLEMENT_POD_GC_PROPERTY(GCBoundingBox)
 IMPLEMENT_POD_GC_PROPERTY(GCRuntimeShaderInstance)
 
-void GCBoundingBox::assignProperty(const SProperty *f, SProperty *t)
+void GCBoundingBox::assignProperty(const Property *f, Property *t)
   {
   GCBoundingBox *to = t->uncheckedCastTo<GCBoundingBox>();
 
@@ -35,7 +35,7 @@ void GCBoundingBox::assignProperty(const SProperty *f, SProperty *t)
     return;
     }
   }
-void GCRuntimeGeometry::assignProperty(const SProperty *f, SProperty *t)
+void GCRuntimeGeometry::assignProperty(const Property *f, Property *t)
   {
   GCRuntimeGeometry *to = t->uncheckedCastTo<GCRuntimeGeometry>();
 
@@ -47,7 +47,7 @@ void GCRuntimeGeometry::assignProperty(const SProperty *f, SProperty *t)
     }
   }
 
-void GCQImage::assignProperty(const SProperty *f, SProperty *t)
+void GCQImage::assignProperty(const Property *f, Property *t)
   {
   SProfileFunction
   GCQImage *to = t->uncheckedCastTo<GCQImage>();
@@ -59,7 +59,7 @@ void GCQImage::assignProperty(const SProperty *f, SProperty *t)
     }
   }
 
-void GCRuntimeShader::assignProperty(const SProperty *f, SProperty *t)
+void GCRuntimeShader::assignProperty(const Property *f, Property *t)
   {
   GCRuntimeShader *to = t->uncheckedCastTo<GCRuntimeShader>();
 
@@ -70,7 +70,7 @@ void GCRuntimeShader::assignProperty(const SProperty *f, SProperty *t)
     return;
     }
   }
-void GCRuntimeShaderInstance::assignProperty(const SProperty *f, SProperty *t)
+void GCRuntimeShaderInstance::assignProperty(const Property *f, Property *t)
   {
   GCRuntimeShaderInstance *to = t->uncheckedCastTo<GCRuntimeShaderInstance>();
 
@@ -82,7 +82,7 @@ void GCRuntimeShaderInstance::assignProperty(const SProperty *f, SProperty *t)
     }
   }
 
-void Matrix3x3Property::assignProperty(const SProperty *f, SProperty *t)
+void Matrix3x3Property::assignProperty(const Property *f, Property *t)
   {
   Matrix3x3Property *to = t->uncheckedCastTo<Matrix3x3Property>();
 
@@ -94,7 +94,7 @@ void Matrix3x3Property::assignProperty(const SProperty *f, SProperty *t)
     }
   }
 
-void TransformProperty::assignProperty(const SProperty *f, SProperty *t)
+void TransformProperty::assignProperty(const Property *f, Property *t)
   {
   TransformProperty *to = t->uncheckedCastTo<TransformProperty>();
 
@@ -113,7 +113,7 @@ void TransformProperty::assignProperty(const SProperty *f, SProperty *t)
     }
   }
 
-void ComplexTransformProperty::assignProperty(const SProperty *f, SProperty *t)
+void ComplexTransformProperty::assignProperty(const Property *f, Property *t)
   {
   ComplexTransformProperty *to = t->uncheckedCastTo<ComplexTransformProperty>();
 

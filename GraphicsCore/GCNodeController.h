@@ -5,7 +5,7 @@
 #include "X2DCanvas.h"
 #include "XAbstractRenderModel.h"
 
-class SEntity;
+class Entity;
 class GCAbstractNodeDelegate;
 
 class GRAPHICSCORE_EXPORT GCNodeController : public QObject, public XSimple2DCanvasController
@@ -25,7 +25,7 @@ Q_SIGNALS:
 private:
   XAbstractRenderModel::Iterator *_iterator;
 
-  SEntity *_interactionEntity;
+  Entity *_interactionEntity;
   xsize _interactionProperty;
   const GCAbstractNodeDelegate *_interactionDelegate;
   bool _connectingOutput;

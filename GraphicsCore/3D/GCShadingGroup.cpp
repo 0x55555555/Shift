@@ -11,8 +11,8 @@ S_IMPLEMENT_TYPED_POINTER_ARRAY_TYPE(GCShadingGroupPointerArray, GraphicsCore)
 
 S_IMPLEMENT_PROPERTY(GCShadingGroup, GraphicsCore)
 
-void GCShadingGroup::createTypeInformation(SPropertyInformationTyped<GCShadingGroup> *info,
-                                           const SPropertyInformationCreateData &data)
+void GCShadingGroup::createTypeInformation(PropertyInformationTyped<GCShadingGroup> *info,
+                                           const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -40,7 +40,7 @@ void GCShadingGroup::render(XRenderer *r) const
   GCRenderArray::render(r);
   }
 
-void GCShadingGroup::addManipulators(SPropertyArray *, const GCTransform *)
+void GCShadingGroup::addManipulators(PropertyArray *, const GCTransform *)
   {/*
   xAssert(tr == 0);
   //a->add<GCButtonManipulator>();

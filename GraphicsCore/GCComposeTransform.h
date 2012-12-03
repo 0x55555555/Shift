@@ -5,9 +5,9 @@
 #include "sbaseproperties.h"
 #include "GCBaseProperties.h"
 
-class GCComposeTransform : public SEntity
+class GCComposeTransform : public Entity
   {
-  S_ENTITY(GCComposeTransform, SEntity, 0)
+  S_ENTITY(GCComposeTransform, Entity, 0)
 
 public:
   GCComposeTransform();

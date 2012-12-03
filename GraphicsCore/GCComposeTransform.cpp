@@ -17,8 +17,8 @@ void computeTransform(GCComposeTransform *vec)
 
 S_IMPLEMENT_PROPERTY(GCComposeTransform, GraphicsCore)
 
-void GCComposeTransform::createTypeInformation(SPropertyInformationTyped<GCComposeTransform> *info,
-                                               const SPropertyInformationCreateData &data)
+void GCComposeTransform::createTypeInformation(PropertyInformationTyped<GCComposeTransform> *info,
+                                               const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

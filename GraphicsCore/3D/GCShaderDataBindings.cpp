@@ -8,7 +8,7 @@ Vector3::Vector3() : GCShaderBindableData(true)
   {
   }
 
-void Vector3::bindData(XShader *s, const SProperty *p) const
+void Vector3::bindData(XShader *s, const Property *p) const
   {
   const Vector3DProperty *c = p->uncheckedCastTo<Vector3DProperty>();
 
@@ -22,7 +22,7 @@ Vector4::Vector4() : GCShaderBindableData(true)
   {
   }
 
-void Vector4::bindData(XShader *s, const SProperty *p) const
+void Vector4::bindData(XShader *s, const Property *p) const
   {
   const ColourProperty *c = p->uncheckedCastTo<ColourProperty>();
 
@@ -36,7 +36,7 @@ TextureRef::TextureRef() : GCShaderBindableData(true)
   {
   }
 
-void TextureRef::bindData(XShader *s, const SProperty *p) const
+void TextureRef::bindData(XShader *s, const Property *p) const
   {
   const GCTexturePointer *c = p->uncheckedCastTo<GCTexturePointer>();
 

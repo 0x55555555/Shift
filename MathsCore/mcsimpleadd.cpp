@@ -11,8 +11,8 @@ void computeAddOutput(MCSimpleAdd *add)
 
 S_IMPLEMENT_PROPERTY(MCSimpleAdd, MathsCore)
 
-void MCSimpleAdd::createTypeInformation(SPropertyInformationTyped<MCSimpleAdd> *info,
-                                        const SPropertyInformationCreateData &data)
+void MCSimpleAdd::createTypeInformation(PropertyInformationTyped<MCSimpleAdd> *info,
+                                        const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -30,8 +30,8 @@ void computeSubOutput(MCSimpleSubtract *add)
 
 S_IMPLEMENT_PROPERTY(MCSimpleSubtract, MathsCore)
 
-void MCSimpleSubtract::createTypeInformation(SPropertyInformationTyped<MCSimpleSubtract> *info,
-                                        const SPropertyInformationCreateData &data)
+void MCSimpleSubtract::createTypeInformation(PropertyInformationTyped<MCSimpleSubtract> *info,
+                                        const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

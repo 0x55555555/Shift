@@ -17,7 +17,7 @@
 namespace MathsCore
 {
 void MATHSCORE_EXPORT initiate();
-SPropertyGroup &propertyGroup();
+PropertyGroup &propertyGroup();
 }
 
 #endif // MCGLOBAL_H

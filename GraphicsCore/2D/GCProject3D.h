@@ -7,9 +7,9 @@
 #include "GCElement.h"
 #include "3D/GCCamera.h"
 
-class GRAPHICSCORE_EXPORT GCProject3D : public SEntity
+class GRAPHICSCORE_EXPORT GCProject3D : public Entity
   {
-  S_ENTITY(GCProject3D, SEntity, 0)
+  S_ENTITY(GCProject3D, Entity, 0)
 
 public:
 

@@ -5,8 +5,8 @@
 
 S_IMPLEMENT_PROPERTY(MCMathsOperation, MathsCore)
 
-void MCMathsOperation::createTypeInformation(SPropertyInformationTyped<MCMathsOperation> *info,
-                                             const SPropertyInformationCreateData &data)
+void MCMathsOperation::createTypeInformation(PropertyInformationTyped<MCMathsOperation> *info,
+                                             const PropertyInformationCreateData &data)
   {
   if(data.registerInterfaces)
     {
@@ -22,7 +22,7 @@ void MCMathsOperation::createTypeInformation(SPropertyInformationTyped<MCMathsOp
     }
   }
 
-void MCMathsOperation::assignProperty(const SProperty *f, SProperty *t)
+void MCMathsOperation::assignProperty(const Property *f, Property *t)
   {
   MCProfileFunction
   MCMathsOperation *to = t->uncheckedCastTo<MCMathsOperation>();

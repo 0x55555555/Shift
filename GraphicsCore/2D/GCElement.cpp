@@ -8,8 +8,8 @@ S_IMPLEMENT_TYPED_POINTER_TYPE(GCInteractionHandlerPointer, GraphicsCore)
 
 S_IMPLEMENT_PROPERTY(GCInteractionHandler, GraphicsCore)
 
-void GCInteractionHandler::createTypeInformation(SPropertyInformationTyped<GCInteractionHandler> *,
-                                      const SPropertyInformationCreateData &)
+void GCInteractionHandler::createTypeInformation(PropertyInformationTyped<GCInteractionHandler> *,
+                                      const PropertyInformationCreateData &)
   {
   }
 
@@ -22,8 +22,8 @@ void computeCentreOutput(GCElementCentre *e)
 
 S_IMPLEMENT_PROPERTY(GCElementCentre, GraphicsCore)
 
-void GCElementCentre::createTypeInformation(SPropertyInformationTyped<GCElementCentre> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCElementCentre::createTypeInformation(PropertyInformationTyped<GCElementCentre> *info,
+                                      const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -41,8 +41,8 @@ void computeUnCentreOutput(GCElementUnCentre *e)
 
 S_IMPLEMENT_PROPERTY(GCElementUnCentre, GraphicsCore)
 
-void GCElementUnCentre::createTypeInformation(SPropertyInformationTyped<GCElementUnCentre> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCElementUnCentre::createTypeInformation(PropertyInformationTyped<GCElementUnCentre> *info,
+                                      const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -62,8 +62,8 @@ void computeElementTransform(GCElement *e)
 
 S_IMPLEMENT_PROPERTY(GCElement, GraphicsCore)
 
-void GCElement::createTypeInformation(SPropertyInformationTyped<GCElement> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCElement::createTypeInformation(PropertyInformationTyped<GCElement> *info,
+                                      const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -199,8 +199,8 @@ void computeUnitElementTransform(GCUnitElement *e)
 
 S_IMPLEMENT_PROPERTY(GCElementArray, GraphicsCore)
 
-void GCElementArray::createTypeInformation(SPropertyInformationTyped<GCElementArray> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCElementArray::createTypeInformation(PropertyInformationTyped<GCElementArray> *info,
+                                      const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -238,8 +238,8 @@ void GCElementArray::render(XRenderer *renderer) const
 
 S_IMPLEMENT_PROPERTY(GCUnitElement, GraphicsCore)
 
-void GCUnitElement::createTypeInformation(SPropertyInformationTyped<GCUnitElement> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCUnitElement::createTypeInformation(PropertyInformationTyped<GCUnitElement> *info,
+                                      const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

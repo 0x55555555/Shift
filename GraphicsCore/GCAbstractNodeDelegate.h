@@ -10,7 +10,7 @@
 #include "QHash"
 
 class QPoint;
-class SEntity;
+class Entity;
 
 class GRAPHICSCORE_EXPORT GCAbstractNodeDelegate : public XAbstractDelegate
   {
@@ -75,12 +75,12 @@ public:
     QVector<PropertyData> properties;
     };
   mutable QHash<const void *, RenderData> _renderData;
-  void updateRenderData(const SEntity *ent) const;
-  void ensureRenderData(const SEntity *ent) const;
+  void updateRenderData(const Entity *ent) const;
+  void ensureRenderData(const Entity *ent) const;
 
 private:
-  void preSetupProperty(const QFont& font, RenderData::PropertyData& data, const SProperty *prop, int yOffset) const;
-  void postSetupProperty(const QFont& font, RenderData::PropertyData& data, const SProperty *prop, int minX, int maxWidth) const;
+  void preSetupProperty(const QFont& font, RenderData::PropertyData& data, const Property *prop, int yOffset) const;
+  void postSetupProperty(const QFont& font, RenderData::PropertyData& data, const Property *prop, int minX, int maxWidth) const;
 
   void paintProperties(QPainter *ptr, QPoint nodePos, const QVector<RenderData::PropertyData> &) const;
 

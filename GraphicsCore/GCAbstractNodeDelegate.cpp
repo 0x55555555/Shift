@@ -23,7 +23,7 @@ GCSimpleNodeDelegate::GCSimpleNodeDelegate() : _titleFntMetrics(_titleFnt), _pro
   }
 
 
-void GCSimpleNodeDelegate::ensureRenderData(const SEntity *ent) const
+void GCSimpleNodeDelegate::ensureRenderData(const Entity *ent) const
   {
   if(!_renderData.contains(ent))
     {
@@ -31,7 +31,7 @@ void GCSimpleNodeDelegate::ensureRenderData(const SEntity *ent) const
     }
   }
 
-void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::PropertyData& data, const SProperty *prop, int yOffset) const
+void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::PropertyData& data, const Property *prop, int yOffset) const
   {
   QFontMetrics propFntMetrics(font);
 
@@ -54,7 +54,7 @@ void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::Prope
 
   yOffset += fillHeight;
 
-  const SPropertyContainer* cont = prop->castTo<SPropertyContainer>();
+  const PropertyContainer* cont = prop->castTo<PropertyContainer>();
   if(cont)
     {
     data.childProperties.resize(cont->size());
@@ -78,9 +78,9 @@ void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::Prope
   data.renderSize.setWidth(fillWidth);
   }
 
-void GCSimpleNodeDelegate::postSetupProperty(const QFont& font, RenderData::PropertyData& data, const SProperty *prop, int minX, int maxWidth) const
+void GCSimpleNodeDelegate::postSetupProperty(const QFont& font, RenderData::PropertyData& data, const Property *prop, int minX, int maxWidth) const
   {
-  const SPropertyContainer* cont = prop->castTo<SPropertyContainer>();
+  const PropertyContainer* cont = prop->castTo<PropertyContainer>();
   if(cont)
     {
     int newMinX = minX + OUTER_PADDING;
@@ -107,7 +107,7 @@ void GCSimpleNodeDelegate::postSetupProperty(const QFont& font, RenderData::Prop
     }
   }
 
-void GCSimpleNodeDelegate::updateRenderData(const SEntity *ent) const
+void GCSimpleNodeDelegate::updateRenderData(const Entity *ent) const
   {
   xAssert(ent);
 
@@ -194,7 +194,7 @@ void GCSimpleNodeDelegate::update(const XAbstractCanvas *,
   {
   GCProfileFunction
   const GCShiftRenderModel::Iterator *it = static_cast<const GCShiftRenderModel::Iterator *>(aIt);
-  const SEntity *ent = it->entity();
+  const Entity *ent = it->entity();
   xAssert(ent);
 
   updateRenderData(ent);
@@ -217,7 +217,7 @@ void GCSimpleNodeDelegate::paint(xuint32 pass,
   {
   GCProfileFunction
   const GCShiftRenderModel::Iterator *it = static_cast<const GCShiftRenderModel::Iterator *>(aIt);
-  const SEntity *ent = it->entity();
+  const Entity *ent = it->entity();
   xAssert(ent);
 
   ensureRenderData(ent);
@@ -233,15 +233,15 @@ void GCSimpleNodeDelegate::paint(xuint32 pass,
       {
       if(prop->hasInput())
         {
-        SProperty *input = prop->input();
+        Property *input = prop->input();
 
-        SProperty *inputProp = input;
-        SEntity *connectedEnt = 0;
+        Property *inputProp = input;
+        Entity *connectedEnt = 0;
         while(inputProp && !connectedEnt)
           {
           if(inputProp->parent() == ent->parent())
             {
-            connectedEnt = inputProp->castTo<SEntity>();
+            connectedEnt = inputProp->castTo<Entity>();
             break;
             }
           inputProp = inputProp->parent();

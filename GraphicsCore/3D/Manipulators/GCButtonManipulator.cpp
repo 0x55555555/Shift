@@ -69,8 +69,8 @@ private:
 
 S_IMPLEMENT_PROPERTY(GCButtonManipulator, GraphicsCore)
 
-void GCButtonManipulator::createTypeInformation(SPropertyInformationTyped<GCButtonManipulator> *info,
-                                                const SPropertyInformationCreateData &data)
+void GCButtonManipulator::createTypeInformation(PropertyInformationTyped<GCButtonManipulator> *info,
+                                                const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

@@ -119,7 +119,7 @@ GCNodeController::UsedFlags GCNodeController::mouseEvent(const MouseEvent &e)
 
           if(hitResult == GCAbstractNodeDelegate::Input)
             {
-            SProperty *b = it->entity()->at(index);
+            Property *b = it->entity()->at(index);
             _interactionEntity->connect(b);
             }
           }
@@ -141,15 +141,15 @@ GCNodeController::UsedFlags GCNodeController::mouseEvent(const MouseEvent &e)
           xsize index = X_SIZE_SENTINEL;
           GCAbstractNodeDelegate::HitArea hitResult = delegate->hitTest(graphSpacePoint, it->entity(), index);
 
-          SProperty *a = _interactionEntity->at(_interactionProperty);
+          Property *a = _interactionEntity->at(_interactionProperty);
           if(_connectingOutput && hitResult == GCAbstractNodeDelegate::Input)
             {
-            SProperty *b = it->entity()->at(index);
+            Property *b = it->entity()->at(index);
             a->connect(b);
             }
           else if(!_connectingOutput && hitResult == GCAbstractNodeDelegate::Output)
             {
-            SProperty *b = it->entity()->at(index);
+            Property *b = it->entity()->at(index);
             b->connect(a);
             }
           }

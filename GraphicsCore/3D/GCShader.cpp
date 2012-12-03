@@ -10,8 +10,8 @@ S_IMPLEMENT_TYPED_POINTER_ARRAY_TYPE(GCShaderComponentPointerArray, GraphicsCore
 
 S_IMPLEMENT_PROPERTY(GCShaderComponent, GraphicsCore)
 
-void GCShaderComponent::createTypeInformation(SPropertyInformationTyped<GCShaderComponent> *,
-                                              const SPropertyInformationCreateData &)
+void GCShaderComponent::createTypeInformation(PropertyInformationTyped<GCShaderComponent> *,
+                                              const PropertyInformationCreateData &)
   {
   }
 
@@ -21,15 +21,15 @@ GCShaderComponent::GCShaderComponent()
 
 S_IMPLEMENT_PROPERTY(GCFragmentShaderComponent, GraphicsCore)
 
-void GCFragmentShaderComponent::createTypeInformation(SPropertyInformationTyped<GCFragmentShaderComponent> *,
-                                                      const SPropertyInformationCreateData &)
+void GCFragmentShaderComponent::createTypeInformation(PropertyInformationTyped<GCFragmentShaderComponent> *,
+                                                      const PropertyInformationCreateData &)
   {
   }
 
 S_IMPLEMENT_PROPERTY(GCVertexShaderComponent, GraphicsCore)
 
-void GCVertexShaderComponent::createTypeInformation(SPropertyInformationTyped<GCVertexShaderComponent> *,
-                                                    const SPropertyInformationCreateData &)
+void GCVertexShaderComponent::createTypeInformation(PropertyInformationTyped<GCVertexShaderComponent> *,
+                                                    const PropertyInformationCreateData &)
   {
   }
 
@@ -65,7 +65,7 @@ void GCStaticShader::setupShaderRuntime(GCStaticShader *shader)
   GCRuntimeShaderInstance::ComputeLock lock(&shader->runtimeShader);
 
   lock.data()->instance = (XShader*)&shader->runtimeShaderCore();
-  xForeach(auto p, shader->walkerFrom((SProperty*)&shader->runtimeShaderCore))
+  xForeach(auto p, shader->walkerFrom((Property*)&shader->runtimeShaderCore))
     {
     const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
     if(binder)
@@ -75,8 +75,8 @@ void GCStaticShader::setupShaderRuntime(GCStaticShader *shader)
     }
   }
 
-void GCStaticShader::createTypeInformation(SPropertyInformationTyped<GCStaticShader> *info,
-                                     const SPropertyInformationCreateData &data)
+void GCStaticShader::createTypeInformation(PropertyInformationTyped<GCStaticShader> *info,
+                                     const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -130,7 +130,7 @@ void GCShader::setupShaderRuntime(GCShader *shader)
   GCRuntimeShaderInstance::ComputeLock lock(&shader->runtimeShader);
 
   lock.data()->instance = (XShader*)&shader->runtimeShaderCore();
-  xForeach(auto p, shader->walkerFrom((SProperty*)&shader->components))
+  xForeach(auto p, shader->walkerFrom((Property*)&shader->components))
     {
     const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
     if(binder)
@@ -141,8 +141,8 @@ void GCShader::setupShaderRuntime(GCShader *shader)
   }
 
 
-void GCShader::createTypeInformation(SPropertyInformationTyped<GCShader> *info,
-                                     const SPropertyInformationCreateData &data)
+void GCShader::createTypeInformation(PropertyInformationTyped<GCShader> *info,
+                                     const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

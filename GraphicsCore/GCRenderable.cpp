@@ -7,8 +7,8 @@ S_IMPLEMENT_TYPED_POINTER_ARRAY_TYPE(GCRenderablePointerArray, GraphicsCore)
 
 S_IMPLEMENT_PROPERTY(GCRenderable, GraphicsCore)
 
-void GCRenderable::createTypeInformation(SPropertyInformationTyped<GCRenderable> *info,
-                                         const SPropertyInformationCreateData &data)
+void GCRenderable::createTypeInformation(PropertyInformationTyped<GCRenderable> *info,
+                                         const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -45,8 +45,8 @@ void unionBounds(GCRenderArray* array)
     }
   }
 
-void GCRenderArray::createTypeInformation(SPropertyInformationTyped<GCRenderArray> *info,
-                                          const SPropertyInformationCreateData &data)
+void GCRenderArray::createTypeInformation(PropertyInformationTyped<GCRenderArray> *info,
+                                          const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

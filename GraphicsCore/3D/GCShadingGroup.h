@@ -16,7 +16,7 @@ public:
 
   void render(XRenderer *r) const;
 
-  virtual void addManipulators(SPropertyArray *, const GCTransform *tr=0);
+  virtual void addManipulators(PropertyArray *, const GCTransform *tr=0);
 
   GCShaderPointer shader;
   };

@@ -85,8 +85,8 @@ void computeAbsDisp(GCDistanceManipulator *d)
   d->absoluteDisplacement = d->lockDirection().normalized() * (d->distance() * d->scaleFactor());
   }
 
-void GCDistanceManipulator::createTypeInformation(SPropertyInformationTyped<GCDistanceManipulator> *info,
-                                                  const SPropertyInformationCreateData &data)
+void GCDistanceManipulator::createTypeInformation(PropertyInformationTyped<GCDistanceManipulator> *info,
+                                                  const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

@@ -11,16 +11,16 @@ class QPainter;
 class GCTransform;
 class GCCamera;
 
-class GRAPHICSCORE_EXPORT GCManipulatable : public SInterfaceBase
+class GRAPHICSCORE_EXPORT GCManipulatable : public InterfaceBase
   {
   S_INTERFACE_TYPE(ManipulatableInterface)  
 public:
-  virtual void addManipulators(SPropertyArray *, const GCTransform *tr=0) = 0;
+  virtual void addManipulators(PropertyArray *, const GCTransform *tr=0) = 0;
   };
 
-class GRAPHICSCORE_EXPORT GCVisualManipulator : public SPropertyContainer
+class GRAPHICSCORE_EXPORT GCVisualManipulator : public PropertyContainer
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, SPropertyContainer, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, PropertyContainer, 0)
 
 public:
   class Delegate

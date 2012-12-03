@@ -6,12 +6,12 @@ namespace MathsCore
 {
 void initiate()
   {
-  STypeRegistry::addPropertyGroup(propertyGroup());
+  TypeRegistry::addPropertyGroup(propertyGroup());
   }
 
-SPropertyGroup &propertyGroup()
+PropertyGroup &propertyGroup()
   {
-  static SPropertyGroup grp;
+  static PropertyGroup grp;
   return grp;
   }
 }

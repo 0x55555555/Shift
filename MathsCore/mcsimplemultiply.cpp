@@ -10,8 +10,8 @@ void computeAddOutput(MCSimpleMultiply *add)
 
 S_IMPLEMENT_PROPERTY(MCSimpleMultiply, MathsCore)
 
-void MCSimpleMultiply::createTypeInformation(SPropertyInformationTyped<MCSimpleMultiply> *info,
-                                             const SPropertyInformationCreateData &data)
+void MCSimpleMultiply::createTypeInformation(PropertyInformationTyped<MCSimpleMultiply> *info,
+                                             const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

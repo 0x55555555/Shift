@@ -26,8 +26,8 @@ void unionTransformedBounds(GCTransform* tr)
 
 S_IMPLEMENT_PROPERTY(GCTransform, GraphicsCore)
 
-void GCTransform::createTypeInformation(SPropertyInformationTyped<GCTransform> *info,
-                                        const SPropertyInformationCreateData &data)
+void GCTransform::createTypeInformation(PropertyInformationTyped<GCTransform> *info,
+                                        const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -51,7 +51,7 @@ void GCTransform::render(XRenderer *r) const
   r->popTransform();
   }
 
-void GCTransform::addManipulators(SPropertyArray *a, const GCTransform *tr)
+void GCTransform::addManipulators(PropertyArray *a, const GCTransform *tr)
   {
   xAssert(tr == 0);
 

@@ -11,13 +11,13 @@ void computeAspectRatio(GCRenderTarget *vp)
   }
 
 
-void GCRenderTarget::createTypeInformation(SPropertyInformationTyped<GCRenderTarget> *info,
-                                           const SPropertyInformationCreateData &data)
+void GCRenderTarget::createTypeInformation(PropertyInformationTyped<GCRenderTarget> *info,
+                                           const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
     auto sourceInst = info->add(&GCRenderTarget::source, "source");
-    sourceInst->setMode(SPropertyInstanceInformation::InternalInput);
+    sourceInst->setMode(PropertyInstanceInformation::InternalInput);
 
     auto aR = info->add(&GCRenderTarget::aspectRatio, "aspectRatio");
     aR->setCompute<computeAspectRatio>();
@@ -25,11 +25,11 @@ void GCRenderTarget::createTypeInformation(SPropertyInformationTyped<GCRenderTar
 
     auto width = info->add(&GCRenderTarget::width, "width");
     width->setAffects(aR);
-    width->setMode(SPropertyInstanceInformation::Output);
+    width->setMode(PropertyInstanceInformation::Output);
 
     auto height = info->add(&GCRenderTarget::height, "height");
     height->setAffects(aR);
-    height->setMode(SPropertyInstanceInformation::Output);
+    height->setMode(PropertyInstanceInformation::Output);
     }
   }
 

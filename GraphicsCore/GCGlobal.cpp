@@ -10,21 +10,21 @@ namespace GraphicsCore
 {
 void initiate()
   {
-  STypeRegistry::addPropertyGroup(propertyGroup());
+  TypeRegistry::addPropertyGroup(propertyGroup());
 
-  SPropertyInformation *colInfo = const_cast<SPropertyInformation *>(ColourProperty::staticTypeInformation());
+  PropertyInformation *colInfo = const_cast<PropertyInformation *>(ColourProperty::staticTypeInformation());
   colInfo->addStaticInterface(new GCShaderDataBindings::Vector4);
 
-  SPropertyInformation *vec3Info = const_cast<SPropertyInformation *>(Vector3DProperty::staticTypeInformation());
+  PropertyInformation *vec3Info = const_cast<PropertyInformation *>(Vector3DProperty::staticTypeInformation());
   vec3Info->addStaticInterface(new GCShaderDataBindings::Vector3);
 
-  SPropertyInformation *texInfo = const_cast<SPropertyInformation *>(GCTexturePointer::staticTypeInformation());
+  PropertyInformation *texInfo = const_cast<PropertyInformation *>(GCTexturePointer::staticTypeInformation());
   texInfo->addStaticInterface(new GCShaderDataBindings::TextureRef);
   }
 
-SPropertyGroup &propertyGroup()
+PropertyGroup &propertyGroup()
   {
-  static SPropertyGroup grp;
+  static PropertyGroup grp;
   return grp;
   }
 }

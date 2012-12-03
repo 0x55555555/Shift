@@ -7,14 +7,14 @@
 #include "sbasepointerproperties.h"
 #include "XTexture.h"
 
-class GRAPHICSCORE_EXPORT GCTexture : public SPODPropertyBase<XTexture, GCTexture>
+class GRAPHICSCORE_EXPORT GCTexture : public PODPropertyBase<XTexture, GCTexture>
   {
-  S_PROPERTY(GCTexture, SProperty, 0)
+  S_PROPERTY(GCTexture, Property, 0)
 
 public:
   GCTexture();
 
-  static void assignProperty(const SProperty *, SProperty *)
+  static void assignProperty(const Property *, Property *)
     {
     xAssertFail();
     }

@@ -5,9 +5,9 @@
 #include "sentity.h"
 #include "GCRenderable.h"
 
-class GRAPHICSCORE_EXPORT GCRenderTarget : public SEntity
+class GRAPHICSCORE_EXPORT GCRenderTarget : public Entity
   {
-  S_ENTITY(GCRenderTarget, SEntity, 0)
+  S_ENTITY(GCRenderTarget, Entity, 0)
 
 public:
   GCRenderTarget();

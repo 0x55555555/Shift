@@ -5,12 +5,12 @@
 #include "sbaseproperties.h"
 #include "XArrayMath"
 
-class MATHSCORE_EXPORT MCMathsOperation : public SPODPropertyBase<XMathsOperation, MCMathsOperation>
+class MATHSCORE_EXPORT MCMathsOperation : public PODPropertyBase<XMathsOperation, MCMathsOperation>
   {
-  S_PROPERTY(MCMathsOperation, SProperty, 0)
+  S_PROPERTY(MCMathsOperation, Property, 0)
 
 public:
-  static void assignProperty(const SProperty *, SProperty *);
+  static void assignProperty(const Property *, Property *);
 
   bool saveResultToFile(QString filename);
   QImage asQImage(const XVectorI2D &pt, xuint32 scale, xuint32 w, xuint32 h) const;

@@ -5,8 +5,8 @@
 
 S_IMPLEMENT_PROPERTY(GCGeometry, GraphicsCore)
 
-void GCGeometry::createTypeInformation(SPropertyInformationTyped<GCGeometry> *info,
-                                       const SPropertyInformationCreateData &data)
+void GCGeometry::createTypeInformation(PropertyInformationTyped<GCGeometry> *info,
+                                       const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

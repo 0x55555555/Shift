@@ -8,12 +8,12 @@
 #include "XShader.h"
 #include "GCBaseProperties.h"
 
-class GCShaderBindableData : public SStaticInterfaceBase
+class GCShaderBindableData : public StaticInterfaceBase
   {
   S_STATIC_INTERFACE_TYPE(GCShaderBindableData, GCShaderBindableInterface)
 public:
-  GCShaderBindableData(bool deleteOnNoReferences) : SStaticInterfaceBase(deleteOnNoReferences) { }
-  virtual void bindData(XShader *, const SProperty *) const = 0;
+  GCShaderBindableData(bool deleteOnNoReferences) : StaticInterfaceBase(deleteOnNoReferences) { }
+  virtual void bindData(XShader *, const Property *) const = 0;
   };
 
 class GRAPHICSCORE_EXPORT GCShaderComponent : public StringProperty
@@ -43,9 +43,9 @@ S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShaderComponentPointer, GCShaderComp
 
 S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCShaderComponentPointerArray, GCShaderComponentPointer);
 
-class GRAPHICSCORE_EXPORT GCStaticShader : public SEntity
+class GRAPHICSCORE_EXPORT GCStaticShader : public Entity
   {
-  S_ENTITY(GCStaticShader, SEntity, 0)
+  S_ENTITY(GCStaticShader, Entity, 0)
 public:
 
   void bind(XRenderer *r) const;

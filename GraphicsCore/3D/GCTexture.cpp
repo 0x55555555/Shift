@@ -5,8 +5,8 @@ S_IMPLEMENT_TYPED_POINTER_TYPE(GCTexturePointer, GraphicsCore)
 
 S_IMPLEMENT_PROPERTY(GCTexture, GraphicsCore)
 
-void GCTexture::createTypeInformation(SPropertyInformationTyped<GCTexture> *,
-                                      const SPropertyInformationCreateData &)
+void GCTexture::createTypeInformation(PropertyInformationTyped<GCTexture> *,
+                                      const PropertyInformationCreateData &)
   {
   }
 

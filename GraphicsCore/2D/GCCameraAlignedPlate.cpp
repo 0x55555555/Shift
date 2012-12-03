@@ -26,8 +26,8 @@ void computeTransform(GCCameraAlignedPlate *plate)
   plate->transform = tr;
   }
 
-void GCCameraAlignedPlate::createTypeInformation(SPropertyInformationTyped<GCCameraAlignedPlate> *info,
-                                                 const SPropertyInformationCreateData &data)
+void GCCameraAlignedPlate::createTypeInformation(PropertyInformationTyped<GCCameraAlignedPlate> *info,
+                                                 const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

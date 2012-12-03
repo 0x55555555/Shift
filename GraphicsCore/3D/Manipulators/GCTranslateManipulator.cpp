@@ -163,8 +163,8 @@ private:
 
 S_IMPLEMENT_PROPERTY(GCSingularTranslateManipulator, GraphicsCore)
 
-void GCSingularTranslateManipulator::createTypeInformation(SPropertyInformationTyped<GCSingularTranslateManipulator> *,
-                                                           const SPropertyInformationCreateData &)
+void GCSingularTranslateManipulator::createTypeInformation(PropertyInformationTyped<GCSingularTranslateManipulator> *,
+                                                           const PropertyInformationCreateData &)
   {
   }
 
@@ -220,8 +220,8 @@ void postCreateTranslateManip(GCTranslateManipulator *m)
   m->central.setDelegate(new CentralTranslateDelegate());
   }
 
-void GCTranslateManipulator::createTypeInformation(SPropertyInformationTyped<GCTranslateManipulator> *info,
-                                                   const SPropertyInformationCreateData &data)
+void GCTranslateManipulator::createTypeInformation(PropertyInformationTyped<GCTranslateManipulator> *info,
+                                                   const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

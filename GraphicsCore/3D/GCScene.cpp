@@ -11,8 +11,8 @@
 
 S_IMPLEMENT_PROPERTY(GCScene, GraphicsCore)
 
-void GCScene::createTypeInformation(SPropertyInformationTyped<GCScene> *info,
-                                    const SPropertyInformationCreateData &data)
+void GCScene::createTypeInformation(PropertyInformationTyped<GCScene> *info,
+                                    const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -69,8 +69,8 @@ void computeManips(GCManipulatableScene *s)
   s->refreshManipulators();
   }
 
-void GCManipulatableScene::createTypeInformation(SPropertyInformationTyped<GCManipulatableScene> *info,
-                                                 const SPropertyInformationCreateData &data)
+void GCManipulatableScene::createTypeInformation(PropertyInformationTyped<GCManipulatableScene> *info,
+                                                 const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -132,7 +132,7 @@ void GCManipulatableScene::refreshManipulators()
 
   xForeach(auto groupPtr, renderGroup.walker<GCRenderablePointer>())
     {
-    SProperty* inp = groupPtr->input();
+    Property* inp = groupPtr->input();
 
     if(inp)
       {

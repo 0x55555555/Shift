@@ -4,8 +4,8 @@
 
 S_IMPLEMENT_PROPERTY(GCTextureRenderTarget, GraphicsCore)
 
-void GCTextureRenderTarget::createTypeInformation(SPropertyInformationTyped<GCTextureRenderTarget> *,
-                                                  const SPropertyInformationCreateData &)
+void GCTextureRenderTarget::createTypeInformation(PropertyInformationTyped<GCTextureRenderTarget> *,
+                                                  const PropertyInformationCreateData &)
   {
   }
 

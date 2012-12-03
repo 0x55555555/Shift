@@ -4,9 +4,9 @@
 #include "sentity.h"
 #include "mcmathsoperation.h"
 
-class MATHSCORE_EXPORT MCSource : public SEntity
+class MATHSCORE_EXPORT MCSource : public Entity
   {
-  S_ENTITY(MCSource, SEntity, 0);
+  S_ENTITY(MCSource, Entity, 0);
 
 public:
   MCSource();

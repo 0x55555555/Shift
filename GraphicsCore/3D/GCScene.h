@@ -37,7 +37,7 @@ XProperties:
 public:
   GCManipulatableScene();
 
-  SPropertyArray manipulators;
+  PropertyArray manipulators;
   PointerArray selection;
 
   void render(XRenderer *) const;

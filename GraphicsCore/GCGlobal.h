@@ -21,7 +21,7 @@ S_DEFINE_INTERFACE_TYPE(ManipulatableInterface, 51)
 namespace GraphicsCore
 {
 void GRAPHICSCORE_EXPORT initiate();
-SPropertyGroup &propertyGroup();
+PropertyGroup &propertyGroup();
 }
 
 #endif // GCGLOBAL_H

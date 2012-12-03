@@ -33,8 +33,8 @@ void computeAlignTransform(GCProject3D *el)
 
 S_IMPLEMENT_PROPERTY(GCProject3D, GraphicsCore)
 
-void GCProject3D::createTypeInformation(SPropertyInformationTyped<GCProject3D> *info,
-                                    const SPropertyInformationCreateData &data)
+void GCProject3D::createTypeInformation(PropertyInformationTyped<GCProject3D> *info,
+                                    const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -47,7 +47,7 @@ void GCProject3D::createTypeInformation(SPropertyInformationTyped<GCProject3D> *
     auto v = info->add(&GCProject3D::validPosition, "validPosition");
     v->setCompute<computeAlignTransform>();
 
-    const SEmbeddedPropertyInstanceInformation *aff[] = { x, y };
+    const EmbeddedPropertyInstanceInformation *aff[] = { x, y };
 
     auto cam = info->add(&GCProject3D::camera, "camera");
     cam->setAffects(aff, X_ARRAY_COUNT(aff));

@@ -58,8 +58,8 @@ void MCImage::computeImageOutput(MCImage *image)
 
 S_IMPLEMENT_PROPERTY(MCImage, MathsCore)
 
-void MCImage::createTypeInformation(SPropertyInformationTyped<MCImage> *info,
-                                    const SPropertyInformationCreateData &data)
+void MCImage::createTypeInformation(PropertyInformationTyped<MCImage> *info,
+                                    const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

@@ -2,6 +2,6 @@ TEMPLATE = subdirs
 
 CONFIG += ordered
 
-SUBDIRS = shift.pro \
+SUBDIRS = ShiftCore/shift.pro \
           MathsCore/MathsCore.pro \
           GraphicsCore/GraphicsCore.pro

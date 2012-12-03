@@ -4,8 +4,8 @@
 
 S_IMPLEMENT_PROPERTY(GCPlate, GraphicsCore)
 
-void GCPlate::createTypeInformation(SPropertyInformationTyped<GCPlate> *,
-                                    const SPropertyInformationCreateData &)
+void GCPlate::createTypeInformation(PropertyInformationTyped<GCPlate> *,
+                                    const PropertyInformationCreateData &)
   {
   }
 

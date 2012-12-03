@@ -10,9 +10,9 @@ class XRenderer;
 class XLine;
 class XFrustum;
 
-class GRAPHICSCORE_EXPORT GCRenderable : public SEntity
+class GRAPHICSCORE_EXPORT GCRenderable : public Entity
   {
-  S_ABSTRACT_ENTITY(GCRenderable, SEntity, 0)
+  S_ABSTRACT_ENTITY(GCRenderable, Entity, 0)
 
 public:
   GCRenderable();

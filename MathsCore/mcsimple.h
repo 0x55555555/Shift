@@ -5,9 +5,9 @@
 #include "sentity.h"
 #include "sbaseproperties.h"
 
-class MATHSCORE_EXPORT MCSimple : public SEntity
+class MATHSCORE_EXPORT MCSimple : public Entity
   {
-  S_ENTITY(MCSimple, SEntity, 0)
+  S_ENTITY(MCSimple, Entity, 0)
 
 public:
   MCSimple();

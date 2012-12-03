@@ -10,8 +10,8 @@ void computeVector(GCComposeVector3 *vec)
 
 S_IMPLEMENT_PROPERTY(GCComposeVector3, GraphicsCore)
 
-void GCComposeVector3::createTypeInformation(SPropertyInformationTyped<GCComposeVector3> *info,
-                                             const SPropertyInformationCreateData &data)
+void GCComposeVector3::createTypeInformation(PropertyInformationTyped<GCComposeVector3> *info,
+                                             const PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

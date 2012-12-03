@@ -5,9 +5,9 @@
 #include "sentity.h"
 #include "sbaseproperties.h"
 
-class GRAPHICSCORE_EXPORT GCComposeVector3 : public SEntity
+class GRAPHICSCORE_EXPORT GCComposeVector3 : public Entity
   {
-  S_ENTITY(GCComposeVector3, SEntity, 0)
+  S_ENTITY(GCComposeVector3, Entity, 0)
 
 public:
   GCComposeVector3();
