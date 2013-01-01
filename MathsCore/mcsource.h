@@ -1,12 +1,12 @@
 #ifndef MCSOURCE_H
 #define MCSOURCE_H
 
-#include "sentity.h"
+#include "shift/sentity.h"
 #include "mcmathsoperation.h"
 
-class MATHSCORE_EXPORT MCSource : public Entity
+class MATHSCORE_EXPORT MCSource : public Shift::Entity
   {
-  S_ENTITY(MCSource, Entity, 0);
+  S_ENTITY(MCSource, Shift::Entity, 0);
 
 public:
   MCSource();

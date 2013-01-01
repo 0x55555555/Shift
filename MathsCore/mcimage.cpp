@@ -1,18 +1,18 @@
 #include "mcimage.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "QImage"
 
 void MCImage::computeImageOutput(MCImage *image)
   {
-  QImage imInput(image->filename());
+  QImage imInput(image->filename().toQString());
 
   MCMathsOperation::ComputeLock l(&image->output);
   if(imInput.isNull())
     {
-    l.data()->load(XMathsOperation::None, 0, 0, 0, 0, 0, XVectorI2D::Zero());
+    l.data()->load(XMathsOperation::None, 0, 0, 0, 0, 0, Eks::VectorI2D::Zero());
     }
 
-  XVectorI2D transform = XVectorI2D::Zero();
+  Eks::VectorI2D transform = Eks::VectorI2D::Zero();
 
   xsize channels = 3;
   if(imInput.hasAlphaChannel())
@@ -58,8 +58,8 @@ void MCImage::computeImageOutput(MCImage *image)
 
 S_IMPLEMENT_PROPERTY(MCImage, MathsCore)
 
-void MCImage::createTypeInformation(PropertyInformationTyped<MCImage> *info,
-                                    const PropertyInformationCreateData &data)
+void MCImage::createTypeInformation(Shift::PropertyInformationTyped<MCImage> *info,
+                                    const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

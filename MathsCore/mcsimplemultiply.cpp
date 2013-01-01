@@ -1,17 +1,17 @@
 #include "mcsimplemultiply.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 void computeAddOutput(MCSimpleMultiply *add)
   {
-  FloatProperty::ComputeLock l(&add->output);
+  Shift::FloatProperty::ComputeLock l(&add->output);
 
   *l.data() = add->inputA() * add->inputB();
   }
 
 S_IMPLEMENT_PROPERTY(MCSimpleMultiply, MathsCore)
 
-void MCSimpleMultiply::createTypeInformation(PropertyInformationTyped<MCSimpleMultiply> *info,
-                                             const PropertyInformationCreateData &data)
+void MCSimpleMultiply::createTypeInformation(Shift::PropertyInformationTyped<MCSimpleMultiply> *info,
+                                             const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

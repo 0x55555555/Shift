@@ -1,18 +1,18 @@
 #include "mcsimpleadd.h"
-#include "spropertyinformationhelpers.h"
-#include "shandlerimpl.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
 
 void computeAddOutput(MCSimpleAdd *add)
   {
-  FloatProperty::ComputeLock l(&add->output);
+  Shift::FloatProperty::ComputeLock l(&add->output);
 
   *l.data() = add->inputA() + add->inputB();
   }
 
 S_IMPLEMENT_PROPERTY(MCSimpleAdd, MathsCore)
 
-void MCSimpleAdd::createTypeInformation(PropertyInformationTyped<MCSimpleAdd> *info,
-                                        const PropertyInformationCreateData &data)
+void MCSimpleAdd::createTypeInformation(Shift::PropertyInformationTyped<MCSimpleAdd> *info,
+                                        const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -23,15 +23,15 @@ void MCSimpleAdd::createTypeInformation(PropertyInformationTyped<MCSimpleAdd> *i
 
 void computeSubOutput(MCSimpleSubtract *add)
   {
-  FloatProperty::ComputeLock l(&add->output);
+  Shift::FloatProperty::ComputeLock l(&add->output);
 
   *l.data() = add->inputA() - add->inputB();
   }
 
 S_IMPLEMENT_PROPERTY(MCSimpleSubtract, MathsCore)
 
-void MCSimpleSubtract::createTypeInformation(PropertyInformationTyped<MCSimpleSubtract> *info,
-                                        const PropertyInformationCreateData &data)
+void MCSimpleSubtract::createTypeInformation(Shift::PropertyInformationTyped<MCSimpleSubtract> *info,
+                                        const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

@@ -2,20 +2,20 @@
 #define MCSIMPLE_H
 
 #include "mcglobal.h"
-#include "sentity.h"
-#include "sbaseproperties.h"
+#include "shift/sentity.h"
+#include "shift/Properties/sbaseproperties.h"
 
-class MATHSCORE_EXPORT MCSimple : public Entity
+class MATHSCORE_EXPORT MCSimple : public Shift::Entity
   {
-  S_ENTITY(MCSimple, Entity, 0)
+  S_ENTITY(MCSimple, Shift::Entity, 0)
 
 public:
   MCSimple();
 
-  FloatProperty inputA;
-  FloatProperty inputB;
+  Shift::FloatProperty inputA;
+  Shift::FloatProperty inputB;
 
-  FloatProperty output;
+  Shift::FloatProperty output;
   };
 
 S_PROPERTY_INTERFACE(MCSimple)

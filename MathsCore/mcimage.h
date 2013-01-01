@@ -2,7 +2,7 @@
 #define MCIMAGE_H
 
 #include "mcsource.h"
-#include "sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.h"
 
 class MATHSCORE_EXPORT MCImage : public MCSource
   {
@@ -11,8 +11,8 @@ class MATHSCORE_EXPORT MCImage : public MCSource
 public:
   MCImage();
 
-  BoolProperty premultiply;
-  StringProperty filename;
+  Shift::BoolProperty premultiply;
+  Shift::StringProperty filename;
 
 private:
   static void computeImageOutput(MCImage *image);

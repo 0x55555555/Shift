@@ -1,10 +1,10 @@
 #include "mcsimple.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 S_IMPLEMENT_PROPERTY(MCSimple, MathsCore)
 
-void MCSimple::createTypeInformation(PropertyInformationTyped<MCSimple> *info,
-                                     const PropertyInformationCreateData &data)
+void MCSimple::createTypeInformation(Shift::PropertyInformationTyped<MCSimple> *info,
+                                     const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

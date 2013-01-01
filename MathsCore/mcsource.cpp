@@ -1,10 +1,10 @@
 #include "mcsource.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 S_IMPLEMENT_PROPERTY(MCSource, MathsCore)
 
-void MCSource::createTypeInformation(PropertyInformationTyped<MCSource> *info,
-                                     const PropertyInformationCreateData &data)
+void MCSource::createTypeInformation(Shift::PropertyInformationTyped<MCSource> *info,
+                                     const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

@@ -2,18 +2,18 @@
 #define MCMATHSOPERATION_H
 
 #include "mcglobal.h"
-#include "sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.h"
 #include "XArrayMath"
 
-class MATHSCORE_EXPORT MCMathsOperation : public PODPropertyBase<XMathsOperation, MCMathsOperation>
+class MATHSCORE_EXPORT MCMathsOperation : public Shift::PODPropertyBase<XMathsOperation, MCMathsOperation>
   {
-  S_PROPERTY(MCMathsOperation, Property, 0)
+  S_PROPERTY(MCMathsOperation, Shift::Property, 0)
 
 public:
-  static void assignProperty(const Property *, Property *);
+  static void assignProperty(const Shift::Property *, Shift::Property *);
 
   bool saveResultToFile(QString filename);
-  QImage asQImage(const XVectorI2D &pt, xuint32 scale, xuint32 w, xuint32 h) const;
+  QImage asQImage(const Eks::VectorI2D &pt, xuint32 scale, xuint32 w, xuint32 h) const;
   };
 
 S_PROPERTY_INTERFACE(MCMathsOperation)

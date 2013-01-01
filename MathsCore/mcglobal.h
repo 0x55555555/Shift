@@ -2,7 +2,7 @@
 #define MCGLOBAL_H
 
 #include "XGlobal"
-#include "sglobal.h"
+#include "shift/sglobal.h"
 
 #ifdef SHIFTMATHSCORE_BUILD
 # define MATHSCORE_EXPORT X_DECL_EXPORT
@@ -17,7 +17,7 @@
 namespace MathsCore
 {
 void MATHSCORE_EXPORT initiate();
-PropertyGroup &propertyGroup();
+Shift::PropertyGroup &propertyGroup();
 }
 
 #endif // MCGLOBAL_H

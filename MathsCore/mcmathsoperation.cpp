@@ -1,12 +1,12 @@
 #include "mcmathsoperation.h"
-#include "spropertyinformationhelpers.h"
-#include "shandlerimpl.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
 #include "QImage"
 
 S_IMPLEMENT_PROPERTY(MCMathsOperation, MathsCore)
 
-void MCMathsOperation::createTypeInformation(PropertyInformationTyped<MCMathsOperation> *info,
-                                             const PropertyInformationCreateData &data)
+void MCMathsOperation::createTypeInformation(Shift::PropertyInformationTyped<MCMathsOperation> *info,
+                                             const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerInterfaces)
     {
@@ -32,7 +32,7 @@ void MCMathsOperation::assignProperty(const Property *f, Property *t)
   l.data()->copy(from->value());
   }
 
-QImage MCMathsOperation::asQImage(const XVectorI2D &pt, xuint32 scale, xuint32 w, xuint32 h) const
+QImage MCMathsOperation::asQImage(const Eks::VectorI2D &pt, xuint32 scale, xuint32 w, xuint32 h) const
   {
   MCProfileFunction
   Eigen::Array<Eigen::Matrix<xint8, 4, 1>, Eigen::Dynamic, Eigen::Dynamic> arr(w, h);
