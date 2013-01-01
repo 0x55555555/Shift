@@ -143,7 +143,7 @@ public:
       wC.rotate(a);
       }
 
-    XVector4D col;
+    Eks::Vector4D col;
     col(3) = 1.0f;
     col.head<3>() = toRender->lockDirection();
 

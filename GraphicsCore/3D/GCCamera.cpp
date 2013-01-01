@@ -213,7 +213,7 @@ XVector3D GCViewableTransform::worldSpaceInPlaneFromScreenSpace(xuint32 x, xuint
 
 XVector3D GCViewableTransform::worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const
   {
-  XVector4D vpSpace(0.0f, 0.0f, 1.0f, 1.0f);
+  Eks::Vector4D vpSpace(0.0f, 0.0f, 1.0f, 1.0f);
   unitViewportCoordinates(x, y, vpSpace(0), vpSpace(1));
 
   auto downZAxisWorld = inverseProjection() * vpSpace;
@@ -230,11 +230,11 @@ bool GCViewableTransform::screenSpaceFromWorldSpace(const XVector3D &worldPos, X
     return false;
     }
 
-  XVector4D eyeH;
+  Eks::Vector4D eyeH;
   eyeH.head<3>() = eye;
   eyeH(3) = 1.0f;
 
-  XVector4D projected = projection() * eyeH;
+  Eks::Vector4D projected = projection() * eyeH;
   float w = projected.w();
 
   float x, y;
