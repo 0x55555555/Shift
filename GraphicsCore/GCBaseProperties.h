@@ -2,25 +2,33 @@
 #define GCBASEPROPERTIES_H
 
 #include "GCGlobal.h"
-#include "sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.h"
 #include "XTransform.h"
 #include "QImage"
 #include "XShader.h"
 #include "XGeometry.h"
 #include "XCuboid.h"
 
-class XShaderInstance
+namespace GraphicsCore
+{
+namespace detail
+{
+
+class ShaderInstance
   {
 public:
-  XShader *instance;
+  Eks::Shader *instance;
 
-  bool operator !=(const XShaderInstance& i) const
+  bool operator !=(const ShaderInstance& i) const
     {
     return i.instance != instance;
     }
   };
+}
 
-Q_DECLARE_METATYPE(XShaderInstance)
+}
+
+Q_DECLARE_METATYPE(GraphicsCore::detail::ShaderInstance)
 
 namespace
 {
@@ -46,52 +54,52 @@ QTextStream &operator >>(QTextStream &str, QImage &data)
   return str;
   }
 
-QTextStream &operator<<(QTextStream &s, const XGeometry &)
+QTextStream &operator<<(QTextStream &s, const Eks::Geometry &)
   {
   xAssertFail();
   return s;
   }
 
-QTextStream &operator>>(QTextStream &s, const XGeometry &)
-  {
-  xAssertFail();
-  return s;
-  }
-
-
-QDataStream &operator>>(QDataStream& s, XShaderInstance&)
-  {
-  xAssertFail();
-  return s;
-  }
-
-QDataStream &operator<<(QDataStream& s, const XShaderInstance&)
+QTextStream &operator>>(QTextStream &s, const Eks::Geometry &)
   {
   xAssertFail();
   return s;
   }
 
 
-QTextStream &operator>>(QTextStream& s, XShaderInstance&)
+QDataStream &operator>>(QDataStream& s, GraphicsCore::detail::ShaderInstance&)
   {
   xAssertFail();
   return s;
   }
 
-QTextStream &operator<<(QTextStream& s, const XShaderInstance&)
+QDataStream &operator<<(QDataStream& s, const GraphicsCore::detail::ShaderInstance&)
+  {
+  xAssertFail();
+  return s;
+  }
+
+
+QTextStream &operator>>(QTextStream& s, GraphicsCore::detail::ShaderInstance&)
+  {
+  xAssertFail();
+  return s;
+  }
+
+QTextStream &operator<<(QTextStream& s, const GraphicsCore::detail::ShaderInstance&)
   {
   xAssertFail();
   return s;
   }
 }
 
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, XTransform, XTransform::Identity(), 150);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, XMatrix3x3, XMatrix3x3::Identity(), 157);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, XComplexTransform, XComplexTransform(), 151);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShader, XShader, XShader(), 152)
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, Eks::Transform, Eks::Transform::Identity(), 150);
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, Eks::Matrix3x3, Eks::Matrix3x3::Identity(), 157);
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, Eks::ComplexTransform, Eks::ComplexTransform(), 151);
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShader, Eks::Shader, Eks::Shader(), 152)
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCQImage, QImage, QImage(), 153)
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeGeometry, XGeometry, XGeometry(), 154)
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, XCuboid, XCuboid(), 155)
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShaderInstance, XShaderInstance, XShaderInstance(), 156)
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeGeometry, Eks::Geometry, Eks::Geometry(), 154)
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, Eks::Cuboid, Eks::Cuboid(), 155)
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShaderInstance, GraphicsCore::detail::ShaderInstance, GraphicsCore::detail::   ShaderInstance(), 156)
 
 #endif // GCBASEPROPERTIES_H

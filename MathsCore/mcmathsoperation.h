@@ -1,6 +1,8 @@
 #ifndef MCMATHSOPERATION_H
 #define MCMATHSOPERATION_H
 
+#if 0
+
 #include "mcglobal.h"
 #include "shift/Properties/sbaseproperties.h"
 #include "XArrayMath"
@@ -17,5 +19,7 @@ public:
   };
 
 S_PROPERTY_INTERFACE(MCMathsOperation)
+
+#endif
 
 #endif // MCMATHSOPERATION_H

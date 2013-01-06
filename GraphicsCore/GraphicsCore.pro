@@ -39,7 +39,7 @@ HEADERS += GCGlobal.h \
     2D/GCElement.h \
     2D/GCProject3D.h
 
-INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift
+INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
 
 LIBS += -lshift -lEksCore -lEks3D -lEksScript -lShiftMathsCore
 

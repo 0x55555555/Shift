@@ -2,8 +2,8 @@
 #define GCGLOBAL_H
 
 #include "XGlobal"
-#include "sglobal.h"
-#include "spropertygroup.h"
+#include "shift/sglobal.h"
+#include "shift/TypeInformation/spropertygroup.h"
 
 #ifdef SHIFTGRAPHICSCORE_BUILD
 # define GRAPHICSCORE_EXPORT X_DECL_EXPORT
@@ -21,7 +21,7 @@ S_DEFINE_INTERFACE_TYPE(ManipulatableInterface, 51)
 namespace GraphicsCore
 {
 void GRAPHICSCORE_EXPORT initiate();
-PropertyGroup &propertyGroup();
+Shift::PropertyGroup &propertyGroup();
 }
 
 #endif // GCGLOBAL_H

@@ -1,3 +1,5 @@
+#if 0
+
 #include "mcmathsoperation.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
@@ -72,3 +74,4 @@ bool MCMathsOperation::saveResultToFile(QString filename)
   return true;
   }
 
+#endif

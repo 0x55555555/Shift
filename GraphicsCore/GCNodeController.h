@@ -5,7 +5,10 @@
 #include "X2DCanvas.h"
 #include "XAbstractRenderModel.h"
 
+namespace Shift
+{
 class Entity;
+}
 class GCAbstractNodeDelegate;
 
 class GRAPHICSCORE_EXPORT GCNodeController : public QObject, public XSimple2DCanvasController
@@ -23,9 +26,9 @@ Q_SIGNALS:
   void onContextMenu(QPoint);
 
 private:
-  XAbstractRenderModel::Iterator *_iterator;
+  Eks::AbstractRenderModel::Iterator *_iterator;
 
-  Entity *_interactionEntity;
+  Shift::Entity *_interactionEntity;
   xsize _interactionProperty;
   const GCAbstractNodeDelegate *_interactionDelegate;
   bool _connectingOutput;

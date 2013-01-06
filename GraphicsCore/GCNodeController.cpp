@@ -2,7 +2,7 @@
 #include "XAbstractCanvas.h"
 #include "GCShiftRenderModel.h"
 #include "GCAbstractNodeDelegate.h"
-#include "sentity.h"
+#include "shift/sentity.h"
 #include "X2DCanvas.h"
 
 GCNodeController::GCNodeController(X2DCanvas *c) : XSimple2DCanvasController(c), _iterator(0),
@@ -119,7 +119,7 @@ GCNodeController::UsedFlags GCNodeController::mouseEvent(const MouseEvent &e)
 
           if(hitResult == GCAbstractNodeDelegate::Input)
             {
-            Property *b = it->entity()->at(index);
+            Shift::Property *b = it->entity()->at(index);
             _interactionEntity->connect(b);
             }
           }
@@ -141,15 +141,15 @@ GCNodeController::UsedFlags GCNodeController::mouseEvent(const MouseEvent &e)
           xsize index = X_SIZE_SENTINEL;
           GCAbstractNodeDelegate::HitArea hitResult = delegate->hitTest(graphSpacePoint, it->entity(), index);
 
-          Property *a = _interactionEntity->at(_interactionProperty);
+          Shift::Property *a = _interactionEntity->at(_interactionProperty);
           if(_connectingOutput && hitResult == GCAbstractNodeDelegate::Input)
             {
-            Property *b = it->entity()->at(index);
+            Shift::Property *b = it->entity()->at(index);
             a->connect(b);
             }
           else if(!_connectingOutput && hitResult == GCAbstractNodeDelegate::Output)
             {
-            Property *b = it->entity()->at(index);
+            Shift::Property *b = it->entity()->at(index);
             b->connect(a);
             }
           }

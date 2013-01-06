@@ -19,7 +19,3 @@ void MCSimpleMultiply::createTypeInformation(Shift::PropertyInformationTyped<MCS
     outInst->setCompute<computeAddOutput>();
     }
   }
-
-MCSimpleMultiply::MCSimpleMultiply()
-  {
-  }

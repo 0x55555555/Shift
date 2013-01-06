@@ -1,3 +1,5 @@
+#if 0
+
 #include "mcsource.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 
@@ -8,10 +10,8 @@ void MCSource::createTypeInformation(Shift::PropertyInformationTyped<MCSource> *
   {
   if(data.registerAttributes)
     {
-    info->add(&MCSource::output, "output");
+    info->add(data, &MCSource::output, "output");
     }
   }
 
-MCSource::MCSource()
-  {
-  }
+#endif

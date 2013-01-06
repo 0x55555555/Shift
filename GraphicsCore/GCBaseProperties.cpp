@@ -1,14 +1,14 @@
 #include "GCBaseProperties.h"
-#include "sdatabase.h"
-#include "spropertyinformationhelpers.h"
-#include "shandlerimpl.h"
+#include "shift/sdatabase.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
 
-void writeValue(Saver &, const XShader &)
+void writeValue(Shift::Saver &, const Eks::Shader &)
   {
   xAssertFail();
   }
 
-void readValue(Loader &, XShader &)
+void readValue(Shift::Loader &, Eks::Shader &)
   {
   xAssertFail();
   }
@@ -108,7 +108,7 @@ void TransformProperty::assignProperty(const Property *f, Property *t)
   const ComplexTransformProperty *tProp = f->castTo<ComplexTransformProperty>();
   if(tProp)
     {
-    to->assign(XTransform(tProp->value().matrix()));
+    to->assign(Eks::Transform(tProp->value().matrix()));
     return;
     }
   }
@@ -127,7 +127,7 @@ void ComplexTransformProperty::assignProperty(const Property *f, Property *t)
   const TransformProperty *sProp = f->castTo<TransformProperty>();
   if(sProp)
     {
-    to->assign(XComplexTransform(sProp->value().matrix()));
+    to->assign(Eks::ComplexTransform(sProp->value().matrix()));
     return;
     }
 

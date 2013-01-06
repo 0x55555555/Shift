@@ -2,15 +2,15 @@
 #define GCRENDERABLE_H
 
 #include "GCGlobal.h"
-#include "sentity.h"
-#include "sbasepointerproperties.h"
+#include "shift/sentity.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "GCBaseProperties.h"
 
 class XRenderer;
 class XLine;
 class XFrustum;
 
-class GRAPHICSCORE_EXPORT GCRenderable : public Entity
+class GRAPHICSCORE_EXPORT GCRenderable : public Shift::Entity
   {
   S_ABSTRACT_ENTITY(GCRenderable, Entity, 0)
 
@@ -24,7 +24,7 @@ public:
   class Selector
     {
   public:
-    virtual void onHit(const XVector3D &point, const XVector3D& normal, GCRenderable *renderable) = 0;
+    virtual void onHit(const Eks::Vector3D &point, const Eks::Vector3D& normal, GCRenderable *renderable) = 0;
     };
 
   virtual void intersect(const XLine &line, Selector *);

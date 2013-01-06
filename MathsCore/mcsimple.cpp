@@ -8,16 +8,12 @@ void MCSimple::createTypeInformation(Shift::PropertyInformationTyped<MCSimple> *
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->add(&MCSimple::output, "output");
+    auto outInst = info->add(data, &MCSimple::output, "output");
 
-    auto aInst = info->add(&MCSimple::inputA, "inputA");
-    auto bInst = info->add(&MCSimple::inputB, "inputB");
+    auto aInst = info->add(data, &MCSimple::inputA, "inputA");
+    auto bInst = info->add(data, &MCSimple::inputB, "inputB");
 
-    aInst->setAffects(outInst);
-    bInst->setAffects(outInst);
+    aInst->setAffects(data, outInst);
+    bInst->setAffects(data, outInst);
     }
-  }
-
-MCSimple::MCSimple()
-  {
   }

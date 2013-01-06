@@ -1,3 +1,5 @@
+#if 0
+
 #include "mcimage.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "QImage"
@@ -66,14 +68,12 @@ void MCImage::createTypeInformation(Shift::PropertyInformationTyped<MCImage> *in
     auto outputInst = info->child(&MCImage::output);
     outputInst->setCompute<computeImageOutput>();
 
-    auto preMultInst = info->add(&MCImage::premultiply, "premultiply");
-    preMultInst->setAffects(outputInst);
+    auto preMultInst = info->add(data, &MCImage::premultiply, "premultiply");
+    preMultInst->setAffects(data, outputInst);
 
-    auto filenameInst = info->add(&MCImage::filename, "filename");
-    filenameInst->setAffects(outputInst);
+    auto filenameInst = info->add(data, &MCImage::filename, "filename");
+    filenameInst->setAffects(data, outputInst);
     }
   }
 
-MCImage::MCImage()
-  {
-  }
+#endif

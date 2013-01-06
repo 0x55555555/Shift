@@ -2,7 +2,7 @@
 #define GCRENDERTARGET_H
 
 #include "GCGlobal.h"
-#include "sentity.h"
+#include "shift/sentity.h"
 #include "GCRenderable.h"
 
 class GRAPHICSCORE_EXPORT GCRenderTarget : public Entity

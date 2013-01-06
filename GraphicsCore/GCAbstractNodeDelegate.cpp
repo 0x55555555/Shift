@@ -1,10 +1,10 @@
 #include "GCAbstractNodeDelegate.h"
 #include "GCShiftRenderModel.h"
 #include "X2DCanvas.h"
-#include "spropertycontaineriterators.h"
+#include "shift/Properties/spropertycontaineriterators.h"
 #include "QPen"
 #include "QPainter"
-#include "sentity.h"
+#include "shift/sentity.h"
 
 #define MAX_WIDTH 128
 #define OUTER_PADDING 5
@@ -23,7 +23,7 @@ GCSimpleNodeDelegate::GCSimpleNodeDelegate() : _titleFntMetrics(_titleFnt), _pro
   }
 
 
-void GCSimpleNodeDelegate::ensureRenderData(const Entity *ent) const
+void GCSimpleNodeDelegate::ensureRenderData(const Shift::Entity *ent) const
   {
   if(!_renderData.contains(ent))
     {
@@ -31,11 +31,11 @@ void GCSimpleNodeDelegate::ensureRenderData(const Entity *ent) const
     }
   }
 
-void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::PropertyData& data, const Property *prop, int yOffset) const
+void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::PropertyData& data, const Shift::Property *prop, int yOffset) const
   {
   QFontMetrics propFntMetrics(font);
 
-  QString name = prop->name();
+  QString name = prop->name().toQString();
   if(name.isEmpty())
     {
     name = "[" + QString::number(prop->parent()->index(prop)) + "]";
@@ -54,7 +54,7 @@ void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::Prope
 
   yOffset += fillHeight;
 
-  const PropertyContainer* cont = prop->castTo<PropertyContainer>();
+  const Shift::PropertyContainer* cont = prop->castTo<Shift::PropertyContainer>();
   if(cont)
     {
     data.childProperties.resize(cont->size());
@@ -78,9 +78,9 @@ void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::Prope
   data.renderSize.setWidth(fillWidth);
   }
 
-void GCSimpleNodeDelegate::postSetupProperty(const QFont& font, RenderData::PropertyData& data, const Property *prop, int minX, int maxWidth) const
+void GCSimpleNodeDelegate::postSetupProperty(const QFont& font, RenderData::PropertyData& data, const Shift::Property *prop, int minX, int maxWidth) const
   {
-  const PropertyContainer* cont = prop->castTo<PropertyContainer>();
+  const Shift::PropertyContainer* cont = prop->castTo<Shift::PropertyContainer>();
   if(cont)
     {
     int newMinX = minX + OUTER_PADDING;
@@ -107,7 +107,7 @@ void GCSimpleNodeDelegate::postSetupProperty(const QFont& font, RenderData::Prop
     }
   }
 
-void GCSimpleNodeDelegate::updateRenderData(const Entity *ent) const
+void GCSimpleNodeDelegate::updateRenderData(const Shift::Entity *ent) const
   {
   xAssert(ent);
 
@@ -131,7 +131,7 @@ void GCSimpleNodeDelegate::updateRenderData(const Entity *ent) const
 
   xsize numProperties = ent->size();
 
-  int fillWidth = titleFntMetrics.width(ent->name());
+  int fillWidth = titleFntMetrics.width(ent->name().toQString());
 
   int propYStart = _titleFntMetrics.height() + OUTER_PADDING + (2 * TITLE_PADDING) + PROP_PADDING;
 
@@ -184,17 +184,17 @@ void GCSimpleNodeDelegate::updateRenderData(const Entity *ent) const
   rd.entOutputRadius = rd.titleBounds.height() / 2;
   rd.entOutputPos = QPoint(rd.titleBounds.right() + OUTER_PADDING, OUTER_PADDING);
 
-  rd.title.setText(titleFntMetrics.elidedText(ent->name(), Qt::ElideRight, fillWidth));
+  rd.title.setText(titleFntMetrics.elidedText(ent->name().toQString(), Qt::ElideRight, fillWidth));
   rd.title.prepare(QTransform(), titleFnt);
   }
 
-void GCSimpleNodeDelegate::update(const XAbstractCanvas *,
-                    const XAbstractRenderModel::Iterator *aIt,
-                    const XAbstractRenderModel *) const
+void GCSimpleNodeDelegate::update(const Eks::AbstractCanvas *,
+                    const Eks::AbstractRenderModel::Iterator *aIt,
+                    const Eks::AbstractRenderModel *) const
   {
   GCProfileFunction
   const GCShiftRenderModel::Iterator *it = static_cast<const GCShiftRenderModel::Iterator *>(aIt);
-  const Entity *ent = it->entity();
+  const Shift::Entity *ent = it->entity();
   xAssert(ent);
 
   updateRenderData(ent);
@@ -211,13 +211,13 @@ void GCSimpleNodeDelegate::paintProperties(QPainter *ptr, QPoint nodePos, const 
   }
 
 void GCSimpleNodeDelegate::paint(xuint32 pass,
-                                XAbstractCanvas *c,
-                                const XAbstractRenderModel::Iterator *aIt,
-                                const XAbstractRenderModel *) const
+                                Eks::AbstractCanvas *c,
+                                const Eks::AbstractRenderModel::Iterator *aIt,
+                                const Eks::AbstractRenderModel *) const
   {
   GCProfileFunction
   const GCShiftRenderModel::Iterator *it = static_cast<const GCShiftRenderModel::Iterator *>(aIt);
-  const Entity *ent = it->entity();
+  const Shift::Entity *ent = it->entity();
   xAssert(ent);
 
   ensureRenderData(ent);
@@ -233,15 +233,15 @@ void GCSimpleNodeDelegate::paint(xuint32 pass,
       {
       if(prop->hasInput())
         {
-        Property *input = prop->input();
+        Shift::Property *input = prop->input();
 
-        Property *inputProp = input;
-        Entity *connectedEnt = 0;
+        Shift::Property *inputProp = input;
+        Shift::Entity *connectedEnt = 0;
         while(inputProp && !connectedEnt)
           {
           if(inputProp->parent() == ent->parent())
             {
-            connectedEnt = inputProp->castTo<Entity>();
+            connectedEnt = inputProp->castTo<Shift::Entity>();
             break;
             }
           inputProp = inputProp->parent();
@@ -385,7 +385,7 @@ void GCSimpleNodeDelegate::move(const QPoint &pos, const void *ent) const
   rd.position += pos;
   }
 
-void GCSimpleNodeDelegate::drawConnection(XAbstractCanvas *c, const void *ent, xsize prop, bool fromOutput, const QPoint &to) const
+void GCSimpleNodeDelegate::drawConnection(Eks::AbstractCanvas *c, const void *ent, xsize prop, bool fromOutput, const QPoint &to) const
   {
   X2DCanvas* canvas = static_cast<X2DCanvas*>(c);
   QPainter *ptr = canvas->currentPainter();
