@@ -18,7 +18,6 @@ void readValue(Shift::Loader &, Eks::Shader &)
 IMPLEMENT_POD_GC_PROPERTY(Matrix3x3Property);
 IMPLEMENT_POD_GC_PROPERTY(TransformProperty);
 IMPLEMENT_POD_GC_PROPERTY(ComplexTransformProperty);
-IMPLEMENT_POD_GC_PROPERTY(GCRuntimeShader)
 IMPLEMENT_POD_GC_PROPERTY(GCQImage)
 IMPLEMENT_POD_GC_PROPERTY(GCRuntimeGeometry)
 IMPLEMENT_POD_GC_PROPERTY(GCBoundingBox)
@@ -59,17 +58,6 @@ void GCQImage::assignProperty(const Property *f, Property *t)
     }
   }
 
-void GCRuntimeShader::assignProperty(const Property *f, Property *t)
-  {
-  GCRuntimeShader *to = t->uncheckedCastTo<GCRuntimeShader>();
-
-  const GCRuntimeShader *sProp = f->castTo<GCRuntimeShader>();
-  if(sProp)
-    {
-    to->assign(sProp->value());
-    return;
-    }
-  }
 void GCRuntimeShaderInstance::assignProperty(const Property *f, Property *t)
   {
   GCRuntimeShaderInstance *to = t->uncheckedCastTo<GCRuntimeShaderInstance>();

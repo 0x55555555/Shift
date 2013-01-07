@@ -93,10 +93,20 @@ QTextStream &operator<<(QTextStream& s, const GraphicsCore::detail::ShaderInstan
   }
 }
 
+class GRAPHICSCORE_EXPORT GCRuntimeShader
+    : public Shift::PODProperty<Eks::Shader,
+                                GCRuntimeShader,
+                                Shift::detail::PODPropertyTraits<GCRuntimeShader> >
+  {
+public:
+  typedef Shift::detail::PODPropertyTraits<GCRuntimeShader> Traits;
+  enum { TypeId = 152 };
+  S_PROPERTY(GCRuntimeShader, Property, 0);
+  };
+
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, Eks::Transform, Eks::Transform::Identity(), 150);
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, Eks::Matrix3x3, Eks::Matrix3x3::Identity(), 157);
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, Eks::ComplexTransform, Eks::ComplexTransform(), 151);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShader, Eks::Shader, Eks::Shader(), 152)
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCQImage, QImage, QImage(), 153)
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeGeometry, Eks::Geometry, Eks::Geometry(), 154)
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, Eks::Cuboid, Eks::Cuboid(), 155)
