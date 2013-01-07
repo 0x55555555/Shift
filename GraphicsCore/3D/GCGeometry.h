@@ -4,7 +4,6 @@
 #include "GCGlobal.h"
 #include "shift/Properties/spropertycontainer.h"
 #include "shift/Properties/spropertyarray.h"
-#include "shift/Properties/sarrayproperty.h"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "shift/sdatabase.h"
 #include "XGeometry.h"
