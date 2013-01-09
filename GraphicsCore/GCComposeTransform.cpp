@@ -1,12 +1,12 @@
 #include "GCComposeTransform.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XMacroHelpers"
-#include "shandlerimpl.h"
+#include "shift/Changes/shandler.inl"
 
 void computeTransform(GCComposeTransform *vec)
   {
-  XTransform tr = XTransform::Identity();
-  tr *= Eigen::AngleAxisf(X_DEGTORAD(vec->rotationAngleIn()), vec->rotationAxisIn());
+  Eks::Transform tr = Eks::Transform::Identity();
+  tr *= Eigen::AngleAxisf(Eks::degreesToRadians(vec->rotationAngleIn()), vec->rotationAxisIn());
 
   tr.translation() = vec->translationIn();
 
@@ -17,8 +17,8 @@ void computeTransform(GCComposeTransform *vec)
 
 S_IMPLEMENT_PROPERTY(GCComposeTransform, GraphicsCore)
 
-void GCComposeTransform::createTypeInformation(PropertyInformationTyped<GCComposeTransform> *info,
-                                               const PropertyInformationCreateData &data)
+void GCComposeTransform::createTypeInformation(Shift::PropertyInformationTyped<GCComposeTransform> *info,
+                                               const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

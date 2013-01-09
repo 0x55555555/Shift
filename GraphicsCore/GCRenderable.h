@@ -6,9 +6,12 @@
 #include "shift/Properties/sbasepointerproperties.h"
 #include "GCBaseProperties.h"
 
-class XRenderer;
-class XLine;
-class XFrustum;
+namespace Eks
+{
+class Renderer;
+class Line;
+class Frustum;
+}
 
 class GRAPHICSCORE_EXPORT GCRenderable : public Shift::Entity
   {
@@ -19,7 +22,7 @@ public:
 
   GCBoundingBox bounds;
 
-  virtual void render(XRenderer *) const = 0;
+  virtual void render(Eks::Renderer *) const = 0;
 
   class Selector
     {
@@ -27,8 +30,8 @@ public:
     virtual void onHit(const Eks::Vector3D &point, const Eks::Vector3D& normal, GCRenderable *renderable) = 0;
     };
 
-  virtual void intersect(const XLine &line, Selector *);
-  virtual void intersect(const XFrustum &frus, Selector *);
+  virtual void intersect(const Eks::Line &line, Selector *);
+  virtual void intersect(const Eks::Frustum &frus, Selector *);
   };
 
 S_PROPERTY_INTERFACE(GCRenderable)
@@ -40,14 +43,12 @@ class GRAPHICSCORE_EXPORT GCRenderArray : public GCRenderable
   S_ENTITY(GCRenderArray, GCRenderable, 0)
 
 public:
-  GCRenderArray();
-
   GCRenderablePointerArray renderGroup;
 
-  virtual void render(XRenderer *) const;
+  virtual void render(Eks::Renderer *) const;
 
-  virtual void intersect(const XLine &line, Selector *);
-  virtual void intersect(const XFrustum &frus, Selector *);
+  virtual void intersect(const Eks::Line &line, Selector *);
+  virtual void intersect(const Eks::Frustum &frus, Selector *);
   };
 
 S_PROPERTY_INTERFACE(GCRenderArray)

@@ -5,21 +5,19 @@
 #include "shift/sentity.h"
 #include "GCRenderable.h"
 
-class GRAPHICSCORE_EXPORT GCRenderTarget : public Entity
+class GRAPHICSCORE_EXPORT GCRenderTarget : public Shift::Entity
   {
   S_ENTITY(GCRenderTarget, Entity, 0)
 
 public:
-  GCRenderTarget();
-
   GCRenderablePointer source;
 
-  UnsignedIntProperty width;
-  UnsignedIntProperty height;
+  Shift::UnsignedIntProperty width;
+  Shift::UnsignedIntProperty height;
 
-  FloatProperty aspectRatio;
+  Shift::FloatProperty aspectRatio;
 
-  void render(XRenderer *);
+  void render(Eks::Renderer *);
   };
 
 S_PROPERTY_INTERFACE(GCRenderTarget)

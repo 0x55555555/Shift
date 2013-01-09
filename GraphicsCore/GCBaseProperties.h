@@ -92,9 +92,8 @@ QTextStream &operator<<(QTextStream& s, const GraphicsCore::detail::ShaderInstan
   return s;
   }
 }
-
 class GRAPHICSCORE_EXPORT GCRuntimeShader
-    : public Shift::PODProperty<Eks::Shader,
+    : public Shift::PODPropertyBase<Eks::Shader,
                                 GCRuntimeShader,
                                 Shift::detail::PODPropertyTraits<GCRuntimeShader> >
   {
@@ -104,12 +103,43 @@ public:
   S_PROPERTY(GCRuntimeShader, Property, 0);
   };
 
+class GRAPHICSCORE_EXPORT GCRuntimeGeometry
+    : public Shift::PODPropertyBase<Eks::Geometry,
+                                GCRuntimeGeometry,
+                                Shift::detail::PODPropertyTraits<GCRuntimeGeometry> >
+  {
+public:
+  typedef Shift::detail::PODPropertyTraits<GCRuntimeGeometry> Traits;
+  enum { TypeId = 154 };
+  S_PROPERTY(GCRuntimeGeometry, Property, 0);
+  };
+
+class GRAPHICSCORE_EXPORT GCRuntimeShaderInstance
+    : public Shift::PODProperty<GraphicsCore::detail::ShaderInstance,
+                                GCRuntimeShaderInstance,
+                                Shift::detail::PODPropertyTraits<GraphicsCore::detail::ShaderInstance> >
+  {
+public:
+  typedef Shift::detail::PODPropertyTraits<GraphicsCore::detail::ShaderInstance> Traits;
+  enum { TypeId = 156 };
+  S_PROPERTY(GraphicsCore::detail::ShaderInstance, Property, 0);
+
+  static void assignProperty(const Property *f, Property *t);
+  };
+
+
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, Eks::Transform, Eks::Transform::Identity(), 150);
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, Eks::Matrix3x3, Eks::Matrix3x3::Identity(), 157);
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, Eks::ComplexTransform, Eks::ComplexTransform(), 151);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCQImage, QImage, QImage(), 153)
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeGeometry, Eks::Geometry, Eks::Geometry(), 154)
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, Eks::Cuboid, Eks::Cuboid(), 155)
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShaderInstance, GraphicsCore::detail::ShaderInstance, GraphicsCore::detail::   ShaderInstance(), 156)
+
+
+S_PROPERTY_INTERFACE(GCRuntimeShader)
+S_PROPERTY_INTERFACE(GCRuntimeGeometry)
+S_PROPERTY_INTERFACE(TransformProperty)
+S_PROPERTY_INTERFACE(Matrix3x3Property)
+S_PROPERTY_INTERFACE(ComplexTransformProperty)
+S_PROPERTY_INTERFACE(GCBoundingBox)
+S_PROPERTY_INTERFACE(GCRuntimeShaderInstance)
 
 #endif // GCBASEPROPERTIES_H

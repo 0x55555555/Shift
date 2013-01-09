@@ -2,8 +2,8 @@
 #define GCMANIPULATOR_H
 
 #include "GCGlobal.h"
-#include "spropertycontainer.h"
-#include "sbasepointerproperties.h"
+#include "shift/Properties/spropertycontainer.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "GCBaseProperties.h"
 
 class XRenderer;
@@ -11,14 +11,14 @@ class QPainter;
 class GCTransform;
 class GCCamera;
 
-class GRAPHICSCORE_EXPORT GCManipulatable : public InterfaceBase
+class GRAPHICSCORE_EXPORT GCManipulatable : public Shift::InterfaceBase
   {
   S_INTERFACE_TYPE(ManipulatableInterface)  
 public:
-  virtual void addManipulators(PropertyArray *, const GCTransform *tr=0) = 0;
+  virtual void addManipulators(Shift::PropertyArray *, const GCTransform *tr=0) = 0;
   };
 
-class GRAPHICSCORE_EXPORT GCVisualManipulator : public PropertyContainer
+class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::PropertyContainer
   {
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, PropertyContainer, 0)
 
@@ -32,14 +32,14 @@ public:
       const GCVisualManipulator *toRender,
       const QPoint &widgetSpacePoint,
       const GCCamera *camera,
-      const XVector3D &clickDirection, // in world space
+      const Eks::Vector3D &clickDirection, // in world space
       float *distance) = 0;
 
     virtual void render(const GCVisualManipulator *toRender,
                         const GCCamera *camera,
                         XRenderer *) = 0;
 
-    virtual XVector3D focalPoint(const GCVisualManipulator *toRender) const
+    virtual Eks::Vector3D focalPoint(const GCVisualManipulator *toRender) const
       {
       return toRender->worldCentre().translation();
       }
@@ -51,16 +51,16 @@ XProperties:
 public:
   GCVisualManipulator();
   
-  BoolProperty show;
+  Shift::BoolProperty show;
   TransformProperty worldCentre;
-  FloatProperty manipulatorsDisplayScale;
+  Shift::FloatProperty manipulatorsDisplayScale;
 
-  virtual XVector3D focalPoint() const;
+  virtual Eks::Vector3D focalPoint() const;
   
   virtual bool hitTest(
     const QPoint &widgetSpacePoint,
     const GCCamera *camera,
-    const XVector3D &clickDirection, // in world space
+    const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked);
     
@@ -70,13 +70,13 @@ public:
     {
     QPoint widgetPoint;
     const GCCamera *cam;
-    XVector3D direction;
+    Eks::Vector3D direction;
     };
 
   struct MouseMoveEvent : public MouseEvent
     {
     QPoint lastWidgetPoint;
-    XVector3D lastDirection;
+    Eks::Vector3D lastDirection;
     };
 
   virtual void onMouseClick(const MouseEvent &) = 0;
@@ -97,7 +97,7 @@ public:
   virtual bool hitTest(
     const QPoint &widgetSpacePoint,
     const GCCamera *camera,
-    const XVector3D &clickDirection, // in world space
+    const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked);
 
@@ -159,10 +159,10 @@ public:
     Linear
     };
 
-  EnumProperty lockMode;
-  Vector3DProperty lockDirection; // normal for planar, direction for linear, local space
+  Shift::EnumProperty lockMode;
+  Shift::Vector3DProperty lockDirection; // normal for planar, direction for linear, local space
 
-  void onDrag(const MouseMoveEvent &, XVector3D &rel);
+  void onDrag(const MouseMoveEvent &, Eks::Vector3D &rel);
   };
 
 S_PROPERTY_INTERFACE(GCLinearDragManipulator);

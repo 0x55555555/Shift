@@ -2,8 +2,8 @@
 #define GCTRANSLATEANIPULATOR_H
 
 #include "GCManipulator.h"
-#include "sbaseproperties.h"
-#include "sbasepointerproperties.h"
+#include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sbasepointerproperties.h"
 
 class GCSingularTranslateManipulator : public GCLinearDragManipulator
   {

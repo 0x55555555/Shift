@@ -2,6 +2,7 @@
 #include "shift/sdatabase.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
+#include "shift/TypeInformation/spropertytraits.h"
 
 void writeValue(Shift::Saver &, const Eks::Shader &)
   {
@@ -18,10 +19,7 @@ void readValue(Shift::Loader &, Eks::Shader &)
 IMPLEMENT_POD_GC_PROPERTY(Matrix3x3Property);
 IMPLEMENT_POD_GC_PROPERTY(TransformProperty);
 IMPLEMENT_POD_GC_PROPERTY(ComplexTransformProperty);
-IMPLEMENT_POD_GC_PROPERTY(GCQImage)
-IMPLEMENT_POD_GC_PROPERTY(GCRuntimeGeometry)
 IMPLEMENT_POD_GC_PROPERTY(GCBoundingBox)
-IMPLEMENT_POD_GC_PROPERTY(GCRuntimeShaderInstance)
 
 void GCBoundingBox::assignProperty(const Property *f, Property *t)
   {
@@ -32,29 +30,6 @@ void GCBoundingBox::assignProperty(const Property *f, Property *t)
     {
     to->assign(sProp->value());
     return;
-    }
-  }
-void GCRuntimeGeometry::assignProperty(const Property *f, Property *t)
-  {
-  GCRuntimeGeometry *to = t->uncheckedCastTo<GCRuntimeGeometry>();
-
-  const GCRuntimeGeometry *sProp = f->castTo<GCRuntimeGeometry>();
-  if(sProp)
-    {
-    to->assign(sProp->value());
-    return;
-    }
-  }
-
-void GCQImage::assignProperty(const Property *f, Property *t)
-  {
-  SProfileFunction
-  GCQImage *to = t->uncheckedCastTo<GCQImage>();
-
-  const GCQImage *qImageProp = f->castTo<GCQImage>();
-  if(qImageProp)
-    {
-    to->assign(qImageProp->value());
     }
   }
 
