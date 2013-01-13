@@ -1,19 +1,19 @@
 #include "GCManipulator.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "3D/GCCamera.h"
 #include "XPlane.h"
 #include "XLine.h"
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualManipulator, GraphicsCore)
 
-void GCVisualManipulator::createTypeInformation(PropertyInformationTyped<GCVisualManipulator> *info,
-                                                const PropertyInformationCreateData &data)
+void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualManipulator> *info,
+                                                const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCVisualManipulator::show, "show");
-    info->add(&GCVisualManipulator::worldCentre, "worldCentre");
-    info->add(&GCVisualManipulator::manipulatorsDisplayScale, "manipulatorsDisplayScale");
+    info->add(data, &GCVisualManipulator::show, "show");
+    info->add(data, &GCVisualManipulator::worldCentre, "worldCentre");
+    info->add(data, &GCVisualManipulator::manipulatorsDisplayScale, "manipulatorsDisplayScale");
     }
   }
 
@@ -21,7 +21,7 @@ GCVisualManipulator::GCVisualManipulator() : _delegate(0)
   {
   }
 
-void GCVisualManipulator::render(const GCCamera *camera, XRenderer *r) const
+void GCVisualManipulator::render(const GCCamera *camera, Eks::Renderer *r) const
   {
   if(delegate())
     {
@@ -29,19 +29,19 @@ void GCVisualManipulator::render(const GCCamera *camera, XRenderer *r) const
     }
   }
 
-XVector3D GCVisualManipulator::focalPoint() const
+Eks::Vector3D GCVisualManipulator::focalPoint() const
   {
   if(delegate())
     {
     return delegate()->focalPoint(this);
     }
-  return XVector3D::Zero();
+  return Eks::Vector3D::Zero();
   }
 
 bool GCVisualManipulator::hitTest(
     const QPoint &widgetSpacePoint,
     const GCCamera *camera,
-    const XVector3D &clickDirection, // in world space
+    const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked)
   {
@@ -58,8 +58,8 @@ bool GCVisualManipulator::hitTest(
 
 S_IMPLEMENT_PROPERTY(GCVisualCompoundManipulator, GraphicsCore)
 
-void GCVisualCompoundManipulator::createTypeInformation(PropertyInformationTyped<GCVisualCompoundManipulator> *,
-                                                        const PropertyInformationCreateData &)
+void GCVisualCompoundManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualCompoundManipulator> *,
+                                                        const Shift::PropertyInformationCreateData &)
   {
   }
 
@@ -70,7 +70,7 @@ GCVisualCompoundManipulator::GCVisualCompoundManipulator()
 bool GCVisualCompoundManipulator::hitTest(
     const QPoint &widgetSpacePoint,
     const GCCamera *camera,
-    const XVector3D &clickDirection, // in world space
+    const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked)
   {
@@ -94,7 +94,7 @@ bool GCVisualCompoundManipulator::hitTest(
   return *clicked != 0;
   }
 
-void GCVisualCompoundManipulator::render(const GCCamera *camera, XRenderer *r) const
+void GCVisualCompoundManipulator::render(const GCCamera *camera, Eks::Renderer *r) const
   {
   xForeach(auto m, walker<GCVisualManipulator>())
     {
@@ -125,8 +125,8 @@ void GCVisualCompoundManipulator::onMouseRelease(const MouseEvent &)
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualDragManipulator, GraphicsCore)
 
-void GCVisualDragManipulator::createTypeInformation(PropertyInformationTyped<GCVisualDragManipulator> *,
-                                                    const PropertyInformationCreateData &)
+void GCVisualDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualDragManipulator> *,
+                                                    const Shift::PropertyInformationCreateData &)
   {
   }
 
@@ -154,8 +154,8 @@ void GCVisualDragManipulator::onMouseRelease(const MouseEvent &)
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualClickManipulator, GraphicsCore)
 
-void GCVisualClickManipulator::createTypeInformation(PropertyInformationTyped<GCVisualClickManipulator> *,
-                                                     const PropertyInformationCreateData &)
+void GCVisualClickManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualClickManipulator> *,
+                                                     const Shift::PropertyInformationCreateData &)
   {
   }
 
@@ -183,13 +183,13 @@ void GCVisualClickManipulator::onMouseRelease(const MouseEvent &)
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCLinearDragManipulator, GraphicsCore)
 
-void GCLinearDragManipulator::createTypeInformation(PropertyInformationTyped<GCLinearDragManipulator> *info,
-                                                    const PropertyInformationCreateData &data)
+void GCLinearDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCLinearDragManipulator> *info,
+                                                    const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCLinearDragManipulator::lockMode, "lockMode");
-    info->add(&GCLinearDragManipulator::lockDirection, "lockDirection");
+    info->add(data, &GCLinearDragManipulator::lockMode, "lockMode");
+    info->add(data, &GCLinearDragManipulator::lockDirection, "lockDirection");
     }
   }
 
@@ -197,20 +197,20 @@ GCLinearDragManipulator::GCLinearDragManipulator()
   {
   }
 
-void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, XVector3D &rel)
+void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3D &rel)
   {
-  rel = XVector3D::Zero();
+  rel = Eks::Vector3D::Zero();
 
-  XVector3D focus = focalPoint();
-  const XVector3D &camPosition = e.cam->transform().translation();
+  Eks::Vector3D focus = focalPoint();
+  const Eks::Vector3D &camPosition = e.cam->transform().translation();
   float focalDistanceFromCamera = (camPosition - focus).norm();
 
   xuint32 lock = lockMode();
   if(lock == Linear)
     {
-    XLine p(focus, lockDirection(), XLine::PointAndDirection);
-    XLine a(camPosition, e.lastDirection, XLine::PointAndDirection);
-    XLine b(camPosition, e.direction, XLine::PointAndDirection);
+    Eks::Line p(focus, lockDirection(), Eks::Line::PointAndDirection);
+    Eks::Line a(camPosition, e.lastDirection, Eks::Line::PointAndDirection);
+    Eks::Line b(camPosition, e.direction, Eks::Line::PointAndDirection);
 
     float lastHitT = a.closestPointOn(p);
     float hitT = b.closestPointOn(p);
@@ -221,8 +221,8 @@ void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, XVector3D &rel)
     if(lastHitT > 0.0f && lastHitT < HUGE_VAL &&
        hitT > 0.0f && hitT < HUGE_VAL)
       {
-      XVector3D lastHit = a.sample(lastHitT);
-      XVector3D hit = b.sample(hitT);
+      Eks::Vector3D lastHit = a.sample(lastHitT);
+      Eks::Vector3D hit = b.sample(hitT);
 
       float lastPT = p.closestPointTo(lastHit);
       float pT = p.closestPointTo(hit);
@@ -238,19 +238,19 @@ void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, XVector3D &rel)
     }
   else if(lock == Planar)
     {
-    XPlane p(focus, lockDirection());
-    XLine a(camPosition, e.lastDirection, XLine::PointAndDirection);
-    XLine b(camPosition, e.direction, XLine::PointAndDirection);
+    Eks::Plane p(focus, lockDirection());
+    Eks::Line a(camPosition, e.lastDirection, Eks::Line::PointAndDirection);
+    Eks::Line b(camPosition, e.direction, Eks::Line::PointAndDirection);
 
-    XVector3D lastHit = a.sample(p.intersection(a));
-    XVector3D hit = b.sample(p.intersection(b));
+    Eks::Vector3D lastHit = a.sample(p.intersection(a));
+    Eks::Vector3D hit = b.sample(p.intersection(b));
 
     rel = hit - lastHit;
     }
   else // Free.
     {
-    XVector3D a = camPosition + e.lastDirection*focalDistanceFromCamera;
-    XVector3D b = camPosition + e.direction*focalDistanceFromCamera;
+    Eks::Vector3D a = camPosition + e.lastDirection*focalDistanceFromCamera;
+    Eks::Vector3D b = camPosition + e.direction*focalDistanceFromCamera;
 
     rel = b - a;
     }

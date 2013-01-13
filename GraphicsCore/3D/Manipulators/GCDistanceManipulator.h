@@ -3,8 +3,8 @@
 
 #include "GCGlobal.h"
 #include "GCManipulator.h"
-#include "sbaseproperties.h"
-#include "sbasepointerproperties.h"
+#include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sbasepointerproperties.h"
 
 class GRAPHICSCORE_EXPORT GCDistanceManipulator : public GCLinearDragManipulator
   {
@@ -13,18 +13,18 @@ class GRAPHICSCORE_EXPORT GCDistanceManipulator : public GCLinearDragManipulator
 public:
   GCDistanceManipulator();
 
-  FloatProperty distance;
-  FloatProperty scaleFactor;
+  Shift::FloatProperty distance;
+  Shift::FloatProperty scaleFactor;
 
   // displacement moved from click point in local space
-  Vector3DProperty absoluteDisplacement;
+  Shift::Vector3DProperty absoluteDisplacement;
 
-  void addDriven(FloatProperty *in);
+  void addDriven(Shift::FloatProperty *in);
 
   void onDrag(const MouseMoveEvent &);
 
 private:
-  QVector <FloatProperty *> _driven;
+  QVector <Shift::FloatProperty *> _driven;
   };
 
 S_PROPERTY_INTERFACE(GCDistanceManipulator);

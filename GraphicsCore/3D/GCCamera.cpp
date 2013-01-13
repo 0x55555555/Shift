@@ -66,7 +66,7 @@ void GCViewableTransform::createTypeInformation(
       };
 
     auto transformInfo = info->child(&GCViewableTransform::transform);
-    transformInfo->setAffects(data, affects);
+    transformInfo->setAffects(data, affects, X_ARRAY_COUNT(affects));
     }
 
   if(data.registerInterfaces)

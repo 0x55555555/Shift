@@ -11,8 +11,8 @@ public:
   GCButtonManipulator();
   ~GCButtonManipulator();
 
-  BoolProperty checked;
-  BoolProperty checkable;
+  Shift::BoolProperty checked;
+  Shift::BoolProperty checkable;
 
   virtual void onClick();
   };

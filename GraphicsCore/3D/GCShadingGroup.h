@@ -21,10 +21,11 @@ public:
   GCShaderPointer shader;
   };
 
-S_PROPERTY_INTERFACE(GCShadingGroup)
-
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShadingGroupPointer, GCShadingGroup);
 
 S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCShadingGroupPointerArray, GCShadingGroupPointer);
+
+S_PROPERTY_INTERFACE(GCShadingGroup)
+S_PROPERTY_INTERFACE(GCShadingGroupPointerArray)
 
 #endif // GCSHADINGGROUP_H

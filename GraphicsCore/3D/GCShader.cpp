@@ -23,43 +23,42 @@ void GCFragmentShaderComponent::createTypeInformation(Shift::PropertyInformation
 
 S_IMPLEMENT_PROPERTY(GCVertexShaderComponent, GraphicsCore)
 
-void GCVertexShaderComponent::createTypeInformation(PropertyInformationTyped<GCVertexShaderComponent> *,
-                                                    const PropertyInformationCreateData &)
+void GCVertexShaderComponent::createTypeInformation(Shift::PropertyInformationTyped<GCVertexShaderComponent> *,
+                                                    const Shift::PropertyInformationCreateData &)
   {
   }
 
-S_IMPLEMENT_PROPERTY(GCStaticShader, GraphicsCore)
+S_IMPLEMENT_PROPERTY(GCShader, GraphicsCore)
 
-void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
+void GCShader::createTypeInformation(Shift::PropertyInformationTyped<GCShader> *info,
+                                     const Shift::PropertyInformationCreateData &data)
   {
-  GCRuntimeShader::ComputeLock lock(&shader->runtimeShaderCore);
-
-  lock.data()->clear();
-
-  xForeach(auto cmp, shader->walker<GCShaderComponent>())
+  if(data.registerAttributes)
     {
-    XAbstractShader::ComponentType t;
-    if(cmp->castTo<GCFragmentShaderComponent>())
-      {
-      t = XAbstractShader::Fragment;
-      }
-    else if(cmp->castTo<GCVertexShaderComponent>())
-      {
-      t = XAbstractShader::Vertex;
-      }
-    else
-      {
-      xAssertFail();
-      }
-    lock.data()->addComponent(t, cmp->value());
+    auto rtInfoCore = info->add(&GCShader::runtimeShaderCore, "runtimeShaderCore");
+    rtInfoCore->setCompute<computeShaderRuntime>();
+
+    info->add(&GCShader::vertex, "vertex");
+    info->add(&GCShader::fragment, "fragment");
+
+    auto rtInfo = info->add(&GCShader::runtimeShader, "runtimeShader");
+    rtInfo->setCompute<setupShaderRuntime>();
     }
   }
 
-void GCStaticShader::setupShaderRuntime(GCStaticShader *shader)
+void GCShader::computeShaderRuntime(GCShader *shader)
+  {
+  GCRuntimeShader::ComputeLock lock(&shader->runtimeShaderCore);
+
+  lock.data()->~Shader();
+  new(lock.data()) Eks::Shader(renderer, &vertex(), &fragment());
+  }
+
+void GCShader::setupShaderRuntime(GCShader *shader)
   {
   GCRuntimeShaderInstance::ComputeLock lock(&shader->runtimeShader);
 
-  lock.data()->instance = (XShader*)&shader->runtimeShaderCore();
+  lock.data()->instance = (Eks::Shader*)&shader->runtimeShaderCore();
   xForeach(auto p, shader->walkerFrom((Property*)&shader->runtimeShaderCore))
     {
     const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
@@ -70,84 +69,7 @@ void GCStaticShader::setupShaderRuntime(GCStaticShader *shader)
     }
   }
 
-void GCStaticShader::createTypeInformation(PropertyInformationTyped<GCStaticShader> *info,
-                                     const PropertyInformationCreateData &data)
-  {
-  if(data.registerAttributes)
-    {
-    auto rtInfoCore = info->add(&GCStaticShader::runtimeShaderCore, "runtimeShaderCore");
-    rtInfoCore->setCompute<computeShaderRuntime>();
-
-    auto rtInfo = info->add(&GCStaticShader::runtimeShader, "runtimeShader");
-    rtInfo->setCompute<setupShaderRuntime>();
-    }
-  }
-
-void GCStaticShader::bind(XRenderer *r) const
+void GCShader::bind(XRenderer *r) const
   {
   r->setShader(runtimeShader().instance);
-  }
-
-
-S_IMPLEMENT_PROPERTY(GCShader, GraphicsCore)
-
-void GCShader::computeShaderRuntime(GCShader *shader)
-  {
-  GCRuntimeShader::ComputeLock lock(&shader->runtimeShaderCore);
-
-  lock.data()->clear();
-
-  xForeach(auto cmpPtr, shader->components.walker<GCShaderComponentPointer>())
-    {
-    const GCShaderComponent* cmp = cmpPtr->pointed();
-    if(cmp)
-      {
-      XAbstractShader::ComponentType t;
-      if(cmp->castTo<GCFragmentShaderComponent>())
-        {
-        t = XAbstractShader::Fragment;
-        }
-      else if(cmp->castTo<GCVertexShaderComponent>())
-        {
-        t = XAbstractShader::Vertex;
-        }
-      else
-        {
-        xAssertFail();
-        }
-      lock.data()->addComponent(t, cmp->value());
-      }
-    }
-  }
-
-void GCShader::setupShaderRuntime(GCShader *shader)
-  {
-  GCRuntimeShaderInstance::ComputeLock lock(&shader->runtimeShader);
-
-  lock.data()->instance = (XShader*)&shader->runtimeShaderCore();
-  xForeach(auto p, shader->walkerFrom((Property*)&shader->components))
-    {
-    const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
-    if(binder)
-      {
-      binder->bindData(lock.data()->instance, p);
-      }
-    }
-  }
-
-
-void GCShader::createTypeInformation(PropertyInformationTyped<GCShader> *info,
-                                     const PropertyInformationCreateData &data)
-  {
-  if(data.registerAttributes)
-    {
-    auto rtInfoCore = info->child(&GCShader::runtimeShaderCore);
-    rtInfoCore->setCompute<computeShaderRuntime>();
-
-    auto rtInfo = info->child(&GCShader::runtimeShader);
-    rtInfo->setCompute<setupShaderRuntime>();
-
-    auto comInfo = info->add(&GCShader::components, "components");
-    comInfo->setAffects(rtInfo);
-    }
   }

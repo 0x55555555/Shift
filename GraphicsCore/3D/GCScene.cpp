@@ -74,7 +74,7 @@ void GCManipulatableScene::createTypeInformation(
     manInfo->setCompute<computeManips>();
 
     auto selInfo = info->add(data, &GCManipulatableScene::selection, "selection");
-    selInfo->setAffects(manInfo);
+    selInfo->setAffects(data, manInfo);
     }
   }
 
@@ -126,10 +126,12 @@ void GCManipulatableScene::initialise(Eks::Renderer *r)
     lines,
     X_ARRAY_COUNT(lines));
 
+#if 0
   if(!Eks::ShaderManager::findShader(kPlainColour, &_shader, &_shaderLayout))
     {
     xAssertFail();
     }
+#endif
   }
 
 void GCManipulatableScene::clearManipulators()
@@ -168,36 +170,38 @@ void GCManipulatableScene::render(Eks::Renderer *x, const RenderState &state) co
     {
     x->setViewTransform(cameraTransform());
 
+    xAssertFail();
+    /*
     x->setShader(_shader, _shaderLayout);
-    xForeach(auto m, selection.walker<Pointer>())
+    xForeach(auto m, selection.walker<Shift::Pointer>())
       {
       const GCRenderable* ren = m->pointed<GCRenderable>();
 
       if(ren)
         {
-        XCuboid bounds = ren->bounds();
+        Eks::Cuboid bounds = ren->bounds();
         bounds.expand(0.015f);
 
-        XTransform trans = XTransform::Identity();
-        trans.scale(bounds.size().toVector3D());
+        Eks::Transform trans = Eks::Transform::Identity();
+        trans.scale(bounds.size());
         trans.pretranslate(bounds.minimum());
 
-        x->pushTransform(trans);
-        x->drawGeometry(_bounds);
-        x->popTransform();
+        Eks::Transform fullTransform = state.transform * trans;
+
+        x->setTransform(fullTransform);
+        //x->drawGeometry(_bounds);
         }
       }
 
     if(!manipulators.isEmpty())
       {
-      x->clear(XRenderer::ClearDepth);
+      x->clear(Eks::Renderer::ClearDepth);
 
       xForeach(auto m, manipulators.walker<GCVisualManipulator>())
         {
         m->render(cam, x);
         }
-      }
-    x->popTransform();
+      }*/
     }
   }
 
@@ -294,7 +298,7 @@ GCManipulatableScene::UsedFlags GCManipulatableScene::mouseEvent(const MouseEven
 
 GCManipulatableScene::UsedFlags GCManipulatableScene::wheelEvent(const WheelEvent &w)
   {
-  return XCameraCanvasController::wheelEvent(w);
+  return Eks::CameraCanvasController::wheelEvent(w);
   }
 
 
@@ -369,7 +373,7 @@ void GCManipulatableScene::raySelect(const Eks::Vector3D &dir)
   InternalSelector interface(camPos);
   GCRenderArray::intersect(line, &interface);
 
-  SBlock b(database());
+  Shift::Block b(database());
   selection.clear();
 
   if(interface.hit().object)

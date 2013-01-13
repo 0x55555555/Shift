@@ -17,29 +17,24 @@ void GCShadingGroup::createTypeInformation(Shift::PropertyInformationTyped<GCSha
     {
     info->add(data, &GCShadingGroup::shader, "shader");
     }
-
-  if(data.registerInterfaces)
-    {
-    info->addInheritedInterface<GCManipulatable>();
-    }
   }
 
 GCShadingGroup::GCShadingGroup()
   {
   }
 
-void GCShadingGroup::render(Eks::Renderer *r, const RenderState &) const
+void GCShadingGroup::render(Eks::Renderer *r, const RenderState &state) const
   {
-  const GCStaticShader *s = shader.pointed();
+  const GCShader *s = shader.pointed();
   if(s)
     {
     s->bind(r);
     }
 
-  GCRenderArray::render(r, s);
+  GCRenderArray::render(r, state);
   }
 
-void GCShadingGroup::addManipulators(PropertyArray *, const GCTransform *)
+void GCShadingGroup::addManipulators(Shift::PropertyArray *, const GCTransform *)
   {/*
   xAssert(tr == 0);
   //a->add<GCButtonManipulator>();

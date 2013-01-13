@@ -3,6 +3,7 @@
 
 #include "sbaseproperties.h"
 #include "3D/GCTexture.h"
+#include "3D/GCShadingGroup.h"
 #include "3D/GCShaderDataBindings.h"
 #include "spropertyinformationhelpers.h"
 
@@ -20,6 +21,8 @@ void initiate()
 
   PropertyInformation *texInfo = const_cast<PropertyInformation *>(GCTexturePointer::staticTypeInformation());
   texInfo->addStaticInterface(new GCShaderDataBindings::TextureRef);
+
+  Interface::addInheritedInterface<GCShadingGroup, GCManipulatable>();
   }
 
 PropertyGroup &propertyGroup()
