@@ -66,7 +66,7 @@ QImage MCMathsOperation::asQImage(const Eks::VectorI2D &pt, xuint32 scale, xuint
   return im;
   }
 
-bool MCMathsOperation::saveResultToFile(QString filename)
+bool MCMathsOperation::saveResultToFile(QString)
   {
   xAssertFail();
   /*QImage im = asQImage();

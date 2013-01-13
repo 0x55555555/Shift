@@ -15,7 +15,7 @@ class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
 
   template <typename T> GCShadingGroup *addMaterial(T **matOut = 0)
     {
-    XOptionalPointer<T> mat(matOut);
+    XOptional<T> mat(matOut);
 
     GCShadingGroup* grp = addChild<GCShadingGroup>();
     renderGroup.addPointer(grp);
