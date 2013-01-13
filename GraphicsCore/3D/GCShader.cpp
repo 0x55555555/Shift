@@ -1,8 +1,7 @@
 #include "GCShader.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XRenderer.h"
-#include "sprocessmanager.h"
-#include "shandlerimpl.h"
+#include "shift/Changes/shandler.inl"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCShaderComponentPointer, GraphicsCore)
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCShaderPointer, GraphicsCore)
@@ -10,19 +9,15 @@ S_IMPLEMENT_TYPED_POINTER_ARRAY_TYPE(GCShaderComponentPointerArray, GraphicsCore
 
 S_IMPLEMENT_PROPERTY(GCShaderComponent, GraphicsCore)
 
-void GCShaderComponent::createTypeInformation(PropertyInformationTyped<GCShaderComponent> *,
-                                              const PropertyInformationCreateData &)
-  {
-  }
-
-GCShaderComponent::GCShaderComponent()
+void GCShaderComponent::createTypeInformation(Shift::PropertyInformationTyped<GCShaderComponent> *,
+                                              const Shift::PropertyInformationCreateData &)
   {
   }
 
 S_IMPLEMENT_PROPERTY(GCFragmentShaderComponent, GraphicsCore)
 
-void GCFragmentShaderComponent::createTypeInformation(PropertyInformationTyped<GCFragmentShaderComponent> *,
-                                                      const PropertyInformationCreateData &)
+void GCFragmentShaderComponent::createTypeInformation(Shift::PropertyInformationTyped<GCFragmentShaderComponent> *,
+                                                      const Shift::PropertyInformationCreateData &)
   {
   }
 

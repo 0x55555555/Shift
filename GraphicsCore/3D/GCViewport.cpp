@@ -1,21 +1,17 @@
 #include "GCViewport.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 S_IMPLEMENT_PROPERTY(GCViewport, GraphicsCore)
 
-void GCViewport::createTypeInformation(PropertyInformationTyped<GCViewport> *info,
-                                       const PropertyInformationCreateData &data)
+void GCViewport::createTypeInformation(Shift::PropertyInformationTyped<GCViewport> *info,
+                                       const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto xInst = info->add(&GCViewport::x, "x");
-    xInst->setMode(PropertyInstanceInformation::Output);
+    auto xInst = info->add(data, &GCViewport::x, "x");
+    xInst->setMode(Shift::PropertyInstanceInformation::Output);
 
-    auto yInst = info->add(&GCViewport::y, "y");
-    yInst->setMode(PropertyInstanceInformation::Output);
+    auto yInst = info->add(data, &GCViewport::y, "y");
+    yInst->setMode(Shift::PropertyInstanceInformation::Output);
     }
-  }
-
-GCViewport::GCViewport()
-  {
   }

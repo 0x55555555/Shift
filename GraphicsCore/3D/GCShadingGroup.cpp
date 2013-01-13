@@ -1,22 +1,21 @@
 #include "GCShadingGroup.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XGeometry.h"
 #include "XModeller.h"
 #include "XRenderer.h"
 #include "3D/Manipulators/GCButtonManipulator.h"
-#include "sprocessmanager.h"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCShadingGroupPointer, GraphicsCore)
 S_IMPLEMENT_TYPED_POINTER_ARRAY_TYPE(GCShadingGroupPointerArray, GraphicsCore)
 
 S_IMPLEMENT_PROPERTY(GCShadingGroup, GraphicsCore)
 
-void GCShadingGroup::createTypeInformation(PropertyInformationTyped<GCShadingGroup> *info,
-                                           const PropertyInformationCreateData &data)
+void GCShadingGroup::createTypeInformation(Shift::PropertyInformationTyped<GCShadingGroup> *info,
+                                           const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCShadingGroup::shader, "shader");
+    info->add(data, &GCShadingGroup::shader, "shader");
     }
 
   if(data.registerInterfaces)
@@ -29,7 +28,7 @@ GCShadingGroup::GCShadingGroup()
   {
   }
 
-void GCShadingGroup::render(XRenderer *r) const
+void GCShadingGroup::render(Eks::Renderer *r, const RenderState &) const
   {
   const GCStaticShader *s = shader.pointed();
   if(s)
@@ -37,7 +36,7 @@ void GCShadingGroup::render(XRenderer *r) const
     s->bind(r);
     }
 
-  GCRenderArray::render(r);
+  GCRenderArray::render(r, s);
   }
 
 void GCShadingGroup::addManipulators(PropertyArray *, const GCTransform *)

@@ -2,19 +2,19 @@
 #define GCTEXTURE_H
 
 #include "GCGlobal.h"
-#include "sentity.h"
-#include "sbaseproperties.h"
-#include "sbasepointerproperties.h"
+#include "shift/sentity.h"
+#include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "XTexture.h"
 
-class GRAPHICSCORE_EXPORT GCTexture : public PODPropertyBase<XTexture, GCTexture>
+class GRAPHICSCORE_EXPORT GCTexture : public Shift::PODPropertyBase<XTexture, GCTexture>
   {
   S_PROPERTY(GCTexture, Property, 0)
 
 public:
   GCTexture();
 
-  static void assignProperty(const Property *, Property *)
+  static void assignProperty(const Shift::Property *, Shift::Property *)
     {
     xAssertFail();
     }

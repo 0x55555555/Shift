@@ -22,7 +22,13 @@ public:
 
   GCBoundingBox bounds;
 
-  virtual void render(Eks::Renderer *) const = 0;
+  class RenderState
+    {
+  public:
+    Eks::Transform transform;
+    };
+
+  virtual void render(Eks::Renderer *r, const RenderState &state) const = 0;
 
   class Selector
     {
@@ -34,7 +40,6 @@ public:
   virtual void intersect(const Eks::Frustum &frus, Selector *);
   };
 
-S_PROPERTY_INTERFACE(GCRenderable)
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCRenderablePointer, GCRenderable)
 S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCRenderablePointerArray, GCRenderablePointer)
 
@@ -45,13 +50,15 @@ class GRAPHICSCORE_EXPORT GCRenderArray : public GCRenderable
 public:
   GCRenderablePointerArray renderGroup;
 
-  virtual void render(Eks::Renderer *) const;
+  virtual void render(Eks::Renderer *, const RenderState &state) const;
 
   virtual void intersect(const Eks::Line &line, Selector *);
   virtual void intersect(const Eks::Frustum &frus, Selector *);
   };
 
+S_PROPERTY_INTERFACE(GCRenderable)
 S_PROPERTY_INTERFACE(GCRenderArray)
+S_PROPERTY_INTERFACE(GCRenderablePointerArray)
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCRenderArrayPointer, GCRenderArray)
 
 #endif // GCRENDERABLE_H

@@ -2,7 +2,7 @@
 #define GCVIEWPORT_H
 
 #include "GCGlobal.h"
-#include "sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.h"
 #include "GCScreenRenderTarget.h"
 
 class GRAPHICSCORE_EXPORT GCViewport : public GCScreenRenderTarget
@@ -10,10 +10,8 @@ class GRAPHICSCORE_EXPORT GCViewport : public GCScreenRenderTarget
   S_ENTITY(GCViewport, GCScreenRenderTarget, 0)
 
 public:
-  GCViewport();
-
-  UnsignedIntProperty x;
-  UnsignedIntProperty y;
+  Shift::UnsignedIntProperty x;
+  Shift::UnsignedIntProperty y;
   };
 
 S_PROPERTY_INTERFACE(GCViewport)

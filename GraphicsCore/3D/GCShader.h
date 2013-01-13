@@ -2,25 +2,23 @@
 #define GCSHADER_H
 
 #include "GCGlobal.h"
-#include "sentity.h"
-#include "sbaseproperties.h"
-#include "sbasepointerproperties.h"
+#include "shift/sentity.h"
+#include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "XShader.h"
 #include "GCBaseProperties.h"
 
-class GCShaderBindableData : public StaticInterfaceBase
+class GCShaderBindableData : public Shift::StaticInterfaceBase
   {
   S_STATIC_INTERFACE_TYPE(GCShaderBindableData, GCShaderBindableInterface)
 public:
-  GCShaderBindableData(bool deleteOnNoReferences) : StaticInterfaceBase(deleteOnNoReferences) { }
-  virtual void bindData(XShader *, const Property *) const = 0;
+  virtual void bindData(Eks::Shader *, const Shift::Property *) const = 0;
   };
 
-class GRAPHICSCORE_EXPORT GCShaderComponent : public StringProperty
+class GRAPHICSCORE_EXPORT GCShaderComponent : public Shift::StringProperty
   {
   S_ENTITY(GCShaderComponent, StringProperty, 0)
 public:
-  GCShaderComponent();
   };
 
 S_PROPERTY_INTERFACE(GCShaderComponent)
@@ -43,12 +41,12 @@ S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShaderComponentPointer, GCShaderComp
 
 S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCShaderComponentPointerArray, GCShaderComponentPointer);
 
-class GRAPHICSCORE_EXPORT GCStaticShader : public Entity
+class GRAPHICSCORE_EXPORT GCStaticShader : public Shift::Entity
   {
-  S_ENTITY(GCStaticShader, Entity, 0)
+  S_ENTITY(GCStaticShader, Shift::Entity, 0)
 public:
 
-  void bind(XRenderer *r) const;
+  void bind(Eks::Renderer *r) const;
   GCRuntimeShaderInstance runtimeShader;
 
 protected:

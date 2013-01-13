@@ -3,7 +3,7 @@
 
 #include "GCGlobal.h"
 #include "GCRenderable.h"
-#include "sbasepointerproperties.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "GCShader.h"
 #include "Manipulators/GCManipulator.h"
 
@@ -14,9 +14,9 @@ class GRAPHICSCORE_EXPORT GCShadingGroup : public GCRenderArray, public GCManipu
 public:
   GCShadingGroup();
 
-  void render(XRenderer *r) const;
+  void render(Eks::Renderer *r, const RenderState &) const;
 
-  virtual void addManipulators(PropertyArray *, const GCTransform *tr=0);
+  virtual void addManipulators(Shift::PropertyArray *, const GCTransform *tr=0);
 
   GCShaderPointer shader;
   };

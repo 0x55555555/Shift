@@ -3,13 +3,18 @@
 
 #include "GCGlobal.h"
 #include "GCTransform.h"
-#include "sbasepointerproperties.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "XCameraCanvasController.h"
 
-class XRenderer;
-class XPlane;
+namespace Eks
+{
+class Renderer;
+class Plane;
+}
 
-class GRAPHICSCORE_EXPORT GCViewableTransform : public GCTransform, public XCameraCanvasController::CameraInterface
+class GRAPHICSCORE_EXPORT GCViewableTransform
+    : public GCTransform,
+    public Eks::CameraCanvasController::CameraInterface
   {
   S_ABSTRACT_ENTITY(GCViewableTransform, GCTransform, 0)
 
@@ -19,45 +24,48 @@ XProperties:
 public:
   GCViewableTransform();
 
-  Vector3DProperty upVector;
-  FloatProperty focalDistance;
+  Shift::Vector3DProperty upVector;
+  Shift::FloatProperty focalDistance;
 
   ComplexTransformProperty projection;
   ComplexTransformProperty inverseProjection;
 
-  UnsignedIntProperty viewportX;
-  UnsignedIntProperty viewportY;
-  UnsignedIntProperty viewportWidth;
-  UnsignedIntProperty viewportHeight;
+  Shift::UnsignedIntProperty viewportX;
+  Shift::UnsignedIntProperty viewportY;
+  Shift::UnsignedIntProperty viewportWidth;
+  Shift::UnsignedIntProperty viewportHeight;
 
   // inverse of transform
   TransformProperty viewTransform;
 
-  void setPosition(float x, float y, float z) {setPosition(XVector3D(x, y, z)); }
-  void setPosition(const XVector3D &point);
+  void setPosition(float x, float y, float z) {setPosition(Eks::Vector3D(x, y, z)); }
+  void setPosition(const Eks::Vector3D &point);
 
-  void setFocalPoint(float x, float y, float z) {setFocalPoint(XVector3D(x, y, z)); }
-  void setFocalPoint(const XVector3D &point);
-  static XTransform calculateTransform(const XVector3D &camPos, const XVector3D &camAimPos, const XVector3D &upVector);
-  XVector3D focalPoint() const;
+  void setFocalPoint(float x, float y, float z) {setFocalPoint(Eks::Vector3D(x, y, z)); }
+  void setFocalPoint(const Eks::Vector3D &point);
+  static Eks::Transform calculateTransform(
+    const Eks::Vector3D &camPos,
+    const Eks::Vector3D &camAimPos,
+    const Eks::Vector3D &upVector);
+  Eks::Vector3D focalPoint() const;
 
   void approximatePixelSizeAtDistance(float distance, float &x, float &y) const;
-  XTransform getPixelScaleFacingTransform(const XVector3D &worldPosition) const;
+  Eks::Transform getPixelScaleFacingTransform(const Eks::Vector3D &worldPosition) const;
 
   bool unitViewportCoordinates(xuint32 x, xuint32 y, float &xUnit, float &yUnit) const;
   bool screenViewportCoordinates(float xUnit, float yUnit, float &x, float &y) const;
 
-  bool screenSpaceFromWorldSpace(const XVector3D &worldPos, XVector3D &coord);
+  bool screenSpaceFromWorldSpace(const Eks::Vector3D &worldPos, Eks::Vector3D &coord);
 
-  XVector3D worldSpaceInPlaneFromScreenSpace(xuint32 x, xuint32 y, const XPlane& plane) const;
-  XVector3D worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const;
-  virtual XVector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const = 0;
+  Eks::Vector3D worldSpaceInPlaneFromScreenSpace(xuint32 x, xuint32 y, const Eks::Plane& plane) const;
+  Eks::Vector3D worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const;
+  virtual Eks::Vector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const = 0;
 
   void zoom(float factor, float x, float y);
   void track(float x, float y);
   void dolly(float x, float y);
   void pan(float x, float y);
-  void rotateAboutPoint(const XVector3D &point, float x, float y);
+  void rotateAboutPoint(const Eks::Vector3D &point, float x, float y);
   };
 
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCViewableTransformPointer, GCViewableTransform)
@@ -75,12 +83,12 @@ class GRAPHICSCORE_EXPORT GCPerspectiveCamera : public GCCamera
   S_ENTITY(GCPerspectiveCamera, GCCamera, 0)
 
 public:
-  XVector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const;
+  Eks::Vector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const;
 
-  FloatProperty fieldOfView;
+  Shift::FloatProperty fieldOfView;
 
-  FloatProperty nearClip;
-  FloatProperty farClip;
+  Shift::FloatProperty nearClip;
+  Shift::FloatProperty farClip;
   };
 
 S_PROPERTY_INTERFACE(GCPerspectiveCamera)

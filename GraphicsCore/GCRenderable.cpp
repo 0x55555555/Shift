@@ -59,7 +59,7 @@ void GCRenderArray::createTypeInformation(Shift::PropertyInformationTyped<GCRend
     }
   }
 
-void GCRenderArray::render(Eks::Renderer *renderer) const
+void GCRenderArray::render(Eks::Renderer *renderer, const RenderState &state) const
   {
   xForeach(auto r, renderGroup.walker<GCRenderablePointer>())
     {
@@ -70,7 +70,7 @@ void GCRenderArray::render(Eks::Renderer *renderer) const
       continue;
       }
     
-    ptd->render(renderer);
+    ptd->render(renderer, state);
     }
   }
 

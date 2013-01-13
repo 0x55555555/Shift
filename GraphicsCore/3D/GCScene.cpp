@@ -1,24 +1,22 @@
 #include "GCScene.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Utilities/siterator.h"
 #include "XShader.h"
 #include "XRenderer.h"
-#include "XMatrix4x4"
-#include "siterator.h"
-#include "sprocessmanager.h"
+#include "XMathMatrix"
 #include "XLine.h"
-#include "QVarLengthArray"
 #include "XCuboid.h"
 
 S_IMPLEMENT_PROPERTY(GCScene, GraphicsCore)
 
-void GCScene::createTypeInformation(PropertyInformationTyped<GCScene> *info,
-                                    const PropertyInformationCreateData &data)
+void GCScene::createTypeInformation(Shift::PropertyInformationTyped<GCScene> *info,
+                                    const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCScene::activeCamera, "activeCamera");
-    info->add(&GCScene::cameraTransform, "cameraTransform");
-    info->add(&GCScene::cameraProjection, "cameraProjection");
+    info->add(data, &GCScene::activeCamera, "activeCamera");
+    info->add(data, &GCScene::cameraTransform, "cameraTransform");
+    info->add(data, &GCScene::cameraProjection, "cameraProjection");
     }
 
   if(data.registerInterfaces)
@@ -35,24 +33,21 @@ void GCScene::createTypeInformation(PropertyInformationTyped<GCScene> *info,
     }
   }
 
-GCScene::GCScene() : XCameraCanvasController(0)
+GCScene::GCScene() : Eks::CameraCanvasController(0)
   {
   }
 
-XCameraCanvasController::CameraInterface *GCScene::camera()
+Eks::CameraCanvasController::CameraInterface *GCScene::camera()
   {
   return activeCamera.pointed();
   }
 
-void GCScene::render(XRenderer *r) const
+void GCScene::render(Eks::Renderer *r, const RenderState &state) const
   {
   r->setProjectionTransform(cameraProjection());
+  r->setViewTransform(cameraTransform());
 
-  r->pushTransform(cameraTransform());
-
-  GCRenderArray::render(r);
-
-  r->popTransform();
+  GCRenderArray::render(r, state);
   }
 
 void GCScene::setCamera(GCViewableTransform *e)
@@ -69,32 +64,43 @@ void computeManips(GCManipulatableScene *s)
   s->refreshManipulators();
   }
 
-void GCManipulatableScene::createTypeInformation(PropertyInformationTyped<GCManipulatableScene> *info,
-                                                 const PropertyInformationCreateData &data)
+void GCManipulatableScene::createTypeInformation(
+    Shift::PropertyInformationTyped<GCManipulatableScene> *info,
+    const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto manInfo = info->add(&GCManipulatableScene::manipulators, "manipulators");
+    auto manInfo = info->add(data, &GCManipulatableScene::manipulators, "manipulators");
     manInfo->setCompute<computeManips>();
 
-    auto selInfo = info->add(&GCManipulatableScene::selection, "selection");
+    auto selInfo = info->add(data, &GCManipulatableScene::selection, "selection");
     selInfo->setAffects(manInfo);
     }
   }
 
 GCManipulatableScene::GCManipulatableScene() : _currentManipulator(0), _mouseSelecting(false)
   {
-  XVector3D points[] = {
-    XVector3D(0, 0, 0),
-    XVector3D(1, 0, 0),
-    XVector3D(0, 1, 0),
-    XVector3D(1, 1, 0),
-    XVector3D(0, 0, 1),
-    XVector3D(1, 0, 1),
-    XVector3D(0, 1, 1),
-    XVector3D(1, 1, 1)
+  }
+
+void GCManipulatableScene::initialise(Eks::Renderer *r)
+  {
+  Eks::Vector3D vertices[] = {
+    Eks::Vector3D(0, 0, 0),
+    Eks::Vector3D(1, 0, 0),
+    Eks::Vector3D(0, 1, 0),
+    Eks::Vector3D(1, 1, 0),
+    Eks::Vector3D(0, 0, 1),
+    Eks::Vector3D(1, 0, 1),
+    Eks::Vector3D(0, 1, 1),
+    Eks::Vector3D(1, 1, 1)
   };
-  _bounds.setAttribute("vertex", points, X_ARRAY_COUNT(points));
+
+  Eks::Geometry::delayedCreate(
+    _bounds,
+    r,
+    vertices,
+    sizeof(vertices[0]),
+    X_ARRAY_COUNT(vertices));
 
 
   xuint32 lines[] = {
@@ -113,10 +119,17 @@ GCManipulatableScene::GCManipulatableScene() : _currentManipulator(0), _mouseSel
     2, 6,
     3, 7
   };
-  _bounds.setLines(lines, X_ARRAY_COUNT(lines));
+  Eks::IndexGeometry::delayedCreate(
+    _boundIndices,
+    r,
+    Eks::IndexGeometry::Unsigned16,
+    lines,
+    X_ARRAY_COUNT(lines));
 
-  _boundsShader.setToDefinedType("plainColour");
-  _boundsShader.getVariable("colour")->setValue(XColour(1.0f, 1.0f, 1.0f));
+  if(!Eks::ShaderManager::findShader(kPlainColour, &_shader, &_shaderLayout))
+    {
+    xAssertFail();
+    }
   }
 
 void GCManipulatableScene::clearManipulators()
@@ -126,7 +139,7 @@ void GCManipulatableScene::clearManipulators()
 
 void GCManipulatableScene::refreshManipulators()
   {
-  SBlock b(handler());
+  Shift::Block b(handler());
 
   clearManipulators();
 
@@ -145,17 +158,17 @@ void GCManipulatableScene::refreshManipulators()
     }
   }
 
-void GCManipulatableScene::render(XRenderer *x) const
+void GCManipulatableScene::render(Eks::Renderer *x, const RenderState &state) const
   {
-  GCScene::render(x);
+  GCScene::render(x, state);
 
   const GCCamera *cam = activeCamera();
   xAssert(cam);
   if(cam)
     {
-    x->pushTransform(cameraTransform());
+    x->setViewTransform(cameraTransform());
 
-    x->setShader(&_boundsShader);
+    x->setShader(_shader, _shaderLayout);
     xForeach(auto m, selection.walker<Pointer>())
       {
       const GCRenderable* ren = m->pointed<GCRenderable>();
@@ -190,7 +203,7 @@ void GCManipulatableScene::render(XRenderer *x) const
 
 GCManipulatableScene::UsedFlags GCManipulatableScene::mouseEvent(const MouseEvent &e)
   {
-  UsedFlags parentFlags = XCameraCanvasController::mouseEvent(e).hasFlag(Used);
+  UsedFlags parentFlags = Eks::CameraCanvasController::mouseEvent(e).hasFlag(Used);
   if(parentFlags.hasFlag(Used))
     {
     return parentFlags;
@@ -207,7 +220,7 @@ GCManipulatableScene::UsedFlags GCManipulatableScene::mouseEvent(const MouseEven
 
   if(!isMouseSelecting())
     {
-    if(!_currentManipulator && e.type == XAbstractCanvasController::Press && e.modifiers == Qt::NoModifier && e.triggerButton == Qt::LeftButton)
+    if(!_currentManipulator && e.type == Eks::AbstractCanvasController::Press && e.modifiers == Qt::NoModifier && e.triggerButton == Qt::LeftButton)
       {
       float chosenDistance = HUGE_VAL;
       GCVisualManipulator *chosenManip = 0;
@@ -231,21 +244,21 @@ GCManipulatableScene::UsedFlags GCManipulatableScene::mouseEvent(const MouseEven
 
     if(_currentManipulator)
       {
-      if(e.type == XAbstractCanvasController::Press)
+      if(e.type == Eks::AbstractCanvasController::Press)
         {
         _currentManipulator->onMouseClick(manipEv);
         }
-      else if(e.type == XAbstractCanvasController::Release)
+      else if(e.type == Eks::AbstractCanvasController::Release)
         {
         _currentManipulator->onMouseRelease(manipEv);
         _currentManipulator = 0;
         }
-      else if(e.type == XAbstractCanvasController::DoubleClick)
+      else if(e.type == Eks::AbstractCanvasController::DoubleClick)
         {
         _currentManipulator->onMouseDoubleClick(manipEv);
         // reset current manip?
         }
-      else if(e.type == XAbstractCanvasController::Move)
+      else if(e.type == Eks::AbstractCanvasController::Move)
         {
         manipEv.lastDirection = manipEv.cam->worldSpaceFromScreenSpace(e.lastPoint.x(), e.lastPoint.y());
         manipEv.lastDirection -= manipEv.cam->transform().translation();
@@ -285,20 +298,20 @@ GCManipulatableScene::UsedFlags GCManipulatableScene::wheelEvent(const WheelEven
   }
 
 
-void GCManipulatableScene::beginMouseSelection(const XVector3D &sel)
+void GCManipulatableScene::beginMouseSelection(const Eks::Vector3D &sel)
   {
   _mouseSelecting = true;
   _hasMouseMoved = false;
   _initialRay = sel;
   }
 
-void GCManipulatableScene::moveMouseSelection(const XVector3D &sel)
+void GCManipulatableScene::moveMouseSelection(const Eks::Vector3D &sel)
   {
   _hasMouseMoved = true;
   _finalRay = sel;
   }
 
-void GCManipulatableScene::endMouseSelection(const XVector3D &sel)
+void GCManipulatableScene::endMouseSelection(const Eks::Vector3D &sel)
   {
   _mouseSelecting = false;
   _finalRay = sel;
@@ -319,11 +332,11 @@ bool GCManipulatableScene::isMouseSelecting() const
   return _mouseSelecting;
   }
 
-void GCManipulatableScene::raySelect(const XVector3D &dir)
+void GCManipulatableScene::raySelect(const Eks::Vector3D &dir)
   {
   const float farDist = 1000.0f;
-  const XVector3D& camPos = cameraTransform().inverse().translation();
-  XLine line(camPos, camPos + (dir * farDist));
+  const Eks::Vector3D& camPos = cameraTransform().inverse().translation();
+  Eks::Line line(camPos, camPos + (dir * farDist));
 
   class InternalSelector : public GCRenderable::Selector
     {
@@ -331,13 +344,13 @@ void GCManipulatableScene::raySelect(const XVector3D &dir)
     XROProperty(Hit, hit);
 
   public:
-    InternalSelector(const XVector3D &cP) : camPos(cP), oldDistSq(HUGE_VAL)
+    InternalSelector(const Eks::Vector3D &cP) : camPos(cP), oldDistSq(HUGE_VAL)
       {
-      Hit h = { XVector3D::Zero(), XVector3D::Zero(), 0x0 };
+      Hit h = { Eks::Vector3D::Zero(), Eks::Vector3D::Zero(), 0x0 };
       _hit = h;
       }
 
-    void onHit(const XVector3D& pos, const XVector3D& normal, GCRenderable *r)
+    void onHit(const Eks::Vector3D& pos, const Eks::Vector3D& normal, GCRenderable *r)
       {
       float newDistSq = (pos - camPos).squaredNorm();
 
@@ -349,7 +362,7 @@ void GCManipulatableScene::raySelect(const XVector3D &dir)
       }
 
   private:
-    XVector3D camPos;
+    Eks::Vector3D camPos;
     float oldDistSq;
     };
 
@@ -365,7 +378,7 @@ void GCManipulatableScene::raySelect(const XVector3D &dir)
     }
   }
 
-void GCManipulatableScene::marqueeSelect(const XFrustum &)
+void GCManipulatableScene::marqueeSelect(const Eks::Frustum &)
   {
   xAssertFail();
   }

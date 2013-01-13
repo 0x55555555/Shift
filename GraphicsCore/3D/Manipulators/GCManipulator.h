@@ -6,7 +6,11 @@
 #include "shift/Properties/sbasepointerproperties.h"
 #include "GCBaseProperties.h"
 
-class XRenderer;
+namespace Eks
+{
+class Renderer;
+}
+
 class QPainter;
 class GCTransform;
 class GCCamera;
@@ -37,7 +41,7 @@ public:
 
     virtual void render(const GCVisualManipulator *toRender,
                         const GCCamera *camera,
-                        XRenderer *) = 0;
+                        Eks::Renderer *) = 0;
 
     virtual Eks::Vector3D focalPoint(const GCVisualManipulator *toRender) const
       {
@@ -64,7 +68,7 @@ public:
     float *distance,
     GCVisualManipulator **clicked);
     
-  virtual void render(const GCCamera *camera, XRenderer *) const;
+  virtual void render(const GCCamera *camera, Eks::Renderer *) const;
   
   struct MouseEvent
     {
@@ -101,7 +105,7 @@ public:
     float *distance,
     GCVisualManipulator **clicked);
 
-  virtual void render(const GCCamera *camera, XRenderer *r) const;
+  virtual void render(const GCCamera *camera, Eks::Renderer *r) const;
 
   virtual void onMouseClick(const MouseEvent &);
   virtual void onMouseDoubleClick(const MouseEvent &);

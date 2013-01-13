@@ -13,11 +13,10 @@ class GRAPHICSCORE_EXPORT GCTransform : public GCRenderArray, public GCManipulat
   S_ENTITY(GCTransform, GCRenderArray, 0)
 
 public:
-  GCTransform();
 
   TransformProperty transform;
 
-  virtual void render(Eks::Renderer *) const;
+  virtual void render(Eks::Renderer *, const RenderState &state) const;
 
   virtual void addManipulators(Shift::PropertyArray *, const GCTransform *tr=0);
 

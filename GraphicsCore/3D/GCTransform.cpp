@@ -40,15 +40,14 @@ void GCTransform::createTypeInformation(Shift::PropertyInformationTyped<GCTransf
     }
   }
 
-GCTransform::GCTransform()
+void GCTransform::render(Eks::Renderer *r, const RenderState &state) const
   {
-  }
+  RenderState s;
+  s.transform = state.transform * transform();
 
-void GCTransform::render(Eks::Renderer *r) const
-  {
-  r->pushTransform(transform());
-  GCRenderArray::render(r);
-  r->popTransform();
+  r->setTransform(s.transform);
+
+  GCRenderArray::render(r, s);
   }
 
 void GCTransform::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)

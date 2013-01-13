@@ -1,9 +1,9 @@
 #include "GCCamera.h"
-#include "styperegistry.h"
+#include "shift/TypeInformation/styperegistry.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XRenderer.h"
-#include "XCamera.h"
+#include "XPlane.h"
 #include "Eigen/Geometry"
-#include "spropertyinformationhelpers.h"
 #include "XLine.h"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCViewableTransformPointer, GraphicsCore)
@@ -13,7 +13,7 @@ S_IMPLEMENT_ABSTRACT_PROPERTY(GCViewableTransform, GraphicsCore)
 
 void computeView(GCViewableTransform *tr)
   {
-  XTransform inv;
+  Eks::Transform inv;
 
   bool invertible = false;
   tr->transform().matrix().computeInverseWithCheck(inv.matrix(),invertible);
@@ -24,7 +24,7 @@ void computeView(GCViewableTransform *tr)
 
 void computeInverseProjection(GCViewableTransform *tr)
   {
-  XTransform inv;
+  Eks::Transform inv;
 
   bool invertible = false;
   tr->projection().matrix().computeInverseWithCheck(inv.matrix(),invertible);
@@ -33,33 +33,40 @@ void computeInverseProjection(GCViewableTransform *tr)
   tr->inverseProjection = inv;
   }
 
-void GCViewableTransform::createTypeInformation(PropertyInformationTyped<GCViewableTransform> *info,
-                                                const PropertyInformationCreateData &data)
+void GCViewableTransform::createTypeInformation(
+    Shift::PropertyInformationTyped<GCViewableTransform> *info,
+    const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto upInfo = info->add(&GCViewableTransform::upVector, "upVector");
-    upInfo->setDefault(XVector3D(0.0f, 1.0f, 0.0f));
+    auto upInfo = info->add(data, &GCViewableTransform::upVector, "upVector");
+    upInfo->setDefault(Eks::Vector3D(0.0f, 1.0f, 0.0f));
 
-    auto focalInfo = info->add(&GCViewableTransform::focalDistance, "focalDistance");
+    auto focalInfo = info->add(data, &GCViewableTransform::focalDistance, "focalDistance");
     focalInfo->setDefault(1.0f);
 
-    auto invProjInfo = info->add(&GCViewableTransform::inverseProjection, "inverseProjection");
+    auto invProjInfo = info->add(data, &GCViewableTransform::inverseProjection, "inverseProjection");
     invProjInfo->setCompute<computeInverseProjection>();
 
-    auto projInfo = info->add(&GCViewableTransform::projection, "projection");
-    projInfo->setAffects(invProjInfo);
+    auto projInfo = info->add(data, &GCViewableTransform::projection, "projection");
+    projInfo->setAffects(data, invProjInfo);
 
-    info->add(&GCViewableTransform::viewportX, "viewportX");
-    info->add(&GCViewableTransform::viewportY, "viewportY");
-    info->add(&GCViewableTransform::viewportWidth, "viewportWidth");
-    info->add(&GCViewableTransform::viewportHeight, "viewportHeight");
+    info->add(data, &GCViewableTransform::viewportX, "viewportX");
+    info->add(data, &GCViewableTransform::viewportY, "viewportY");
+    info->add(data, &GCViewableTransform::viewportWidth, "viewportWidth");
+    info->add(data, &GCViewableTransform::viewportHeight, "viewportHeight");
 
-    auto viewInfo = info->add(&GCViewableTransform::viewTransform, "viewTransform");
+    auto viewInfo = info->add(data, &GCViewableTransform::viewTransform, "viewTransform");
     viewInfo->setCompute<computeView>();
 
+    const Shift::EmbeddedPropertyInstanceInformation *affects[] =
+      {
+      info->child(&GCViewableTransform::bounds),
+      viewInfo
+      };
+
     auto transformInfo = info->child(&GCViewableTransform::transform);
-    transformInfo->addAffects(viewInfo);
+    transformInfo->setAffects(data, affects);
     }
 
   if(data.registerInterfaces)
@@ -88,16 +95,16 @@ GCViewableTransform::GCViewableTransform() : _rotateEnabled(true)
   {
   }
 
-void GCViewableTransform::setPosition(const XVector3D &point)
+void GCViewableTransform::setPosition(const Eks::Vector3D &point)
   {
-  XTransform t = transform();
+  Eks::Transform t = transform();
   t.translation() = point;
   transform = t;
   }
 
-void GCViewableTransform::setFocalPoint(const XVector3D &aim)
+void GCViewableTransform::setFocalPoint(const Eks::Vector3D &aim)
   {
-  XTransform t = transform();
+  Eks::Transform t = transform();
 
   transform = calculateTransform(t.translation(), aim, upVector());
 
@@ -105,13 +112,13 @@ void GCViewableTransform::setFocalPoint(const XVector3D &aim)
   transform = t;
   }
 
-XTransform GCViewableTransform::calculateTransform(const XVector3D &camPos, const XVector3D &camAimPos, const XVector3D &upVector)
+Eks::Transform GCViewableTransform::calculateTransform(const Eks::Vector3D &camPos, const Eks::Vector3D &camAimPos, const Eks::Vector3D &upVector)
   {
-  XTransform t = XTransform::Identity();
+  Eks::Transform t = Eks::Transform::Identity();
 
-  XVector3D forward = (camAimPos - camPos).normalized();
-  XVector3D side = forward.cross(upVector).normalized();
-  XVector3D up = side.cross(forward);
+  Eks::Vector3D forward = (camAimPos - camPos).normalized();
+  Eks::Vector3D side = forward.cross(upVector).normalized();
+  Eks::Vector3D up = side.cross(forward);
 
   t.matrix().col(0).head<3>() = side;
   t.matrix().col(1).head<3>() = up;
@@ -122,7 +129,7 @@ XTransform GCViewableTransform::calculateTransform(const XVector3D &camPos, cons
   return t;
   }
 
-XVector3D GCViewableTransform::focalPoint() const
+Eks::Vector3D GCViewableTransform::focalPoint() const
   {
   return transform().translation() - (transform().matrix().col(2).head<3>() * focalDistance());
   }
@@ -132,18 +139,18 @@ void GCViewableTransform::approximatePixelSizeAtDistance(float distanceFromCamer
   xuint32 x = viewportX() + ((float)viewportWidth()/2.0f);
   xuint32 y = viewportY() + ((float)viewportHeight()/2.0f);
 
-  XVector3D a = worldSpaceAtDepthFromScreenSpace(x, y, distanceFromCamera);
-  XVector3D b = worldSpaceAtDepthFromScreenSpace(x+1, y, distanceFromCamera);
-  XVector3D c = worldSpaceAtDepthFromScreenSpace(x, y+1, distanceFromCamera);
+  Eks::Vector3D a = worldSpaceAtDepthFromScreenSpace(x, y, distanceFromCamera);
+  Eks::Vector3D b = worldSpaceAtDepthFromScreenSpace(x+1, y, distanceFromCamera);
+  Eks::Vector3D c = worldSpaceAtDepthFromScreenSpace(x, y+1, distanceFromCamera);
 
   xScale = (a - b).norm();
   yScale = (a - c).norm();
   }
 
 
-XTransform GCViewableTransform::getPixelScaleFacingTransform(const XVector3D &worldPosition) const
+Eks::Transform GCViewableTransform::getPixelScaleFacingTransform(const Eks::Vector3D &worldPosition) const
   {
-  XTransform t;
+  Eks::Transform t;
 
   t = transform();
 
@@ -201,17 +208,20 @@ bool GCViewableTransform::screenViewportCoordinates(float xUnit, float yUnit, fl
   return true;
   }
 
-XVector3D GCViewableTransform::worldSpaceInPlaneFromScreenSpace(xuint32 x, xuint32 y, const XPlane& plane) const
+Eks::Vector3D GCViewableTransform::worldSpaceInPlaneFromScreenSpace(
+    xuint32 x,
+    xuint32 y,
+    const Eks::Plane& plane) const
   {
-  const XVector3D &camPos = transform().translation();
-  XVector3D pos = worldSpaceFromScreenSpace(x, y);
+  const Eks::Vector3D &camPos = transform().translation();
+  Eks::Vector3D pos = worldSpaceFromScreenSpace(x, y);
 
-  XLine l(camPos, pos);
+  Eks::Line l(camPos, pos);
   float t = plane.intersection(l);
   return l.sample(t);
   }
 
-XVector3D GCViewableTransform::worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const
+Eks::Vector3D GCViewableTransform::worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const
   {
   Eks::Vector4D vpSpace(0.0f, 0.0f, 1.0f, 1.0f);
   unitViewportCoordinates(x, y, vpSpace(0), vpSpace(1));
@@ -221,7 +231,7 @@ XVector3D GCViewableTransform::worldSpaceFromScreenSpace(xuint32 x, xuint32 y) c
   return world;
   }
 
-bool GCViewableTransform::screenSpaceFromWorldSpace(const XVector3D &worldPos, XVector3D &posOut)
+bool GCViewableTransform::screenSpaceFromWorldSpace(const Eks::Vector3D &worldPos, Eks::Vector3D &posOut)
   {
   auto eye = viewTransform() * worldPos;
 
@@ -240,19 +250,19 @@ bool GCViewableTransform::screenSpaceFromWorldSpace(const XVector3D &worldPos, X
   float x, y;
   screenViewportCoordinates(projected.x() / w, projected.y() / w, x, y);
 
-  posOut = XVector3D(x, y, projected.z());
+  posOut = Eks::Vector3D(x, y, projected.z());
   return true;
   }
 
 void GCViewableTransform::zoom(float factor, float, float)
   {
-  XTransform t = transform();
+  Eks::Transform t = transform();
 
   float moveDist = focalDistance() * -0.5f * (factor - 1.0f);
   focalDistance = focalDistance() - moveDist;
 
   // flip axes because input x and y are in a top left coordinate system
-  XVector3D look = upVector().cross(XVector3D(1.0f, 0.0f, 0.0f)) * moveDist;
+  Eks::Vector3D look = upVector().cross(Eks::Vector3D(1.0f, 0.0f, 0.0f)) * moveDist;
 
   t.translate(look);
 
@@ -261,15 +271,15 @@ void GCViewableTransform::zoom(float factor, float, float)
 
 void GCViewableTransform::track(float x, float y)
   {
-  XTransform t = transform();
+  Eks::Transform t = transform();
 
   float xScale;
   float yScale;
   approximatePixelSizeAtDistance(focalDistance(), xScale, yScale);
 
   // flip axes because input x and y are in a top left coordinate system
-  XVector3D across = XVector3D(1.0f, 0.0f, 0.0f) * xScale;
-  XVector3D up = upVector() * yScale;
+  Eks::Vector3D across = Eks::Vector3D(1.0f, 0.0f, 0.0f) * xScale;
+  Eks::Vector3D up = upVector() * yScale;
 
   x *= -1.0f;
 
@@ -288,11 +298,11 @@ void GCViewableTransform::pan(float x, float y)
   rotateAboutPoint(transform().translation(), x, y);
   }
 
-void GCViewableTransform::rotateAboutPoint(const XVector3D &point, float x, float y)
+void GCViewableTransform::rotateAboutPoint(const Eks::Vector3D &point, float x, float y)
   {
   if(_rotateEnabled)
     {
-    XTransform t = transform();
+    Eks::Transform t = transform();
 
     // old translation vector
     float length = (t.translation() - point).norm();
@@ -300,11 +310,11 @@ void GCViewableTransform::rotateAboutPoint(const XVector3D &point, float x, floa
     Eigen::AngleAxisf xRot(x * -0.005f, upVector());
     t.prerotate(xRot);
 
-    Eigen::AngleAxisf yRot(y * -0.005f, XVector3D(1.0f, 0.0f, 0.0f));
+    Eigen::AngleAxisf yRot(y * -0.005f, Eks::Vector3D(1.0f, 0.0f, 0.0f));
     t.rotate(yRot);
 
 
-    XVector3D newLook = t.matrix().col(2).head<3>();
+    Eks::Vector3D newLook = t.matrix().col(2).head<3>();
     t.translation() = point + (newLook * length);
 
     transform = t;
@@ -313,8 +323,8 @@ void GCViewableTransform::rotateAboutPoint(const XVector3D &point, float x, floa
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCCamera, GraphicsCore)
 
-void GCCamera::createTypeInformation(PropertyInformationTyped<GCCamera> *,
-                                     const PropertyInformationCreateData &)
+void GCCamera::createTypeInformation(Shift::PropertyInformationTyped<GCCamera> *,
+                                     const Shift::PropertyInformationCreateData &)
   {
   }
 
@@ -322,11 +332,11 @@ S_IMPLEMENT_PROPERTY(GCPerspectiveCamera, GraphicsCore)
 
 void computePerspective(GCPerspectiveCamera *c)
   {
-  c->projection = XTransformUtilities::perspective(c->fieldOfView(), (float)c->viewportWidth() / (float)c->viewportHeight(), c->nearClip(), c->farClip());
+  c->projection = Eks::TransformUtilities::perspective(c->fieldOfView(), (float)c->viewportWidth() / (float)c->viewportHeight(), c->nearClip(), c->farClip());
   }
 
-void GCPerspectiveCamera::createTypeInformation(PropertyInformationTyped<GCPerspectiveCamera> *info,
-                                                const PropertyInformationCreateData &data)
+void GCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<GCPerspectiveCamera> *info,
+                                                const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -334,31 +344,31 @@ void GCPerspectiveCamera::createTypeInformation(PropertyInformationTyped<GCPersp
     proj->setCompute<computePerspective>();
 
     auto width = info->child(&GCCamera::viewportWidth);
-    width->setAffects(proj);
+    width->setAffects(data, proj);
 
     auto height = info->child(&GCCamera::viewportHeight);
-    height->setAffects(proj);
+    height->setAffects(data, proj);
 
-    auto fov = info->add(&GCPerspectiveCamera::fieldOfView, "fieldOfView");
+    auto fov = info->add(data, &GCPerspectiveCamera::fieldOfView, "fieldOfView");
     fov->setDefault(45.0f);
-    fov->setAffects(proj);
+    fov->setAffects(data, proj);
 
-    auto nC = info->add(&GCPerspectiveCamera::nearClip, "nearClip");
+    auto nC = info->add(data, &GCPerspectiveCamera::nearClip, "nearClip");
     nC->setDefault(0.1f);
-    nC->setAffects(proj);
+    nC->setAffects(data, proj);
 
-    auto fC = info->add(&GCPerspectiveCamera::farClip, "farClip");
+    auto fC = info->add(data, &GCPerspectiveCamera::farClip, "farClip");
     fC->setDefault(100.0f);
-    fC->setAffects(proj);
+    fC->setAffects(data, proj);
     }
   }
 
-XVector3D GCPerspectiveCamera::worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const
+Eks::Vector3D GCPerspectiveCamera::worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const
   {
-  XVector3D wsFSS(worldSpaceFromScreenSpace(x,y));
-  const XVector3D &camPos = transform().translation();
+  Eks::Vector3D wsFSS(worldSpaceFromScreenSpace(x,y));
+  const Eks::Vector3D &camPos = transform().translation();
 
-  XVector3D camToPoint = wsFSS - camPos;
+  Eks::Vector3D camToPoint = wsFSS - camPos;
 
   return camPos + (camToPoint.normalized() * depth);
   }

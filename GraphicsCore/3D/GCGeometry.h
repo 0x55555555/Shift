@@ -9,7 +9,7 @@
 #include "XGeometry.h"
 #include "GCBaseProperties.h"
 
-class GRAPHICSCORE_EXPORT GCGeometry : public PropertyContainer
+class GRAPHICSCORE_EXPORT GCGeometry : public Shift::PropertyContainer
   {
   S_PROPERTY_CONTAINER(GCGeometry, PropertyContainer, 0)
 

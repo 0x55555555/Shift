@@ -1,16 +1,15 @@
 #include "GCGeometry.h"
-#include "spropertyinformationhelpers.h"
-#include "styperegistry.h"
-#include "sprocessmanager.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/TypeInformation/styperegistry.h"
 
 S_IMPLEMENT_PROPERTY(GCGeometry, GraphicsCore)
 
-void GCGeometry::createTypeInformation(PropertyInformationTyped<GCGeometry> *info,
-                                       const PropertyInformationCreateData &data)
+void GCGeometry::createTypeInformation(Shift::PropertyInformationTyped<GCGeometry> *info,
+                                       const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCGeometry::runtimeGeometry, "runtimeGeometry");
+    info->add(data, &GCGeometry::runtimeGeometry, "runtimeGeometry");
     }
   }
 
