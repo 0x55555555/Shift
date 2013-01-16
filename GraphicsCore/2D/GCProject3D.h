@@ -7,7 +7,7 @@
 #include "GCElement.h"
 #include "3D/GCCamera.h"
 
-class GRAPHICSCORE_EXPORT GCProject3D : public Entity
+class GRAPHICSCORE_EXPORT GCProject3D : public Shift::Entity
   {
   S_ENTITY(GCProject3D, Entity, 0)
 
@@ -16,9 +16,9 @@ public:
   GCCameraPointer camera;
   TransformProperty targetTransform;
 
-  FloatProperty xPosition;
-  FloatProperty yPosition;
-  BoolProperty validPosition;
+  Shift::FloatProperty xPosition;
+  Shift::FloatProperty yPosition;
+  Shift::BoolProperty validPosition;
   };
 
 S_PROPERTY_INTERFACE(GCProject3D)

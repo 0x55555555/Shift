@@ -1,5 +1,6 @@
 #include "GCTranslateManipulator.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
 #include "3D/GCCamera.h"
 #include "XModeller.h"
 #include "XRenderer.h"
@@ -7,61 +8,63 @@
 #include "XShader.h"
 #include "XLine.h"
 #include "XCuboid.h"
-#include "shandlerimpl.h"
 
 class CentralTranslateDelegate : public GCVisualManipulator::Delegate
   {
 public:
   CentralTranslateDelegate()
     {
-    XModeller m(&_geo, 64);
+    /*XModeller m(&_geo, 64);
 
-    m.drawCube(XVector3D(0.1f, 0.0f, 0.0f), XVector3D(0.0f, 0.1f, 0.0f), XVector3D(0.0f, 0.0f, 0.1f));
-    }
+    m.drawCube(Eks::Vector3D(0.1f, 0.0f, 0.0f), Eks::Vector3D(0.0f, 0.1f, 0.0f), Eks::Vector3D(0.0f, 0.0f, 0.1f));
+    */}
 
   virtual bool hitTest(
       const GCVisualManipulator *toRender,
       const QPoint &,
       const GCCamera *camera,
-      const XVector3D &clickDirection, // in world space
+      const Eks::Vector3D &clickDirection, // in world space
       float *distance)
     {
-    const XVector3D &camTrans = camera->transform().translation();
-    XLine l(camTrans, clickDirection, XLine::PointAndDirection);
+    const Eks::Vector3D &camTrans = camera->transform().translation();
+    Eks::Line l(camTrans, clickDirection, Eks::Line::PointAndDirection);
 
-    const XTransform &wC = toRender->worldCentre();
+    const Eks::Transform &wC = toRender->worldCentre();
 
-    XMatrix4x4 t = wC.matrix();
-    XMatrix4x4 tInv = t.inverse();
-    XTransform lineTransform(tInv);
+    Eks::Matrix4x4 t = wC.matrix();
+    Eks::Matrix4x4 tInv = t.inverse();
+    Eks::Transform lineTransform(tInv);
     l.transform(lineTransform);
 
-    if(XMeshUtilities::intersect("vertex", l, _geo))
+    /* // need to rethink this.
+    if(Eks::MeshUtilities::intersect("vertex", l, _geo))
       {
-      const XVector3D &wcTrans = wC.translation();
+      const Eks::Vector3D &wcTrans = wC.translation();
       *distance = (camTrans - wcTrans).norm() - 0.05f;
       return true;
-      }
+      }*/
 
     return false;
     }
 
   virtual void render(const GCVisualManipulator *toRender,
       const GCCamera *,
-      XRenderer *r)
+      Eks::Renderer *r)
     {
-    const XTransform &wC = toRender->worldCentre();
+    xAssertFail();
+    /*
+    const Eks::Transform &wC = toRender->worldCentre();
 
     r->pushTransform(wC);
     r->setShader(&_shader);
     r->drawGeometry(_geo);
     r->setShader(0);
-    r->popTransform();
+    r->popTransform();*/
     }
 
 private:
-  XGeometry _geo;
-  XShader _shader;
+  Eks::Geometry _geo;
+  Eks::Shader _shader;
   };
 
 
@@ -70,6 +73,7 @@ class LinearTranslateDelegate : public GCVisualManipulator::Delegate
 public:
   LinearTranslateDelegate()
     {
+    /*
     XModeller m(&_geo, 64);
 
     m.begin(XModeller::Lines);
@@ -77,30 +81,30 @@ public:
       m.vertex(1.0f, 0.0f, 0.0f);
     m.end();
 
-    m.drawCone(XVector3D(0.8f, 0.0f, 0.0f), XVector3D(1.0f, 0.0f, 0.0f), 0.2f, 0.06f);
+    m.drawCone(Eks::Vector3D(0.8f, 0.0f, 0.0f), Eks::Vector3D(1.0f, 0.0f, 0.0f), 0.2f, 0.06f);
 
-    _shader.setToDefinedType("plainColour");
+    _shader.setToDefinedType("plainColour");*/
     }
 
   virtual bool hitTest(
       const GCVisualManipulator *manip,
       const QPoint &,
       const GCCamera *camera,
-      const XVector3D &clickDirection, // in world space
+      const Eks::Vector3D &clickDirection, // in world space
       float *distance)
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
 
-    const XVector3D &camTrans = camera->transform().translation();
-    XLine clickLine(camTrans, clickDirection, XLine::PointAndDirection);
+    const Eks::Vector3D &camTrans = camera->transform().translation();
+    Eks::Line clickLine(camTrans, clickDirection, Eks::Line::PointAndDirection);
 
-    XLine manipLine(XVector3D(0.0f, 0.0f, 0.0f), toRender->lockDirection().normalized());
+    Eks::Line manipLine(Eks::Vector3D(0.0f, 0.0f, 0.0f), toRender->lockDirection().normalized());
 
-    const XTransform &wC = toRender->worldCentre();
+    const Eks::Transform &wC = toRender->worldCentre();
     manipLine.transform(wC);
 
     float clickT = clickLine.closestPointOn(manipLine);
-    XVector3D clickPt = clickLine.sample(clickT);
+    Eks::Vector3D clickPt = clickLine.sample(clickT);
 
     float manipT = manipLine.closestPointTo(clickPt);
     if(manipT >= 0.0f && manipT <= 1.0f)
@@ -127,17 +131,17 @@ public:
 
   virtual void render(const GCVisualManipulator *manip,
       const GCCamera *,
-      XRenderer *r)
+      Eks::Renderer *r)
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
 
-    XTransform wC = toRender->worldCentre();
+    Eks::Transform wC = toRender->worldCentre();
 
-    XVector3D x = XVector3D(1.0f, 0.0f, 0.0f);
-    XVector3D lockDir = toRender->lockDirection().normalized();
+    Eks::Vector3D x = Eks::Vector3D(1.0f, 0.0f, 0.0f);
+    Eks::Vector3D lockDir = toRender->lockDirection().normalized();
     if(lockDir.dot(x) < 0.99f)
       {
-      XVector3D dir = x.cross(lockDir);
+      Eks::Vector3D dir = x.cross(lockDir);
       Eigen::AngleAxisf a((float)M_PI/2.0f, dir);
 
       wC.rotate(a);
@@ -146,25 +150,25 @@ public:
     Eks::Vector4D col;
     col(3) = 1.0f;
     col.head<3>() = toRender->lockDirection();
-
+/*
     _shader.getVariable("colour")->setValue(col);
 
     r->pushTransform(wC);
     r->setShader(&_shader);
     r->drawGeometry(_geo);
     r->setShader(0);
-    r->popTransform();
+    r->popTransform();*/
     }
 
 private:
-  XGeometry _geo;
-  XShader _shader;
+  Eks::Geometry _geo;
+  Eks::Shader _shader;
   };
 
 S_IMPLEMENT_PROPERTY(GCSingularTranslateManipulator, GraphicsCore)
 
-void GCSingularTranslateManipulator::createTypeInformation(PropertyInformationTyped<GCSingularTranslateManipulator> *,
-                                                           const PropertyInformationCreateData &)
+void GCSingularTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCSingularTranslateManipulator> *,
+                                                           const Shift::PropertyInformationCreateData &)
   {
   }
 
@@ -179,12 +183,12 @@ void GCSingularTranslateManipulator::addDriven(TransformProperty *in)
 
 void GCSingularTranslateManipulator::onDrag(const MouseMoveEvent &e)
   {
-  XVector3D relativeDisp;
+  Eks::Vector3D relativeDisp;
   GCLinearDragManipulator::onDrag(e, relativeDisp);
 
   Q_FOREACH(TransformProperty *t, _driven)
     {
-    XTransform trans = t->value();
+    Eks::Transform trans = t->value();
     trans.translation() += relativeDisp;
     *t = trans;
     }
@@ -199,36 +203,36 @@ void postCreateTranslateManip(GCTranslateManipulator *m)
   m->x.setDelegate(new LinearTranslateDelegate());
 
   m->x.lockMode = GCSingularTranslateManipulator::Linear;
-  m->x.lockDirection = XVector3D(1.0f, 0.0f, 0.0f);
+  m->x.lockDirection = Eks::Vector3D(1.0f, 0.0f, 0.0f);
 
 
   m->worldCentre.connect(&m->y.worldCentre);
   m->y.setDelegate(new LinearTranslateDelegate());
 
   m->y.lockMode = GCSingularTranslateManipulator::Linear;
-  m->y.lockDirection = XVector3D(0.0f, 1.0f, 0.0f);
+  m->y.lockDirection = Eks::Vector3D(0.0f, 1.0f, 0.0f);
 
 
   m->worldCentre.connect(&m->z.worldCentre);
   m->z.setDelegate(new LinearTranslateDelegate());
 
   m->z.lockMode = GCSingularTranslateManipulator::Linear;
-  m->z.lockDirection = XVector3D(0.0f, 0.0f, 1.0f);
+  m->z.lockDirection = Eks::Vector3D(0.0f, 0.0f, 1.0f);
 
 
   m->worldCentre.connect(&m->central.worldCentre);
   m->central.setDelegate(new CentralTranslateDelegate());
   }
 
-void GCTranslateManipulator::createTypeInformation(PropertyInformationTyped<GCTranslateManipulator> *info,
-                                                   const PropertyInformationCreateData &data)
+void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCTranslateManipulator> *info,
+                                                   const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCTranslateManipulator::x, "x");
-    info->add(&GCTranslateManipulator::y, "y");
-    info->add(&GCTranslateManipulator::z, "z");
-    info->add(&GCTranslateManipulator::central, "central");
+    info->add(data, &GCTranslateManipulator::x, "x");
+    info->add(data, &GCTranslateManipulator::y, "y");
+    info->add(data, &GCTranslateManipulator::z, "z");
+    info->add(data, &GCTranslateManipulator::central, "central");
     }
   }
 

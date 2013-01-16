@@ -3,6 +3,7 @@
 
 #include "GCGlobal.h"
 #include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "XTransform.h"
 #include "QImage"
 #include "XShader.h"
@@ -117,16 +118,50 @@ public:
 class GRAPHICSCORE_EXPORT GCRuntimeShaderInstance
     : public Shift::PODProperty<GraphicsCore::detail::ShaderInstance,
                                 GCRuntimeShaderInstance,
-                                Shift::detail::PODPropertyTraits<GraphicsCore::detail::ShaderInstance> >
+                                Shift::detail::PODPropertyTraits<GCRuntimeShaderInstance> >
   {
 public:
   typedef Shift::detail::PODPropertyTraits<GraphicsCore::detail::ShaderInstance> Traits;
   enum { TypeId = 156 };
-  S_PROPERTY(GraphicsCore::detail::ShaderInstance, Property, 0);
+  S_PROPERTY(GCRuntimeShaderInstance, Property, 0);
 
   static void assignProperty(const Property *f, Property *t);
   };
 
+class GRAPHICSCORE_EXPORT GCRenderer
+    : public Shift::PODProperty<Eks::Renderer *,
+                                GCRenderer,
+                                Shift::detail::PODPropertyTraits<GCRenderer> >
+  {
+public:
+  typedef Shift::detail::PODPropertyTraits<GCRenderer> Traits;
+  enum { TypeId = 151 };
+  S_PROPERTY(GCRenderer, Property, 0);
+
+  static void assignProperty(const Property *f, Property *t);
+  };
+
+struct GCVertexLayoutWrapper
+  {
+  Eks::ShaderVertexLayoutDescription *layout;
+  xsize layoutCount;
+  };
+
+class GRAPHICSCORE_EXPORT GCVertexLayout
+    : public Shift::PODProperty<GCVertexLayoutWrapper,
+                                GCVertexLayout,
+                                Shift::detail::PODPropertyTraits<GCVertexLayout> >
+  {
+public:
+  typedef Shift::detail::PODPropertyTraits<GCVertexLayout> Traits;
+  enum { TypeId = 152 };
+  S_PROPERTY(GCVertexLayout, Property, 0);
+
+  static void assignProperty(const Property *f, Property *t);
+  };
+
+S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCRendererPointer, GCRenderer)
+S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCVertexLayoutPointer, GCVertexLayout)
 
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, Eks::Transform, Eks::Transform::Identity(), 150);
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, Eks::Matrix3x3, Eks::Matrix3x3::Identity(), 157);
@@ -134,6 +169,8 @@ DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, Eks::ComplexT
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, Eks::Cuboid, Eks::Cuboid(), 155)
 
 
+S_PROPERTY_INTERFACE(GCRenderer)
+S_PROPERTY_INTERFACE(GCVertexLayout)
 S_PROPERTY_INTERFACE(GCRuntimeShader)
 S_PROPERTY_INTERFACE(GCRuntimeGeometry)
 S_PROPERTY_INTERFACE(TransformProperty)

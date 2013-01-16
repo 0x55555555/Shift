@@ -4,62 +4,29 @@
 namespace GCShaderDataBindings
 {
 
-Vector3::Vector3() : GCShaderBindableData(true)
+void Vector3::bindData(DataBlock *data, ResourceBlock *, const Shift::Property *p) const
   {
+  const Shift::Vector3DProperty *c = p->uncheckedCastTo<Shift::Vector3DProperty>();
+
+  data->resizeAndCopy(sizeof(Eks::Vector3D), (xuint8*)c->value().data());
   }
 
-void Vector3::bindData(XShader *s, const Property *p) const
+void Vector4::bindData(DataBlock *data, ResourceBlock *, const Shift::Property *p) const
   {
-  const Vector3DProperty *c = p->uncheckedCastTo<Vector3DProperty>();
+  const Shift::ColourProperty *c = p->uncheckedCastTo<Shift::ColourProperty>();
 
-  XShaderVariable *v = s->getVariable(p->name());
-  xAssert(v);
-
-  v->setValue(c->value());
+  data->resizeAndCopy(sizeof(Eks::Colour), (xuint8*)c->value().data());
   }
 
-Vector4::Vector4() : GCShaderBindableData(true)
+void Texture2DRef::bindData(DataBlock *, ResourceBlock *resources, const Shift::Property *p) const
   {
-  }
-
-void Vector4::bindData(XShader *s, const Property *p) const
-  {
-  const ColourProperty *c = p->uncheckedCastTo<ColourProperty>();
-
-  XShaderVariable *v = s->getVariable(p->name());
-  xAssert(v);
-
-  v->setValue(c->value());
-  }
-
-TextureRef::TextureRef() : GCShaderBindableData(true)
-  {
-  }
-
-void TextureRef::bindData(XShader *s, const Property *p) const
-  {
-  const GCTexturePointer *c = p->uncheckedCastTo<GCTexturePointer>();
-
-  XShaderVariable *v = s->getVariable(p->name());
-  xAssert(v);
+  const GCTexture2DPointer *c = p->uncheckedCastTo<GCTexture2DPointer>();
 
   if(c->input())
     {
-    const XTexture* newValue = &(c->pointed()->value());
-    const QVariant& value = v->value();
+    const Eks::Texture2D* newValue = &(c->pointed()->value());
 
-    bool set = true;
-    if(value.userType() == qMetaTypeId<const XTexture*>())
-      {
-      const XTexture* tex = value.value<const XTexture*>();
-
-      set = tex != newValue;
-      }
-
-    if(set)
-      {
-      v->setValue(newValue);
-      }
+    resources->pushBack(newValue);
     }
   }
 

@@ -1,5 +1,5 @@
 #include "GCElement.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "mcsimpleadd.h"
 #include "XRenderer.h"
 #include "XOptional"
@@ -8,22 +8,22 @@ S_IMPLEMENT_TYPED_POINTER_TYPE(GCInteractionHandlerPointer, GraphicsCore)
 
 S_IMPLEMENT_PROPERTY(GCInteractionHandler, GraphicsCore)
 
-void GCInteractionHandler::createTypeInformation(PropertyInformationTyped<GCInteractionHandler> *,
-                                      const PropertyInformationCreateData &)
+void GCInteractionHandler::createTypeInformation(Shift::PropertyInformationTyped<GCInteractionHandler> *,
+                                      const Shift::PropertyInformationCreateData &)
   {
   }
 
 void computeCentreOutput(GCElementCentre *e)
   {
-  FloatProperty::ComputeLock l(&e->output);
+  Shift::FloatProperty::ComputeLock l(&e->output);
 
   *l.data() = e->inputA() + (0.5f * e->inputB());
   }
 
 S_IMPLEMENT_PROPERTY(GCElementCentre, GraphicsCore)
 
-void GCElementCentre::createTypeInformation(PropertyInformationTyped<GCElementCentre> *info,
-                                      const PropertyInformationCreateData &data)
+void GCElementCentre::createTypeInformation(Shift::PropertyInformationTyped<GCElementCentre> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -34,15 +34,15 @@ void GCElementCentre::createTypeInformation(PropertyInformationTyped<GCElementCe
 
 void computeUnCentreOutput(GCElementUnCentre *e)
   {
-  FloatProperty::ComputeLock l(&e->output);
+  Shift::FloatProperty::ComputeLock l(&e->output);
 
   *l.data() = e->inputA() - (0.5f * e->inputB());
   }
 
 S_IMPLEMENT_PROPERTY(GCElementUnCentre, GraphicsCore)
 
-void GCElementUnCentre::createTypeInformation(PropertyInformationTyped<GCElementUnCentre> *info,
-                                      const PropertyInformationCreateData &data)
+void GCElementUnCentre::createTypeInformation(Shift::PropertyInformationTyped<GCElementUnCentre> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -53,41 +53,43 @@ void GCElementUnCentre::createTypeInformation(PropertyInformationTyped<GCElement
 
 void computeElementTransform(GCElement *e)
   {
-  XTransform t = XTransform::Identity();
+  Eks::Transform t = Eks::Transform::Identity();
 
-  t.translate(XVector3D(e->left(), e->bottom(), 0.0f));
+  t.translate(Eks::Vector3D(e->left(), e->bottom(), 0.0f));
 
   e->transform = t;
   }
 
 S_IMPLEMENT_PROPERTY(GCElement, GraphicsCore)
 
-void GCElement::createTypeInformation(PropertyInformationTyped<GCElement> *info,
-                                      const PropertyInformationCreateData &data)
+void GCElement::createTypeInformation(Shift::PropertyInformationTyped<GCElement> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
     auto tr = info->child(&GCElement::transform);
     tr->setCompute<computeElementTransform>();
 
-    auto vis = info->add(&GCElement::visible, "visible");
+    auto affects = info->createAffects(data, &tr, 1);
+
+    auto vis = info->add(data, &GCElement::visible, "visible");
     vis->setDefaultValue(true);
 
-    auto w = info->add(&GCElement::width, "width");
-    w->setAffects(tr);
-    auto h = info->add(&GCElement::height, "height");
-    h->setAffects(tr);
+    auto w = info->add(data, &GCElement::width, "width");
+    w->setAffects(affects, true);
+    auto h = info->add(data, &GCElement::height, "height");
+    h->setAffects(affects, false);
 
-    auto l = info->add(&GCElement::left, "left");
-    l->setAffects(tr);
-    auto b = info->add(&GCElement::bottom, "bottom");
-    b->setAffects(tr);
+    auto l = info->add(data, &GCElement::left, "left");
+    l->setAffects(affects, false);
+    auto b = info->add(data, &GCElement::bottom, "bottom");
+    b->setAffects(affects, false);
 
-    info->add(&GCElement::interactionHandler, "interactionHandler");
+    info->add(data, &GCElement::interactionHandler, "interactionHandler");
     }
   }
 
-const FloatProperty* GCElement::right()
+const Shift::FloatProperty* GCElement::right()
   {
   MCSimpleAdd* adder = children.findChild<MCSimpleAdd>("right");
   if(!adder)
@@ -101,7 +103,7 @@ const FloatProperty* GCElement::right()
   return &adder->output;
   }
 
-const FloatProperty* GCElement::horizontalCentre()
+const Shift::FloatProperty* GCElement::horizontalCentre()
   {
   GCElementCentre* centre = children.findChild<GCElementCentre>("hCentre");
   if(!centre)
@@ -115,7 +117,7 @@ const FloatProperty* GCElement::horizontalCentre()
   return &centre->output;
   }
 
-const FloatProperty* GCElement::verticalCentre()
+const Shift::FloatProperty* GCElement::verticalCentre()
   {
   GCElementCentre* centre = children.findChild<GCElementCentre>("vCentre");
   if(!centre)
@@ -129,7 +131,7 @@ const FloatProperty* GCElement::verticalCentre()
   return &centre->output;
   }
 
-void GCElement::setTopInput(const FloatProperty* input)
+void GCElement::setTopInput(const Shift::FloatProperty* input)
 {
   xAssert(!bottom.hasInput());
 
@@ -141,7 +143,7 @@ void GCElement::setTopInput(const FloatProperty* input)
   bottom.setInput(&top->output);
   }
 
-void GCElement::setHorizontalCentreInput(const FloatProperty* input)
+void GCElement::setHorizontalCentreInput(const Shift::FloatProperty* input)
   {
   xAssert(!left.hasInput());
 
@@ -153,7 +155,7 @@ void GCElement::setHorizontalCentreInput(const FloatProperty* input)
   left.setInput(&centre->output);
   }
 
-void GCElement::setVerticalCentreInput(const FloatProperty* input)
+void GCElement::setVerticalCentreInput(const Shift::FloatProperty* input)
   {
   xAssert(!bottom.hasInput());
 
@@ -165,14 +167,14 @@ void GCElement::setVerticalCentreInput(const FloatProperty* input)
   bottom.setInput(&centre->output);
   }
 
-void GCElement::render(XRenderer *r) const
+void GCElement::render(Eks::Renderer *r, const RenderState &state) const
   {
   if(!visible())
     {
     return;
     }
 
-  GCTransform::render(r);
+  GCTransform::render(r, state);
   }
 
 bool GCElement::hitTest(int x, int y) const
@@ -188,29 +190,29 @@ bool GCElement::hitTest(int x, int y) const
 
 void computeUnitElementTransform(GCUnitElement *e)
   {
-  XTransform t = XTransform::Identity();
+  Eks::Transform t = Eks::Transform::Identity();
 
-  t.translate(XVector3D(e->left(), e->bottom(), 0.0f));
+  t.translate(Eks::Vector3D(e->left(), e->bottom(), 0.0f));
 
-  t.scale(XVector3D(e->width(), e->height(), 1.0f));
+  t.scale(Eks::Vector3D(e->width(), e->height(), 1.0f));
 
   e->transform = t;
   }
 
 S_IMPLEMENT_PROPERTY(GCElementArray, GraphicsCore)
 
-void GCElementArray::createTypeInformation(PropertyInformationTyped<GCElementArray> *info,
-                                      const PropertyInformationCreateData &data)
+void GCElementArray::createTypeInformation(Shift::PropertyInformationTyped<GCElementArray> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCElementArray::elements, "elements");
+    info->add(data, &GCElementArray::elements, "elements");
     }
   }
 
 GCElement *GCElementArray::addAsChild(GCElementArray *parent, GCShadingGroup *, GCElementArray **arrOpt)
   {
-  XOptional<GCElementArray*> arr(arrOpt);
+  Eks::Optional<GCElementArray*> arr(arrOpt);
 
   arr = parent->addChild<GCElementArray>();
 
@@ -219,9 +221,9 @@ GCElement *GCElementArray::addAsChild(GCElementArray *parent, GCShadingGroup *, 
   return arr;
   }
 
-void GCElementArray::render(XRenderer *renderer) const
+void GCElementArray::render(Eks::Renderer *renderer, const RenderState &state) const
   {
-  GCElement::render(renderer);
+  GCElement::render(renderer, state);
 
   xForeach(auto r, elements.walker<GCRenderablePointer>())
     {
@@ -232,14 +234,14 @@ void GCElementArray::render(XRenderer *renderer) const
       continue;
       }
 
-    ptd->render(renderer);
+    ptd->render(renderer, state);
     }
   }
 
 S_IMPLEMENT_PROPERTY(GCUnitElement, GraphicsCore)
 
-void GCUnitElement::createTypeInformation(PropertyInformationTyped<GCUnitElement> *info,
-                                      const PropertyInformationCreateData &data)
+void GCUnitElement::createTypeInformation(Shift::PropertyInformationTyped<GCUnitElement> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {

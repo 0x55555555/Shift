@@ -8,13 +8,13 @@
 #include "XLine.h"
 #include "XCuboid.h"
 #include "shift/Changes/shandler.inl"
-
+/*
 class DistanceDelegate : public GCVisualManipulator::Delegate
   {
 public:
   DistanceDelegate()
     {
-    XModeller m(&_geo, 64);
+    Eks::Modeller m(&_geo, 64);
 
     m.drawCube(Eks::Vector3D(0.1f, 0.0f, 0.0f), Eks::Vector3D(0.0f, 0.1f, 0.0f), Eks::Vector3D(0.0f, 0.0f, 0.1f));
     }
@@ -68,15 +68,15 @@ public:
     {
     const GCDistanceManipulator *toRender = manip->uncheckedCastTo<GCDistanceManipulator>();
 
-    XTransform wC = toRender->worldCentre();
+    Eks::Transform wC = toRender->worldCentre();
     wC.translate(toRender->absoluteDisplacement());
     return wC.translation();
     }
 
 private:
-  XGeometry _geo;
-  XShader _shader;
-  };
+  Eks::Geometry _geo;
+  Eks::Shader _shader;
+  };*/
 
 S_IMPLEMENT_PROPERTY(GCDistanceManipulator, GraphicsCore)
 
@@ -85,31 +85,32 @@ void computeAbsDisp(GCDistanceManipulator *d)
   d->absoluteDisplacement = d->lockDirection().normalized() * (d->distance() * d->scaleFactor());
   }
 
-void GCDistanceManipulator::createTypeInformation(PropertyInformationTyped<GCDistanceManipulator> *info,
-                                                  const PropertyInformationCreateData &data)
+void GCDistanceManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCDistanceManipulator> *info,
+                                                  const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto absDispInfo = info->add(&GCDistanceManipulator::absoluteDisplacement, "absoluteDisplacement");
+    auto absDispInfo = info->add(data, &GCDistanceManipulator::absoluteDisplacement, "absoluteDisplacement");
     absDispInfo->setCompute<computeAbsDisp>();
 
     auto dirInfo = info->child(&GCDistanceManipulator::lockDirection);
-    dirInfo->setAffects(absDispInfo);
+    dirInfo->setAffects(data, absDispInfo);
 
-    auto distInfo = info->add(&GCDistanceManipulator::distance, "distance");
-    distInfo->setAffects(absDispInfo);
+    auto distInfo = info->add(data, &GCDistanceManipulator::distance, "distance");
+    distInfo->setAffects(data, absDispInfo);
 
-    auto sfInfo = info->add(&GCDistanceManipulator::scaleFactor, "scaleFactor");
-    sfInfo->setAffects(absDispInfo);
+    auto sfInfo = info->add(data, &GCDistanceManipulator::scaleFactor, "scaleFactor");
+    sfInfo->setAffects(data, absDispInfo);
     }
   }
 
 GCDistanceManipulator::GCDistanceManipulator()
   {
-  setDelegate(new DistanceDelegate());
+  xAssertFail();
+  //setDelegate(new DistanceDelegate());
   }
 
-void GCDistanceManipulator::addDriven(FloatProperty *in)
+void GCDistanceManipulator::addDriven(Shift::FloatProperty *in)
   {
   _driven << in;
   }
@@ -126,7 +127,7 @@ void GCDistanceManipulator::onDrag(const MouseMoveEvent &e)
     rel *= -1.0f;
     }
 
-  Q_FOREACH(FloatProperty *f, _driven)
+  Q_FOREACH(Shift::FloatProperty *f, _driven)
     {
     float newVal = f->value() + rel;
     if(newVal == newVal && newVal < HUGE_VAL)

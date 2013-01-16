@@ -1,11 +1,11 @@
 #include "GCCameraAlignedPlate.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 S_IMPLEMENT_PROPERTY(GCCameraAlignedPlate, GraphicsCore)
 
 void computeTransform(GCCameraAlignedPlate *plate)
   {
-  XTransform tr = plate->cameraTransform();
+  Eks::Transform tr = plate->cameraTransform();
   tr = tr * plate->offsetTransform();
 
   const xuint32 width = plate->width();
@@ -14,37 +14,39 @@ void computeTransform(GCCameraAlignedPlate *plate)
   const float dist = plate->distanceFromCamera();
   const float fov = plate->cameraFieldOfView();
 
-  tr.translate(XVector3D(0.0f, 0.0f, -dist));
+  tr.translate(Eks::Vector3D(0.0f, 0.0f, -dist));
 
-  float worldHeight = 2.0f * tan(X_DEGTORAD(fov * 0.5f)) * dist;
+  float worldHeight = 2.0f * tan(Eks::degreesToRadians(fov * 0.5f)) * dist;
   float scale = worldHeight / height;
 
   tr.scale(scale);
 
-  tr.translate(XVector3D(-(int)width/2, -(int)height/2, 0));
+  tr.translate(Eks::Vector3D(-(int)width/2, -(int)height/2, 0));
 
   plate->transform = tr;
   }
 
-void GCCameraAlignedPlate::createTypeInformation(PropertyInformationTyped<GCCameraAlignedPlate> *info,
-                                                 const PropertyInformationCreateData &data)
+void GCCameraAlignedPlate::createTypeInformation(Shift::PropertyInformationTyped<GCCameraAlignedPlate> *info,
+                                                 const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
     auto tr = info->child(&GCCameraAlignedPlate::transform);
     tr->setCompute<computeTransform>();
 
-    auto cam = info->add(&GCCameraAlignedPlate::cameraTransform, "cameraTransform");
-    cam->setAffects(tr);
+    auto aff = info->createAffects(data, &tr, 1);
 
-    auto offset = info->add(&GCCameraAlignedPlate::offsetTransform, "offsetTransform");
-    offset->setAffects(tr);
+    auto cam = info->add(data, &GCCameraAlignedPlate::cameraTransform, "cameraTransform");
+    cam->setAffects(aff, true);
 
-    auto dist = info->add(&GCCameraAlignedPlate::distanceFromCamera, "distanceFromCamera");
-    dist->setAffects(tr);
+    auto offset = info->add(data, &GCCameraAlignedPlate::offsetTransform, "offsetTransform");
+    offset->setAffects(aff, false);
 
-    auto fov = info->add(&GCCameraAlignedPlate::cameraFieldOfView, "cameraFieldOfView");
-    fov->setAffects(tr);
+    auto dist = info->add(data, &GCCameraAlignedPlate::distanceFromCamera, "distanceFromCamera");
+    dist->setAffects(aff, false);
+
+    auto fov = info->add(data, &GCCameraAlignedPlate::cameraFieldOfView, "cameraFieldOfView");
+    fov->setAffects(aff, false);
     }
   }
 

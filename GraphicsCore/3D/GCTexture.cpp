@@ -1,15 +1,11 @@
 #include "GCTexture.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
-S_IMPLEMENT_TYPED_POINTER_TYPE(GCTexturePointer, GraphicsCore)
+S_IMPLEMENT_TYPED_POINTER_TYPE(GCTexture2DPointer, GraphicsCore)
 
-S_IMPLEMENT_PROPERTY(GCTexture, GraphicsCore)
+S_IMPLEMENT_PROPERTY(GCTexture2D, GraphicsCore)
 
-void GCTexture::createTypeInformation(PropertyInformationTyped<GCTexture> *,
-                                      const PropertyInformationCreateData &)
-  {
-  }
-
-GCTexture::GCTexture()
+void GCTexture2D::createTypeInformation(Shift::PropertyInformationTyped<GCTexture2D> *,
+                                      const Shift::PropertyInformationCreateData &)
   {
   }

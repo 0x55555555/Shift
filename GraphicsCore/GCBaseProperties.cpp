@@ -1,3 +1,4 @@
+#include "GCGlobal.h"
 #include "GCBaseProperties.h"
 #include "shift/sdatabase.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
@@ -95,3 +96,16 @@ void ComplexTransformProperty::assignProperty(const Property *f, Property *t)
     }
 
   }
+
+void GCRenderer::assignProperty(const Property *, Property *)
+  {
+  xAssertFail();
+  }
+
+void GCVertexLayout::assignProperty(const Property *, Property *)
+  {
+  xAssertFail();
+  }
+
+S_IMPLEMENT_TYPED_POINTER_TYPE(GCRendererPointer, GraphicsCore)
+S_IMPLEMENT_TYPED_POINTER_TYPE(GCVertexLayoutPointer, GraphicsCore)

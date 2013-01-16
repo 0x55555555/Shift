@@ -2,21 +2,19 @@
 #define GCCOMPOSEVECTOR3_H
 
 #include "GCGlobal.h"
-#include "sentity.h"
-#include "sbaseproperties.h"
+#include "shift/sentity.h"
+#include "shift/Properties/sbaseproperties.h"
 
-class GRAPHICSCORE_EXPORT GCComposeVector3 : public Entity
+class GRAPHICSCORE_EXPORT GCComposeVector3 : public Shift::Entity
   {
   S_ENTITY(GCComposeVector3, Entity, 0)
 
 public:
-  GCComposeVector3();
+  Shift::FloatProperty xIn;
+  Shift::FloatProperty yIn;
+  Shift::FloatProperty zIn;
 
-  FloatProperty xIn;
-  FloatProperty yIn;
-  FloatProperty zIn;
-
-  Vector3DProperty vectorOut;
+  Shift::Vector3DProperty vectorOut;
   };
 
 S_PROPERTY_INTERFACE(GCComposeVector3)
