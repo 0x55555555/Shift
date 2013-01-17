@@ -1,21 +1,17 @@
 #include "MCGeometry.h"
-#include "spropertyinformationhelpers.h"
-#include "sprocessmanager.h"
-#include "QVarLengthArray"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 S_IMPLEMENT_PROPERTY(MCGeometry, MeshCore)
 
 void computeRuntimeGeometry(MCGeometry *rtGeo)
   {
-  xAssert(SProcessManager::isMainThread());
-
-  XGeometry x;
+  Eks::Geometry x;
   rtGeo->appendTo(&x);
   rtGeo->runtimeGeometry = x;
   }
 
-void MCGeometry::createTypeInformation(SPropertyInformationTyped<MCGeometry> *info,
-                                       const SPropertyInformationCreateData &data)
+void MCGeometry::createTypeInformation(Shift::PropertyInformationTyped<MCGeometry> *info,
+                                       const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
@@ -23,16 +19,12 @@ void MCGeometry::createTypeInformation(SPropertyInformationTyped<MCGeometry> *in
     rtGeo->setCompute<computeRuntimeGeometry>();
     rtGeo->setComputeLockedToMainThread(true);
 
-    auto attrs = info->add(&MCGeometry::polygons, "polygons");
+    auto attrs = info->add(data, &MCGeometry::polygons, "polygons");
     attrs->setAffects(rtGeo);
     }
   }
 
-MCGeometry::MCGeometry()
-  {
-  }
-
-void MCGeometry::appendTo(XGeometry *geo) const
+void MCGeometry::appendTo(Eks::Geometry *geo) const
   {
   const MCPolyhedron &p = polygons();
 

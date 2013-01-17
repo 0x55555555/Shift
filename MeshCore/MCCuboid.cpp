@@ -1,8 +1,8 @@
 #include "MCCuboid.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "3D/Manipulators/GCDistanceManipulator.h"
 #include "3D/GCTransform.h"
-#include "shandlerimpl.h"
+#include "shift/Changes/shandler.inl"
 
 #include "MCPolyhedron.h"
 
@@ -16,16 +16,18 @@ void MCCuboid::createTypeInformation(SPropertyInformationTyped<MCCuboid> *info,
     auto inst = info->child(&MCShape::geometry);
     inst->setCompute<computeGeometry>();
 
-    auto wInfo = info->add(&MCCuboid::width, "width");
-    wInfo->setAffects(inst);
+    auto aff = info->createAffects(data, &inst, 1)
+
+    auto wInfo = info->add(data, &MCCuboid::width, "width");
+    wInfo->setAffects(aff);
     wInfo->setDefault(1.0f);
 
-    auto hInfo = info->add(&MCCuboid::height, "height");
-    hInfo->setAffects(inst);
+    auto hInfo = info->add(data, &MCCuboid::height, "height");
+    hInfo->setAffects(aff);
     hInfo->setDefault(1.0f);
 
-    auto dInfo = info->add(&MCCuboid::depth, "depth");
-    dInfo->setAffects(inst);
+    auto dInfo = info->add(data, &MCCuboid::depth, "depth");
+    dInfo->setAffects(aff);
     dInfo->setDefault(1.0f);
     }
 

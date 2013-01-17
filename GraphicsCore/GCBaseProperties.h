@@ -93,52 +93,45 @@ QTextStream &operator<<(QTextStream& s, const GraphicsCore::detail::ShaderInstan
   return s;
   }
 }
+
 class GRAPHICSCORE_EXPORT GCRuntimeShader
     : public Shift::PODPropertyBase<Eks::Shader,
-                                GCRuntimeShader,
-                                Shift::detail::PODPropertyTraits<GCRuntimeShader> >
+                                GCRuntimeShader>
   {
 public:
-  typedef Shift::detail::PODPropertyTraits<GCRuntimeShader> Traits;
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeShader> Traits;
   enum { TypeId = 152 };
   S_PROPERTY(GCRuntimeShader, Property, 0);
   };
 
 class GRAPHICSCORE_EXPORT GCRuntimeGeometry
     : public Shift::PODPropertyBase<Eks::Geometry,
-                                GCRuntimeGeometry,
-                                Shift::detail::PODPropertyTraits<GCRuntimeGeometry> >
+                                GCRuntimeGeometry>
   {
 public:
-  typedef Shift::detail::PODPropertyTraits<GCRuntimeGeometry> Traits;
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeGeometry> Traits;
   enum { TypeId = 154 };
   S_PROPERTY(GCRuntimeGeometry, Property, 0);
   };
 
 class GRAPHICSCORE_EXPORT GCRuntimeShaderInstance
-    : public Shift::PODProperty<GraphicsCore::detail::ShaderInstance,
-                                GCRuntimeShaderInstance,
-                                Shift::detail::PODPropertyTraits<GCRuntimeShaderInstance> >
+    : public Shift::PODPropertyBase<GraphicsCore::detail::ShaderInstance,
+                                GCRuntimeShaderInstance >
   {
 public:
-  typedef Shift::detail::PODPropertyTraits<GraphicsCore::detail::ShaderInstance> Traits;
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeShaderInstance> Traits;
   enum { TypeId = 156 };
   S_PROPERTY(GCRuntimeShaderInstance, Property, 0);
-
-  static void assignProperty(const Property *f, Property *t);
   };
 
 class GRAPHICSCORE_EXPORT GCRenderer
-    : public Shift::PODProperty<Eks::Renderer *,
-                                GCRenderer,
-                                Shift::detail::PODPropertyTraits<GCRenderer> >
+    : public Shift::PODPropertyBase<Eks::Renderer *,
+                                GCRenderer>
   {
 public:
-  typedef Shift::detail::PODPropertyTraits<GCRenderer> Traits;
+  typedef Shift::detail::BasePODPropertyTraits<GCRenderer> Traits;
   enum { TypeId = 151 };
   S_PROPERTY(GCRenderer, Property, 0);
-
-  static void assignProperty(const Property *f, Property *t);
   };
 
 struct GCVertexLayoutWrapper
@@ -148,16 +141,13 @@ struct GCVertexLayoutWrapper
   };
 
 class GRAPHICSCORE_EXPORT GCVertexLayout
-    : public Shift::PODProperty<GCVertexLayoutWrapper,
-                                GCVertexLayout,
-                                Shift::detail::PODPropertyTraits<GCVertexLayout> >
+    : public Shift::PODPropertyBase<GCVertexLayoutWrapper,
+                                GCVertexLayout>
   {
 public:
-  typedef Shift::detail::PODPropertyTraits<GCVertexLayout> Traits;
+  typedef Shift::detail::BasePODPropertyTraits<GCVertexLayout> Traits;
   enum { TypeId = 152 };
   S_PROPERTY(GCVertexLayout, Property, 0);
-
-  static void assignProperty(const Property *f, Property *t);
   };
 
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCRendererPointer, GCRenderer)

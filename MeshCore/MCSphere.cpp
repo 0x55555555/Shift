@@ -1,18 +1,18 @@
 #include "MCSphere.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "3D/GCTransform.h"
 #include "3D/Manipulators/GCDistanceManipulator.h"
 
 S_IMPLEMENT_PROPERTY(MCSphere, MeshCore)
 
-void MCSphere::createTypeInformation(SPropertyInformationTyped<MCSphere> *info,
-                                    const SPropertyInformationCreateData &data)
+void MCSphere::createTypeInformation(Shift::PropertyInformationTyped<MCSphere> *info,
+                                    const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
     auto geomInst = info->child(&MCSphere::geometry);
 
-    auto radInst = info->add(&MCSphere::radius, "radius");
+    auto radInst = info->add(data, &MCSphere::radius, "radius");
     radInst->setAffects(geomInst);
     radInst->setDefault(1.0f);
     }

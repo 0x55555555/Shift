@@ -135,3 +135,5 @@ void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
   lock.data()->~Shader();
   new(lock.data()) Eks::Shader(r, &shader->vertex, &shader->fragment);
   }
+
+S_IMPLEMENT_TYPED_POINTER_TYPE(GCShaderPointer, GraphicsCore)

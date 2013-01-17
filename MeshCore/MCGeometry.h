@@ -10,11 +10,9 @@ class MESHCORE_EXPORT MCGeometry : public GCGeometry
   S_PROPERTY_CONTAINER(MCGeometry, GCGeometry, 0)
 
 public:
-  MCGeometry();
-
   MCPolyhedronProperty polygons;
 
-  void appendTo(XGeometry *geo) const;
+  void appendTo(Eks::Geometry *geo) const;
   };
 
 S_PROPERTY_INTERFACE(MCGeometry);

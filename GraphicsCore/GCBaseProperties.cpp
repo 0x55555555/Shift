@@ -34,18 +34,6 @@ void GCBoundingBox::assignProperty(const Property *f, Property *t)
     }
   }
 
-void GCRuntimeShaderInstance::assignProperty(const Property *f, Property *t)
-  {
-  GCRuntimeShaderInstance *to = t->uncheckedCastTo<GCRuntimeShaderInstance>();
-
-  const GCRuntimeShaderInstance *sProp = f->castTo<GCRuntimeShaderInstance>();
-  if(sProp)
-    {
-    to->assign(sProp->value());
-    return;
-    }
-  }
-
 void Matrix3x3Property::assignProperty(const Property *f, Property *t)
   {
   Matrix3x3Property *to = t->uncheckedCastTo<Matrix3x3Property>();
@@ -94,17 +82,46 @@ void ComplexTransformProperty::assignProperty(const Property *f, Property *t)
     to->assign(Eks::ComplexTransform(sProp->value().matrix()));
     return;
     }
-
   }
 
-void GCRenderer::assignProperty(const Property *, Property *)
+S_IMPLEMENT_PROPERTY(GCRuntimeShader, GraphicsCore)
+
+void GCRuntimeShader::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeShader> *,
+    const Shift::PropertyInformationCreateData &)
   {
-  xAssertFail();
   }
 
-void GCVertexLayout::assignProperty(const Property *, Property *)
+S_IMPLEMENT_PROPERTY(GCRuntimeGeometry, GraphicsCore)
+
+void GCRuntimeGeometry::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeGeometry> *,
+    const Shift::PropertyInformationCreateData &)
   {
-  xAssertFail();
+  }
+
+S_IMPLEMENT_PROPERTY(GCRuntimeShaderInstance, GraphicsCore)
+
+void GCRuntimeShaderInstance::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeShaderInstance> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+S_IMPLEMENT_PROPERTY(GCRenderer, GraphicsCore)
+
+void GCRenderer::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRenderer> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+S_IMPLEMENT_PROPERTY(GCVertexLayout, GraphicsCore)
+
+void GCVertexLayout::createTypeInformation(
+    Shift::PropertyInformationTyped<GCVertexLayout> *,
+    const Shift::PropertyInformationCreateData &)
+  {
   }
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCRendererPointer, GraphicsCore)

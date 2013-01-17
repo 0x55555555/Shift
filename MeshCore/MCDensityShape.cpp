@@ -1,5 +1,5 @@
 #include "MCDensityShape.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "MCPolyhedron.h"
 
 #include <CGAL/IO/output_surface_facets_to_polyhedron.h>

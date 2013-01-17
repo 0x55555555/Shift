@@ -11,7 +11,7 @@ class MCSphere : public MCDensityShape, public GCManipulatable
 public:
   MCSphere();
 
-  FloatProperty radius;
+  Shift::FloatProperty radius;
 
   virtual float boundingRadius() const { return radius()+0.5f; }
   virtual float minimumSurfaceAngle() const { return 30.0f; }
@@ -19,7 +19,7 @@ public:
   virtual float evaluate(const XVector3D &p) const;
 
 private:
-  virtual void addManipulators(SPropertyArray *, const GCTransform *tr=0);
+  virtual void addManipulators(Shift::PropertyArray *, const GCTransform *tr=0);
   };
 
 S_PROPERTY_INTERFACE(MCSphere);

@@ -1,16 +1,11 @@
 #include "MCPolyhedron.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 S_IMPLEMENT_PROPERTY(MCPolyhedronProperty, MeshCore)
 
-void MCPolyhedronProperty::createTypeInformation(SPropertyInformationTyped<MCPolyhedronProperty> *,
-                                                 const SPropertyInformationCreateData &)
+void MCPolyhedronProperty::createTypeInformation(Shift::PropertyInformationTyped<MCPolyhedronProperty> *,
+                                                 const Shift::PropertyInformationCreateData &)
   {
-  }
-
-void MCPolyhedronProperty::assignProperty(const SProperty *, SProperty *)
-  {
-  xAssertFail();
   }
 
 void MCPolyhedron::computeNormals()
@@ -20,18 +15,18 @@ void MCPolyhedron::computeNormals()
     Facet_iterator end = facets_end();
     do
       {
-      XVector3D sum = XVector3D::Zero();
+      Eks::Vector3D sum = Eks::Vector3D::Zero();
 
       Halfedge_around_facet_circulator h = it->facet_begin();
       do
         {
-        XVector3D normal = (h->next()->vertex()->point() - h->vertex()->point()).cross(
+        Eks::Vector3D normal = (h->next()->vertex()->point() - h->vertex()->point()).cross(
                              h->next()->next()->vertex()->point() - h->next()->vertex()->point());
 
         sum = sum + normal.normalized();
         } while (++h != it->facet_begin());
 
-      it->plane() = XPlane(XVector3D::Zero(), sum.normalized());
+      it->plane() = Eks::Plane(Eks::Vector3D::Zero(), sum.normalized());
       } while (++it != end);
     }
 
@@ -40,7 +35,7 @@ void MCPolyhedron::computeNormals()
     Vertex_iterator end = vertices_end();
     do
       {
-      XVector3D normal = XVector3D::Zero();
+      Eks::Vector3D normal = Eks::Vector3D::Zero();
       Halfedge_around_vertex_const_circulator pHalfedge = it->vertex_begin();
       Halfedge_around_vertex_const_circulator begin = pHalfedge;
 

@@ -3,7 +3,7 @@
 
 #include "MCCGALSetup.h"
 #include "XGlobal"
-#include "XVector3D"
+#include "XMathVector"
 #include "XPlane.h"
 #include <CGAL/Cartesian/Cartesian_base.h>
 #include <CGAL/Handle_for.h>
@@ -15,14 +15,14 @@ typedef CGAL::Simple_cartesian<float>::Point_3 F3;
 typedef CGAL::Simple_cartesian<double>::Point_3 D3;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel::Point_3 EPICK3;
 
-template <typename Kernel_> struct MCKernelBase : public CGAL::Cartesian_base<Kernel_, xReal>
+template <typename Kernel_> struct MCKernelBase : public CGAL::Cartesian_base<Kernel_, Eks::Real>
   {
-  typedef xReal                                       RT;
-  typedef xReal                                       FT;
+  typedef Eks::Real                                   RT;
+  typedef Eks::Real                                   FT;
 
-  typedef XVector2D                                   Point_2;
-  typedef XVector2D                                   Vector_2;
-  typedef XVector2D                                   Direction_2;
+  typedef Eks::Vector2D                               Point_2;
+  typedef Eks::Vector2D                               Vector_2;
+  typedef Eks::Vector2D                               Direction_2;
   typedef CGAL::SegmentC2<Kernel>                     Segment_2;
   typedef CGAL::LineC2<Kernel>                        Line_2;
   typedef CGAL::RayC2<Kernel>                         Ray_2;
@@ -31,63 +31,63 @@ template <typename Kernel_> struct MCKernelBase : public CGAL::Cartesian_base<Ke
   typedef CGAL::Iso_rectangleC2<Kernel>               Iso_rectangle_2;
   typedef CGAL::Aff_transformationC2<Kernel>          Aff_transformation_2;
 
-  typedef const xReal * Cartesian_const_iterator_3;
-  typedef xReal * Cartesian_iterator_3;
+  typedef const Eks::Real * Cartesian_const_iterator_3;
+  typedef Eks::Real * Cartesian_iterator_3;
 
-  class Point_3 : public XVector3D
+  class Point_3 : public Eks::Vector3D
     {
   public:
-    Point_3() : XVector3D(XVector3D::Zero()), _w(1.0f) { }
-    Point_3(float x, float y, float z) : XVector3D(x, y, z), _w(1.0f) { }
-    Point_3(float x, float y, float z, float w) : XVector3D(x, y, z), _w(w) { }
-    Point_3(const XVector3D &p) : XVector3D(p), _w(1.0f) { }
-    Point_3(const F3 &p) : XVector3D(p.x(), p.y(), p.z()), _w(1.0f) { }
-    Point_3(const D3 &p) : XVector3D(p.x(), p.y(), p.z()), _w(1.0f) { }
-    Point_3(const EPICK3 &p) : XVector3D(p.x(), p.y(), p.z()), _w(1.0f) { }
-    Point_3(CGAL::Origin) : XVector3D(XVector3D::Zero()), _w(1.0f) { }
-    Point_3(const Point_3 &p) : XVector3D(p), _w(p._w) { }
-    Point_3& operator=(const XVector3D& p) { *((XVector3D*)this) = p; return *this; }
+    Point_3() : Eks::Vector3D(Eks::Vector3D::Zero()), _w(1.0f) { }
+    Point_3(float x, float y, float z) : Eks::Vector3D(x, y, z), _w(1.0f) { }
+    Point_3(float x, float y, float z, float w) : Eks::Vector3D(x, y, z), _w(w) { }
+    Point_3(const Eks::Vector3D &p) : Eks::Vector3D(p), _w(1.0f) { }
+    Point_3(const F3 &p) : Eks::Vector3D(p.x(), p.y(), p.z()), _w(1.0f) { }
+    Point_3(const D3 &p) : Eks::Vector3D(p.x(), p.y(), p.z()), _w(1.0f) { }
+    Point_3(const EPICK3 &p) : Eks::Vector3D(p.x(), p.y(), p.z()), _w(1.0f) { }
+    Point_3(CGAL::Origin) : Eks::Vector3D(Eks::Vector3D::Zero()), _w(1.0f) { }
+    Point_3(const Point_3 &p) : Eks::Vector3D(p), _w(p._w) { }
+    Point_3& operator=(const Eks::Vector3D& p) { *((Eks::Vector3D*)this) = p; return *this; }
 
-    const xReal *cartesian_begin() const { return data(); }
-    const xReal *cartesian_end() const { return data() + 3; }
+    const Eks::Real *cartesian_begin() const { return data(); }
+    const Eks::Real *cartesian_end() const { return data() + 3; }
 
-    xReal *cartesian_begin() { return data(); }
-    xReal *cartesian_end() { return data() + 3; }
+    Eks::Real *cartesian_begin() { return data(); }
+    Eks::Real *cartesian_end() { return data() + 3; }
 
-    const xReal &hx() const { return x(); }
-    const xReal &hy() const { return y(); }
-    const xReal &hz() const { return z(); }
-    const xReal &hw() const { return _w; }
+    const Eks::Real &hx() const { return x(); }
+    const Eks::Real &hy() const { return y(); }
+    const Eks::Real &hz() const { return z(); }
+    const Eks::Real &hw() const { return _w; }
 
   private:
-    xReal _w;
+    Eks::Real _w;
     };
 
-  class Vector_3 : public XVector3D
+  class Vector_3 : public Eks::Vector3D
     {
   public:
-    Vector_3() : XVector3D(XVector3D::Zero()) { }
-    Vector_3(float x, float y, float z) : XVector3D(x, y, z) { }
-    Vector_3(const XVector3D &p) : XVector3D(p) { }
+    Vector_3() : Eks::Vector3D(Eks::Vector3D::Zero()) { }
+    Vector_3(float x, float y, float z) : Eks::Vector3D(x, y, z) { }
+    Vector_3(const Eks::Vector3D &p) : Eks::Vector3D(p) { }
 
-    xReal squared_length() const { return squaredNorm(); }
+    Eks::Real squared_length() const { return squaredNorm(); }
     };
 
   typedef CGAL::LineC3<Kernel>                        Line_3;
-  class Direction_3 : public XVector3D
+  class Direction_3 : public Eks::Vector3D
     {
   public:
-    Direction_3() : XVector3D(XVector3D::Zero()) { }
-    Direction_3(float x, float y, float z) : XVector3D(x, y, z) { }
-    Direction_3(const XVector3D &p) : XVector3D(p) { }
-    Direction_3(const Line_3 &p) : XVector3D(p.direction()) { }
+    Direction_3() : Eks::Vector3D(Eks::Vector3D::Zero()) { }
+    Direction_3(float x, float y, float z) : Eks::Vector3D(x, y, z) { }
+    Direction_3(const Eks::Vector3D &p) : Eks::Vector3D(p) { }
+    Direction_3(const Line_3 &p) : Eks::Vector3D(p.direction()) { }
 
-    const xReal &dx() const { return x(); }
-    const xReal &dy() const { return y(); }
-    const xReal &dz() const { return z(); }
+    const Eks::Real &dx() const { return x(); }
+    const Eks::Real &dy() const { return y(); }
+    const Eks::Real &dz() const { return z(); }
     };
 
-  typedef XPlane                                      Plane_3;
+  typedef Eks::Plane                                  Plane_3;
   typedef CGAL::RayC3<Kernel>                         Ray_3;
   typedef CGAL::SegmentC3<Kernel>                     Segment_3;
   typedef CGAL::TriangleC3<Kernel>                    Triangle_3;

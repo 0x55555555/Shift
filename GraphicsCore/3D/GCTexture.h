@@ -9,17 +9,9 @@
 
 class GRAPHICSCORE_EXPORT GCTexture2D
     : public Shift::PODPropertyBase<Eks::Texture2D,
-      GCTexture2D,
-      Shift::detail::BasePODPropertyTraits<GCTexture2D> >
+      GCTexture2D>
   {
   S_PROPERTY(GCTexture2D, Property, 0)
-
-public:
-
-  static void assignProperty(const Shift::Property *, Shift::Property *)
-    {
-    xAssertFail();
-    }
   };
 
 S_PROPERTY_INTERFACE(GCTexture2D)

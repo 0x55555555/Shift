@@ -16,7 +16,7 @@ public:
   virtual float boundingRadius() const { return 1.0f; }
   virtual float minimumSurfaceAngle() const { return 30.0f; }
   virtual float maximumApproximateTriangleSize() const { return 0.1f; }
-  virtual float evaluate(const XVector3D &fn) const;
+  virtual float evaluate(const Eks::Vector3D &fn) const;
 
 private:
   static void computeGeometry(MCDensityShape* cube);

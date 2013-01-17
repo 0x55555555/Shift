@@ -39,8 +39,8 @@ namespace CGAL {
 
 inline void assertion_fail( const char* exp, const char* file, int line, const char* msg = "")
   {
-  XAssert ass(XCodeLocation(file, line, ""), exp, msg);
-  XAssert::currentFireFunction()(ass) && XAssert::currentBreakFunction();
+  Eks::detail::Assert ass(Eks::CodeLocation(file, line, ""), exp, msg);
+  Eks::detail::Assert::currentFireFunction()(ass) && Eks::detail::Assert::currentBreakFunction();
   }
 
 inline void precondition_fail( const char* exp, const char* file, int line, const char* msg = "")
