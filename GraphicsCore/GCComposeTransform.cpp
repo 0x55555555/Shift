@@ -29,9 +29,11 @@ void GCComposeTransform::createTypeInformation(Shift::PropertyInformationTyped<G
     auto angInst = info->add(data, &GCComposeTransform::rotationAngleIn, "rotationAngleIn");
     auto trInst = info->add(data, &GCComposeTransform::translationIn, "translationIn");
 
-    axInst->setAffects(data, transformInst);
-    angInst->setAffects(data, transformInst);
-    trInst->setAffects(data, transformInst);
+    auto affectsTransform = info->createAffects(data, &transformInst, 1);
+
+    axInst->setAffects(affectsTransform, true);
+    angInst->setAffects(affectsTransform, false);
+    trInst->setAffects(affectsTransform, false);
     }
   }
 

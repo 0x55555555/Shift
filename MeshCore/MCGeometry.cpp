@@ -1,13 +1,26 @@
 #include "MCGeometry.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "XTemporaryAllocator"
 
 S_IMPLEMENT_PROPERTY(MCGeometry, MeshCore)
 
 void computeRuntimeGeometry(MCGeometry *rtGeo)
   {
-  Eks::Geometry x;
-  rtGeo->appendTo(&x);
-  rtGeo->runtimeGeometry = x;
+  GCRenderer *gcR = rtGeo->renderer();
+  if(!gcR)
+    {
+    return;
+    }
+
+  Eks::Renderer* r = gcR->value();
+  xAssert(r);
+
+  GCRuntimeGeometry::ComputeLock l(&rtGeo->runtimeGeometry);
+  GCRuntimeIndexGeometry::ComputeLock l2(&rtGeo->runtimeIndexGeometry);
+
+  Eks::TemporaryAllocator alloc(rtGeo->handler()->temporaryAllocator());
+
+  rtGeo->bakeTo(&alloc, r, l.data(), l2.data());
   }
 
 void MCGeometry::createTypeInformation(Shift::PropertyInformationTyped<MCGeometry> *info,
@@ -17,38 +30,39 @@ void MCGeometry::createTypeInformation(Shift::PropertyInformationTyped<MCGeometr
     {
     auto rtGeo = info->child(&MCGeometry::runtimeGeometry);
     rtGeo->setCompute<computeRuntimeGeometry>();
-    rtGeo->setComputeLockedToMainThread(true);
+
+    auto rtIGeo = info->child(&MCGeometry::runtimeIndexGeometry);
+    rtGeo->setCompute<computeRuntimeGeometry>();
+
+    const Shift::EmbeddedPropertyInstanceInformation *affects[] =
+    {
+      rtGeo,
+      rtIGeo
+    };
+    auto affectsGeos = info->createAffects(data, affects, X_ARRAY_COUNT(affects));
+
 
     auto attrs = info->add(data, &MCGeometry::polygons, "polygons");
-    attrs->setAffects(rtGeo);
+    attrs->setAffects(affectsGeos, true);
+
+    auto renderer = info->add(data, &MCGeometry::renderer, "renderer");
+    renderer->setAffects(affectsGeos, false);
     }
   }
 
-void MCGeometry::appendTo(Eks::Geometry *geo) const
+void MCGeometry::bakeTo(
+    Eks::AllocatorBase *alloc,
+    Eks::Renderer *r,
+    Eks::Geometry *geo,
+    Eks::IndexGeometry *geoI) const
   {
   const MCPolyhedron &p = polygons();
 
-  const QVector<xuint32>& trianglesIn = geo->triangles();
-  QVector<XVector3D> positionsIn = geo->attributes3D()["vertex"];
-  QVector<XVector3D> normalsIn = geo->attributes3D()["normals"];
+  xsize vec3Size = sizeof(float) * 3;
+  xsize vertexSize = vec3Size * 2;
 
-  QVarLengthArray<xuint32> triangles;
-  if(trianglesIn.size())
-    {
-    triangles.append(&trianglesIn.front(), trianglesIn.size());
-    }
-
-  QVarLengthArray<XVector3D> positions;
-  if(positionsIn.size())
-    {
-    positions.append(&positionsIn.front(), positionsIn.size());
-    }
-
-  QVarLengthArray<XVector3D> normals;
-  if(normalsIn.size())
-    {
-    normals.append(&normalsIn.front(), normalsIn.size());
-    }
+  Eks::Vector<xuint8> vertexData(alloc);
+  Eks::Vector<xuint16> indexData(alloc);
 
   MCPolyhedron::Facet_const_iterator it = p.facets_begin();
   MCPolyhedron::Facet_const_iterator end = p.facets_end();
@@ -68,7 +82,7 @@ void MCGeometry::appendTo(Eks::Geometry *geo) const
 
     fIt = f.halfedge();
     MCPolyhedron::Vertex_const_iterator vBegin = p.vertices_begin();
-    xsize zeroIdx = positions.size();
+    xsize zeroIdx = indexData.size();
     xsize ptIdx = 0;
     do
       {
@@ -78,18 +92,24 @@ void MCGeometry::appendTo(Eks::Geometry *geo) const
       // emit triangle
       if(ptIdx >= 2)
         {
-        triangles << zeroIdx << zeroIdx + ptIdx - 1 << zeroIdx + ptIdx;
+        xAssert(zeroIdx + ptIdx <= X_UINT16_SENTINEL);
+        indexData << zeroIdx << zeroIdx + ptIdx - 1 << zeroIdx + ptIdx;
         }
 
-      positions << v.point();
-      normals << v.normal();
+      vertexData.resizeAndCopy(vertexData.size() + vec3Size, (xuint8*)&v.point());
+      vertexData.resizeAndCopy(vertexData.size() + vec3Size, (xuint8*)&v.normal());
 
       fIt = fIt->next();
       ptIdx++;
       } while(fIt != fEnd);
     }
 
-  geo->setAttribute("vertex", positions.data(), positions.size());
-  geo->setAttribute("normals", normals.data(), normals.size());
-  geo->setTriangles(triangles.data(), triangles.size());
+  xsize vertexCount = vertexData.size() / vertexSize;
+  xAssert(vertexData.size() % vertexSize == 0);
+
+  geo->~Geometry();
+  new(geo) Eks::Geometry(r, vertexData.data(), vertexSize, vertexCount);
+
+  geoI->~IndexGeometry();
+  new(geo) Eks::IndexGeometry(r, Eks::IndexGeometry::Unsigned16, indexData.data(), indexData.size());
   }

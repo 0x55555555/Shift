@@ -100,6 +100,14 @@ void GCRuntimeGeometry::createTypeInformation(
   {
   }
 
+S_IMPLEMENT_PROPERTY(GCRuntimeIndexGeometry, GraphicsCore)
+
+void GCRuntimeIndexGeometry::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeGeometry> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
 S_IMPLEMENT_PROPERTY(GCRuntimeShaderInstance, GraphicsCore)
 
 void GCRuntimeShaderInstance::createTypeInformation(

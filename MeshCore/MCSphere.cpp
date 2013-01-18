@@ -13,34 +13,25 @@ void MCSphere::createTypeInformation(Shift::PropertyInformationTyped<MCSphere> *
     auto geomInst = info->child(&MCSphere::geometry);
 
     auto radInst = info->add(data, &MCSphere::radius, "radius");
-    radInst->setAffects(geomInst);
+    radInst->setAffects(data, geomInst);
     radInst->setDefault(1.0f);
     }
-
-  if(data.registerInterfaces)
-    {
-    info->addInheritedInterface<GCManipulatable>();
-    }
   }
 
-MCSphere::MCSphere()
-  {
-  }
-
-float MCSphere::evaluate(const XVector3D &p) const
+float MCSphere::evaluate(const Eks::Vector3D &p) const
   {
   float r = radius();
   const float x2=p.x()*p.x(), y2=p.y()*p.y(), z2=p.z()*p.z();
   return x2+y2+z2 - (r*r);
   }
 
-void MCSphere::addManipulators(SPropertyArray *a, const GCTransform *tr)
+void MCSphere::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)
   {
   // radius
     {
     GCDistanceManipulator *manip = a->add<GCDistanceManipulator>();
 
-    manip->lockDirection = XVector3D(1.0f, 0.0f, 0.0f);
+    manip->lockDirection = Eks::Vector3D(1.0f, 0.0f, 0.0f);
     manip->lockMode = GCDistanceManipulator::Linear;
 
     radius.connect(&manip->distance);

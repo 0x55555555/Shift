@@ -68,11 +68,13 @@ void MCImage::createTypeInformation(Shift::PropertyInformationTyped<MCImage> *in
     auto outputInst = info->child(&MCImage::output);
     outputInst->setCompute<computeImageOutput>();
 
+    auto affectsOutput = info->createAffects(data, &outputInst, 1);
+
     auto preMultInst = info->add(data, &MCImage::premultiply, "premultiply");
-    preMultInst->setAffects(data, outputInst);
+    preMultInst->setAffects(affectsOutput, true);
 
     auto filenameInst = info->add(data, &MCImage::filename, "filename");
-    filenameInst->setAffects(data, outputInst);
+    filenameInst->setAffects(affectsOutput, false);
     }
   }
 

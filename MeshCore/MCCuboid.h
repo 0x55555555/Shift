@@ -11,12 +11,12 @@ class MCCuboid : public MCShape, public GCManipulatable
 public:
   MCCuboid();
 
-  FloatProperty width;
-  FloatProperty height;
-  FloatProperty depth;
+  Shift::FloatProperty width;
+  Shift::FloatProperty height;
+  Shift::FloatProperty depth;
 
 private:
-  virtual void addManipulators(SPropertyArray *, const GCTransform *tr=0);
+  virtual void addManipulators(Shift::PropertyArray *, const GCTransform *tr=0);
   static void computeGeometry(MCCuboid* cube);
   };
 

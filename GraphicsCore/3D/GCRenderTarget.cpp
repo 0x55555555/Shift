@@ -23,12 +23,14 @@ void GCRenderTarget::createTypeInformation(Shift::PropertyInformationTyped<GCRen
     aR->setCompute<computeAspectRatio>();
     aR->setDefault(1.0f);
 
+    auto affectsAr = info->createAffects(data, &aR, 1);
+
     auto width = info->add(data, &GCRenderTarget::width, "width");
-    width->setAffects(data, aR);
+    width->setAffects(affectsAr, true);
     width->setMode(Shift::PropertyInstanceInformation::Output);
 
     auto height = info->add(data, &GCRenderTarget::height, "height");
-    height->setAffects(data, aR);
+    height->setAffects(affectsAr, false);
     height->setMode(Shift::PropertyInstanceInformation::Output);
     }
   }

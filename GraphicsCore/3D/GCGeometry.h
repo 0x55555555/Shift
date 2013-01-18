@@ -14,9 +14,8 @@ class GRAPHICSCORE_EXPORT GCGeometry : public Shift::PropertyContainer
   S_PROPERTY_CONTAINER(GCGeometry, PropertyContainer, 0)
 
 public:
-  GCGeometry();
-
   GCRuntimeGeometry runtimeGeometry;
+  GCRuntimeIndexGeometry runtimeIndexGeometry;
   };
 
 S_PROPERTY_INTERFACE(GCGeometry)

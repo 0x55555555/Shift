@@ -13,7 +13,9 @@ void MCSimple::createTypeInformation(Shift::PropertyInformationTyped<MCSimple> *
     auto aInst = info->add(data, &MCSimple::inputA, "inputA");
     auto bInst = info->add(data, &MCSimple::inputB, "inputB");
 
-    aInst->setAffects(data, outInst);
-    bInst->setAffects(data, outInst);
+    auto outAffects = info->createAffects(data, &outInst, 1);
+
+    aInst->setAffects(outAffects, true);
+    bInst->setAffects(outAffects, false);
     }
   }

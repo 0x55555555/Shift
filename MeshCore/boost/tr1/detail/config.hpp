@@ -57,6 +57,11 @@
 #  define BOOST_HAS_TR1
 #endif
 
+#if defined(_MSC_VER) && (_MSC_VER >= 1700)
+  // turn on support for everything:
+#  define BOOST_HAS_TR1
+#endif
+
 #ifdef __GXX_EXPERIMENTAL_CXX0X__
 #  define BOOST_HAS_TR1_COMPLEX_OVERLOADS
 #  define BOOST_HAS_TR1_COMPLEX_INVERSE_TRIG

@@ -114,6 +114,16 @@ public:
   S_PROPERTY(GCRuntimeGeometry, Property, 0);
   };
 
+class GRAPHICSCORE_EXPORT GCRuntimeIndexGeometry
+    : public Shift::PODPropertyBase<Eks::IndexGeometry,
+                                GCRuntimeIndexGeometry>
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeIndexGeometry> Traits;
+  enum { TypeId = 158 };
+  S_PROPERTY(GCRuntimeGeometry, Property, 0);
+  };
+
 class GRAPHICSCORE_EXPORT GCRuntimeShaderInstance
     : public Shift::PODPropertyBase<GraphicsCore::detail::ShaderInstance,
                                 GCRuntimeShaderInstance >
@@ -163,6 +173,7 @@ S_PROPERTY_INTERFACE(GCRenderer)
 S_PROPERTY_INTERFACE(GCVertexLayout)
 S_PROPERTY_INTERFACE(GCRuntimeShader)
 S_PROPERTY_INTERFACE(GCRuntimeGeometry)
+S_PROPERTY_INTERFACE(GCRuntimeIndexGeometry)
 S_PROPERTY_INTERFACE(TransformProperty)
 S_PROPERTY_INTERFACE(Matrix3x3Property)
 S_PROPERTY_INTERFACE(ComplexTransformProperty)

@@ -12,7 +12,13 @@ class MESHCORE_EXPORT MCGeometry : public GCGeometry
 public:
   MCPolyhedronProperty polygons;
 
-  void appendTo(Eks::Geometry *geo) const;
+  GCRendererPointer renderer;
+
+  void bakeTo(
+      Eks::AllocatorBase *allocator,
+      Eks::Renderer *r,
+      Eks::Geometry *geo,
+      Eks::IndexGeometry *iGeo) const;
   };
 
 S_PROPERTY_INTERFACE(MCGeometry);

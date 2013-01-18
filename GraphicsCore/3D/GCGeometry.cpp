@@ -10,11 +10,8 @@ void GCGeometry::createTypeInformation(Shift::PropertyInformationTyped<GCGeometr
   if(data.registerAttributes)
     {
     info->add(data, &GCGeometry::runtimeGeometry, "runtimeGeometry");
+    info->add(data, &GCGeometry::runtimeIndexGeometry, "runtimeIndexGeometry");
     }
-  }
-
-GCGeometry::GCGeometry()
-  {
   }
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCGeometryPointer, GraphicsCore)

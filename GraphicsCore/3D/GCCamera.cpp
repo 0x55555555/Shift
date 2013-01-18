@@ -343,23 +343,25 @@ void GCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<
     auto proj = info->child(&GCCamera::projection);
     proj->setCompute<computePerspective>();
 
+    auto affectsProj = info->createAffects(data, &proj, 1);
+
     auto width = info->child(&GCCamera::viewportWidth);
-    width->setAffects(data, proj);
+    width->setAffects(affectsProj, true);
 
     auto height = info->child(&GCCamera::viewportHeight);
-    height->setAffects(data, proj);
+    height->setAffects(affectsProj, false);
 
     auto fov = info->add(data, &GCPerspectiveCamera::fieldOfView, "fieldOfView");
     fov->setDefault(45.0f);
-    fov->setAffects(data, proj);
+    fov->setAffects(affectsProj, false);
 
     auto nC = info->add(data, &GCPerspectiveCamera::nearClip, "nearClip");
     nC->setDefault(0.1f);
-    nC->setAffects(data, proj);
+    nC->setAffects(affectsProj, false);
 
     auto fC = info->add(data, &GCPerspectiveCamera::farClip, "farClip");
     fC->setDefault(100.0f);
-    fC->setAffects(data, proj);
+    fC->setAffects(affectsProj, false);
     }
   }
 

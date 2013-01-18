@@ -8,32 +8,27 @@
 
 S_IMPLEMENT_PROPERTY(MCCuboid, MeshCore)
 
-void MCCuboid::createTypeInformation(SPropertyInformationTyped<MCCuboid> *info,
-                                     const SPropertyInformationCreateData &data)
+void MCCuboid::createTypeInformation(Shift::PropertyInformationTyped<MCCuboid> *info,
+                                     const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
     auto inst = info->child(&MCShape::geometry);
     inst->setCompute<computeGeometry>();
 
-    auto aff = info->createAffects(data, &inst, 1)
+    auto aff = info->createAffects(data, &inst, 1);
 
     auto wInfo = info->add(data, &MCCuboid::width, "width");
-    wInfo->setAffects(aff);
+    wInfo->setAffects(aff, true);
     wInfo->setDefault(1.0f);
 
     auto hInfo = info->add(data, &MCCuboid::height, "height");
-    hInfo->setAffects(aff);
+    hInfo->setAffects(aff, false);
     hInfo->setDefault(1.0f);
 
     auto dInfo = info->add(data, &MCCuboid::depth, "depth");
-    dInfo->setAffects(aff);
+    dInfo->setAffects(aff, false);
     dInfo->setDefault(1.0f);
-    }
-
-  if(data.registerInterfaces)
-    {
-    info->addInheritedInterface<GCManipulatable>();
     }
   }
 
@@ -75,13 +70,13 @@ void MCCuboid::computeGeometry(MCCuboid* cube)
   p.computeNormals();
   }
 
-void MCCuboid::addManipulators(SPropertyArray *a, const GCTransform *tr)
+void MCCuboid::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)
   {
   // X
     {
     GCDistanceManipulator *manip = a->add<GCDistanceManipulator>();
 
-    manip->lockDirection = XVector3D(1.0f, 0.0f, 0.0f);
+    manip->lockDirection = Eks::Vector3D(1.0f, 0.0f, 0.0f);
     manip->lockMode = GCDistanceManipulator::Linear;
     manip->scaleFactor = 0.5f;
 
@@ -99,7 +94,7 @@ void MCCuboid::addManipulators(SPropertyArray *a, const GCTransform *tr)
     {
     GCDistanceManipulator *manip = a->add<GCDistanceManipulator>();
 
-    manip->lockDirection = XVector3D(0.0f, 1.0f, 0.0f);
+    manip->lockDirection = Eks::Vector3D(0.0f, 1.0f, 0.0f);
     manip->lockMode = GCDistanceManipulator::Linear;
     manip->scaleFactor = 0.5f;
 
@@ -117,7 +112,7 @@ void MCCuboid::addManipulators(SPropertyArray *a, const GCTransform *tr)
     {
     GCDistanceManipulator *manip = a->add<GCDistanceManipulator>();
 
-    manip->lockDirection = XVector3D(0.0f, 0.0f, 1.0f);
+    manip->lockDirection = Eks::Vector3D(0.0f, 0.0f, 1.0f);
     manip->lockMode = GCDistanceManipulator::Linear;
     manip->scaleFactor = 0.5f;
 

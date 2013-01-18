@@ -10,22 +10,14 @@
 
 S_IMPLEMENT_PROPERTY(MCDensityShape, MeshCore)
 
-void MCDensityShape::createTypeInformation(SPropertyInformationTyped<MCDensityShape> *info,
-                                           const SPropertyInformationCreateData &data)
+void MCDensityShape::createTypeInformation(Shift::PropertyInformationTyped<MCDensityShape> *info,
+                                           const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
     auto inst = info->child(&MCDensityShape::geometry);
     inst->setCompute<computeGeometry>();
     }
-  }
-
-MCDensityShape::MCDensityShape()
-  {
-  }
-
-MCDensityShape::~MCDensityShape()
-  {
   }
 
 // default triangulation for Surface_mesher
@@ -39,7 +31,7 @@ typedef GT::Sphere_3 Sphere_3;
 typedef GT::Point_3 Point_3;
 typedef GT::FT FT;
 
-float MCDensityShape::evaluate(const XVector3D &) const
+float MCDensityShape::evaluate(const Eks::Vector3D &) const
   {
   return 0;
   }
@@ -67,7 +59,7 @@ void MCDensityShape::computeGeometry(MCDensityShape* shape)
 
     FT operator()(Point_3 pt) const
       {
-      XVector3D vPt(pt.x(), pt.y(), pt.z());
+      Eks::Vector3D vPt(pt.x(), pt.y(), pt.z());
       float val = _this->evaluate(vPt);
       return FT(val);
       }

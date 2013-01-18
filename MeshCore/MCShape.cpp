@@ -1,8 +1,8 @@
 #include "MCShape.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XRenderer.h"
 #include "XLine.h"
-#include "shandlerimpl.h"
+#include "shift/Changes/shandler.inl"
 #include <CGAL/AABB_tree.h>
 #include <CGAL/AABB_traits.h>
 #include <CGAL/AABB_polyhedron_triangle_primitive.h>
@@ -12,31 +12,28 @@ S_IMPLEMENT_PROPERTY(MCShape, MeshCore)
 void unionBounds(MCShape* shape)
   {
   GCBoundingBox::ComputeLock l(&shape->bounds);
-  XCuboid *data = l.data();
+  Eks::Cuboid *data = l.data();
 
-  *data = shape->geometry.runtimeGeometry().computeBounds();
+  xAssertFail();
+  //*data = shape->geometry.runtimeGeometry().computeBounds();
   }
 
-void MCShape::createTypeInformation(SPropertyInformationTyped<MCShape> *info,
-                                    const SPropertyInformationCreateData &data)
+void MCShape::createTypeInformation(Shift::PropertyInformationTyped<MCShape> *info,
+                                    const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
     auto bInst = info->child(&GCRenderArray::bounds);
     bInst->setCompute<unionBounds>();
 
-    auto geoInst = info->add(&MCShape::geometry, "geometry");
-    geoInst->setAffects(bInst);
+    auto geoInst = info->add(data, &MCShape::geometry, "geometry");
+    geoInst->setAffects(data, bInst);
     }
   }
 
-MCShape::MCShape()
+void MCShape::render(Eks::Renderer *r, const RenderState &state) const
   {
-  }
-
-void MCShape::render(XRenderer *r) const
-  {
-  r->drawGeometry(geometry.runtimeGeometry());
+  r->drawTriangles(&geometry.runtimeIndexGeometry(), &geometry.runtimeGeometry());
   }
 
 typedef CGAL::AABB_polyhedron_triangle_primitive<MCKernel, MCPolyhedron> Primitive;
@@ -45,7 +42,7 @@ typedef CGAL::AABB_tree<Traits> Tree;
 typedef Tree::Object_and_primitive_id Object_and_primitive_id;
 typedef Tree::Primitive_id Primitive_id;
 
-void MCShape::intersect(const XLine& line, Selector *s)
+void MCShape::intersect(const Eks::Line& line, Selector *s)
   {
   // need to be able to get a non const iterator for cgal.
   MCPolyhedron& polyhedron = const_cast<MCPolyhedron&>(geometry.polygons());
@@ -55,7 +52,7 @@ void MCShape::intersect(const XLine& line, Selector *s)
   tree.accelerate_distance_queries();
 
   MCKernel::Point_3 start = line.position();
-  MCKernel::Point_3 end = XVector3D(line.position() + line.direction());
+  MCKernel::Point_3 end = Eks::Vector3D(line.position() + line.direction());
 
   // constructs segment query
   MCKernel::Segment_3 segment(start, end);
@@ -76,8 +73,8 @@ void MCShape::intersect(const XLine& line, Selector *s)
         {
         const MCKernel::Point_3& pt4D = CGAL::object_cast<MCKernel::Point_3>(object.first);
         const MCPolyhedron::Face& prim = *object.second;
-        const XVector3D pt = pt4D / pt4D.hw();
-        const XVector3D normal = prim.plane().normal();
+        const Eks::Vector3D pt = pt4D / pt4D.hw();
+        const Eks::Vector3D normal = prim.plane().normal();
 
         _s->onHit(pt, normal, _shape);
         }
@@ -103,6 +100,6 @@ void MCShape::intersect(const XLine& line, Selector *s)
   tree.all_intersections(segment, insertor);
   }
 
-void MCShape::intersect(const XFrustum& frus, Selector *)
+void MCShape::intersect(const Eks::Frustum& frus, Selector *)
   {
   }
