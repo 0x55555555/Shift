@@ -52,12 +52,23 @@ class GRAPHICSCORE_EXPORT GCStaticShader : public GCShader
 public:
   class EmbeddedInstanceInformation : public GCShader::EmbeddedInstanceInformation
     {
-  XProperties:
-    XByRefProperty(Eks::String, vertexData, setVertexData);
-    XByRefProperty(Eks::String, fragmentData, setFragmentData);
+  public:
+    virtual bool initVertexShader(
+      GCShader *,
+      Eks::Renderer *,
+      Eks::ShaderVertexComponent *,
+      const Eks::ShaderVertexLayoutDescription *,
+      xsize ,
+      Eks::ShaderVertexLayout *) const
+      { return false; }
+    virtual bool initFragmentShader(
+        GCShader *,
+        Eks::Renderer *,
+        Eks::ShaderFragmentComponent *) const
+      { return false; }
     };
 
-  S_ENTITY(GCStaticShader, Shift::Entity, 0)
+  S_ABSTRACT_ENTITY(GCStaticShader, Shift::Entity, 0)
 
 private:
   Eks::ShaderFragmentComponent fragment;

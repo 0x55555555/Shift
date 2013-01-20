@@ -73,7 +73,7 @@ void GCShader::bind(Eks::Renderer *r) const
   }
 
 
-S_IMPLEMENT_PROPERTY(GCStaticShader, GraphicsCore)
+S_IMPLEMENT_ABSTRACT_PROPERTY(GCStaticShader, GraphicsCore)
 
 void GCStaticShader::createTypeInformation(Shift::PropertyInformationTyped<GCStaticShader> *info,
                                      const Shift::PropertyInformationCreateData &data)
@@ -101,9 +101,6 @@ void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
     return;
     }
 
-  const Eks::String vSrc = shader->embeddedInstanceInformation()->vertexData();
-  const Eks::String fSrc = shader->embeddedInstanceInformation()->fragmentData();
-
   GCVertexLayout *gcLayout = shader->layoutDescription();
   if(!r)
     {
@@ -116,21 +113,30 @@ void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
     return;
     }
 
-
   shader->layout.~ShaderVertexLayout();
   new(&shader->layout) Eks::ShaderVertexLayout();
 
   shader->vertex.~ShaderVertexComponent();
-  new(&shader->vertex) Eks::ShaderVertexComponent(
-        r,
-        vSrc.data(),
-        vSrc.length(),
-        layoutDesc.layout,
-        layoutDesc.layoutCount,
-        &shader->layout);
+  new(&shader->vertex) Eks::ShaderVertexComponent();
+  if(!shader->embeddedInstanceInformation()->initVertexShader(
+       shader,
+       r,
+       &shader->vertex,
+       layoutDesc.layout,
+       layoutDesc.layoutCount,
+       &shader->layout))
+    {
+    xAssertFail();
+    return;
+    }
 
   shader->fragment.~ShaderFragmentComponent();
-  new(&shader->fragment) Eks::ShaderFragmentComponent(r, fSrc.data(), fSrc.length());
+  new(&shader->fragment) Eks::ShaderFragmentComponent();
+  if(!shader->embeddedInstanceInformation()->initFragmentShader(shader, r, &shader->fragment))
+    {
+    xAssertFail();
+    return;
+    }
 
   lock.data()->~Shader();
   new(lock.data()) Eks::Shader(r, &shader->vertex, &shader->fragment);

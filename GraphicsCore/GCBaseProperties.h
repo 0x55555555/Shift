@@ -5,7 +5,7 @@
 #include "shift/Properties/sbaseproperties.h"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "XTransform.h"
-#include "QImage"
+#include "QtGui/QImage"
 #include "XShader.h"
 #include "XGeometry.h"
 #include "XCuboid.h"
@@ -146,7 +146,7 @@ public:
 
 struct GCVertexLayoutWrapper
   {
-  Eks::ShaderVertexLayoutDescription *layout;
+  const Eks::ShaderVertexLayoutDescription *layout;
   xsize layoutCount;
   };
 
