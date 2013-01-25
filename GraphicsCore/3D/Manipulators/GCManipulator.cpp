@@ -11,9 +11,11 @@ void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<
   {
   if(data.registerAttributes)
     {
-    info->add(data, &GCVisualManipulator::show, "show");
-    info->add(data, &GCVisualManipulator::worldCentre, "worldCentre");
-    info->add(data, &GCVisualManipulator::manipulatorsDisplayScale, "manipulatorsDisplayScale");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCVisualManipulator::show, "show");
+    childBlock.add(&GCVisualManipulator::worldCentre, "worldCentre");
+    childBlock.add(&GCVisualManipulator::manipulatorsDisplayScale, "manipulatorsDisplayScale");
     }
   }
 
@@ -188,8 +190,10 @@ void GCLinearDragManipulator::createTypeInformation(Shift::PropertyInformationTy
   {
   if(data.registerAttributes)
     {
-    info->add(data, &GCLinearDragManipulator::lockMode, "lockMode");
-    info->add(data, &GCLinearDragManipulator::lockDirection, "lockDirection");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCLinearDragManipulator::lockMode, "lockMode");
+    childBlock.add(&GCLinearDragManipulator::lockDirection, "lockDirection");
     }
   }
 

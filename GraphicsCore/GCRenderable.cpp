@@ -12,7 +12,9 @@ void GCRenderable::createTypeInformation(Shift::PropertyInformationTyped<GCRende
   {
   if(data.registerAttributes)
     {
-    info->add(data, &GCRenderable::bounds, "bounds");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCRenderable::bounds, "bounds");
     }
   }
 
@@ -50,7 +52,9 @@ void GCRenderArray::createTypeInformation(Shift::PropertyInformationTyped<GCRend
   {
   if(data.registerAttributes)
     {
-    auto rGInst = info->add(data, &GCRenderArray::renderGroup, "renderGroup");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto rGInst = childBlock.add(&GCRenderArray::renderGroup, "renderGroup");
 
     auto bInst = info->child(&GCRenderArray::bounds);
     bInst->setCompute<unionBounds>();

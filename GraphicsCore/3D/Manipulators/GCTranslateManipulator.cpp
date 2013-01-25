@@ -229,10 +229,12 @@ void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyp
   {
   if(data.registerAttributes)
     {
-    info->add(data, &GCTranslateManipulator::x, "x");
-    info->add(data, &GCTranslateManipulator::y, "y");
-    info->add(data, &GCTranslateManipulator::z, "z");
-    info->add(data, &GCTranslateManipulator::central, "central");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCTranslateManipulator::x, "x");
+    childBlock.add(&GCTranslateManipulator::y, "y");
+    childBlock.add(&GCTranslateManipulator::z, "z");
+    childBlock.add(&GCTranslateManipulator::central, "central");
     }
   }
 

@@ -39,24 +39,26 @@ void GCViewableTransform::createTypeInformation(
   {
   if(data.registerAttributes)
     {
-    auto upInfo = info->add(data, &GCViewableTransform::upVector, "upVector");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto upInfo = childBlock.add(&GCViewableTransform::upVector, "upVector");
     upInfo->setDefault(Eks::Vector3D(0.0f, 1.0f, 0.0f));
 
-    auto focalInfo = info->add(data, &GCViewableTransform::focalDistance, "focalDistance");
+    auto focalInfo = childBlock.add(&GCViewableTransform::focalDistance, "focalDistance");
     focalInfo->setDefault(1.0f);
 
-    auto invProjInfo = info->add(data, &GCViewableTransform::inverseProjection, "inverseProjection");
+    auto invProjInfo = childBlock.add(&GCViewableTransform::inverseProjection, "inverseProjection");
     invProjInfo->setCompute<computeInverseProjection>();
 
-    auto projInfo = info->add(data, &GCViewableTransform::projection, "projection");
+    auto projInfo = childBlock.add(&GCViewableTransform::projection, "projection");
     projInfo->setAffects(data, invProjInfo);
 
-    info->add(data, &GCViewableTransform::viewportX, "viewportX");
-    info->add(data, &GCViewableTransform::viewportY, "viewportY");
-    info->add(data, &GCViewableTransform::viewportWidth, "viewportWidth");
-    info->add(data, &GCViewableTransform::viewportHeight, "viewportHeight");
+    childBlock.add(&GCViewableTransform::viewportX, "viewportX");
+    childBlock.add(&GCViewableTransform::viewportY, "viewportY");
+    childBlock.add(&GCViewableTransform::viewportWidth, "viewportWidth");
+    childBlock.add(&GCViewableTransform::viewportHeight, "viewportHeight");
 
-    auto viewInfo = info->add(data, &GCViewableTransform::viewTransform, "viewTransform");
+    auto viewInfo = childBlock.add(&GCViewableTransform::viewTransform, "viewTransform");
     viewInfo->setCompute<computeView>();
 
     const Shift::EmbeddedPropertyInstanceInformation *affects[] =
@@ -340,10 +342,12 @@ void GCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<
   {
   if(data.registerAttributes)
     {
+    auto childBlock = info->createChildrenBlock(data);
+
     auto proj = info->child(&GCCamera::projection);
     proj->setCompute<computePerspective>();
 
-    auto affectsProj = info->createAffects(data, &proj, 1);
+    auto affectsProj = childBlock.createAffects(&proj, 1);
 
     auto width = info->child(&GCCamera::viewportWidth);
     width->setAffects(affectsProj, true);
@@ -351,15 +355,15 @@ void GCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<
     auto height = info->child(&GCCamera::viewportHeight);
     height->setAffects(affectsProj, false);
 
-    auto fov = info->add(data, &GCPerspectiveCamera::fieldOfView, "fieldOfView");
+    auto fov = childBlock.add(&GCPerspectiveCamera::fieldOfView, "fieldOfView");
     fov->setDefault(45.0f);
     fov->setAffects(affectsProj, false);
 
-    auto nC = info->add(data, &GCPerspectiveCamera::nearClip, "nearClip");
+    auto nC = childBlock.add(&GCPerspectiveCamera::nearClip, "nearClip");
     nC->setDefault(0.1f);
     nC->setAffects(affectsProj, false);
 
-    auto fC = info->add(data, &GCPerspectiveCamera::farClip, "farClip");
+    auto fC = childBlock.add(&GCPerspectiveCamera::farClip, "farClip");
     fC->setDefault(100.0f);
     fC->setAffects(affectsProj, false);
     }

@@ -15,14 +15,16 @@ void GCComposeVector3::createTypeInformation(Shift::PropertyInformationTyped<GCC
   {
   if(data.registerAttributes)
     {
-    auto vectorInst = info->add(data, &GCComposeVector3::vectorOut, "vectorOut");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto vectorInst = childBlock.add(&GCComposeVector3::vectorOut, "vectorOut");
     vectorInst->setCompute<computeVector>();
 
-    auto xInst = info->add(data, &GCComposeVector3::xIn, "xIn");
-    auto yInst = info->add(data, &GCComposeVector3::yIn, "yIn");
-    auto zInst = info->add(data, &GCComposeVector3::zIn, "zIn");
+    auto xInst = childBlock.add(&GCComposeVector3::xIn, "xIn");
+    auto yInst = childBlock.add(&GCComposeVector3::yIn, "yIn");
+    auto zInst = childBlock.add(&GCComposeVector3::zIn, "zIn");
 
-    auto aff = info->createAffects(data, &vectorInst, 1);
+    auto aff = childBlock.createAffects(&vectorInst, 1);
 
     xInst->setAffects(aff, true);
     yInst->setAffects(aff, false);

@@ -31,10 +31,12 @@ void GCTransform::createTypeInformation(Shift::PropertyInformationTyped<GCTransf
   {
   if(data.registerAttributes)
     {
+    auto childBlock = info->createChildrenBlock(data);
+
     auto boundsInfo = info->child(&GCTransform::bounds);
     boundsInfo->setCompute<unionTransformedBounds>();
 
-    auto trInfo = info->add(data, &GCTransform::transform, "transform");
+    auto trInfo = childBlock.add(&GCTransform::transform, "transform");
     trInfo->setDefault(Eks::Transform::Identity());
     trInfo->setAffects(data, boundsInfo);
     }

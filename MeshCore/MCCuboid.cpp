@@ -13,20 +13,22 @@ void MCCuboid::createTypeInformation(Shift::PropertyInformationTyped<MCCuboid> *
   {
   if(data.registerAttributes)
     {
+    auto childBlock = info->createChildrenBlock(data);
+
     auto inst = info->child(&MCShape::geometry);
     inst->setCompute<computeGeometry>();
 
-    auto aff = info->createAffects(data, &inst, 1);
+    auto aff = childBlock.createAffects(&inst, 1);
 
-    auto wInfo = info->add(data, &MCCuboid::width, "width");
+    auto wInfo = childBlock.add(&MCCuboid::width, "width");
     wInfo->setAffects(aff, true);
     wInfo->setDefault(1.0f);
 
-    auto hInfo = info->add(data, &MCCuboid::height, "height");
+    auto hInfo = childBlock.add(&MCCuboid::height, "height");
     hInfo->setAffects(aff, false);
     hInfo->setDefault(1.0f);
 
-    auto dInfo = info->add(data, &MCCuboid::depth, "depth");
+    auto dInfo = childBlock.add(&MCCuboid::depth, "depth");
     dInfo->setAffects(aff, false);
     dInfo->setDefault(1.0f);
     }

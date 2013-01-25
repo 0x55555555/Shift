@@ -67,25 +67,27 @@ void GCElement::createTypeInformation(Shift::PropertyInformationTyped<GCElement>
   {
   if(data.registerAttributes)
     {
+    auto childBlock = info->createChildrenBlock(data);
+
     auto tr = info->child(&GCElement::transform);
     tr->setCompute<computeElementTransform>();
 
-    auto affects = info->createAffects(data, &tr, 1);
+    auto affects = childBlock.createAffects(&tr, 1);
 
-    auto vis = info->add(data, &GCElement::visible, "visible");
+    auto vis = childBlock.add(&GCElement::visible, "visible");
     vis->setDefaultValue(true);
 
-    auto w = info->add(data, &GCElement::width, "width");
+    auto w = childBlock.add(&GCElement::width, "width");
     w->setAffects(affects, true);
-    auto h = info->add(data, &GCElement::height, "height");
+    auto h = childBlock.add(&GCElement::height, "height");
     h->setAffects(affects, false);
 
-    auto l = info->add(data, &GCElement::left, "left");
+    auto l = childBlock.add(&GCElement::left, "left");
     l->setAffects(affects, false);
-    auto b = info->add(data, &GCElement::bottom, "bottom");
+    auto b = childBlock.add(&GCElement::bottom, "bottom");
     b->setAffects(affects, false);
 
-    info->add(data, &GCElement::interactionHandler, "interactionHandler");
+    childBlock.add(&GCElement::interactionHandler, "interactionHandler");
     }
   }
 
@@ -206,7 +208,9 @@ void GCElementArray::createTypeInformation(Shift::PropertyInformationTyped<GCEle
   {
   if(data.registerAttributes)
     {
-    info->add(data, &GCElementArray::elements, "elements");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCElementArray::elements, "elements");
     }
   }
 

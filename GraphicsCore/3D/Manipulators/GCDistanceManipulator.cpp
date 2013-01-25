@@ -90,18 +90,20 @@ void GCDistanceManipulator::createTypeInformation(Shift::PropertyInformationType
   {
   if(data.registerAttributes)
     {
-    auto absDispInfo = info->add(data, &GCDistanceManipulator::absoluteDisplacement, "absoluteDisplacement");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto absDispInfo = childBlock.add(&GCDistanceManipulator::absoluteDisplacement, "absoluteDisplacement");
     absDispInfo->setCompute<computeAbsDisp>();
 
-    auto affectsAbsDisp = info->createAffects(data, &absDispInfo, 1);
+    auto affectsAbsDisp = childBlock.createAffects(&absDispInfo, 1);
 
     auto dirInfo = info->child(&GCDistanceManipulator::lockDirection);
     dirInfo->setAffects(affectsAbsDisp, true);
 
-    auto distInfo = info->add(data, &GCDistanceManipulator::distance, "distance");
+    auto distInfo = childBlock.add(&GCDistanceManipulator::distance, "distance");
     distInfo->setAffects(affectsAbsDisp, false);
 
-    auto sfInfo = info->add(data, &GCDistanceManipulator::scaleFactor, "scaleFactor");
+    auto sfInfo = childBlock.add(&GCDistanceManipulator::scaleFactor, "scaleFactor");
     sfInfo->setAffects(affectsAbsDisp, false);
     }
   }

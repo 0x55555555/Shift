@@ -15,7 +15,9 @@ void GCShadingGroup::createTypeInformation(Shift::PropertyInformationTyped<GCSha
   {
   if(data.registerAttributes)
     {
-    info->add(data, &GCShadingGroup::shader, "shader");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCShadingGroup::shader, "shader");
     }
   }
 

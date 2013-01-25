@@ -37,22 +37,25 @@ void GCProject3D::createTypeInformation(Shift::PropertyInformationTyped<GCProjec
   {
   if(data.registerAttributes)
     {
-    auto x = info->add(data, &GCProject3D::xPosition, "xPosition");
+    auto childBlock = info->createChildrenBlock(data);
+
+
+    auto x = childBlock.add(&GCProject3D::xPosition, "xPosition");
     x->setCompute<computeAlignTransform>();
 
-    auto y = info->add(data, &GCProject3D::yPosition, "yPosition");
+    auto y = childBlock.add(&GCProject3D::yPosition, "yPosition");
     y->setCompute<computeAlignTransform>();
 
-    auto v = info->add(data, &GCProject3D::validPosition, "validPosition");
+    auto v = childBlock.add(&GCProject3D::validPosition, "validPosition");
     v->setCompute<computeAlignTransform>();
 
     const Shift::EmbeddedPropertyInstanceInformation *aff[] = { x, y };
-    auto affects = info->createAffects(data, aff, X_ARRAY_COUNT(aff));
+    auto affects = childBlock.createAffects(aff, X_ARRAY_COUNT(aff));
 
-    auto cam = info->add(data, &GCProject3D::camera, "camera");
+    auto cam = childBlock.add(&GCProject3D::camera, "camera");
     cam->setAffects(affects, true);
 
-    auto taTr = info->add(data, &GCProject3D::targetTransform, "targetTransform");
+    auto taTr = childBlock.add(&GCProject3D::targetTransform, "targetTransform");
     taTr->setAffects(affects, false);
     }
   }

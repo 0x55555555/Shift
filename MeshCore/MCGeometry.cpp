@@ -28,6 +28,8 @@ void MCGeometry::createTypeInformation(Shift::PropertyInformationTyped<MCGeometr
   {
   if(data.registerAttributes)
     {
+    auto childBlock = info->createChildrenBlock(data);
+
     auto rtGeo = info->child(&MCGeometry::runtimeGeometry);
     rtGeo->setCompute<computeRuntimeGeometry>();
 
@@ -39,13 +41,13 @@ void MCGeometry::createTypeInformation(Shift::PropertyInformationTyped<MCGeometr
       rtGeo,
       rtIGeo
     };
-    auto affectsGeos = info->createAffects(data, affects, X_ARRAY_COUNT(affects));
+    auto affectsGeos = childBlock.createAffects(affects, X_ARRAY_COUNT(affects));
 
 
-    auto attrs = info->add(data, &MCGeometry::polygons, "polygons");
+    auto attrs = childBlock.add(&MCGeometry::polygons, "polygons");
     attrs->setAffects(affectsGeos, true);
 
-    auto renderer = info->add(data, &MCGeometry::renderer, "renderer");
+    auto renderer = childBlock.add(&MCGeometry::renderer, "renderer");
     renderer->setAffects(affectsGeos, false);
     }
   }

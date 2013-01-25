@@ -10,9 +10,11 @@ void MCSphere::createTypeInformation(Shift::PropertyInformationTyped<MCSphere> *
   {
   if(data.registerAttributes)
     {
+    auto childBlock = info->createChildrenBlock(data);
+
     auto geomInst = info->child(&MCSphere::geometry);
 
-    auto radInst = info->add(data, &MCSphere::radius, "radius");
+    auto radInst = childBlock.add(&MCSphere::radius, "radius");
     radInst->setAffects(data, geomInst);
     radInst->setDefault(1.0f);
     }

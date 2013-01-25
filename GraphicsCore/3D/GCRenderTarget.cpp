@@ -16,20 +16,22 @@ void GCRenderTarget::createTypeInformation(Shift::PropertyInformationTyped<GCRen
   {
   if(data.registerAttributes)
     {
-    auto sourceInst = info->add(data, &GCRenderTarget::source, "source");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto sourceInst = childBlock.add(&GCRenderTarget::source, "source");
     sourceInst->setMode(Shift::PropertyInstanceInformation::InternalInput);
 
-    auto aR = info->add(data, &GCRenderTarget::aspectRatio, "aspectRatio");
+    auto aR = childBlock.add(&GCRenderTarget::aspectRatio, "aspectRatio");
     aR->setCompute<computeAspectRatio>();
     aR->setDefault(1.0f);
 
-    auto affectsAr = info->createAffects(data, &aR, 1);
+    auto affectsAr = childBlock.createAffects(&aR, 1);
 
-    auto width = info->add(data, &GCRenderTarget::width, "width");
+    auto width = childBlock.add(&GCRenderTarget::width, "width");
     width->setAffects(affectsAr, true);
     width->setMode(Shift::PropertyInstanceInformation::Output);
 
-    auto height = info->add(data, &GCRenderTarget::height, "height");
+    auto height = childBlock.add(&GCRenderTarget::height, "height");
     height->setAffects(affectsAr, false);
     height->setMode(Shift::PropertyInstanceInformation::Output);
     }

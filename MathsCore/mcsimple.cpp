@@ -8,12 +8,14 @@ void MCSimple::createTypeInformation(Shift::PropertyInformationTyped<MCSimple> *
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->add(data, &MCSimple::output, "output");
+    auto childBlock = info->createChildrenBlock(data);
 
-    auto aInst = info->add(data, &MCSimple::inputA, "inputA");
-    auto bInst = info->add(data, &MCSimple::inputB, "inputB");
+    auto outInst = childBlock.add(&MCSimple::output, "output");
 
-    auto outAffects = info->createAffects(data, &outInst, 1);
+    auto aInst = childBlock.add(&MCSimple::inputA, "inputA");
+    auto bInst = childBlock.add(&MCSimple::inputB, "inputB");
+
+    auto outAffects = childBlock.createAffects(&outInst, 1);
 
     aInst->setAffects(outAffects, true);
     bInst->setAffects(outAffects, false);

@@ -14,9 +14,11 @@ void GCScene::createTypeInformation(Shift::PropertyInformationTyped<GCScene> *in
   {
   if(data.registerAttributes)
     {
-    info->add(data, &GCScene::activeCamera, "activeCamera");
-    info->add(data, &GCScene::cameraTransform, "cameraTransform");
-    info->add(data, &GCScene::cameraProjection, "cameraProjection");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCScene::activeCamera, "activeCamera");
+    childBlock.add(&GCScene::cameraTransform, "cameraTransform");
+    childBlock.add(&GCScene::cameraProjection, "cameraProjection");
     }
 
   if(data.registerInterfaces)
@@ -70,10 +72,12 @@ void GCManipulatableScene::createTypeInformation(
   {
   if(data.registerAttributes)
     {
-    auto manInfo = info->add(data, &GCManipulatableScene::manipulators, "manipulators");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto manInfo = childBlock.add(&GCManipulatableScene::manipulators, "manipulators");
     manInfo->setCompute<computeManips>();
 
-    auto selInfo = info->add(data, &GCManipulatableScene::selection, "selection");
+    auto selInfo = childBlock.add(&GCManipulatableScene::selection, "selection");
     selInfo->setAffects(data, manInfo);
     }
   }

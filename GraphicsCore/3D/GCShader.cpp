@@ -10,12 +10,14 @@ void GCShader::createTypeInformation(Shift::PropertyInformationTyped<GCShader> *
   {
   if(data.registerAttributes)
     {
-    auto rtInfoCore = info->add(data, &GCShader::runtimeShaderCore, "runtimeShaderCore");
+    auto childBlock = info->createChildrenBlock(data);
 
-    auto r = info->add(data, &GCShader::renderer, "renderer");
+    auto rtInfoCore = childBlock.add(&GCShader::runtimeShaderCore, "runtimeShaderCore");
+
+    auto r = childBlock.add(&GCShader::renderer, "renderer");
     r->setAffects(data, rtInfoCore);
 
-    auto rtInfo = info->add(data, &GCShader::runtimeShader, "runtimeShader");
+    auto rtInfo = childBlock.add(&GCShader::runtimeShader, "runtimeShader");
     rtInfo->setCompute<setupShaderRuntime>();
     }
   }

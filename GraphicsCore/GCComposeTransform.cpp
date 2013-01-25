@@ -22,21 +22,19 @@ void GCComposeTransform::createTypeInformation(Shift::PropertyInformationTyped<G
   {
   if(data.registerAttributes)
     {
-    auto transformInst = info->add(data, &GCComposeTransform::transformOut, "transformOut");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto transformInst = childBlock.add(&GCComposeTransform::transformOut, "transformOut");
     transformInst->setCompute<computeTransform>();
 
-    auto axInst = info->add(data, &GCComposeTransform::rotationAxisIn, "rotationAxisIn");
-    auto angInst = info->add(data, &GCComposeTransform::rotationAngleIn, "rotationAngleIn");
-    auto trInst = info->add(data, &GCComposeTransform::translationIn, "translationIn");
+    auto axInst = childBlock.add(&GCComposeTransform::rotationAxisIn, "rotationAxisIn");
+    auto angInst = childBlock.add(&GCComposeTransform::rotationAngleIn, "rotationAngleIn");
+    auto trInst = childBlock.add(&GCComposeTransform::translationIn, "translationIn");
 
-    auto affectsTransform = info->createAffects(data, &transformInst, 1);
+    auto affectsTransform = childBlock.createAffects(&transformInst, 1);
 
     axInst->setAffects(affectsTransform, true);
     angInst->setAffects(affectsTransform, false);
     trInst->setAffects(affectsTransform, false);
     }
-  }
-
-GCComposeTransform::GCComposeTransform()
-  {
   }

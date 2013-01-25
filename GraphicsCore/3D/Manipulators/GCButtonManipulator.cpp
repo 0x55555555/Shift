@@ -75,8 +75,10 @@ void GCButtonManipulator::createTypeInformation(Shift::PropertyInformationTyped<
   {
   if(data.registerAttributes)
     {
-    info->add(data, &GCButtonManipulator::checked, "checked");
-    info->add(data, &GCButtonManipulator::checkable, "checkable");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCButtonManipulator::checked, "checked");
+    childBlock.add(&GCButtonManipulator::checkable, "checkable");
     }
   }
 

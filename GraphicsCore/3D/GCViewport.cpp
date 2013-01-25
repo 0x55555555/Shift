@@ -8,10 +8,12 @@ void GCViewport::createTypeInformation(Shift::PropertyInformationTyped<GCViewpor
   {
   if(data.registerAttributes)
     {
-    auto xInst = info->add(data, &GCViewport::x, "x");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto xInst = childBlock.add(&GCViewport::x, "x");
     xInst->setMode(Shift::PropertyInstanceInformation::Output);
 
-    auto yInst = info->add(data, &GCViewport::y, "y");
+    auto yInst = childBlock.add(&GCViewport::y, "y");
     yInst->setMode(Shift::PropertyInstanceInformation::Output);
     }
   }

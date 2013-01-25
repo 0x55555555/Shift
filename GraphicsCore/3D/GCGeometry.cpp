@@ -9,8 +9,10 @@ void GCGeometry::createTypeInformation(Shift::PropertyInformationTyped<GCGeometr
   {
   if(data.registerAttributes)
     {
-    info->add(data, &GCGeometry::runtimeGeometry, "runtimeGeometry");
-    info->add(data, &GCGeometry::runtimeIndexGeometry, "runtimeIndexGeometry");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCGeometry::runtimeGeometry, "runtimeGeometry");
+    childBlock.add(&GCGeometry::runtimeIndexGeometry, "runtimeIndexGeometry");
     }
   }
 

@@ -10,8 +10,6 @@ class GCComposeTransform : public Shift::Entity
   S_ENTITY(GCComposeTransform, Entity, 0)
 
 public:
-  GCComposeTransform();
-
   Shift::Vector3DProperty rotationAxisIn;
   Shift::FloatProperty rotationAngleIn;
 

@@ -23,10 +23,12 @@ void MCShape::createTypeInformation(Shift::PropertyInformationTyped<MCShape> *in
   {
   if(data.registerAttributes)
     {
+    auto childBlock = info->createChildrenBlock(data);
+
     auto bInst = info->child(&GCRenderArray::bounds);
     bInst->setCompute<unionBounds>();
 
-    auto geoInst = info->add(data, &MCShape::geometry, "geometry");
+    auto geoInst = childBlock.add(&MCShape::geometry, "geometry");
     geoInst->setAffects(data, bInst);
     }
   }

@@ -31,21 +31,23 @@ void GCCameraAlignedPlate::createTypeInformation(Shift::PropertyInformationTyped
   {
   if(data.registerAttributes)
     {
+    auto childBlock = info->createChildrenBlock(data);
+
     auto tr = info->child(&GCCameraAlignedPlate::transform);
     tr->setCompute<computeTransform>();
 
-    auto aff = info->createAffects(data, &tr, 1);
+    auto aff = childBlock.createAffects(&tr, 1);
 
-    auto cam = info->add(data, &GCCameraAlignedPlate::cameraTransform, "cameraTransform");
+    auto cam = childBlock.add(&GCCameraAlignedPlate::cameraTransform, "cameraTransform");
     cam->setAffects(aff, true);
 
-    auto offset = info->add(data, &GCCameraAlignedPlate::offsetTransform, "offsetTransform");
+    auto offset = childBlock.add(&GCCameraAlignedPlate::offsetTransform, "offsetTransform");
     offset->setAffects(aff, false);
 
-    auto dist = info->add(data, &GCCameraAlignedPlate::distanceFromCamera, "distanceFromCamera");
+    auto dist = childBlock.add(&GCCameraAlignedPlate::distanceFromCamera, "distanceFromCamera");
     dist->setAffects(aff, false);
 
-    auto fov = info->add(data, &GCCameraAlignedPlate::cameraFieldOfView, "cameraFieldOfView");
+    auto fov = childBlock.add(&GCCameraAlignedPlate::cameraFieldOfView, "cameraFieldOfView");
     fov->setAffects(aff, false);
     }
   }
