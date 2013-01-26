@@ -103,7 +103,7 @@ void GCRuntimeGeometry::createTypeInformation(
 S_IMPLEMENT_PROPERTY(GCRuntimeIndexGeometry, GraphicsCore)
 
 void GCRuntimeIndexGeometry::createTypeInformation(
-    Shift::PropertyInformationTyped<GCRuntimeGeometry> *,
+    Shift::PropertyInformationTyped<GCRuntimeIndexGeometry> *,
     const Shift::PropertyInformationCreateData &)
   {
   }

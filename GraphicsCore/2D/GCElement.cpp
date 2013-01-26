@@ -27,7 +27,9 @@ void GCElementCentre::createTypeInformation(Shift::PropertyInformationTyped<GCEl
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->child(&GCElementCentre::output);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto outInst = childBlock.overrideChild(&GCElementCentre::output);
     outInst->setCompute<computeCentreOutput>();
     }
   }
@@ -46,7 +48,9 @@ void GCElementUnCentre::createTypeInformation(Shift::PropertyInformationTyped<GC
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->child(&GCElementUnCentre::output);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto outInst = childBlock.overrideChild(&GCElementUnCentre::output);
     outInst->setCompute<computeUnCentreOutput>();
     }
   }
@@ -69,7 +73,7 @@ void GCElement::createTypeInformation(Shift::PropertyInformationTyped<GCElement>
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    auto tr = info->child(&GCElement::transform);
+    auto tr = childBlock.overrideChild(&GCElement::transform);
     tr->setCompute<computeElementTransform>();
 
     auto affects = childBlock.createAffects(&tr, 1);
@@ -249,7 +253,9 @@ void GCUnitElement::createTypeInformation(Shift::PropertyInformationTyped<GCUnit
   {
   if(data.registerAttributes)
     {
-    auto tr = info->child(&GCElement::transform);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto tr = childBlock.overrideChild(&GCElement::transform);
     tr->setCompute<computeUnitElementTransform>();
     }
   }

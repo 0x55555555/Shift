@@ -97,7 +97,7 @@ void GCDistanceManipulator::createTypeInformation(Shift::PropertyInformationType
 
     auto affectsAbsDisp = childBlock.createAffects(&absDispInfo, 1);
 
-    auto dirInfo = info->child(&GCDistanceManipulator::lockDirection);
+    auto dirInfo = childBlock.overrideChild(&GCDistanceManipulator::lockDirection);
     dirInfo->setAffects(affectsAbsDisp, true);
 
     auto distInfo = childBlock.add(&GCDistanceManipulator::distance, "distance");

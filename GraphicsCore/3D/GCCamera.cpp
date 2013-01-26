@@ -67,7 +67,7 @@ void GCViewableTransform::createTypeInformation(
       viewInfo
       };
 
-    auto transformInfo = info->child(&GCViewableTransform::transform);
+    auto transformInfo = childBlock.overrideChild(&GCViewableTransform::transform);
     transformInfo->setAffects(data, affects, X_ARRAY_COUNT(affects));
     }
 
@@ -344,15 +344,15 @@ void GCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    auto proj = info->child(&GCCamera::projection);
+    auto proj = childBlock.overrideChild(&GCCamera::projection);
     proj->setCompute<computePerspective>();
 
     auto affectsProj = childBlock.createAffects(&proj, 1);
 
-    auto width = info->child(&GCCamera::viewportWidth);
+    auto width = childBlock.overrideChild(&GCCamera::viewportWidth);
     width->setAffects(affectsProj, true);
 
-    auto height = info->child(&GCCamera::viewportHeight);
+    auto height = childBlock.overrideChild(&GCCamera::viewportHeight);
     height->setAffects(affectsProj, false);
 
     auto fov = childBlock.add(&GCPerspectiveCamera::fieldOfView, "fieldOfView");

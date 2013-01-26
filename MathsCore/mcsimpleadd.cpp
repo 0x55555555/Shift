@@ -16,7 +16,9 @@ void MCSimpleAdd::createTypeInformation(Shift::PropertyInformationTyped<MCSimple
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->child(&MCSimpleAdd::output);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto outInst = childBlock.overrideChild(&MCSimpleAdd::output);
     outInst->setCompute<computeAddOutput>();
     }
   }
@@ -35,7 +37,9 @@ void MCSimpleSubtract::createTypeInformation(Shift::PropertyInformationTyped<MCS
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->child(&MCSimpleSubtract::output);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto outInst = childBlock.overrideChild(&MCSimpleSubtract::output);
     outInst->setCompute<computeSubOutput>();
     }
   }

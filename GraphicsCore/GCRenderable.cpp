@@ -56,7 +56,7 @@ void GCRenderArray::createTypeInformation(Shift::PropertyInformationTyped<GCRend
 
     auto rGInst = childBlock.add(&GCRenderArray::renderGroup, "renderGroup");
 
-    auto bInst = info->child(&GCRenderArray::bounds);
+    auto bInst = childBlock.overrideChild(&GCRenderArray::bounds);
     bInst->setCompute<unionBounds>();
 
     rGInst->setAffects(data, bInst);

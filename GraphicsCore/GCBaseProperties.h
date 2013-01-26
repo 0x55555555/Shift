@@ -121,7 +121,7 @@ class GRAPHICSCORE_EXPORT GCRuntimeIndexGeometry
 public:
   typedef Shift::detail::BasePODPropertyTraits<GCRuntimeIndexGeometry> Traits;
   enum { TypeId = 158 };
-  S_PROPERTY(GCRuntimeGeometry, Property, 0);
+  S_PROPERTY(GCRuntimeIndexGeometry, Property, 0);
   };
 
 class GRAPHICSCORE_EXPORT GCRuntimeShaderInstance

@@ -82,7 +82,9 @@ void GCStaticShader::createTypeInformation(Shift::PropertyInformationTyped<GCSta
   {
   if(data.registerAttributes)
     {
-    auto rtInfoCore = info->child(&GCShader::runtimeShaderCore);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto rtInfoCore = childBlock.overrideChild(&GCShader::runtimeShaderCore);
     rtInfoCore->setCompute<computeShaderRuntime>();
     }
   }

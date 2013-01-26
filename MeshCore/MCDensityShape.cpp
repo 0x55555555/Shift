@@ -15,7 +15,9 @@ void MCDensityShape::createTypeInformation(Shift::PropertyInformationTyped<MCDen
   {
   if(data.registerAttributes)
     {
-    auto inst = info->child(&MCDensityShape::geometry);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto inst = childBlock.overrideChild(&MCDensityShape::geometry);
     inst->setCompute<computeGeometry>();
     }
   }

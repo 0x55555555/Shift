@@ -15,7 +15,9 @@ void MCSimpleMultiply::createTypeInformation(Shift::PropertyInformationTyped<MCS
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->child(&MCSimpleMultiply::output);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto outInst = childBlock.overrideChild(&MCSimpleMultiply::output);
     outInst->setCompute<computeAddOutput>();
     }
   }

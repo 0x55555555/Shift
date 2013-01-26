@@ -30,10 +30,10 @@ void MCGeometry::createTypeInformation(Shift::PropertyInformationTyped<MCGeometr
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    auto rtGeo = info->child(&MCGeometry::runtimeGeometry);
+    auto rtGeo = childBlock.overrideChild(&MCGeometry::runtimeGeometry);
     rtGeo->setCompute<computeRuntimeGeometry>();
 
-    auto rtIGeo = info->child(&MCGeometry::runtimeIndexGeometry);
+    auto rtIGeo = childBlock.overrideChild(&MCGeometry::runtimeIndexGeometry);
     rtGeo->setCompute<computeRuntimeGeometry>();
 
     const Shift::EmbeddedPropertyInstanceInformation *affects[] =

@@ -33,7 +33,7 @@ void GCCameraAlignedPlate::createTypeInformation(Shift::PropertyInformationTyped
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    auto tr = info->child(&GCCameraAlignedPlate::transform);
+    auto tr = childBlock.overrideChild(&GCCameraAlignedPlate::transform);
     tr->setCompute<computeTransform>();
 
     auto aff = childBlock.createAffects(&tr, 1);

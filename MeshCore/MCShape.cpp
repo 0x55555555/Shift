@@ -25,7 +25,7 @@ void MCShape::createTypeInformation(Shift::PropertyInformationTyped<MCShape> *in
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    auto bInst = info->child(&GCRenderArray::bounds);
+    auto bInst = childBlock.overrideChild(&GCRenderArray::bounds);
     bInst->setCompute<unionBounds>();
 
     auto geoInst = childBlock.add(&MCShape::geometry, "geometry");

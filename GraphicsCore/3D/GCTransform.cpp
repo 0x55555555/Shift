@@ -33,7 +33,7 @@ void GCTransform::createTypeInformation(Shift::PropertyInformationTyped<GCTransf
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    auto boundsInfo = info->child(&GCTransform::bounds);
+    auto boundsInfo = childBlock.overrideChild(&GCTransform::bounds);
     boundsInfo->setCompute<unionTransformedBounds>();
 
     auto trInfo = childBlock.add(&GCTransform::transform, "transform");

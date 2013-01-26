@@ -15,7 +15,7 @@ void MCCuboid::createTypeInformation(Shift::PropertyInformationTyped<MCCuboid> *
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    auto inst = info->child(&MCShape::geometry);
+    auto inst = childBlock.overrideChild(&MCShape::geometry);
     inst->setCompute<computeGeometry>();
 
     auto aff = childBlock.createAffects(&inst, 1);
