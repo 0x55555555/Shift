@@ -63,7 +63,7 @@ void GCViewableTransform::createTypeInformation(
 
     const Shift::EmbeddedPropertyInstanceInformation *affects[] =
       {
-      info->child(&GCViewableTransform::bounds),
+      childBlock.child(&GCViewableTransform::bounds),
       viewInfo
       };
 
@@ -325,9 +325,13 @@ void GCViewableTransform::rotateAboutPoint(const Eks::Vector3D &point, float x, 
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCCamera, GraphicsCore)
 
-void GCCamera::createTypeInformation(Shift::PropertyInformationTyped<GCCamera> *,
-                                     const Shift::PropertyInformationCreateData &)
+void GCCamera::createTypeInformation(Shift::PropertyInformationTyped<GCCamera> *info,
+                                     const Shift::PropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }
 
 S_IMPLEMENT_PROPERTY(GCPerspectiveCamera, GraphicsCore)

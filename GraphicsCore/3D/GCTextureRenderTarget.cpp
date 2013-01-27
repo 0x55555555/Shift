@@ -4,7 +4,11 @@
 
 S_IMPLEMENT_PROPERTY(GCTextureRenderTarget, GraphicsCore)
 
-void GCTextureRenderTarget::createTypeInformation(Shift::PropertyInformationTyped<GCTextureRenderTarget> *,
-                                                  const Shift::PropertyInformationCreateData &)
+void GCTextureRenderTarget::createTypeInformation(Shift::PropertyInformationTyped<GCTextureRenderTarget> *info,
+                                                  const Shift::PropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }

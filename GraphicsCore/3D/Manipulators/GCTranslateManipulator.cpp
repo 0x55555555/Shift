@@ -167,9 +167,13 @@ private:
 
 S_IMPLEMENT_PROPERTY(GCSingularTranslateManipulator, GraphicsCore)
 
-void GCSingularTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCSingularTranslateManipulator> *,
-                                                           const Shift::PropertyInformationCreateData &)
+void GCSingularTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCSingularTranslateManipulator> *info,
+                                                           const Shift::PropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }
 
 GCSingularTranslateManipulator::GCSingularTranslateManipulator()

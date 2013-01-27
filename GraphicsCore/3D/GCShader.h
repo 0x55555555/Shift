@@ -68,7 +68,7 @@ public:
       { return false; }
     };
 
-  S_ABSTRACT_ENTITY(GCStaticShader, Shift::Entity, 0)
+  S_ABSTRACT_ENTITY(GCStaticShader, GCShader, 0)
 
 private:
   Eks::ShaderFragmentComponent fragment;

@@ -60,9 +60,13 @@ bool GCVisualManipulator::hitTest(
 
 S_IMPLEMENT_PROPERTY(GCVisualCompoundManipulator, GraphicsCore)
 
-void GCVisualCompoundManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualCompoundManipulator> *,
-                                                        const Shift::PropertyInformationCreateData &)
+void GCVisualCompoundManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualCompoundManipulator> *info,
+                                                        const Shift::PropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }
 
 GCVisualCompoundManipulator::GCVisualCompoundManipulator()
@@ -127,9 +131,13 @@ void GCVisualCompoundManipulator::onMouseRelease(const MouseEvent &)
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualDragManipulator, GraphicsCore)
 
-void GCVisualDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualDragManipulator> *,
-                                                    const Shift::PropertyInformationCreateData &)
+void GCVisualDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualDragManipulator> *info,
+                                                    const Shift::PropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }
 
 GCVisualDragManipulator::GCVisualDragManipulator()
@@ -156,9 +164,13 @@ void GCVisualDragManipulator::onMouseRelease(const MouseEvent &)
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualClickManipulator, GraphicsCore)
 
-void GCVisualClickManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualClickManipulator> *,
-                                                     const Shift::PropertyInformationCreateData &)
+void GCVisualClickManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualClickManipulator> *info,
+                                                     const Shift::PropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }
 
 GCVisualClickManipulator::GCVisualClickManipulator()

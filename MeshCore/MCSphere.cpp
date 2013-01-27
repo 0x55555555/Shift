@@ -12,7 +12,7 @@ void MCSphere::createTypeInformation(Shift::PropertyInformationTyped<MCSphere> *
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    auto geomInst = info->child(&MCSphere::geometry);
+    auto geomInst = childBlock.child(&MCSphere::geometry);
 
     auto radInst = childBlock.add(&MCSphere::radius, "radius");
     radInst->setAffects(data, geomInst);

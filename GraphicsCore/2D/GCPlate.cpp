@@ -4,9 +4,13 @@
 
 S_IMPLEMENT_PROPERTY(GCPlate, GraphicsCore)
 
-void GCPlate::createTypeInformation(Shift::PropertyInformationTyped<GCPlate> *,
-                                    const Shift::PropertyInformationCreateData &)
+void GCPlate::createTypeInformation(Shift::PropertyInformationTyped<GCPlate> *info,
+                                    const Shift::PropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }
 
 void GCPlate::render(Eks::Renderer *renderer, const RenderState &state) const
