@@ -135,13 +135,23 @@ public:
   };
 
 class GRAPHICSCORE_EXPORT GCRenderer
-    : public Shift::PODPropertyBase<Eks::Renderer *,
+    : public Shift::PODProperty<Eks::Renderer *,
                                 GCRenderer>
   {
 public:
-  typedef Shift::detail::BasePODPropertyTraits<GCRenderer> Traits;
+  class Traits;
+  class EmbeddedInstanceInformation : public Shift::PODPropertyBase<Eks::Renderer *, GCRenderer>::EmbeddedInstanceInformation
+    {
+  public:
+    void initiateProperty(Property *propertyToInitiate) const;
+    };
+
   enum { TypeId = 151 };
   S_PROPERTY(GCRenderer, Property, 0);
+
+private:
+  friend class EmbeddedInstanceInformation;
+  friend class Traits;
   };
 
 struct GCVertexLayoutWrapper
@@ -160,7 +170,6 @@ public:
   S_PROPERTY(GCVertexLayout, Property, 0);
   };
 
-S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCRendererPointer, GCRenderer)
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCVertexLayoutPointer, GCVertexLayout)
 
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, Eks::Transform, Eks::Transform::Identity(), 150);

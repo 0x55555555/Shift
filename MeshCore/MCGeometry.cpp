@@ -6,14 +6,11 @@ S_IMPLEMENT_PROPERTY(MCGeometry, MeshCore)
 
 void computeRuntimeGeometry(MCGeometry *rtGeo)
   {
-  GCRenderer *gcR = rtGeo->renderer();
-  if(!gcR)
+  Eks::Renderer *r = rtGeo->renderer();
+  if(!r)
     {
     return;
     }
-
-  Eks::Renderer* r = gcR->value();
-  xAssert(r);
 
   GCRuntimeGeometry::ComputeLock l(&rtGeo->runtimeGeometry);
   GCRuntimeIndexGeometry::ComputeLock l2(&rtGeo->runtimeIndexGeometry);

@@ -32,7 +32,7 @@ public:
   void bind(Eks::Renderer *r) const;
   GCRuntimeShaderInstance runtimeShader;
 
-  GCRendererPointer renderer;
+  GCRenderer renderer;
   GCVertexLayoutPointer layoutDescription;
 
   GCRuntimeShader runtimeShaderCore;

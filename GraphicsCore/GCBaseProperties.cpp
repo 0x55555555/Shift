@@ -116,6 +116,18 @@ void GCRuntimeShaderInstance::createTypeInformation(
   {
   }
 
+class GCRenderer::Traits : public Shift::PODPropertyBase<Eks::Renderer *, GCRenderer>::Traits
+  {
+public:
+  static void assignProperty(const Shift::Property *p, Shift::Property *l )
+    {
+    const GCRenderer* f = p->uncheckedCastTo<GCRenderer>();
+    GCRenderer* t = l->uncheckedCastTo<GCRenderer>();
+
+    t->assign(f->value());
+    }
+  };
+
 S_IMPLEMENT_PROPERTY(GCRenderer, GraphicsCore)
 
 void GCRenderer::createTypeInformation(
@@ -123,6 +135,12 @@ void GCRenderer::createTypeInformation(
     const Shift::PropertyInformationCreateData &)
   {
   }
+
+void GCRenderer::EmbeddedInstanceInformation::initiateProperty(Property *propertyToInitiate) const
+  {
+  propertyToInitiate->uncheckedCastTo<GCRenderer>()->_value = 0;
+  }
+
 
 S_IMPLEMENT_PROPERTY(GCVertexLayout, GraphicsCore)
 
@@ -132,5 +150,4 @@ void GCVertexLayout::createTypeInformation(
   {
   }
 
-S_IMPLEMENT_TYPED_POINTER_TYPE(GCRendererPointer, GraphicsCore)
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCVertexLayoutPointer, GraphicsCore)

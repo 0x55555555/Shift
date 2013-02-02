@@ -26,13 +26,7 @@ void GCShader::setupShaderRuntime(GCShader *shader)
   {
   GCRuntimeShaderInstance::ComputeLock lock(&shader->runtimeShader);
 
-  GCRenderer *gcR = shader->renderer();
-  if(!gcR)
-    {
-    return;
-    }
-
-  Eks::Renderer *r = gcR->value();
+  Eks::Renderer *r = shader->renderer.value();
   if(!r)
     {
     return;
@@ -93,13 +87,7 @@ void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
   {
   GCRuntimeShader::ComputeLock lock(&shader->runtimeShaderCore);
 
-  GCRenderer *gcR = shader->renderer();
-  if(!gcR)
-    {
-    return;
-    }
-
-  Eks::Renderer *r = gcR->value();
+  Eks::Renderer *r = shader->renderer.value();
   if(!r)
     {
     return;
