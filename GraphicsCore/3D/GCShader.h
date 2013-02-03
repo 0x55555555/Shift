@@ -5,8 +5,29 @@
 #include "shift/sentity.h"
 #include "shift/Properties/sbaseproperties.h"
 #include "shift/Properties/sbasepointerproperties.h"
+#include "shift/TypeInformation/sinterface.h"
 #include "XShader.h"
 #include "GCBaseProperties.h"
+
+class GCShader;
+
+class GCShaderInterface : public Shift::StaticInterfaceBase
+  {
+public:
+  virtual bool initVertexShader(
+    GCShader *,
+    Eks::Renderer *,
+    Eks::ShaderVertexComponent *,
+    const Eks::ShaderVertexLayoutDescription *,
+    xsize ,
+    Eks::ShaderVertexLayout *) const
+    { return false; }
+  virtual bool initFragmentShader(
+      GCShader *,
+      Eks::Renderer *,
+      Eks::ShaderFragmentComponent *) const
+    { return false; }
+  };
 
 class GCShaderBindableData : public Shift::StaticInterfaceBase
   {
@@ -49,25 +70,6 @@ private:
 
 class GRAPHICSCORE_EXPORT GCStaticShader : public GCShader
   {
-public:
-  class EmbeddedInstanceInformation : public GCShader::EmbeddedInstanceInformation
-    {
-  public:
-    virtual bool initVertexShader(
-      GCShader *,
-      Eks::Renderer *,
-      Eks::ShaderVertexComponent *,
-      const Eks::ShaderVertexLayoutDescription *,
-      xsize ,
-      Eks::ShaderVertexLayout *) const
-      { return false; }
-    virtual bool initFragmentShader(
-        GCShader *,
-        Eks::Renderer *,
-        Eks::ShaderFragmentComponent *) const
-      { return false; }
-    };
-
   S_ABSTRACT_ENTITY(GCStaticShader, GCShader, 0)
 
 private:

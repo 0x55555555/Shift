@@ -17,6 +17,8 @@ void GCShader::createTypeInformation(Shift::PropertyInformationTyped<GCShader> *
     auto r = childBlock.add(&GCShader::renderer, "renderer");
     r->setAffects(data, rtInfoCore);
 
+    childBlock.add(&GCShader::layoutDescription, "layoutDescription");
+
     auto rtInfo = childBlock.add(&GCShader::runtimeShader, "runtimeShader");
     rtInfo->setCompute<setupShaderRuntime>();
     }
@@ -94,7 +96,7 @@ void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
     }
 
   GCVertexLayout *gcLayout = shader->layoutDescription();
-  if(!r)
+  if(!gcLayout)
     {
     return;
     }
@@ -110,7 +112,10 @@ void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
 
   shader->vertex.~ShaderVertexComponent();
   new(&shader->vertex) Eks::ShaderVertexComponent();
-  if(!shader->embeddedInstanceInformation()->initVertexShader(
+
+  GCShaderInterface *ifc = shader->interface<GCShaderInterface>();
+  xAssert(ifc);
+  if(!ifc->initVertexShader(
        shader,
        r,
        &shader->vertex,
@@ -124,7 +129,8 @@ void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
 
   shader->fragment.~ShaderFragmentComponent();
   new(&shader->fragment) Eks::ShaderFragmentComponent();
-  if(!shader->embeddedInstanceInformation()->initFragmentShader(shader, r, &shader->fragment))
+
+  if(!ifc->initFragmentShader(shader, r, &shader->fragment))
     {
     xAssertFail();
     return;
