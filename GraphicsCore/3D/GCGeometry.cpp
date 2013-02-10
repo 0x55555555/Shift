@@ -12,8 +12,17 @@ void GCGeometry::createTypeInformation(Shift::PropertyInformationTyped<GCGeometr
     auto childBlock = info->createChildrenBlock(data);
 
     childBlock.add(&GCGeometry::runtimeGeometry, "runtimeGeometry");
-    childBlock.add(&GCGeometry::runtimeIndexGeometry, "runtimeIndexGeometry");
     }
   }
 
-S_IMPLEMENT_TYPED_POINTER_TYPE(GCGeometryPointer, GraphicsCore)
+S_IMPLEMENT_PROPERTY(GCIndexedGeometry, GraphicsCore)
+
+void GCIndexedGeometry::createTypeInformation(Shift::PropertyInformationTyped<GCIndexedGeometry> *info,
+                                       const Shift::PropertyInformationCreateData &data)
+  {
+  if(data.registerAttributes)
+    {
+    auto childBlock = info->createChildrenBlock(data);
+    childBlock.add(&GCIndexedGeometry::runtimeIndexGeometry, "runtimeIndexGeometry");
+    }
+  }

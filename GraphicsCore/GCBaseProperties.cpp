@@ -84,10 +84,26 @@ void ComplexTransformProperty::assignProperty(const Property *f, Property *t)
     }
   }
 
+S_IMPLEMENT_PROPERTY(GCShaderRuntimeConstantData, GraphicsCore)
+
+void GCShaderRuntimeConstantData::createTypeInformation(
+    Shift::PropertyInformationTyped<GCShaderRuntimeConstantData> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
 S_IMPLEMENT_PROPERTY(GCRuntimeShader, GraphicsCore)
 
 void GCRuntimeShader::createTypeInformation(
     Shift::PropertyInformationTyped<GCRuntimeShader> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+S_IMPLEMENT_PROPERTY(GCRuntimeShaderInstance, GraphicsCore)
+
+void GCRuntimeShaderInstance::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeShaderInstance> *,
     const Shift::PropertyInformationCreateData &)
   {
   }
@@ -104,14 +120,6 @@ S_IMPLEMENT_PROPERTY(GCRuntimeIndexGeometry, GraphicsCore)
 
 void GCRuntimeIndexGeometry::createTypeInformation(
     Shift::PropertyInformationTyped<GCRuntimeIndexGeometry> *,
-    const Shift::PropertyInformationCreateData &)
-  {
-  }
-
-S_IMPLEMENT_PROPERTY(GCRuntimeShaderInstance, GraphicsCore)
-
-void GCRuntimeShaderInstance::createTypeInformation(
-    Shift::PropertyInformationTyped<GCRuntimeShaderInstance> *,
     const Shift::PropertyInformationCreateData &)
   {
   }

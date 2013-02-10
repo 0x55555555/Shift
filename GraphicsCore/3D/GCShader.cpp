@@ -3,6 +3,65 @@
 #include "XRenderer.h"
 #include "shift/Changes/shandler.inl"
 
+void computeData(GCShaderConstantData *d)
+  {
+  Eks::Renderer *r = d->renderer.value();
+  if(!r)
+    {
+    return;
+    }
+
+  xAssertFail(); // ensure typeless walker.
+  auto walker = d->walkerFrom(&d->runtimeData);
+  auto it = ++walker.begin();
+  auto end = walker.end();
+
+  Eks::TemporaryAllocator alloc(Shift::TypeRegistry::temporaryAllocator());
+  GCShaderBindableData::DataBlock data(&alloc);
+
+  for(; it != end; ++it)
+    {
+    auto p = *it;
+    const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
+
+    xAssert(binder);
+    binder->bindData(&data, p);
+    }
+
+  GCShaderRuntimeConstantData::ComputeLock l(&d->runtimeData);
+
+  if(!l.data()->isValid())
+    {
+    Eks::ShaderConstantData::delayedCreate(*l.data(), r, data.size(), data.data());
+    }
+  else
+    {
+    l.data()->update(data.data());
+    }
+  }
+
+S_IMPLEMENT_TYPED_POINTER_TYPE(GCShaderConstantDataPointer, GraphicsCore)
+
+S_IMPLEMENT_PROPERTY(GCShaderConstantData, GraphicsCore)
+
+void GCShaderConstantData::createTypeInformation(
+    Shift::PropertyInformationTyped<GCShaderConstantData> *info,
+    const Shift::PropertyInformationCreateData &data)
+  {
+  if(data.registerAttributes)
+    {
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto rend = childBlock.add(&GCShaderConstantData::renderer, "renderer");
+
+    auto rtInfo = childBlock.add(&GCShaderConstantData::runtimeData, "runtimeData");
+
+    rtInfo->setCompute<computeData>();
+    rend->setAffects(data, rtInfo);
+    }
+  }
+
+
 S_IMPLEMENT_PROPERTY(GCShader, GraphicsCore)
 
 void GCShader::createTypeInformation(Shift::PropertyInformationTyped<GCShader> *info,
@@ -34,27 +93,17 @@ void GCShader::setupShaderRuntime(GCShader *shader)
     return;
     }
 
-  GCShaderBindableData::DataBlock data;
-
   shader->resources.clear();
+  shader->constantDatas.clear();
 
   lock.data()->instance = (Eks::Shader*)&shader->runtimeShaderCore();
   xForeach(auto p, shader->walkerFrom((Property*)&shader->runtimeShaderCore))
     {
-    const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
+    const GCShaderBindableResource *binder = p->interface<GCShaderBindableResource>();
     if(binder)
       {
-      binder->bindData(&data, &shader->resources, p);
+      binder->bindResource(&shader->constantDatas, &shader->resources, p);
       }
-    }
-
-  if(!shader->constantData.isValid())
-    {
-    Eks::ShaderConstantData::delayedCreate(shader->constantData, r, data.size(), data.data());
-    }
-  else
-    {
-    shader->constantData.update(data.data());
     }
   }
 
@@ -63,8 +112,8 @@ void GCShader::bind(Eks::Renderer *r) const
   Eks::Shader *s = runtimeShader().instance;
   r->setShader(s, &layout);
 
-  s->setFragmentShaderConstantData(0, &constantData);
-  s->setVertexShaderConstantData(0, &constantData);
+  s->setFragmentShaderConstantDatas(0, constantDatas.size(), constantDatas.data());
+  s->setVertexShaderConstantDatas(0, constantDatas.size(), constantDatas.data());
 
   s->setFragmentShaderResources(0, resources.size(), resources.data());
   s->setVertexShaderResources(0, resources.size(), resources.data());

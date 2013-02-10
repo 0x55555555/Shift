@@ -15,8 +15,9 @@
 #define GCProfileFunction XProfileFunctionBase(GCProfileScope)
 #define GCProfileFunctionScopedBlock(mess) XProfileScopedBlockBase(GCProfileScope, mess)
 
-S_DEFINE_INTERFACE_TYPE(GCShaderBindableInterface, 50)
-S_DEFINE_INTERFACE_TYPE(ManipulatableInterface, 51)
+S_DEFINE_INTERFACE_TYPE(GCShaderBindableResource, 50)
+S_DEFINE_INTERFACE_TYPE(GCShaderBindableData, 51)
+S_DEFINE_INTERFACE_TYPE(ManipulatableInterface, 52)
 
 namespace GraphicsCore
 {

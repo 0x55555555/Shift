@@ -15,13 +15,17 @@ class GRAPHICSCORE_EXPORT GCGeometry : public Shift::PropertyContainer
 
 public:
   GCRuntimeGeometry runtimeGeometry;
+  };
+
+class GRAPHICSCORE_EXPORT GCIndexedGeometry : public GCGeometry
+  {
+  S_PROPERTY_CONTAINER(GCIndexedGeometry, GCGeometry, 0)
+
+public:
   GCRuntimeIndexGeometry runtimeIndexGeometry;
   };
 
 S_PROPERTY_INTERFACE(GCGeometry)
-
-S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCGeometryPointer, GCGeometry)
-
-S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCGeometryPointerArray, GCGeometryPointer)
+S_PROPERTY_INTERFACE(GCIndexedGeometry)
 
 #endif // GCGEOMETRY_H

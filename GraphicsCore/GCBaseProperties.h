@@ -104,6 +104,26 @@ public:
   S_PROPERTY(GCRuntimeShader, Property, 0);
   };
 
+class GRAPHICSCORE_EXPORT GCShaderRuntimeConstantData
+    : public Shift::PODPropertyBase<Eks::ShaderConstantData,
+                                GCShaderRuntimeConstantData>
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCShaderRuntimeConstantData> Traits;
+  enum { TypeId = 153 };
+  S_PROPERTY(GCShaderRuntimeConstantData, Property, 0);
+  };
+
+class GRAPHICSCORE_EXPORT GCRuntimeShaderInstance
+    : public Shift::PODPropertyBase<GraphicsCore::detail::ShaderInstance,
+                                GCRuntimeShaderInstance >
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeShaderInstance> Traits;
+  enum { TypeId = 156 };
+  S_PROPERTY(GCRuntimeShaderInstance, Property, 0);
+  };
+
 class GRAPHICSCORE_EXPORT GCRuntimeGeometry
     : public Shift::PODPropertyBase<Eks::Geometry,
                                 GCRuntimeGeometry>
@@ -122,16 +142,6 @@ public:
   typedef Shift::detail::BasePODPropertyTraits<GCRuntimeIndexGeometry> Traits;
   enum { TypeId = 158 };
   S_PROPERTY(GCRuntimeIndexGeometry, Property, 0);
-  };
-
-class GRAPHICSCORE_EXPORT GCRuntimeShaderInstance
-    : public Shift::PODPropertyBase<GraphicsCore::detail::ShaderInstance,
-                                GCRuntimeShaderInstance >
-  {
-public:
-  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeShaderInstance> Traits;
-  enum { TypeId = 156 };
-  S_PROPERTY(GCRuntimeShaderInstance, Property, 0);
   };
 
 class GRAPHICSCORE_EXPORT GCRenderer
@@ -166,7 +176,7 @@ class GRAPHICSCORE_EXPORT GCVertexLayout
   {
 public:
   typedef Shift::detail::BasePODPropertyTraits<GCVertexLayout> Traits;
-  enum { TypeId = 152 };
+  enum { TypeId = 159 };
   S_PROPERTY(GCVertexLayout, Property, 0);
   };
 
@@ -180,6 +190,7 @@ DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, Eks::Cuboid, Eks::Cuboid
 
 S_PROPERTY_INTERFACE(GCRenderer)
 S_PROPERTY_INTERFACE(GCVertexLayout)
+S_PROPERTY_INTERFACE(GCShaderRuntimeConstantData)
 S_PROPERTY_INTERFACE(GCRuntimeShader)
 S_PROPERTY_INTERFACE(GCRuntimeGeometry)
 S_PROPERTY_INTERFACE(GCRuntimeIndexGeometry)

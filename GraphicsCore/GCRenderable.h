@@ -25,6 +25,7 @@ public:
   class RenderState
     {
   public:
+    Eks::FrameBuffer *framebuffer;
     Eks::Transform transform;
     };
 

@@ -15,10 +15,10 @@ void GCPlate::createTypeInformation(Shift::PropertyInformationTyped<GCPlate> *in
 
 void GCPlate::render(Eks::Renderer *renderer, const RenderState &state) const
   {
-  xAssertFail();
-  //renderer->clear(Eks::Renderer::ClearDepth);
+  xAssert(state.framebuffer)
+  state.framebuffer->clear(Eks::Renderer::ClearDepth);
 
-  //XRendererFlagBlock f(renderer, XRenderer::AlphaBlending);
+  XRendererFlagBlock f(renderer, XRenderer::AlphaBlending);
 
 
 

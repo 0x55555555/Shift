@@ -17,6 +17,7 @@ void initiate()
   Shift::Interface::addStaticInterface<Shift::Vector3DProperty, GCShaderDataBindings::Vector3>();
   Shift::Interface::addStaticInterface<Shift::ColourProperty, GCShaderDataBindings::Vector4>();
   Shift::Interface::addStaticInterface<GCTexture2DPointer, GCShaderDataBindings::Texture2DRef>();
+  Shift::Interface::addStaticInterface<GCShaderConstantDataPointer, GCShaderDataBindings::DataRef>();
 
   Shift::Interface::addInheritedInterface<GCShadingGroup, GCManipulatable>();
   }
