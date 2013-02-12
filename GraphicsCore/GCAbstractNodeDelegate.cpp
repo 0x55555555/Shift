@@ -57,7 +57,7 @@ void GCSimpleNodeDelegate::preSetupProperty(const QFont& font, RenderData::Prope
   const Shift::PropertyContainer* cont = prop->castTo<Shift::PropertyContainer>();
   if(cont)
     {
-    data.childProperties.resize(cont->size());
+    data.childProperties.resize((int)cont->size());
 
     int i = 0;
     xForeach(auto child, cont->walker())
@@ -136,7 +136,7 @@ void GCSimpleNodeDelegate::updateRenderData(const Shift::Entity *ent) const
   int propYStart = _titleFntMetrics.height() + OUTER_PADDING + (2 * TITLE_PADDING) + PROP_PADDING;
 
   int i = 0;
-  rd.properties.resize(numProperties);
+  rd.properties.resize((int)numProperties);
   xForeach(auto prop, ent->walker())
     {
     RenderData::PropertyData& data = rd.properties[i];
@@ -256,7 +256,7 @@ void GCSimpleNodeDelegate::paint(xuint32 pass,
         ensureRenderData(connectedEnt);
         const RenderData &inputRD(_renderData.value(connectedEnt));
 
-        QPoint inputPosition = rd.position + rd.properties[index].position + QPoint(-OUTER_PADDING, _propFntMetrics.height() / 2);
+        QPoint inputPosition = rd.position + rd.properties[(int)index].position + QPoint(-OUTER_PADDING, _propFntMetrics.height() / 2);
         QPoint outputPosition;
 
         if(input == connectedEnt)
@@ -266,7 +266,7 @@ void GCSimpleNodeDelegate::paint(xuint32 pass,
         else
           {
           xsize idx = input->parent()->index(input);
-          outputPosition = inputRD.position + inputRD.properties[idx].position + QPoint(-OUTER_PADDING, _propFntMetrics.height() / 2);
+          outputPosition = inputRD.position + inputRD.properties[(int)idx].position + QPoint(-OUTER_PADDING, _propFntMetrics.height() / 2);
           }
 
         inputPosition.setX(rd.position.x());
@@ -400,7 +400,7 @@ void GCSimpleNodeDelegate::drawConnection(Eks::AbstractCanvas *c, const void *en
     }
   else
     {
-    connectingPosition = rd.position + rd.properties[prop].position + QPoint(-OUTER_PADDING, _propFntMetrics.height() / 2);
+    connectingPosition = rd.position + rd.properties[(int)prop].position + QPoint(-OUTER_PADDING, _propFntMetrics.height() / 2);
     }
 
   QPainterPath path;

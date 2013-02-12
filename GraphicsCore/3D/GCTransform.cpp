@@ -45,7 +45,7 @@ void GCTransform::createTypeInformation(Shift::PropertyInformationTyped<GCTransf
 void GCTransform::render(Eks::Renderer *r, const RenderState &state) const
   {
   RenderState s = state;
-  s.transform *= transform();
+  s.transform *= transform().matrix();
 
   r->setTransform(s.transform);
 

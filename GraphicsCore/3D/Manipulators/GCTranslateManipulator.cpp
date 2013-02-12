@@ -24,7 +24,7 @@ public:
       const QPoint &,
       const GCCamera *camera,
       const Eks::Vector3D &clickDirection, // in world space
-      float *distance)
+      float *)
     {
     const Eks::Vector3D &camTrans = camera->transform().translation();
     Eks::Line l(camTrans, clickDirection, Eks::Line::PointAndDirection);
@@ -47,9 +47,9 @@ public:
     return false;
     }
 
-  virtual void render(const GCVisualManipulator *toRender,
+  virtual void render(const GCVisualManipulator *,
       const GCCamera *,
-      Eks::Renderer *r)
+      Eks::Renderer *)
     {
     xAssertFail();
     /*
@@ -131,7 +131,7 @@ public:
 
   virtual void render(const GCVisualManipulator *manip,
       const GCCamera *,
-      Eks::Renderer *r)
+      Eks::Renderer *)
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
 

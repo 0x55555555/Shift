@@ -1,6 +1,7 @@
 #include "GCPlate.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XRenderer.h"
+#include "XFramebuffer.h"
 
 S_IMPLEMENT_PROPERTY(GCPlate, GraphicsCore)
 
@@ -16,9 +17,9 @@ void GCPlate::createTypeInformation(Shift::PropertyInformationTyped<GCPlate> *in
 void GCPlate::render(Eks::Renderer *renderer, const RenderState &state) const
   {
   xAssert(state.framebuffer)
-  state.framebuffer->clear(Eks::Renderer::ClearDepth);
+  state.framebuffer->clear(Eks::FrameBuffer::ClearDepth);
 
-  XRendererFlagBlock f(renderer, XRenderer::AlphaBlending);
+  //XRendererFlagBlock f(renderer, XRenderer::AlphaBlending);
 
 
 
