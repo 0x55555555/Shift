@@ -18,6 +18,7 @@ namespace detail
 class ShaderInstance
   {
 public:
+  ShaderInstance() : instance(0) { }
   Eks::Shader *instance;
 
   bool operator !=(const ShaderInstance& i) const

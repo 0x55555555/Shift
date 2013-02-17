@@ -71,15 +71,16 @@ void GCShader::createTypeInformation(Shift::PropertyInformationTyped<GCShader> *
     {
     auto childBlock = info->createChildrenBlock(data);
 
+    auto rtInfo = childBlock.add(&GCShader::runtimeShader, "runtimeShader");
+    rtInfo->setCompute<setupShaderRuntime>();
+
     auto rtInfoCore = childBlock.add(&GCShader::runtimeShaderCore, "runtimeShaderCore");
+    rtInfoCore->setAffects(data, rtInfo);
 
     auto r = childBlock.add(&GCShader::renderer, "renderer");
     r->setAffects(data, rtInfoCore);
 
     childBlock.add(&GCShader::layoutDescription, "layoutDescription");
-
-    auto rtInfo = childBlock.add(&GCShader::runtimeShader, "runtimeShader");
-    rtInfo->setCompute<setupShaderRuntime>();
     }
   }
 
