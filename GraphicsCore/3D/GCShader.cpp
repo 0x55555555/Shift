@@ -16,7 +16,7 @@ void computeData(GCShaderConstantData *d)
   auto it = ++walker.begin();
   auto end = walker.end();
 
-  Eks::TemporaryAllocator alloc(Shift::TypeRegistry::temporaryAllocator());
+  Eks::TemporaryAllocator alloc(d->temporaryAllocator());
   GCShaderBindableData::DataBlock data(&alloc);
 
   for(; it != end; ++it)

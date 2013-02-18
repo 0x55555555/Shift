@@ -15,7 +15,7 @@ void computeRuntimeGeometry(MCGeometry *rtGeo)
   GCRuntimeGeometry::ComputeLock l(&rtGeo->runtimeGeometry);
   GCRuntimeIndexGeometry::ComputeLock l2(&rtGeo->runtimeIndexGeometry);
 
-  Eks::TemporaryAllocator alloc(rtGeo->handler()->temporaryAllocator());
+  Eks::TemporaryAllocator alloc(rtGeo->temporaryAllocator());
 
   rtGeo->bakeTo(&alloc, r, l.data(), l2.data());
   }
