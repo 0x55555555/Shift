@@ -113,11 +113,8 @@ void GCShader::bind(Eks::Renderer *r) const
   Eks::Shader *s = runtimeShader().instance;
   r->setShader(s, &layout);
 
-  s->setFragmentShaderConstantDatas(0, constantDatas.size(), constantDatas.data());
-  s->setVertexShaderConstantDatas(0, constantDatas.size(), constantDatas.data());
-
-  s->setFragmentShaderResources(0, resources.size(), resources.data());
-  s->setVertexShaderResources(0, resources.size(), resources.data());
+  s->setShaderConstantDatas(0, constantDatas.size(), constantDatas.data());
+  s->setShaderResources(0, resources.size(), resources.data());
   }
 
 
