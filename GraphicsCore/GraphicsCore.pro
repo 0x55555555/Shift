@@ -41,7 +41,7 @@ HEADERS += GCGlobal.h \
 
 INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
 
-LIBS += -lshift -lEksCore -lEks3D -lEksScript -lShiftMathsCore
+LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftMathsCore
 
 SOURCES += \
     GCShiftRenderModel.cpp \
