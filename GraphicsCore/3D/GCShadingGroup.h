@@ -19,6 +19,9 @@ public:
   virtual void addManipulators(Shift::PropertyArray *, const GCTransform *tr=0);
 
   GCShaderPointer shader;
+
+private:
+  Eks::Geometry _geo;
   };
 
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShadingGroupPointer, GCShadingGroup);

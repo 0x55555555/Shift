@@ -33,7 +33,23 @@ void GCShadingGroup::render(Eks::Renderer *r, const RenderState &state) const
     s->bind(r);
     }
 
-  GCRenderArray::render(r, state);
+  (void)state;
+  r->setTransform(Eks::Transform::Identity());
+
+  if (!_geo.isValid())
+    {
+    float pos[] =
+    {
+      1000, 0, 0,  1, 1, 1,  0, 0,
+      0, 1000, 0,  1, 1, 1,  0, 0,
+      0,    0, 0,  1, 1, 1,  0, 0
+    };
+
+    Eks::Geometry::delayedCreate(const_cast<Eks::Geometry&>(_geo), r, pos, sizeof(float) * 8, 3);
+    }
+
+  r->drawTriangles(&_geo);
+  //GCRenderArray::render(r, state);
   }
 
 void GCShadingGroup::addManipulators(Shift::PropertyArray *, const GCTransform *)
