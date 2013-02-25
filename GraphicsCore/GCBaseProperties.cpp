@@ -116,6 +116,14 @@ void GCRuntimeGeometry::createTypeInformation(
   {
   }
 
+S_IMPLEMENT_PROPERTY(GCRuntimeRasteriserState, GraphicsCore)
+
+void GCRuntimeRasteriserState::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeRasteriserState> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
 S_IMPLEMENT_PROPERTY(GCRuntimeIndexGeometry, GraphicsCore)
 
 void GCRuntimeIndexGeometry::createTypeInformation(

@@ -7,6 +7,22 @@
 #include "XLine.h"
 #include "XCuboid.h"
 
+void GCScene::computeRasteriser(GCScene *s)
+  {
+  Eks::Renderer *r = s->renderer();
+  if(!r)
+    {
+    return;
+    }
+  
+  GCRuntimeRasteriserState::ComputeLock l(&s->_rasteriserState);
+  if(l->isValid())
+    {
+    l->~RasteriserState();
+    }
+  new(l.data()) Eks::RasteriserState(r, Eks::RasteriserState::CullBack);
+  }
+
 S_IMPLEMENT_PROPERTY(GCScene, GraphicsCore)
 
 void GCScene::createTypeInformation(Shift::PropertyInformationTyped<GCScene> *info,
@@ -19,6 +35,12 @@ void GCScene::createTypeInformation(Shift::PropertyInformationTyped<GCScene> *in
     childBlock.add(&GCScene::activeCamera, "activeCamera");
     childBlock.add(&GCScene::cameraTransform, "cameraTransform");
     childBlock.add(&GCScene::cameraProjection, "cameraProjection");
+
+    auto ras = childBlock.add(&GCScene::_rasteriserState, "_rasteriserState");
+    ras->setCompute<computeRasteriser>();
+
+    auto render = childBlock.add(&GCScene::renderer, "renderer");
+    render->setAffects(data, ras);
     }
 
   if(data.registerInterfaces)
@@ -49,6 +71,7 @@ void GCScene::render(Eks::Renderer *r, const RenderState &state) const
   r->setProjectionTransform(cameraProjection());
   r->setViewTransform(cameraTransform());
 
+  r->setRasteriserState(&(_rasteriserState()));
   GCRenderArray::render(r, state);
   }
 

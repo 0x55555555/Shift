@@ -8,6 +8,7 @@
 #include "QtGui/QImage"
 #include "XShader.h"
 #include "XGeometry.h"
+#include "XRasteriserState.h"
 #include "XCuboid.h"
 
 namespace GraphicsCore
@@ -125,6 +126,17 @@ public:
   S_PROPERTY(GCRuntimeShaderInstance, Property, 0);
   };
 
+class GRAPHICSCORE_EXPORT GCRuntimeRasteriserState
+    : public Shift::PODPropertyBase<Eks::RasteriserState,
+                                GCRuntimeRasteriserState>
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeRasteriserState> Traits;
+  enum { TypeId = 160 };
+  S_PROPERTY(GCRuntimeRasteriserState, Property, 0);
+  };
+
+
 class GRAPHICSCORE_EXPORT GCRuntimeGeometry
     : public Shift::PODPropertyBase<Eks::Geometry,
                                 GCRuntimeGeometry>
@@ -195,6 +207,7 @@ S_PROPERTY_INTERFACE(GCShaderRuntimeConstantData)
 S_PROPERTY_INTERFACE(GCRuntimeShader)
 S_PROPERTY_INTERFACE(GCRuntimeGeometry)
 S_PROPERTY_INTERFACE(GCRuntimeIndexGeometry)
+S_PROPERTY_INTERFACE(GCRuntimeRasteriserState)
 S_PROPERTY_INTERFACE(TransformProperty)
 S_PROPERTY_INTERFACE(Matrix3x3Property)
 S_PROPERTY_INTERFACE(ComplexTransformProperty)

@@ -23,6 +23,12 @@ public:
 
   void setCamera(GCViewableTransform *e);
   virtual CameraInterface *camera();
+
+  GCRenderer renderer;
+
+private:
+  static void computeRasteriser(GCScene *s);
+  GCRuntimeRasteriserState _rasteriserState;
   };
 
 S_PROPERTY_INTERFACE(GCScene)
