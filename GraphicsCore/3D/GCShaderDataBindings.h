@@ -9,12 +9,14 @@ class Vector3 : public GCShaderBindableData
   {
 public:
   void bindData(DataBlock *data, const Shift::Property *) const X_OVERRIDE;
+  void getDescription(Eks::ShaderConstantDataDescription &desc, const Shift::Property *) const X_OVERRIDE;
   };
 
 class Vector4 : public GCShaderBindableData
   {
 public:
   void bindData(DataBlock *data, const Shift::Property *) const X_OVERRIDE;
+  void getDescription(Eks::ShaderConstantDataDescription &desc, const Shift::Property *) const X_OVERRIDE;
   };
 
 class Texture2DRef : public GCShaderBindableResource

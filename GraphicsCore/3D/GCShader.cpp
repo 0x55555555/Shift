@@ -32,7 +32,19 @@ void computeData(GCShaderConstantData *d)
 
   if(!l.data()->isValid())
     {
-    Eks::ShaderConstantData::delayedCreate(*l.data(), r, data.size(), data.data());
+    Eks::Vector<Eks::ShaderConstantDataDescription> descs;
+
+    it = ++walker.begin();
+    for(; it != end; ++it)
+      {
+      auto p = *it;
+      const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
+
+      descs.resize(descs.size()+1);
+      binder->getDescription(descs.back(), p);
+      }
+
+    Eks::ShaderConstantData::delayedCreate(*l.data(), r, descs.data(), descs.size(), data.data());
     }
   else
     {

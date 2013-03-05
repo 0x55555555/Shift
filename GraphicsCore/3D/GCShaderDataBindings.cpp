@@ -11,11 +11,23 @@ void Vector3::bindData(DataBlock *data, const Shift::Property *p) const
   data->resizeAndCopy(data->size() + sizeof(Eks::Vector3D), (xuint8*)c->value().data());
   }
 
+void Vector3::getDescription(Eks::ShaderConstantDataDescription &desc, const Shift::Property *p) const
+  {
+  desc.type = Eks::ShaderConstantDataDescription::Float3;
+  desc.name = p->name().data();
+  }
+
 void Vector4::bindData(DataBlock *data, const Shift::Property *p) const
   {
   const Shift::ColourProperty *c = p->uncheckedCastTo<Shift::ColourProperty>();
 
   data->resizeAndCopy(data->size() + sizeof(Eks::Colour), (xuint8*)c->value().data());
+  }
+
+void Vector4::getDescription(Eks::ShaderConstantDataDescription &desc, const Shift::Property *p) const
+  {
+  desc.type = Eks::ShaderConstantDataDescription::Float4;
+  desc.name = p->name().data();
   }
 
 void Texture2DRef::bindResource(DataBlock *, ResourceBlock *resources, const Shift::Property *p) const

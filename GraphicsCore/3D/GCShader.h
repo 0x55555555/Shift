@@ -52,6 +52,9 @@ public:
   typedef Eks::Vector<xuint8> DataBlock;
 
   virtual void bindData(DataBlock *data, const Shift::Property *) const = 0;
+  virtual void getDescription(
+      Eks::ShaderConstantDataDescription &desc,
+      const Shift::Property *) const = 0;
   };
 
 class GRAPHICSCORE_EXPORT GCShaderConstantData : public Shift::PropertyContainer
