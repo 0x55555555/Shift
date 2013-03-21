@@ -3,6 +3,7 @@
 #include "shift/Utilities/siterator.h"
 #include "XShader.h"
 #include "XRenderer.h"
+#include "XFrameBuffer.h"
 #include "XMathMatrix"
 #include "XLine.h"
 #include "XCuboid.h"
@@ -153,12 +154,10 @@ void GCManipulatableScene::initialise(Eks::Renderer *r)
     lines,
     X_ARRAY_COUNT(lines));
 
-#if 0
-  if(!Eks::ShaderManager::findShader(kPlainColour, &_shader, &_shaderLayout))
+  if(!Eks::Shader::findStockShader(PlainColour, &_shader, &_shaderLayout))
     {
     xAssertFail();
     }
-#endif
   }
 
 void GCManipulatableScene::clearManipulators()
@@ -197,8 +196,6 @@ void GCManipulatableScene::render(Eks::Renderer *x, const RenderState &state) co
     {
     x->setViewTransform(cameraTransform());
 
-    xAssertFail();
-    /*
     x->setShader(_shader, _shaderLayout);
     xForeach(auto m, selection.walker<Shift::Pointer>())
       {
@@ -216,19 +213,19 @@ void GCManipulatableScene::render(Eks::Renderer *x, const RenderState &state) co
         Eks::Transform fullTransform = state.transform * trans;
 
         x->setTransform(fullTransform);
-        //x->drawGeometry(_bounds);
+        x->drawLines(&_bounds);
         }
       }
 
     if(!manipulators.isEmpty())
       {
-      x->clear(Eks::Renderer::ClearDepth);
+      state.framebuffer->clear(Eks::FrameBuffer::ClearDepth);
 
       xForeach(auto m, manipulators.walker<GCVisualManipulator>())
         {
         m->render(cam, x);
         }
-      }*/
+      }
     }
   }
 

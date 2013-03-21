@@ -9,6 +9,8 @@
 #include "QFontMetrics"
 #include "QHash"
 
+#if 0
+
 class QPoint;
 namespace Shift
 {
@@ -93,5 +95,7 @@ private:
   QFont _propFnt;
   QFontMetrics _propFntMetrics;
   };
+
+#endif
 
 #endif // GCABSTRACTNODEDELEGATE_H

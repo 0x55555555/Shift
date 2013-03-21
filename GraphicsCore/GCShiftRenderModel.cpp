@@ -3,6 +3,8 @@
 #include "shift/Properties/spropertycontaineriterators.h"
 #include "shift/Properties/sproperty.inl"
 
+#if 0
+
 GCShiftRenderModel::Iterator::Iterator(const GCShiftRenderModel *m) : _model(m)
   {
   }
@@ -93,3 +95,5 @@ void GCShiftRenderModel::onTreeChange(const Shift::Change *c)
       }
     }
   }
+
+#endif

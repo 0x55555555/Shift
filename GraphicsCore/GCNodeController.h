@@ -11,6 +11,8 @@ class Entity;
 }
 class GCAbstractNodeDelegate;
 
+#if 0
+
 class GRAPHICSCORE_EXPORT GCNodeController : public QObject, public XSimple2DCanvasController
   {
   Q_OBJECT
@@ -44,5 +46,7 @@ private:
 
   mutable xuint32 _connectionPass;
   };
+
+#endif
 
 #endif // GCNODECONTROLLER_H

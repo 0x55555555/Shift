@@ -12,6 +12,8 @@ namespace Shift
 class Entity;
 }
 
+#if 0
+
 class GRAPHICSCORE_EXPORT GCShiftRenderModel
     : public Eks::AbstractRenderModel,
     Shift::ConnectionObserver,
@@ -62,5 +64,7 @@ public:
   void onConnectionChange(const Shift::Change *);
   void onTreeChange(const Shift::Change *);
   };
+
+#endif
 
 #endif // GCSHIFTRENDERMODEL_H

@@ -5,6 +5,8 @@
 #include "shift/sentity.h"
 #include "X2DCanvas.h"
 
+#if 0
+
 GCNodeController::GCNodeController(X2DCanvas *c) : XSimple2DCanvasController(c), _iterator(0),
   _interactionEntity(0), _interactionProperty(X_SIZE_SENTINEL), _interactionDelegate(0),
   _connectingOutput(false), _controlMode(None)
@@ -199,3 +201,5 @@ void GCNodeController::paint(xuint32 pass) const
     _interactionDelegate->drawConnection(canvas(), _interactionEntity, X_SIZE_SENTINEL, true, point);
     }
   }
+
+#endif
