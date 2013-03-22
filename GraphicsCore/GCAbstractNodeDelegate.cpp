@@ -6,6 +6,8 @@
 #include "QPainter"
 #include "shift/sentity.h"
 
+#if 0
+
 #define MAX_WIDTH 128
 #define OUTER_PADDING 5
 #define TITLE_PADDING 2
@@ -431,3 +433,5 @@ void GCSimpleNodeDelegate::drawConnection(Eks::AbstractCanvas *c, const void *en
 
   ptr->drawPath(path);
   }
+
+#endif
