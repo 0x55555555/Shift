@@ -46,7 +46,7 @@ public:
   Shift::PropertyArray manipulators;
   Shift::PointerArray selection;
 
-  void initialise(Eks::Renderer *r);
+  void initialise();
 
   void render(Eks::Renderer *, const RenderState &state) const;
 

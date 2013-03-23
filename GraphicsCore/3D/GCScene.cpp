@@ -110,8 +110,11 @@ GCManipulatableScene::GCManipulatableScene() : _currentManipulator(0), _mouseSel
   {
   }
 
-void GCManipulatableScene::initialise(Eks::Renderer *r)
+void GCManipulatableScene::initialise()
   {
+  Eks::Renderer *r = renderer();
+  xAssert(r);
+
   Eks::Vector3D vertices[] = {
     Eks::Vector3D(0, 0, 0),
     Eks::Vector3D(1, 0, 0),
@@ -125,7 +128,7 @@ void GCManipulatableScene::initialise(Eks::Renderer *r)
 
   Eks::Geometry::delayedCreate(
     _bounds,
-    r,
+      renderer(),
     vertices,
     sizeof(vertices[0]),
     X_ARRAY_COUNT(vertices));
@@ -154,7 +157,7 @@ void GCManipulatableScene::initialise(Eks::Renderer *r)
     lines,
     X_ARRAY_COUNT(lines));
 
-  if(!Eks::Shader::findStockShader(PlainColour, &_shader, &_shaderLayout))
+  if(!(_shader = r->stockShader(Eks::PlainColour, &_shaderLayout)) || !_shaderLayout)
     {
     xAssertFail();
     }
