@@ -32,7 +32,7 @@ public:
     {
     Eks::Line l(camera->transform().translation(), clickDirection, Eks::Line::PointAndDirection);
 
-    Eks::Matrix4x4 t = camera->getPixelScaleFacingTransform(toRender->worldCentre().translation()).matrix();
+    Eks::Matrix4x4 t = camera->getPixelScaleFacingTransform(toRender->worldTransform().translation()).matrix();
     Eks::Matrix4x4 tInv = t.inverse();
 
     Eks::Transform lineTransform(tInv);

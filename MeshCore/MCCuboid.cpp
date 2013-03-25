@@ -72,7 +72,7 @@ void MCCuboid::computeGeometry(MCCuboid* cube)
   p.computeNormals();
   }
 
-void MCCuboid::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)
+void MCCuboid::addManipulators(Shift::PropertyArray *a, const ManipInfo &info)
   {
   // X
     {
@@ -86,9 +86,9 @@ void MCCuboid::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)
 
     manip->addDriven(&width);
 
-    if(tr)
+    if(info.parentTransform)
       {
-      tr->transform.connect(&manip->worldCentre);
+      manip->worldTransform.setInput(info->parentTransform);
       }
     }
 
@@ -104,9 +104,9 @@ void MCCuboid::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)
 
     manip->addDriven(&height);
 
-    if(tr)
+    if(info.parentTransform)
       {
-      tr->transform.connect(&manip->worldCentre);
+      manip->worldTransform.setInput(info->parentTransform);
       }
     }
 
@@ -122,9 +122,9 @@ void MCCuboid::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)
 
     manip->addDriven(&depth);
 
-    if(tr)
+    if(info.parentTransform)
       {
-      tr->transform.connect(&manip->worldCentre);
+      manip->worldTransform.setInput(info->parentTransform);
       }
     }
   }

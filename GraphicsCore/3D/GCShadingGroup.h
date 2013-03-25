@@ -16,7 +16,7 @@ public:
 
   void render(Eks::Renderer *r, const RenderState &) const;
 
-  virtual void addManipulators(Shift::PropertyArray *, const GCTransform *tr=0);
+  GCRenderablePointerArray *manipulatableChildren() { return &renderGroup; }
 
   GCShaderPointer shader;
   };

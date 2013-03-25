@@ -29,7 +29,7 @@ public:
     const Eks::Vector3D &camTrans = camera->transform().translation();
     Eks::Line l(camTrans, clickDirection, Eks::Line::PointAndDirection);
 
-    const Eks::Transform &wC = toRender->worldCentre();
+    const Eks::Transform &wC = toRender->worldTransform();
 
     Eks::Matrix4x4 t = wC.matrix();
     Eks::Matrix4x4 tInv = t.inverse();
@@ -100,7 +100,7 @@ public:
 
     Eks::Line manipLine(Eks::Vector3D(0.0f, 0.0f, 0.0f), toRender->lockDirection().normalized());
 
-    const Eks::Transform &wC = toRender->worldCentre();
+    const Eks::Transform &wC = toRender->worldTransform();
     manipLine.transform(wC);
 
     float clickT = clickLine.closestPointOn(manipLine);
@@ -135,7 +135,7 @@ public:
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
 
-    Eks::Transform wC = toRender->worldCentre();
+    Eks::Transform wC = toRender->worldTransform();
 
     Eks::Vector3D x = Eks::Vector3D(1.0f, 0.0f, 0.0f);
     Eks::Vector3D lockDir = toRender->lockDirection().normalized();
@@ -201,33 +201,6 @@ void GCSingularTranslateManipulator::onDrag(const MouseMoveEvent &e)
 
 S_IMPLEMENT_PROPERTY(GCTranslateManipulator, GraphicsCore)
 
-void postCreateTranslateManip(GCTranslateManipulator *m)
-  {
-  m->worldCentre.connect(&m->x.worldCentre);
-  m->x.setDelegate(new LinearTranslateDelegate());
-
-  m->x.lockMode = GCSingularTranslateManipulator::Linear;
-  m->x.lockDirection = Eks::Vector3D(1.0f, 0.0f, 0.0f);
-
-
-  m->worldCentre.connect(&m->y.worldCentre);
-  m->y.setDelegate(new LinearTranslateDelegate());
-
-  m->y.lockMode = GCSingularTranslateManipulator::Linear;
-  m->y.lockDirection = Eks::Vector3D(0.0f, 1.0f, 0.0f);
-
-
-  m->worldCentre.connect(&m->z.worldCentre);
-  m->z.setDelegate(new LinearTranslateDelegate());
-
-  m->z.lockMode = GCSingularTranslateManipulator::Linear;
-  m->z.lockDirection = Eks::Vector3D(0.0f, 0.0f, 1.0f);
-
-
-  m->worldCentre.connect(&m->central.worldCentre);
-  m->central.setDelegate(new CentralTranslateDelegate());
-  }
-
 void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCTranslateManipulator> *info,
                                                    const Shift::PropertyInformationCreateData &data)
   {
@@ -235,15 +208,51 @@ void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyp
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&GCTranslateManipulator::x, "x");
-    childBlock.add(&GCTranslateManipulator::y, "y");
-    childBlock.add(&GCTranslateManipulator::z, "z");
-    childBlock.add(&GCTranslateManipulator::central, "central");
+    auto wt = childBlock.child(&GCTranslateManipulator::worldTransform);
+
+    auto x = childBlock.add(&GCTranslateManipulator::x, "x");
+    auto y = childBlock.add(&GCTranslateManipulator::y, "y");
+    auto z = childBlock.add(&GCTranslateManipulator::z, "z");
+
+    Eks::Vector3D dir[] =
+      {
+      Eks::Vector3D(1.0f, 0.0f, 0.0f),
+      Eks::Vector3D(0.0f, 1.0f, 0.0f),
+      Eks::Vector3D(0.0f, 0.0f, 1.0f),
+      };
+
+    Shift::PropertyInstanceInformationTyped<GCTranslateManipulator, GCSingularTranslateManipulator>
+      *components[] = { x, y, z };
+    for(xsize i = 0; i < X_ARRAY_COUNT(components); ++i)
+      {
+      auto iInfo = info->extendContainedProperty(data, components[i]);
+      auto iChildBlock = iInfo->createChildrenBlock(data);
+
+      auto iWt = iChildBlock.overrideChild(&GCSingularTranslateManipulator::worldTransform);
+      iWt->setDefaultInput(wt);
+
+      auto lm = iChildBlock.overrideChild(&GCSingularTranslateManipulator::lockMode);
+      lm->setDefaultValue(GCSingularTranslateManipulator::Linear);
+
+      auto ld = iChildBlock.overrideChild(&GCSingularTranslateManipulator::lockDirection);
+      ld->setDefaultValue(dir[i]);
+      }
+
+    auto cent = childBlock.add(&GCTranslateManipulator::central, "central");
+
+    auto iInfo = info->extendContainedProperty(data, cent);
+    auto iChildBlock = iInfo->createChildrenBlock(data);
+    auto iWt = iChildBlock.overrideChild(&GCSingularTranslateManipulator::worldTransform);
+    iWt->setDefaultInput(wt);
     }
   }
 
 GCTranslateManipulator::GCTranslateManipulator()
   {
+  x.setDelegate(new LinearTranslateDelegate());
+  y.setDelegate(new LinearTranslateDelegate());
+  z.setDelegate(new LinearTranslateDelegate());
+  central.setDelegate(new CentralTranslateDelegate());
   }
 
 void GCTranslateManipulator::addDriven(TransformProperty *in)
