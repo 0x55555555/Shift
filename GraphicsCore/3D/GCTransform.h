@@ -16,12 +16,13 @@ public:
 
   TransformProperty transform;
 
-  virtual void render(Eks::Renderer *, const RenderState &state) const;
+  void render(Eks::Renderer *, const RenderState &state) const X_OVERRIDE;
 
-  virtual void addManipulators(Shift::PropertyArray *, const GCTransform *tr=0);
+  GCRenderablePointerArray *manipulatableChildren() { return &renderGroup; }
+  void addManipulators(Shift::PropertyArray *, const ManipInfo &info) X_OVERRIDE;
 
-  virtual void intersect(const Eks::Line& line, Selector *);
-  virtual void intersect(const Eks::Frustum& frus, Selector *);
+  void intersect(const Eks::Line& line, Selector *) X_OVERRIDE;
+  void intersect(const Eks::Frustum& frus, Selector *) X_OVERRIDE;
   };
 
 S_PROPERTY_INTERFACE(GCTransform)

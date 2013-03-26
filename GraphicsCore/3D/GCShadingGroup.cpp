@@ -35,19 +35,3 @@ void GCShadingGroup::render(Eks::Renderer *r, const RenderState &state) const
 
   GCRenderArray::render(r, state);
   }
-
-void GCShadingGroup::addManipulators(Shift::PropertyArray *, const GCTransform *)
-  {/*
-  xAssert(tr == 0);
-  //a->add<GCButtonManipulator>();
-
-  // todo, probably dont do this...!
-  for(GCGeometryTransformPointer* geoPtr = geometry.firstChild<GCGeometryTransformPointer>(); geoPtr; geoPtr = geoPtr->nextSibling<GCGeometryTransformPointer>())
-    {
-    GCGeometryTransform* geo = geoPtr->pointed();
-    if(geo)
-      {
-      geo->addManipulators(a);
-      }
-    }*/
-  }

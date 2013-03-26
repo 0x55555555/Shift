@@ -1,8 +1,34 @@
 #include "GCManipulator.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "3D/GCCamera.h"
+#include "GCRenderable.h"
 #include "XPlane.h"
 #include "XLine.h"
+
+void GCManipulatable::addManipulators(
+    Shift::PropertyArray *arr,
+    const ManipInfo &info)
+  {
+  GCRenderablePointerArray *children = manipulatableChildren();
+  if(!children)
+    {
+    return;
+    }
+
+  xForeach(auto prop, children->walker<GCRenderablePointer>())
+    {
+    GCRenderable *geo = prop->pointed();
+    if(geo)
+      {
+      GCManipulatable *manip = geo->interface<GCManipulatable>();
+
+      if(manip)
+        {
+        manip->addManipulators(arr, info);
+        }
+      }
+    }
+  }
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualManipulator, GraphicsCore)
 
@@ -14,7 +40,25 @@ void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<
     auto childBlock = info->createChildrenBlock(data);
 
     childBlock.add(&GCVisualManipulator::show, "show");
-    childBlock.add(&GCVisualManipulator::worldCentre, "worldCentre");
+
+    struct Utils
+      {
+      static void computeWorldTransform(GCVisualManipulator *manip)
+        {
+        manip->worldTransform = manip->parentTransform() * manip->localTransform();
+        }
+      };
+
+    auto wt = childBlock.add(&GCVisualManipulator::worldTransform, "worldTransform");
+    wt->setCompute<Utils::computeWorldTransform>();
+
+    auto affects = childBlock.createAffects(&wt, 1);
+
+    auto pt = childBlock.add(&GCVisualManipulator::parentTransform, "parentTransform");
+    pt->setAffects(affects, true);
+    auto lt = childBlock.add(&GCVisualManipulator::localTransform, "localTransform");
+    lt->setAffects(affects, false);
+
     childBlock.add(&GCVisualManipulator::manipulatorsDisplayScale, "manipulatorsDisplayScale");
     }
   }

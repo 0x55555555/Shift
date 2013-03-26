@@ -14,12 +14,24 @@ class Renderer;
 class QPainter;
 class GCTransform;
 class GCCamera;
+class GCRenderable;
+class GCRenderablePointerArray;
 
 class GRAPHICSCORE_EXPORT GCManipulatable : public Shift::InterfaceBase
   {
   S_INTERFACE_TYPE(ManipulatableInterface)  
 public:
-  virtual void addManipulators(Shift::PropertyArray *, const GCTransform *tr=0) = 0;
+
+  struct ManipInfo
+    {
+    ManipInfo() : parentTransform(0)
+      {
+      }
+    const TransformProperty *parentTransform;
+    };
+
+  virtual GCRenderablePointerArray *manipulatableChildren() { return 0; }
+  virtual void addManipulators(Shift::PropertyArray *parent, const ManipInfo &tr);
   };
 
 class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::PropertyContainer
@@ -27,6 +39,8 @@ class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::PropertyContainer
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, PropertyContainer, 0)
 
 public:
+  GCVisualManipulator();
+
   class Delegate
     {
   public:
@@ -45,7 +59,7 @@ public:
 
     virtual Eks::Vector3D focalPoint(const GCVisualManipulator *toRender) const
       {
-      return toRender->worldCentre().translation();
+      return toRender->worldTransform().translation();
       }
     };
 
@@ -53,10 +67,10 @@ XProperties:
   XProperty(Delegate *, delegate, setDelegate);
 
 public:
-  GCVisualManipulator();
-  
   Shift::BoolProperty show;
-  TransformProperty worldCentre;
+  TransformProperty parentTransform;
+  TransformProperty localTransform;
+  TransformProperty worldTransform;
   Shift::FloatProperty manipulatorsDisplayScale;
 
   virtual Eks::Vector3D focalPoint() const;

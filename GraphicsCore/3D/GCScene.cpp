@@ -174,19 +174,17 @@ void GCManipulatableScene::refreshManipulators()
 
   clearManipulators();
 
-  xForeach(auto groupPtr, renderGroup.walker<GCRenderablePointer>())
+  class Manipulator : public GCManipulatable
     {
-    Property* inp = groupPtr->input();
+  public:
+    GCScene *scene;
+    GCRenderablePointerArray *manipulatableChildren() { return &scene->renderGroup; }
+    } manip;
 
-    if(inp)
-      {
-      GCRenderable* group = inp->uncheckedCastTo<GCRenderable>(); // pointer() only returns const...
-      if(group)
-        {
-        //group->addManipulators(&manipulators);
-        }
-      }
-    }
+  manip.scene = this;
+
+  GCManipulatable::ManipInfo info;
+  manip.addManipulators(&manipulators, info);
   }
 
 void GCManipulatableScene::render(Eks::Renderer *x, const RenderState &state) const

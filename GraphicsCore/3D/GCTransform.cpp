@@ -52,15 +52,25 @@ void GCTransform::render(Eks::Renderer *r, const RenderState &state) const
   GCRenderArray::render(r, s);
   }
 
-void GCTransform::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)
+void GCTransform::addManipulators(
+    Shift::PropertyArray *a,
+    const ManipInfo &info)
   {
-  xAssert(tr == 0);
-
   GCTranslateManipulator *manip = a->add<GCTranslateManipulator>();
 
   manip->addDriven(&transform);
 
-  transform.connect(&manip->worldCentre);
+  if(info.parentTransform)
+    {
+    manip->parentTransform.setInput(info.parentTransform);
+    }
+
+  manip->localTransform.setInput(&transform);
+
+  ManipInfo newInfo(info);
+  newInfo.parentTransform = &manip->worldTransform;
+
+  GCManipulatable::addManipulators(a, newInfo);
   }
 
 class InternalSelector : public GCRenderable::Selector

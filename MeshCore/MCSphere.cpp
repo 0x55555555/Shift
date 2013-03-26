@@ -27,7 +27,7 @@ float MCSphere::evaluate(const Eks::Vector3D &p) const
   return x2+y2+z2 - (r*r);
   }
 
-void MCSphere::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)
+void MCSphere::addManipulators(Shift::PropertyArray *a, const ManipInfo &info)
   {
   // radius
     {
@@ -40,9 +40,9 @@ void MCSphere::addManipulators(Shift::PropertyArray *a, const GCTransform *tr)
 
     manip->addDriven(&radius);
 
-    if(tr)
+    if(info.parentTransform)
       {
-      tr->transform.connect(&manip->worldCentre);
+      manip->worldTransform.setInput(info->parentTransform);
       }
     }
   }
