@@ -19,7 +19,7 @@ class GCRenderablePointerArray;
 
 class GRAPHICSCORE_EXPORT GCManipulatable : public Shift::InterfaceBase
   {
-  S_INTERFACE_TYPE(ManipulatableInterface)  
+  S_INTERFACE_TYPE(ManipulatableInterface)
 public:
 
   struct ManipInfo
@@ -64,7 +64,7 @@ public:
     };
 
 XProperties:
-  XProperty(Delegate *, delegate, setDelegate);
+  XProperty(UniquePointer<Delegate *>, delegate, setDelegate);
 
 public:
   Shift::BoolProperty show;
@@ -74,16 +74,16 @@ public:
   Shift::FloatProperty manipulatorsDisplayScale;
 
   virtual Eks::Vector3D focalPoint() const;
-  
+
   virtual bool hitTest(
     const QPoint &widgetSpacePoint,
     const GCCamera *camera,
     const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked);
-    
+
   virtual void render(const GCCamera *camera, Eks::Renderer *) const;
-  
+
   struct MouseEvent
     {
     QPoint widgetPoint;
@@ -104,14 +104,14 @@ public:
   };
 
 S_PROPERTY_INTERFACE(GCVisualManipulator);
-  
+
 class GRAPHICSCORE_EXPORT GCVisualCompoundManipulator : public GCVisualManipulator
   {
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualCompoundManipulator, GCVisualManipulator, 0)
 
 public:
   GCVisualCompoundManipulator();
-  
+
   virtual bool hitTest(
     const QPoint &widgetSpacePoint,
     const GCCamera *camera,
@@ -135,7 +135,7 @@ class GRAPHICSCORE_EXPORT GCVisualDragManipulator : public GCVisualManipulator
 
 public:
   GCVisualDragManipulator();
-  
+
   virtual void onDrag(const MouseMoveEvent &) = 0;
 
   virtual void onMouseClick(const MouseEvent &);

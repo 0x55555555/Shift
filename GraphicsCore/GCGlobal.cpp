@@ -6,6 +6,7 @@
 
 #include "3D/GCTexture.h"
 #include "3D/GCShadingGroup.h"
+#include "3D/GCTransform.h"
 #include "3D/GCShaderDataBindings.h"
 
 namespace GraphicsCore
@@ -20,6 +21,7 @@ void initiate()
   Shift::Interface::addStaticInterface<GCShaderConstantDataPointer, GCShaderDataBindings::DataRef>();
 
   Shift::Interface::addInheritedInterface<GCShadingGroup, GCManipulatable>();
+  Shift::Interface::addInheritedInterface<GCTransform, GCManipulatable>();
   }
 
 Shift::PropertyGroup &propertyGroup()

@@ -8,17 +8,12 @@
 #include "XLine.h"
 #include "XCuboid.h"
 #include "shift/Changes/shandler.inl"
-/*
+
+
+static const float Radius = 0.1f;
 class DistanceDelegate : public GCVisualManipulator::Delegate
   {
 public:
-  DistanceDelegate()
-    {
-    Eks::Modeller m(&_geo, 64);
-
-    m.drawCube(Eks::Vector3D(0.1f, 0.0f, 0.0f), Eks::Vector3D(0.0f, 0.1f, 0.0f), Eks::Vector3D(0.0f, 0.0f, 0.1f));
-    }
-
   virtual bool hitTest(
       const GCVisualManipulator *manip,
       const QPoint &,
@@ -28,17 +23,17 @@ public:
     {
     const GCDistanceManipulator *toRender = manip->uncheckedCastTo<GCDistanceManipulator>();
     const Eks::Vector3D &camTrans = camera->transform().translation();
-    XLine l(camTrans, clickDirection, XLine::PointAndDirection);
+    Eks::Line l(camTrans, clickDirection, Eks::Line::PointAndDirection);
 
-    XTransform wC = toRender->worldCentre();
+    Eks::Transform wC = toRender->worldTransform();
     wC.translate(toRender->absoluteDisplacement());
 
-    XMatrix4x4 t = wC.matrix();
-    XMatrix4x4 tInv = t.inverse();
-    XTransform lineTransform(tInv);
+    Eks::Matrix4x4 t = wC.matrix();
+    Eks::Matrix4x4 tInv = t.inverse();
+    Eks::Transform lineTransform(tInv);
     l.transform(lineTransform);
 
-    if(XMeshUtilities::intersect("vertex", l, _geo))
+    if(l.sample(l.closestPointTo(Eks::Vector3D::Zero())).norm() < Radius)
       {
       const Eks::Vector3D &wcTrans = wC.translation();
       *distance = (camTrans - wcTrans).norm() - 0.05f;
@@ -50,33 +45,55 @@ public:
 
   virtual void render(const GCVisualManipulator *manip,
       const GCCamera *,
-      XRenderer *r)
+      Eks::Renderer *r)
     {
+    if(!_geo.isValid())
+      {
+      Eks::TemporaryAllocator alloc(manip->temporaryAllocator());
+      Eks::Modeller m(&alloc, 1024);
+
+      m.drawSphere(Radius);
+
+      Eks::ShaderVertexLayoutDescription::Semantic sem[] = { Eks::ShaderVertexLayoutDescription::Position };
+      m.bakeTriangles(r, sem, X_ARRAY_COUNT(sem), &_igeo, &_geo);
+
+      _shader = r->stockShader(Eks::PlainColour, &_layout);
+
+      Eks::ShaderConstantDataDescription dataDesc[] =
+      {
+        { "colour", Eks::ShaderConstantDataDescription::Float4 }
+      };
+      const Eks::Colour &col = Eks::Colour(1.0f, 1.0f, 0.0f);
+      Eks::ShaderConstantData::delayedCreate(_data, r, dataDesc, X_ARRAY_COUNT(dataDesc), col.data());
+
+
+      }
     const GCDistanceManipulator *toRender = manip->uncheckedCastTo<GCDistanceManipulator>();
 
-    XTransform wC = toRender->worldCentre();
+    Eks::Transform wC = toRender->worldTransform();
     wC.translate(toRender->absoluteDisplacement());
 
-    r->pushTransform(wC);
-    r->setShader(&_shader);
-    r->drawGeometry(_geo);
-    r->setShader(0);
-    r->popTransform();
+    r->setTransform(wC);
+    r->setShader(_shader, _layout);
+    r->drawTriangles(&_igeo, &_geo);
     }
 
   virtual Eks::Vector3D focalPoint(const GCVisualManipulator *manip) const
     {
     const GCDistanceManipulator *toRender = manip->uncheckedCastTo<GCDistanceManipulator>();
 
-    Eks::Transform wC = toRender->worldCentre();
+    Eks::Transform wC = toRender->worldTransform();
     wC.translate(toRender->absoluteDisplacement());
     return wC.translation();
     }
 
 private:
+  Eks::IndexGeometry _igeo;
   Eks::Geometry _geo;
-  Eks::Shader _shader;
-  };*/
+  Eks::Shader *_shader;
+  Eks::ShaderVertexLayout *_layout;
+  Eks::ShaderConstantData _data;
+  };
 
 S_IMPLEMENT_PROPERTY(GCDistanceManipulator, GraphicsCore)
 
@@ -110,8 +127,7 @@ void GCDistanceManipulator::createTypeInformation(Shift::PropertyInformationType
 
 GCDistanceManipulator::GCDistanceManipulator()
   {
-  xAssertFail();
-  //setDelegate(new DistanceDelegate());
+  setDelegate( DistanceDelegate());
   }
 
 void GCDistanceManipulator::addDriven(Shift::FloatProperty *in)
