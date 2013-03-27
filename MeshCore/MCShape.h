@@ -1,7 +1,7 @@
 #ifndef MCSHAPE_H
 #define MCSHAPE_H
 
-#include "3D/GCRenderable.h"
+#include "GCRenderable.h"
 #include "MCGeometry.h"
 
 class MCShape : public GCRenderable
@@ -9,14 +9,12 @@ class MCShape : public GCRenderable
   S_ENTITY(MCShape, GCRenderable, 0)
 
 public:
-  MCShape();
-
   MCGeometry geometry;
 
-  void render(XRenderer *) const;
+  void render(Eks::Renderer *, const RenderState &state) const X_OVERRIDE;
 
-  virtual void intersect(const XLine& line, Selector *);
-  virtual void intersect(const XFrustum& frus, Selector *);
+  virtual void intersect(const Eks::Line& line, Selector *);
+  virtual void intersect(const Eks::Frustum& frus, Selector *);
   };
 
 S_PROPERTY_INTERFACE(MCShape)

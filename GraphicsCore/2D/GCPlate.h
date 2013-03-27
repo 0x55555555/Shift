@@ -26,7 +26,7 @@ class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
     return grp;
     }
 
-  void render(XRenderer *) const X_OVERRIDE;
+  void render(Eks::Renderer *, const RenderState &state) const X_OVERRIDE;
 
   virtual void transformPoint(float inX, float inY, float &x, float &y) = 0;
   };

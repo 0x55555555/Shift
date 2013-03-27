@@ -3,7 +3,7 @@
 
 #include "GCGlobal.h"
 #include "GCRenderable.h"
-#include "sbasepointerproperties.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "GCShader.h"
 #include "Manipulators/GCManipulator.h"
 
@@ -14,17 +14,19 @@ class GRAPHICSCORE_EXPORT GCShadingGroup : public GCRenderArray, public GCManipu
 public:
   GCShadingGroup();
 
-  void render(XRenderer *r) const;
+  void render(Eks::Renderer *r, const RenderState &) const;
 
-  virtual void addManipulators(SPropertyArray *, const GCTransform *tr=0);
+  GCRenderablePointerArray *manipulatableChildren() { return &renderGroup; }
 
   GCShaderPointer shader;
   };
 
-S_PROPERTY_INTERFACE(GCShadingGroup)
-
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShadingGroupPointer, GCShadingGroup);
 
 S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCShadingGroupPointerArray, GCShadingGroupPointer);
+
+S_PROPERTY_INTERFACE(GCShadingGroup)
+S_PROPERTY_INTERFACE(Shift::TypedPointerArray<GCShadingGroupPointer>)
+S_PROPERTY_INTERFACE(GCShadingGroupPointerArray)
 
 #endif // GCSHADINGGROUP_H

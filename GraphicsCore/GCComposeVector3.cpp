@@ -1,33 +1,33 @@
 #include "GCComposeVector3.h"
-#include "spropertyinformationhelpers.h"
-#include "shandlerimpl.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
 
 void computeVector(GCComposeVector3 *vec)
   {
-  Vector3DProperty::ComputeLock l(&vec->vectorOut);
-  *l.data() = XVector3D(vec->xIn(), vec->yIn(), vec->zIn());
+  Shift::Vector3DProperty::ComputeLock l(&vec->vectorOut);
+  *l.data() = Eks::Vector3D(vec->xIn(), vec->yIn(), vec->zIn());
   }
 
 S_IMPLEMENT_PROPERTY(GCComposeVector3, GraphicsCore)
 
-void GCComposeVector3::createTypeInformation(SPropertyInformationTyped<GCComposeVector3> *info,
-                                             const SPropertyInformationCreateData &data)
+void GCComposeVector3::createTypeInformation(Shift::PropertyInformationTyped<GCComposeVector3> *info,
+                                             const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto vectorInst = info->add(&GCComposeVector3::vectorOut, "vectorOut");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto vectorInst = childBlock.add(&GCComposeVector3::vectorOut, "vectorOut");
     vectorInst->setCompute<computeVector>();
 
-    auto xInst = info->add(&GCComposeVector3::xIn, "xIn");
-    auto yInst = info->add(&GCComposeVector3::yIn, "yIn");
-    auto zInst = info->add(&GCComposeVector3::zIn, "zIn");
+    auto xInst = childBlock.add(&GCComposeVector3::xIn, "xIn");
+    auto yInst = childBlock.add(&GCComposeVector3::yIn, "yIn");
+    auto zInst = childBlock.add(&GCComposeVector3::zIn, "zIn");
 
-    xInst->setAffects(vectorInst);
-    yInst->setAffects(vectorInst);
-    zInst->setAffects(vectorInst);
+    auto aff = childBlock.createAffects(&vectorInst, 1);
+
+    xInst->setAffects(aff, true);
+    yInst->setAffects(aff, false);
+    zInst->setAffects(aff, false);
     }
-  }
-
-GCComposeVector3::GCComposeVector3()
-  {
   }

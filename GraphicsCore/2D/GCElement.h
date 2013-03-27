@@ -3,9 +3,9 @@
 
 #include "GCGlobal.h"
 #include "3D/GCTransform.h"
-#include "sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.h"
+#include "shift/Utilities/siterator.h"
 #include "mcsimple.h"
-#include "siterator.h"
 
 class XRenderer;
 class GCShadingGroup;
@@ -21,9 +21,9 @@ class GCElementUnCentre : public MCSimple
   S_ENTITY(GCElementUnCentre, MCSimple, 0)
   };
 
-class GRAPHICSCORE_EXPORT GCInteractionHandler : public SPropertyContainer
+class GRAPHICSCORE_EXPORT GCInteractionHandler : public Shift::PropertyContainer
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCInteractionHandler, SPropertyContainer, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCInteractionHandler, Shift::PropertyContainer, 0)
 
 public:
   virtual void onRelease(GCElement *e, int x, int y) = 0;
@@ -37,25 +37,25 @@ class GRAPHICSCORE_EXPORT GCElement : public GCTransform
 
 public:
 
-  BoolProperty visible;
+  Shift::BoolProperty visible;
 
-  FloatProperty bottom;
-  FloatProperty left;
-  FloatProperty width;
-  FloatProperty height;
+  Shift::FloatProperty bottom;
+  Shift::FloatProperty left;
+  Shift::FloatProperty width;
+  Shift::FloatProperty height;
 
   GCInteractionHandlerPointer interactionHandler;
 
-  const FloatProperty* right();
+  const Shift::FloatProperty* right();
 
-  const FloatProperty* horizontalCentre();
-  const FloatProperty* verticalCentre();
+  const Shift::FloatProperty* horizontalCentre();
+  const Shift::FloatProperty* verticalCentre();
 
-  void setTopInput(const FloatProperty* input);
-  void setHorizontalCentreInput(const FloatProperty* input);
-  void setVerticalCentreInput(const FloatProperty* input);
+  void setTopInput(const Shift::FloatProperty* input);
+  void setHorizontalCentreInput(const Shift::FloatProperty* input);
+  void setVerticalCentreInput(const Shift::FloatProperty* input);
 
-  void render(XRenderer *) const X_OVERRIDE;
+  void render(Eks::Renderer *, const RenderState &state) const X_OVERRIDE;
 
   virtual bool hitTest(int x, int y) const;
   };
@@ -74,7 +74,7 @@ class GRAPHICSCORE_EXPORT GCElementArray : public GCElement
 
   GCRenderablePointerArray elements;
 
-  void render(XRenderer *) const X_OVERRIDE;
+  void render(Eks::Renderer *, const RenderState &state) const X_OVERRIDE;
   };
 
 
@@ -86,7 +86,9 @@ class GRAPHICSCORE_EXPORT GCUnitElement : public GCElement
 public:
   };
 
-namespace SIterator
+namespace Shift
+{
+namespace Iterator
 {
 class GCElementWithUIHandler : public Base<GCElementWithUIHandler, GCElement, NilExtraData>
   {
@@ -95,7 +97,7 @@ public:
 
   inline void first(Iterator &i) const
     {
-    SProperty *prop = Base<GCElementWithUIHandler, GCElement, NilExtraData>::property();
+    Property *prop = Base<GCElementWithUIHandler, GCElement, NilExtraData>::property();
     GCElement *el = prop->castTo<GCElement>();
     if(el && el->interactionHandler() != 0)
       {
@@ -110,6 +112,7 @@ public:
     i.setProperty(0);
     }
   };
+}
 }
 
 

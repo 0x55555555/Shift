@@ -8,7 +8,7 @@
 
 class GCViewableTransform;
 
-class GRAPHICSCORE_EXPORT GCScene : public GCRenderArray, public XCameraCanvasController
+class GRAPHICSCORE_EXPORT GCScene : public GCRenderArray, public Eks::CameraCanvasController
   {
   S_ENTITY(GCScene, GCRenderArray, 0);
 
@@ -19,10 +19,16 @@ public:
   ComplexTransformProperty cameraProjection;
   TransformProperty cameraTransform;
 
-  void render(XRenderer *) const;
+  void render(Eks::Renderer *, const RenderState &state) const;
 
   void setCamera(GCViewableTransform *e);
   virtual CameraInterface *camera();
+
+  GCRenderer renderer;
+
+private:
+  static void computeRasteriser(GCScene *s);
+  GCRuntimeRasteriserState _rasteriserState;
   };
 
 S_PROPERTY_INTERFACE(GCScene)
@@ -37,21 +43,23 @@ XProperties:
 public:
   GCManipulatableScene();
 
-  SPropertyArray manipulators;
-  PointerArray selection;
+  Shift::PropertyArray manipulators;
+  Shift::PointerArray selection;
 
-  void render(XRenderer *) const;
+  void initialise();
+
+  void render(Eks::Renderer *, const RenderState &state) const;
 
   void clearManipulators();
   void refreshManipulators();
 
-  void beginMouseSelection(const XVector3D &sel);
-  void moveMouseSelection(const XVector3D &sel);
-  void endMouseSelection(const XVector3D &sel);
+  void beginMouseSelection(const Eks::Vector3D &sel);
+  void moveMouseSelection(const Eks::Vector3D &sel);
+  void endMouseSelection(const Eks::Vector3D &sel);
   bool isMouseSelecting() const;
 
-  void raySelect(const XVector3D &sel);
-  void marqueeSelect(const XFrustum &frus);
+  void raySelect(const Eks::Vector3D &sel);
+  void marqueeSelect(const Eks::Frustum &frus);
 
   virtual UsedFlags mouseEvent(const MouseEvent &);
   virtual UsedFlags wheelEvent(const WheelEvent &);
@@ -59,18 +67,21 @@ public:
 private:
   bool _mouseSelecting;
   bool _hasMouseMoved;
-  XVector3D _initialRay;
-  XVector3D _finalRay;
+  Eks::Vector3D _initialRay;
+  Eks::Vector3D _finalRay;
 
   struct Hit
     {
-    XVector3D position;
-    XVector3D normal;
+    Eks::Vector3D position;
+    Eks::Vector3D normal;
     GCRenderable *object;
     };
 
-  XShader _boundsShader;
-  XGeometry _bounds;
+  Eks::Geometry _bounds;
+  Eks::IndexGeometry _boundIndices;
+  Eks::Shader *_shader;
+  Eks::ShaderConstantData *_shaderData;
+  Eks::ShaderVertexLayout *_shaderLayout;
   };
 
 S_PROPERTY_INTERFACE(GCManipulatableScene)

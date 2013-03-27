@@ -1,13 +1,12 @@
 #include "GCProject3D.h"
-#include "spropertyinformationhelpers.h"
-
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XOptional"
 
 void computeAlignTransform(GCProject3D *el)
   {
-  SPointerComputeLock cLock(&el->camera);
+  Shift::PointerComputeLock cLock(&el->camera);
   GCCamera *c = el->camera();
-  const XVector3D &pos = el->targetTransform().translation();
+  const Eks::Vector3D &pos = el->targetTransform().translation();
 
   if(!c)
     {
@@ -17,7 +16,7 @@ void computeAlignTransform(GCProject3D *el)
     return;
     }
 
-  XVector3D screenPosition;
+  Eks::Vector3D screenPosition;
   if(!c->screenSpaceFromWorldSpace(pos, screenPosition))
     {
     el->xPosition = 0.0f;
@@ -33,25 +32,30 @@ void computeAlignTransform(GCProject3D *el)
 
 S_IMPLEMENT_PROPERTY(GCProject3D, GraphicsCore)
 
-void GCProject3D::createTypeInformation(SPropertyInformationTyped<GCProject3D> *info,
-                                    const SPropertyInformationCreateData &data)
+void GCProject3D::createTypeInformation(Shift::PropertyInformationTyped<GCProject3D> *info,
+                                    const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto x = info->add(&GCProject3D::xPosition, "xPosition");
+    auto childBlock = info->createChildrenBlock(data);
+
+
+    auto x = childBlock.add(&GCProject3D::xPosition, "xPosition");
     x->setCompute<computeAlignTransform>();
 
-    auto y = info->add(&GCProject3D::yPosition, "yPosition");
+    auto y = childBlock.add(&GCProject3D::yPosition, "yPosition");
     y->setCompute<computeAlignTransform>();
 
-    auto v = info->add(&GCProject3D::validPosition, "validPosition");
+    auto v = childBlock.add(&GCProject3D::validPosition, "validPosition");
     v->setCompute<computeAlignTransform>();
 
-    const SEmbeddedPropertyInstanceInformation *aff[] = { x, y };
+    const Shift::EmbeddedPropertyInstanceInformation *aff[] = { x, y };
+    auto affects = childBlock.createAffects(aff, X_ARRAY_COUNT(aff));
 
-    auto cam = info->add(&GCProject3D::camera, "camera");
-    cam->setAffects(aff, X_ARRAY_COUNT(aff));
-    auto taTr = info->add(&GCProject3D::targetTransform, "targetTransform");
-    taTr->setAffects(aff, X_ARRAY_COUNT(aff));
+    auto cam = childBlock.add(&GCProject3D::camera, "camera");
+    cam->setAffects(affects, true);
+
+    auto taTr = childBlock.add(&GCProject3D::targetTransform, "targetTransform");
+    taTr->setAffects(affects, false);
     }
   }

@@ -1,26 +1,32 @@
 #include "GCPlate.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XRenderer.h"
+#include "XFramebuffer.h"
 
 S_IMPLEMENT_PROPERTY(GCPlate, GraphicsCore)
 
-void GCPlate::createTypeInformation(SPropertyInformationTyped<GCPlate> *,
-                                    const SPropertyInformationCreateData &)
+void GCPlate::createTypeInformation(Shift::PropertyInformationTyped<GCPlate> *info,
+                                    const Shift::PropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }
 
-void GCPlate::render(XRenderer *renderer) const
+void GCPlate::render(Eks::Renderer *renderer, const RenderState &state) const
   {
-  renderer->clear(XRenderer::ClearDepth);
+  xAssert(state.framebuffer)
+  state.framebuffer->clear(Eks::FrameBuffer::ClearDepth);
 
-  XRendererFlagBlock f(renderer, XRenderer::AlphaBlending);
+  //XRendererFlagBlock f(renderer, XRenderer::AlphaBlending);
 
 
 
-  renderer->pushTransform(transform());
+  renderer->setTransform(state.transform * transform());
 
   // render all elements and embedded and attached elements with the transform applied
-  GCRenderArray::render(renderer);
+  GCRenderArray::render(renderer, state);
 
   xForeach(auto r, elements.walker<GCRenderablePointer>())
     {
@@ -31,8 +37,6 @@ void GCPlate::render(XRenderer *renderer) const
       continue;
       }
 
-    ptd->render(renderer);
+    ptd->render(renderer, state);
     }
-
-  renderer->popTransform();
   }

@@ -1,21 +1,19 @@
 #ifndef GCCOMPOSETRANSFORM_H
 #define GCCOMPOSETRANSFORM_H
 
-#include "sentity.h"
-#include "sbaseproperties.h"
+#include "shift/sentity.h"
+#include "shift/Properties/sbaseproperties.h"
 #include "GCBaseProperties.h"
 
-class GCComposeTransform : public SEntity
+class GCComposeTransform : public Shift::Entity
   {
-  S_ENTITY(GCComposeTransform, SEntity, 0)
+  S_ENTITY(GCComposeTransform, Entity, 0)
 
 public:
-  GCComposeTransform();
+  Shift::Vector3DProperty rotationAxisIn;
+  Shift::FloatProperty rotationAngleIn;
 
-  Vector3DProperty rotationAxisIn;
-  FloatProperty rotationAngleIn;
-
-  Vector3DProperty translationIn;
+  Shift::Vector3DProperty translationIn;
 
   TransformProperty transformOut;
   };

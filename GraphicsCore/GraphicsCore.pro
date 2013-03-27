@@ -13,7 +13,6 @@ include("../../Eks/EksCore/GeneralOptions.pri")
 HEADERS += GCGlobal.h \
     GCShiftRenderModel.h \
     GCAbstractNodeDelegate.h \
-    GCNodeController.h \
     GCBaseProperties.h \
     3D/GCTransform.h \
     3D/GCRenderTarget.h \
@@ -37,11 +36,12 @@ HEADERS += GCGlobal.h \
     2D/GCPlate.h \
     2D/GCCameraAlignedPlate.h \
     2D/GCElement.h \
-    2D/GCProject3D.h
+    2D/GCProject3D.h \
+    GCNodeController.h
 
-INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift
+INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
 
-LIBS += -lshift -lEksCore -lEks3D -lEksScript -lShiftMathsCore
+LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftMathsCore
 
 SOURCES += \
     GCShiftRenderModel.cpp \

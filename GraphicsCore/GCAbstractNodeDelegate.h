@@ -9,10 +9,15 @@
 #include "QFontMetrics"
 #include "QHash"
 
-class QPoint;
-class SEntity;
+#if 0
 
-class GRAPHICSCORE_EXPORT GCAbstractNodeDelegate : public XAbstractDelegate
+class QPoint;
+namespace Shift
+{
+class Entity;
+}
+
+class GRAPHICSCORE_EXPORT GCAbstractNodeDelegate : public Eks::AbstractDelegate
   {
 public:
   enum HitArea
@@ -29,7 +34,7 @@ public:
   // should be implemented to determine which area is hit on the node.
   virtual HitArea hitTest(const QPoint &point, const void *ent, xsize &index) const = 0;
   virtual void move(const QPoint &delta, const void *ent) const = 0;
-  virtual void drawConnection(XAbstractCanvas *c, const void *ent, xsize prop, bool fromOutput, const QPoint &to) const = 0;
+  virtual void drawConnection(Eks::AbstractCanvas *c, const void *ent, xsize prop, bool fromOutput, const QPoint &to) const = 0;
   };
 
 class GRAPHICSCORE_EXPORT GCSimpleNodeDelegate : public GCAbstractNodeDelegate
@@ -45,12 +50,12 @@ public:
 
   GCSimpleNodeDelegate();
 
-  virtual void update(const XAbstractCanvas *, const XAbstractRenderModel::Iterator *, const XAbstractRenderModel *) const;
-  virtual void paint(xuint32 pass, XAbstractCanvas *, const XAbstractRenderModel::Iterator *, const XAbstractRenderModel *) const;
-  virtual xuint32 maxNumberOfPasses(XAbstractCanvas *, const XAbstractRenderModel::Iterator *, const XAbstractRenderModel *) const { return MaxPasses; }
+  virtual void update(const Eks::AbstractCanvas *, const Eks::AbstractRenderModel::Iterator *, const Eks::AbstractRenderModel *) const;
+  virtual void paint(xuint32 pass, Eks::AbstractCanvas *, const Eks::AbstractRenderModel::Iterator *, const Eks::AbstractRenderModel *) const;
+  virtual xuint32 maxNumberOfPasses(Eks::AbstractCanvas *, const Eks::AbstractRenderModel::Iterator *, const Eks::AbstractRenderModel *) const { return MaxPasses; }
   virtual HitArea hitTest(const QPoint &point, const void *ent, xsize &index) const;
   virtual void move(const QPoint &delta, const void *ent) const;
-  virtual void drawConnection(XAbstractCanvas *c, const void *ent, xsize prop, bool fromOutput, const QPoint &to) const;
+  virtual void drawConnection(Eks::AbstractCanvas *c, const void *ent, xsize prop, bool fromOutput, const QPoint &to) const;
 
   struct RenderData
     {
@@ -75,12 +80,12 @@ public:
     QVector<PropertyData> properties;
     };
   mutable QHash<const void *, RenderData> _renderData;
-  void updateRenderData(const SEntity *ent) const;
-  void ensureRenderData(const SEntity *ent) const;
+  void updateRenderData(const Shift::Entity *ent) const;
+  void ensureRenderData(const Shift::Entity *ent) const;
 
 private:
-  void preSetupProperty(const QFont& font, RenderData::PropertyData& data, const SProperty *prop, int yOffset) const;
-  void postSetupProperty(const QFont& font, RenderData::PropertyData& data, const SProperty *prop, int minX, int maxWidth) const;
+  void preSetupProperty(const QFont& font, RenderData::PropertyData& data, const Shift::Property *prop, int yOffset) const;
+  void postSetupProperty(const QFont& font, RenderData::PropertyData& data, const Shift::Property *prop, int minX, int maxWidth) const;
 
   void paintProperties(QPainter *ptr, QPoint nodePos, const QVector<RenderData::PropertyData> &) const;
 
@@ -90,5 +95,7 @@ private:
   QFont _propFnt;
   QFontMetrics _propFntMetrics;
   };
+
+#endif
 
 #endif // GCABSTRACTNODEDELEGATE_H

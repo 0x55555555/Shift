@@ -1,5 +1,5 @@
 #include "GCDistanceManipulator.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "3D/GCCamera.h"
 #include "XModeller.h"
 #include "XRenderer.h"
@@ -7,40 +7,35 @@
 #include "XShader.h"
 #include "XLine.h"
 #include "XCuboid.h"
-#include "shandlerimpl.h"
+#include "shift/Changes/shandler.inl"
 
+
+static const float Radius = 0.1f;
 class DistanceDelegate : public GCVisualManipulator::Delegate
   {
 public:
-  DistanceDelegate()
-    {
-    XModeller m(&_geo, 64);
-
-    m.drawCube(XVector3D(0.1f, 0.0f, 0.0f), XVector3D(0.0f, 0.1f, 0.0f), XVector3D(0.0f, 0.0f, 0.1f));
-    }
-
   virtual bool hitTest(
       const GCVisualManipulator *manip,
       const QPoint &,
       const GCCamera *camera,
-      const XVector3D &clickDirection, // in world space
-      float *distance)
+      const Eks::Vector3D &clickDirection, // in world space
+      float *distance) const
     {
     const GCDistanceManipulator *toRender = manip->uncheckedCastTo<GCDistanceManipulator>();
-    const XVector3D &camTrans = camera->transform().translation();
-    XLine l(camTrans, clickDirection, XLine::PointAndDirection);
+    const Eks::Vector3D &camTrans = camera->transform().translation();
+    Eks::Line l(camTrans, clickDirection, Eks::Line::PointAndDirection);
 
-    XTransform wC = toRender->worldCentre();
+    Eks::Transform wC = toRender->worldTransform();
     wC.translate(toRender->absoluteDisplacement());
 
-    XMatrix4x4 t = wC.matrix();
-    XMatrix4x4 tInv = t.inverse();
-    XTransform lineTransform(tInv);
+    Eks::Matrix4x4 t = wC.matrix();
+    Eks::Matrix4x4 tInv = t.inverse();
+    Eks::Transform lineTransform(tInv);
     l.transform(lineTransform);
 
-    if(XMeshUtilities::intersect("vertex", l, _geo))
+    if(l.sample(l.closestPointTo(Eks::Vector3D::Zero())).norm() < Radius)
       {
-      const XVector3D &wcTrans = wC.translation();
+      const Eks::Vector3D &wcTrans = wC.translation();
       *distance = (camTrans - wcTrans).norm() - 0.05f;
       return true;
       }
@@ -50,32 +45,54 @@ public:
 
   virtual void render(const GCVisualManipulator *manip,
       const GCCamera *,
-      XRenderer *r)
+      Eks::Renderer *r) const
     {
+    if(!_geo.isValid())
+      {
+      Eks::TemporaryAllocator alloc(manip->temporaryAllocator());
+      Eks::Modeller m(&alloc, 1024);
+
+      m.drawSphere(Radius);
+
+      Eks::ShaderVertexLayoutDescription::Semantic sem[] = { Eks::ShaderVertexLayoutDescription::Position };
+      m.bakeTriangles(r, sem, X_ARRAY_COUNT(sem), &_igeo, &_geo);
+
+      _shader = r->stockShader(Eks::PlainColour, &_layout);
+
+      Eks::ShaderConstantDataDescription dataDesc[] =
+      {
+        { "colour", Eks::ShaderConstantDataDescription::Float4 }
+      };
+      const Eks::Colour &col = Eks::Colour(1.0f, 1.0f, 0.0f);
+      Eks::ShaderConstantData::delayedCreate(_data, r, dataDesc, X_ARRAY_COUNT(dataDesc), col.data());
+
+
+      }
     const GCDistanceManipulator *toRender = manip->uncheckedCastTo<GCDistanceManipulator>();
 
-    XTransform wC = toRender->worldCentre();
+    Eks::Transform wC = toRender->worldTransform();
     wC.translate(toRender->absoluteDisplacement());
 
-    r->pushTransform(wC);
-    r->setShader(&_shader);
-    r->drawGeometry(_geo);
-    r->setShader(0);
-    r->popTransform();
+    r->setTransform(wC);
+    r->setShader(_shader, _layout);
+    r->drawTriangles(&_igeo, &_geo);
     }
 
-  virtual XVector3D focalPoint(const GCVisualManipulator *manip) const
+  virtual Eks::Vector3D focalPoint(const GCVisualManipulator *manip) const
     {
     const GCDistanceManipulator *toRender = manip->uncheckedCastTo<GCDistanceManipulator>();
 
-    XTransform wC = toRender->worldCentre();
+    Eks::Transform wC = toRender->worldTransform();
     wC.translate(toRender->absoluteDisplacement());
     return wC.translation();
     }
 
 private:
-  XGeometry _geo;
-  XShader _shader;
+  mutable Eks::IndexGeometry _igeo;
+  mutable Eks::Geometry _geo;
+  mutable Eks::Shader *_shader;
+  mutable Eks::ShaderVertexLayout *_layout;
+  mutable Eks::ShaderConstantData _data;
   };
 
 S_IMPLEMENT_PROPERTY(GCDistanceManipulator, GraphicsCore)
@@ -85,38 +102,43 @@ void computeAbsDisp(GCDistanceManipulator *d)
   d->absoluteDisplacement = d->lockDirection().normalized() * (d->distance() * d->scaleFactor());
   }
 
-void GCDistanceManipulator::createTypeInformation(SPropertyInformationTyped<GCDistanceManipulator> *info,
-                                                  const SPropertyInformationCreateData &data)
+void GCDistanceManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCDistanceManipulator> *info,
+                                                  const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto absDispInfo = info->add(&GCDistanceManipulator::absoluteDisplacement, "absoluteDisplacement");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto absDispInfo = childBlock.add(&GCDistanceManipulator::absoluteDisplacement, "absoluteDisplacement");
     absDispInfo->setCompute<computeAbsDisp>();
 
-    auto dirInfo = info->child(&GCDistanceManipulator::lockDirection);
-    dirInfo->setAffects(absDispInfo);
+    auto affectsAbsDisp = childBlock.createAffects(&absDispInfo, 1);
 
-    auto distInfo = info->add(&GCDistanceManipulator::distance, "distance");
-    distInfo->setAffects(absDispInfo);
+    auto dirInfo = childBlock.overrideChild(&GCDistanceManipulator::lockDirection);
+    dirInfo->setAffects(affectsAbsDisp, true);
 
-    auto sfInfo = info->add(&GCDistanceManipulator::scaleFactor, "scaleFactor");
-    sfInfo->setAffects(absDispInfo);
+    auto distInfo = childBlock.add(&GCDistanceManipulator::distance, "distance");
+    distInfo->setAffects(affectsAbsDisp, false);
+
+    auto sfInfo = childBlock.add(&GCDistanceManipulator::scaleFactor, "scaleFactor");
+    sfInfo->setAffects(affectsAbsDisp, false);
+    sfInfo->setDefaultValue(1.0f);
     }
   }
 
 GCDistanceManipulator::GCDistanceManipulator()
   {
-  setDelegate(new DistanceDelegate());
+  createDelegate<DistanceDelegate>();
   }
 
-void GCDistanceManipulator::addDriven(FloatProperty *in)
+void GCDistanceManipulator::addDriven(Shift::FloatProperty *in)
   {
   _driven << in;
   }
 
 void GCDistanceManipulator::onDrag(const MouseMoveEvent &e)
   {
-  XVector3D relativeDisp;
+  Eks::Vector3D relativeDisp;
   GCLinearDragManipulator::onDrag(e, relativeDisp);
 
   float rel = relativeDisp.norm() / scaleFactor();
@@ -126,7 +148,7 @@ void GCDistanceManipulator::onDrag(const MouseMoveEvent &e)
     rel *= -1.0f;
     }
 
-  Q_FOREACH(FloatProperty *f, _driven)
+  Q_FOREACH(Shift::FloatProperty *f, _driven)
     {
     float newVal = f->value() + rel;
     if(newVal == newVal && newVal < HUGE_VAL)

@@ -7,7 +7,7 @@
 #include "CGAL/Polyhedron_3.h"
 #include "CGAL/HalfedgeDS_vector.h"
 #include "XProperty"
-#include "sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.h"
 
 template <class Refs, class Pt> struct MCVertex : public CGAL::HalfedgeDS_vertex_base<Refs>
   {
@@ -23,7 +23,7 @@ template <class Refs, class Pt> struct MCVertex : public CGAL::HalfedgeDS_vertex
 
 XProperties:
   XRefProperty(Point, point);
-  XRefProperty(XVector3D, normal);
+  XRefProperty(Eks::Vector3D, normal);
   };
 
 class MCPolyhedronItems
@@ -58,11 +58,12 @@ public:
 
 typedef MCPolyhedron::Halfedge_handle MCHalfedgeHandle;
 
-class MESHCORE_EXPORT MCPolyhedronProperty : public SPODPropertyBase<MCPolyhedron, MCPolyhedronProperty>
+class MESHCORE_EXPORT MCPolyhedronProperty
+    : public Shift::PODPropertyBase<MCPolyhedron, MCPolyhedronProperty>
   {
-  S_PROPERTY(MCPolyhedronProperty, SProperty, 0)
+  S_PROPERTY(MCPolyhedronProperty, Shift::Property, 0)
 public:
-  static void assignProperty(const SProperty *p, SProperty *l );
+  typedef Shift::detail::BasePODPropertyTraits<MCPolyhedronProperty> Traits;
   };
 
 S_PROPERTY_INTERFACE(MCPolyhedronProperty);

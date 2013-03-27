@@ -1,17 +1,17 @@
 #include "MCGlobal.h"
-#include "styperegistry.h"
-#include "spropertygroup.h"
+#include "shift/TypeInformation/styperegistry.h"
+#include "shift/TypeInformation/spropertygroup.h"
 
 namespace MathsCore
 {
 void initiate()
   {
-  STypeRegistry::addPropertyGroup(propertyGroup());
+  Shift::TypeRegistry::addPropertyGroup(propertyGroup());
   }
 
-SPropertyGroup &propertyGroup()
+Shift::PropertyGroup &propertyGroup()
   {
-  static SPropertyGroup grp;
+  static Shift::PropertyGroup grp;
   return grp;
   }
 }

@@ -1,14 +1,14 @@
 #include "GCTextureRenderTarget.h"
-#include "styperegistry.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/styperegistry.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 S_IMPLEMENT_PROPERTY(GCTextureRenderTarget, GraphicsCore)
 
-void GCTextureRenderTarget::createTypeInformation(SPropertyInformationTyped<GCTextureRenderTarget> *,
-                                                  const SPropertyInformationCreateData &)
+void GCTextureRenderTarget::createTypeInformation(Shift::PropertyInformationTyped<GCTextureRenderTarget> *info,
+                                                  const Shift::PropertyInformationCreateData &data)
   {
-  }
-
-GCTextureRenderTarget::GCTextureRenderTarget()
-  {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }

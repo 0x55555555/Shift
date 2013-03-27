@@ -1,30 +1,32 @@
 #include "GCGlobal.h"
-#include "styperegistry.h"
+#include "shift/TypeInformation/styperegistry.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/TypeInformation/sinterface.h"
+#include "shift/Properties/sbaseproperties.h"
 
-#include "sbaseproperties.h"
 #include "3D/GCTexture.h"
+#include "3D/GCShadingGroup.h"
+#include "3D/GCTransform.h"
 #include "3D/GCShaderDataBindings.h"
-#include "spropertyinformationhelpers.h"
 
 namespace GraphicsCore
 {
 void initiate()
   {
-  STypeRegistry::addPropertyGroup(propertyGroup());
+  Shift::TypeRegistry::addPropertyGroup(propertyGroup());
 
-  SPropertyInformation *colInfo = const_cast<SPropertyInformation *>(ColourProperty::staticTypeInformation());
-  colInfo->addStaticInterface(new GCShaderDataBindings::Vector4);
+  Shift::Interface::addStaticInterface<Shift::Vector3DProperty, GCShaderDataBindings::Vector3>();
+  Shift::Interface::addStaticInterface<Shift::ColourProperty, GCShaderDataBindings::Vector4>();
+  Shift::Interface::addStaticInterface<GCTexture2DPointer, GCShaderDataBindings::Texture2DRef>();
+  Shift::Interface::addStaticInterface<GCShaderConstantDataPointer, GCShaderDataBindings::DataRef>();
 
-  SPropertyInformation *vec3Info = const_cast<SPropertyInformation *>(Vector3DProperty::staticTypeInformation());
-  vec3Info->addStaticInterface(new GCShaderDataBindings::Vector3);
-
-  SPropertyInformation *texInfo = const_cast<SPropertyInformation *>(GCTexturePointer::staticTypeInformation());
-  texInfo->addStaticInterface(new GCShaderDataBindings::TextureRef);
+  Shift::Interface::addInheritedInterface<GCShadingGroup, GCManipulatable>();
+  Shift::Interface::addInheritedInterface<GCTransform, GCManipulatable>();
   }
 
-SPropertyGroup &propertyGroup()
+Shift::PropertyGroup &propertyGroup()
   {
-  static SPropertyGroup grp;
+  static Shift::PropertyGroup grp;
   return grp;
   }
 }

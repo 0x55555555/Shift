@@ -1,21 +1,28 @@
 #include "GCGeometry.h"
-#include "spropertyinformationhelpers.h"
-#include "styperegistry.h"
-#include "sprocessmanager.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/TypeInformation/styperegistry.h"
 
 S_IMPLEMENT_PROPERTY(GCGeometry, GraphicsCore)
 
-void GCGeometry::createTypeInformation(SPropertyInformationTyped<GCGeometry> *info,
-                                       const SPropertyInformationCreateData &data)
+void GCGeometry::createTypeInformation(Shift::PropertyInformationTyped<GCGeometry> *info,
+                                       const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCGeometry::runtimeGeometry, "runtimeGeometry");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCGeometry::runtimeGeometry, "runtimeGeometry");
     }
   }
 
-GCGeometry::GCGeometry()
-  {
-  }
+S_IMPLEMENT_PROPERTY(GCIndexedGeometry, GraphicsCore)
 
-S_IMPLEMENT_TYPED_POINTER_TYPE(GCGeometryPointer, GraphicsCore)
+void GCIndexedGeometry::createTypeInformation(Shift::PropertyInformationTyped<GCIndexedGeometry> *info,
+                                       const Shift::PropertyInformationCreateData &data)
+  {
+  if(data.registerAttributes)
+    {
+    auto childBlock = info->createChildrenBlock(data);
+    childBlock.add(&GCIndexedGeometry::runtimeIndexGeometry, "runtimeIndexGeometry");
+    }
+  }

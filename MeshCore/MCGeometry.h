@@ -5,16 +5,20 @@
 #include "3D/GCGeometry.h"
 #include "MCPolyhedron.h"
 
-class MESHCORE_EXPORT MCGeometry : public GCGeometry
+class MESHCORE_EXPORT MCGeometry : public GCIndexedGeometry
   {
-  S_PROPERTY_CONTAINER(MCGeometry, GCGeometry, 0)
+  S_PROPERTY_CONTAINER(MCGeometry, GCIndexedGeometry, 0)
 
 public:
-  MCGeometry();
-
   MCPolyhedronProperty polygons;
 
-  void appendTo(XGeometry *geo) const;
+  GCRenderer renderer;
+
+  void bakeTo(
+      Eks::AllocatorBase *allocator,
+      Eks::Renderer *r,
+      Eks::Geometry *geo,
+      Eks::IndexGeometry *iGeo) const;
   };
 
 S_PROPERTY_INTERFACE(MCGeometry);

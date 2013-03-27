@@ -1,5 +1,5 @@
 #include "GCButtonManipulator.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "3D/GCCamera.h"
 #include "XModeller.h"
 #include "XRenderer.h"
@@ -13,32 +13,33 @@ class ButtonDelegate : public GCVisualManipulator::Delegate
 public:
   ButtonDelegate()
     {
-    XTransform t;
+    Eks::Transform t;
     t = Eigen::Translation3f(10.0f, 10.0f, 0.0f);
 
-    XModeller m(&_geo, 64);
+    /*
+    Eks::Modeller m(&_geo, 64);
     m.setTransform(t);
 
-    m.drawQuad(XVector3D(20.0f, 0.0f, 0.0f), XVector3D(0.0f, 20.0f, 0.0f));
+    m.drawQuad(XVector3D(20.0f, 0.0f, 0.0f), XVector3D(0.0f, 20.0f, 0.0f));*/
     }
 
   virtual bool hitTest(
       const GCVisualManipulator *toRender,
       const QPoint &,
       const GCCamera *camera,
-      const XVector3D &clickDirection, // in world space
+      const Eks::Vector3D &clickDirection, // in world space
       float *distance)
     {
-    XLine l(camera->transform().translation(), clickDirection, XLine::PointAndDirection);
+    Eks::Line l(camera->transform().translation(), clickDirection, Eks::Line::PointAndDirection);
 
-    XMatrix4x4 t = camera->getPixelScaleFacingTransform(toRender->worldCentre().translation()).matrix();
-    XMatrix4x4 tInv = t.inverse();
+    Eks::Matrix4x4 t = camera->getPixelScaleFacingTransform(toRender->worldTransform().translation()).matrix();
+    Eks::Matrix4x4 tInv = t.inverse();
 
-    XTransform lineTransform(tInv);
+    Eks::Transform lineTransform(tInv);
 
     l.transform(lineTransform);
 
-    XCuboid c(XVector3D(0.0f, 0.0f, 0.0f), XVector3D(20.0f, 20.0f, 0.1f));
+    Eks::Cuboid c(Eks::Vector3D(0.0f, 0.0f, 0.0f), Eks::Vector3D(20.0f, 20.0f, 0.1f));
 
     if(c.intersects(l, *distance))
       {
@@ -51,7 +52,7 @@ public:
 
   virtual void render(const GCVisualManipulator *,
       const GCCamera *,
-      XRenderer *)
+      Eks::Renderer *)
     {
     /*XTransform t = camera->getPixelScaleFacingTransform(toRender->worldCentre().translation());
 
@@ -63,31 +64,30 @@ public:
     }
 
 private:
-  XGeometry _geo;
-  XShader _shader;
+  Eks::Geometry _geo;
+  Eks::Shader _shader;
   };
 
 S_IMPLEMENT_PROPERTY(GCButtonManipulator, GraphicsCore)
 
-void GCButtonManipulator::createTypeInformation(SPropertyInformationTyped<GCButtonManipulator> *info,
-                                                const SPropertyInformationCreateData &data)
+void GCButtonManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCButtonManipulator> *info,
+                                                const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCButtonManipulator::checked, "checked");
-    info->add(&GCButtonManipulator::checkable, "checkable");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCButtonManipulator::checked, "checked");
+    childBlock.add(&GCButtonManipulator::checkable, "checkable");
     }
   }
 
 GCButtonManipulator::GCButtonManipulator()
   {
-  setDelegate(new ButtonDelegate());
   }
 
 GCButtonManipulator::~GCButtonManipulator()
   {
-  delete delegate();
-  setDelegate(0);
   }
 
 void GCButtonManipulator::onClick()

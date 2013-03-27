@@ -1,41 +1,45 @@
 #include "mcsimpleadd.h"
-#include "spropertyinformationhelpers.h"
-#include "shandlerimpl.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
 
 void computeAddOutput(MCSimpleAdd *add)
   {
-  FloatProperty::ComputeLock l(&add->output);
+  Shift::FloatProperty::ComputeLock l(&add->output);
 
   *l.data() = add->inputA() + add->inputB();
   }
 
 S_IMPLEMENT_PROPERTY(MCSimpleAdd, MathsCore)
 
-void MCSimpleAdd::createTypeInformation(SPropertyInformationTyped<MCSimpleAdd> *info,
-                                        const SPropertyInformationCreateData &data)
+void MCSimpleAdd::createTypeInformation(Shift::PropertyInformationTyped<MCSimpleAdd> *info,
+                                        const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->child(&MCSimpleAdd::output);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto outInst = childBlock.overrideChild(&MCSimpleAdd::output);
     outInst->setCompute<computeAddOutput>();
     }
   }
 
 void computeSubOutput(MCSimpleSubtract *add)
   {
-  FloatProperty::ComputeLock l(&add->output);
+  Shift::FloatProperty::ComputeLock l(&add->output);
 
   *l.data() = add->inputA() - add->inputB();
   }
 
 S_IMPLEMENT_PROPERTY(MCSimpleSubtract, MathsCore)
 
-void MCSimpleSubtract::createTypeInformation(SPropertyInformationTyped<MCSimpleSubtract> *info,
-                                        const SPropertyInformationCreateData &data)
+void MCSimpleSubtract::createTypeInformation(Shift::PropertyInformationTyped<MCSimpleSubtract> *info,
+                                        const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->child(&MCSimpleSubtract::output);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto outInst = childBlock.overrideChild(&MCSimpleSubtract::output);
     outInst->setCompute<computeSubOutput>();
     }
   }

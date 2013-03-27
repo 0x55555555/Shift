@@ -2,7 +2,7 @@
 #define MESHCORE_H
 
 #include "XGlobal"
-#include "sglobal.h"
+#include "shift/sglobal.h"
 
 #ifdef SHIFTMESHCORE_BUILD
 # define MESHCORE_EXPORT X_DECL_EXPORT
@@ -11,11 +11,11 @@
 #endif
 
 
-class SPropertyGroup;
+class Shift::PropertyGroup;
 namespace MeshCore
 {
 void MESHCORE_EXPORT initiate();
-SPropertyGroup &propertyGroup();
+Shift::PropertyGroup &propertyGroup();
 }
 
 #endif // GRAPHICSCORE_H

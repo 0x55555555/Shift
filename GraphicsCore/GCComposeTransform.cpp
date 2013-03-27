@@ -1,12 +1,12 @@
 #include "GCComposeTransform.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XMacroHelpers"
-#include "shandlerimpl.h"
+#include "shift/Changes/shandler.inl"
 
 void computeTransform(GCComposeTransform *vec)
   {
-  XTransform tr = XTransform::Identity();
-  tr *= Eigen::AngleAxisf(X_DEGTORAD(vec->rotationAngleIn()), vec->rotationAxisIn());
+  Eks::Transform tr = Eks::Transform::Identity();
+  tr *= Eigen::AngleAxisf(Eks::degreesToRadians(vec->rotationAngleIn()), vec->rotationAxisIn());
 
   tr.translation() = vec->translationIn();
 
@@ -17,24 +17,24 @@ void computeTransform(GCComposeTransform *vec)
 
 S_IMPLEMENT_PROPERTY(GCComposeTransform, GraphicsCore)
 
-void GCComposeTransform::createTypeInformation(SPropertyInformationTyped<GCComposeTransform> *info,
-                                               const SPropertyInformationCreateData &data)
+void GCComposeTransform::createTypeInformation(Shift::PropertyInformationTyped<GCComposeTransform> *info,
+                                               const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto transformInst = info->add(&GCComposeTransform::transformOut, "transformOut");
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto transformInst = childBlock.add(&GCComposeTransform::transformOut, "transformOut");
     transformInst->setCompute<computeTransform>();
 
-    auto axInst = info->add(&GCComposeTransform::rotationAxisIn, "rotationAxisIn");
-    auto angInst = info->add(&GCComposeTransform::rotationAngleIn, "rotationAngleIn");
-    auto trInst = info->add(&GCComposeTransform::translationIn, "translationIn");
+    auto axInst = childBlock.add(&GCComposeTransform::rotationAxisIn, "rotationAxisIn");
+    auto angInst = childBlock.add(&GCComposeTransform::rotationAngleIn, "rotationAngleIn");
+    auto trInst = childBlock.add(&GCComposeTransform::translationIn, "translationIn");
 
-    axInst->setAffects(transformInst);
-    angInst->setAffects(transformInst);
-    trInst->setAffects(transformInst);
+    auto affectsTransform = childBlock.createAffects(&transformInst, 1);
+
+    axInst->setAffects(affectsTransform, true);
+    angInst->setAffects(affectsTransform, false);
+    trInst->setAffects(affectsTransform, false);
     }
-  }
-
-GCComposeTransform::GCComposeTransform()
-  {
   }

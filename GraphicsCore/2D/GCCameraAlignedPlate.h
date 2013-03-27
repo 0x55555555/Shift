@@ -11,8 +11,8 @@ public:
   TransformProperty cameraTransform;
   TransformProperty offsetTransform;
 
-  FloatProperty distanceFromCamera;
-  FloatProperty cameraFieldOfView;
+  Shift::FloatProperty distanceFromCamera;
+  Shift::FloatProperty cameraFieldOfView;
 
   void transformPoint(float inX, float inY, float &x, float &y) X_OVERRIDE;
   };

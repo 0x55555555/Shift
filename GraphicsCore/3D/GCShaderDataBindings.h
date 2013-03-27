@@ -8,22 +8,27 @@ namespace GCShaderDataBindings
 class Vector3 : public GCShaderBindableData
   {
 public:
-  Vector3();
-  virtual void bindData(XShader *, const SProperty *) const;
+  void bindData(DataBlock *data, const Shift::Property *) const X_OVERRIDE;
+  void getDescription(Eks::ShaderConstantDataDescription &desc, const Shift::Property *) const X_OVERRIDE;
   };
 
 class Vector4 : public GCShaderBindableData
   {
 public:
-  Vector4();
-  virtual void bindData(XShader *, const SProperty *) const;
+  void bindData(DataBlock *data, const Shift::Property *) const X_OVERRIDE;
+  void getDescription(Eks::ShaderConstantDataDescription &desc, const Shift::Property *) const X_OVERRIDE;
   };
 
-class TextureRef : public GCShaderBindableData
+class Texture2DRef : public GCShaderBindableResource
   {
 public:
-  TextureRef();
-  virtual void bindData(XShader *, const SProperty *) const;
+  void bindResource(DataBlock *data, ResourceBlock *resources, const Shift::Property *) const X_OVERRIDE;
+  };
+
+class DataRef : public GCShaderBindableResource
+  {
+public:
+  void bindResource(DataBlock *data, ResourceBlock *resources, const Shift::Property *) const X_OVERRIDE;
   };
 }
 

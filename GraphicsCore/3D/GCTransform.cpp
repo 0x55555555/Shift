@@ -1,18 +1,18 @@
 #include "3D/GCTransform.h"
-#include "styperegistry.h"
+#include "shift/TypeInformation/styperegistry.h"
 #include "Manipulators/GCTranslateManipulator.h"
-#include "sdatabase.h"
+#include "shift/sdatabase.h"
 #include "XLine.h"
 #include "XFrustum.h"
 #include "XRenderer.h"
-#include "spropertyinformationhelpers.h"
-#include "shandlerimpl.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
 
 void unionTransformedBounds(GCTransform* tr)
   {
   GCBoundingBox::ComputeLock l(&tr->bounds);
-  XCuboid *data = l.data();
-  *data = XCuboid();
+  Eks::Cuboid *data = l.data();
+  *data = Eks::Cuboid();
 
   xForeach(auto r, tr->renderGroup.walker<GCRenderablePointer>())
     {
@@ -26,76 +26,87 @@ void unionTransformedBounds(GCTransform* tr)
 
 S_IMPLEMENT_PROPERTY(GCTransform, GraphicsCore)
 
-void GCTransform::createTypeInformation(SPropertyInformationTyped<GCTransform> *info,
-                                        const SPropertyInformationCreateData &data)
+void GCTransform::createTypeInformation(Shift::PropertyInformationTyped<GCTransform> *info,
+                                        const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto boundsInfo = info->child(&GCTransform::bounds);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto boundsInfo = childBlock.overrideChild(&GCTransform::bounds);
     boundsInfo->setCompute<unionTransformedBounds>();
 
-    auto trInfo = info->add(&GCTransform::transform, "transform");
-    trInfo->setDefault(XTransform::Identity());
-    trInfo->setAffects(boundsInfo);
+    auto trInfo = childBlock.add(&GCTransform::transform, "transform");
+    trInfo->setDefault(Eks::Transform::Identity());
+    trInfo->setAffects(data, boundsInfo);
     }
   }
 
-GCTransform::GCTransform()
+void GCTransform::render(Eks::Renderer *r, const RenderState &state) const
   {
+  RenderState s = state;
+  s.transform *= transform().matrix();
+
+  r->setTransform(s.transform);
+
+  GCRenderArray::render(r, s);
   }
 
-void GCTransform::render(XRenderer *r) const
+void GCTransform::addManipulators(
+    Shift::PropertyArray *a,
+    const ManipInfo &info)
   {
-  r->pushTransform(transform());
-  GCRenderArray::render(r);
-  r->popTransform();
-  }
-
-void GCTransform::addManipulators(SPropertyArray *a, const GCTransform *tr)
-  {
-  xAssert(tr == 0);
-
   GCTranslateManipulator *manip = a->add<GCTranslateManipulator>();
 
   manip->addDriven(&transform);
 
-  transform.connect(&manip->worldCentre);
+  if(info.parentTransform)
+    {
+    manip->parentTransform.setInput(info.parentTransform);
+    }
+
+  manip->localTransform.setInput(&transform);
+
+  ManipInfo newInfo(info);
+  newInfo.parentTransform = &manip->worldTransform;
+
+  GCManipulatable::addManipulators(a, newInfo);
   }
 
 class InternalSelector : public GCRenderable::Selector
   {
 public:
-  InternalSelector(const XTransform &tr, Selector *parent)
+  InternalSelector(const Eks::Transform &tr, Selector *parent)
       : _parent(parent), _transform(tr)
     {
     }
 
-  void onHit(const XVector3D &point, const XVector3D &normal, GCRenderable *renderable)
+  void onHit(const Eks::Vector3D &point, const Eks::Vector3D &normal, GCRenderable *renderable)
     {
     _parent->onHit(_transform * point, _transform.linear() * normal, renderable);
     }
 
 private:
   GCRenderable::Selector *_parent;
-  XTransform _transform;
+  Eks::Transform _transform;
   };
 
-void GCTransform::intersect(const XLine& line, Selector *s)
+void GCTransform::intersect(const Eks::Line& line, Selector *s)
   {
-  const XTransform &tr = transform();
+  const Eks::Transform &tr = transform();
 
-  XLine lineCpy(line);
+  Eks::Line lineCpy(line);
   lineCpy.transform(tr.inverse());
 
   InternalSelector sel(tr, s);
   GCRenderArray::intersect(lineCpy, &sel);
   }
 
-void GCTransform::intersect(const XFrustum& frus, Selector *s)
+void GCTransform::intersect(const Eks::Frustum& frus, Selector *s)
   {
-  const XTransform &tr = transform();
+  const Eks::Transform &tr = transform();
 
-  XFrustum frusCpy(frus);
+  Eks::Frustum frusCpy(frus);
   frusCpy.transform(tr.inverse());
 
   InternalSelector sel(tr, s);

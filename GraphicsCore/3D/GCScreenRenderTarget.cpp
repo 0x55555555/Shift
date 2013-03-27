@@ -1,12 +1,16 @@
 #include "GCScreenRenderTarget.h"
-#include "styperegistry.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/styperegistry.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 S_IMPLEMENT_PROPERTY(GCScreenRenderTarget, GraphicsCore)
 
-void GCScreenRenderTarget::createTypeInformation(SPropertyInformationTyped<GCScreenRenderTarget> *,
-                                                 const SPropertyInformationCreateData &)
+void GCScreenRenderTarget::createTypeInformation(Shift::PropertyInformationTyped<GCScreenRenderTarget> *info,
+                                                 const Shift::PropertyInformationCreateData &data)
   {
+  if(data.registerAttributes)
+    {
+    info->createChildrenBlock(data);
+    }
   }
 
 GCScreenRenderTarget::GCScreenRenderTarget()

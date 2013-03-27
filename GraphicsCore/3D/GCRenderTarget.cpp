@@ -1,7 +1,7 @@
 #include "GCRenderTarget.h"
-#include "styperegistry.h"
-#include "spropertyinformationhelpers.h"
-#include "shandlerimpl.h"
+#include "shift/TypeInformation/styperegistry.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
 
 S_IMPLEMENT_PROPERTY(GCRenderTarget, GraphicsCore)
 
@@ -11,28 +11,28 @@ void computeAspectRatio(GCRenderTarget *vp)
   }
 
 
-void GCRenderTarget::createTypeInformation(SPropertyInformationTyped<GCRenderTarget> *info,
-                                           const SPropertyInformationCreateData &data)
+void GCRenderTarget::createTypeInformation(Shift::PropertyInformationTyped<GCRenderTarget> *info,
+                                           const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto sourceInst = info->add(&GCRenderTarget::source, "source");
-    sourceInst->setMode(SPropertyInstanceInformation::InternalInput);
+    auto childBlock = info->createChildrenBlock(data);
 
-    auto aR = info->add(&GCRenderTarget::aspectRatio, "aspectRatio");
+    auto sourceInst = childBlock.add(&GCRenderTarget::source, "source");
+    sourceInst->setMode(Shift::PropertyInstanceInformation::InternalInput);
+
+    auto aR = childBlock.add(&GCRenderTarget::aspectRatio, "aspectRatio");
     aR->setCompute<computeAspectRatio>();
     aR->setDefault(1.0f);
 
-    auto width = info->add(&GCRenderTarget::width, "width");
-    width->setAffects(aR);
-    width->setMode(SPropertyInstanceInformation::Output);
+    auto affectsAr = childBlock.createAffects(&aR, 1);
 
-    auto height = info->add(&GCRenderTarget::height, "height");
-    height->setAffects(aR);
-    height->setMode(SPropertyInstanceInformation::Output);
+    auto width = childBlock.add(&GCRenderTarget::width, "width");
+    width->setAffects(affectsAr, true);
+    width->setMode(Shift::PropertyInstanceInformation::Output);
+
+    auto height = childBlock.add(&GCRenderTarget::height, "height");
+    height->setAffects(affectsAr, false);
+    height->setMode(Shift::PropertyInstanceInformation::Output);
     }
-  }
-
-GCRenderTarget::GCRenderTarget()
-  {
   }

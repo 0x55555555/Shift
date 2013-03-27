@@ -1,7 +1,9 @@
 #include "GCShiftRenderModel.h"
-#include "sentity.h"
-#include "spropertycontaineriterators.h"
-#include "sproperty.inl"
+#include "shift/sentity.h"
+#include "shift/Properties/spropertycontaineriterators.h"
+#include "shift/Properties/sproperty.inl"
+
+#if 0
 
 GCShiftRenderModel::Iterator::Iterator(const GCShiftRenderModel *m) : _model(m)
   {
@@ -21,7 +23,7 @@ void GCShiftRenderModel::Iterator::reset()
   _property = 0;
   }
 
-GCShiftRenderModel::GCShiftRenderModel(SEntity *ent) : _entity(0)
+GCShiftRenderModel::GCShiftRenderModel(Shift::Entity *ent) : _entity(0)
   {
   setEntity(ent);
   }
@@ -31,13 +33,13 @@ GCShiftRenderModel::~GCShiftRenderModel()
   setEntity(0);
   }
 
-void GCShiftRenderModel::setEntity(SEntity *entity)
+void GCShiftRenderModel::setEntity(Shift::Entity *entity)
   {
   if(_entity)
     {
     _entity->removeTreeObserver(this);
 
-    xForeach(auto child, _entity->children.walker<SEntity>())
+    xForeach(auto child, _entity->children.walker<Shift::Entity>())
       {
       child->removeConnectionObserver(this);
       }
@@ -49,19 +51,19 @@ void GCShiftRenderModel::setEntity(SEntity *entity)
     {
     _entity->addTreeObserver(this);
 
-    xForeach(auto child, _entity->children.walker<SEntity>())
+    xForeach(auto child, _entity->children.walker<Shift::Entity>())
       {
       child->addConnectionObserver(this);
       }
     }
   }
 
-XAbstractRenderModel::Iterator *GCShiftRenderModel::createIterator() const
+Eks::AbstractRenderModel::Iterator *GCShiftRenderModel::createIterator() const
   {
   return new GCShiftRenderModel::Iterator(this);
   }
 
-void GCShiftRenderModel::resetIterator(XAbstractRenderModel::Iterator *it) const
+void GCShiftRenderModel::resetIterator(Eks::AbstractRenderModel::Iterator *it) const
   {
   GCShiftRenderModel::Iterator *slIt = static_cast<GCShiftRenderModel::Iterator*>(it);
   slIt->reset();
@@ -74,22 +76,24 @@ void GCShiftRenderModel::actOnChanges()
   update(TreeChange);
   }
 
-void GCShiftRenderModel::onConnectionChange(const SChange *)
+void GCShiftRenderModel::onConnectionChange(const Shift::Change *)
   {
   }
 
-void GCShiftRenderModel::onTreeChange(const SChange *c)
+void GCShiftRenderModel::onTreeChange(const Shift::Change *c)
   {
-  const SPropertyContainer::TreeChange *t = c->castTo<SPropertyContainer::TreeChange>();
+  const Shift::PropertyContainer::TreeChange *t = c->castTo<Shift::PropertyContainer::TreeChange>();
   if(t)
     {
     if(t->before() && t->before()->isDescendedFrom(_entity))
       {
-      const_cast<SEntity*>(t->before()->entity())->removeConnectionObserver(this);
+      const_cast<Shift::Entity*>(t->before()->entity())->removeConnectionObserver(this);
       }
     if(t->after() && t->after()->isDescendedFrom(_entity))
       {
-      const_cast<SEntity*>(t->property()->entity())->addConnectionObserver(this);
+      const_cast<Shift::Entity*>(t->property()->entity())->addConnectionObserver(this);
       }
     }
   }
+
+#endif

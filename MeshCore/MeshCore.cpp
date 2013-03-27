@@ -1,17 +1,24 @@
 #include "MeshCore.h"
-#include "styperegistry.h"
-#include "spropertygroup.h"
+#include "shift/TypeInformation/styperegistry.h"
+#include "shift/TypeInformation/spropertygroup.h"
+#include "shift/TypeInformation/sinterface.h"
+#include "MCSphere.h"
+#include "MCCuboid.h"
 
 namespace MeshCore
 {
 void initiate()
   {
-  STypeRegistry::addPropertyGroup(propertyGroup());
+  Shift::TypeRegistry::addPropertyGroup(propertyGroup());
+
+
+  Shift::Interface::addInheritedInterface<MCSphere, GCManipulatable>();
+  Shift::Interface::addInheritedInterface<MCCuboid, GCManipulatable>();
   }
 
-SPropertyGroup &propertyGroup()
+Shift::PropertyGroup &propertyGroup()
   {
-  static SPropertyGroup grp;
+  static Shift::PropertyGroup grp;
   return grp;
   }
 }

@@ -7,9 +7,6 @@
 class GRAPHICSCORE_EXPORT GCTextureRenderTarget : public GCRenderTarget
   {
   S_ENTITY(GCTextureRenderTarget, GCRenderTarget, 0)
-
-public:
-  GCTextureRenderTarget();
   };
 
 S_PROPERTY_INTERFACE(GCTextureRenderTarget)

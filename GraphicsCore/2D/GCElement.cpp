@@ -1,5 +1,5 @@
 #include "GCElement.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "mcsimpleadd.h"
 #include "XRenderer.h"
 #include "XOptional"
@@ -8,86 +8,94 @@ S_IMPLEMENT_TYPED_POINTER_TYPE(GCInteractionHandlerPointer, GraphicsCore)
 
 S_IMPLEMENT_PROPERTY(GCInteractionHandler, GraphicsCore)
 
-void GCInteractionHandler::createTypeInformation(SPropertyInformationTyped<GCInteractionHandler> *,
-                                      const SPropertyInformationCreateData &)
+void GCInteractionHandler::createTypeInformation(Shift::PropertyInformationTyped<GCInteractionHandler> *,
+                                      const Shift::PropertyInformationCreateData &)
   {
   }
 
 void computeCentreOutput(GCElementCentre *e)
   {
-  FloatProperty::ComputeLock l(&e->output);
+  Shift::FloatProperty::ComputeLock l(&e->output);
 
   *l.data() = e->inputA() + (0.5f * e->inputB());
   }
 
 S_IMPLEMENT_PROPERTY(GCElementCentre, GraphicsCore)
 
-void GCElementCentre::createTypeInformation(SPropertyInformationTyped<GCElementCentre> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCElementCentre::createTypeInformation(Shift::PropertyInformationTyped<GCElementCentre> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->child(&GCElementCentre::output);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto outInst = childBlock.overrideChild(&GCElementCentre::output);
     outInst->setCompute<computeCentreOutput>();
     }
   }
 
 void computeUnCentreOutput(GCElementUnCentre *e)
   {
-  FloatProperty::ComputeLock l(&e->output);
+  Shift::FloatProperty::ComputeLock l(&e->output);
 
   *l.data() = e->inputA() - (0.5f * e->inputB());
   }
 
 S_IMPLEMENT_PROPERTY(GCElementUnCentre, GraphicsCore)
 
-void GCElementUnCentre::createTypeInformation(SPropertyInformationTyped<GCElementUnCentre> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCElementUnCentre::createTypeInformation(Shift::PropertyInformationTyped<GCElementUnCentre> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto outInst = info->child(&GCElementUnCentre::output);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto outInst = childBlock.overrideChild(&GCElementUnCentre::output);
     outInst->setCompute<computeUnCentreOutput>();
     }
   }
 
 void computeElementTransform(GCElement *e)
   {
-  XTransform t = XTransform::Identity();
+  Eks::Transform t = Eks::Transform::Identity();
 
-  t.translate(XVector3D(e->left(), e->bottom(), 0.0f));
+  t.translate(Eks::Vector3D(e->left(), e->bottom(), 0.0f));
 
   e->transform = t;
   }
 
 S_IMPLEMENT_PROPERTY(GCElement, GraphicsCore)
 
-void GCElement::createTypeInformation(SPropertyInformationTyped<GCElement> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCElement::createTypeInformation(Shift::PropertyInformationTyped<GCElement> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto tr = info->child(&GCElement::transform);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto tr = childBlock.overrideChild(&GCElement::transform);
     tr->setCompute<computeElementTransform>();
 
-    auto vis = info->add(&GCElement::visible, "visible");
+    auto affects = childBlock.createAffects(&tr, 1);
+
+    auto vis = childBlock.add(&GCElement::visible, "visible");
     vis->setDefaultValue(true);
 
-    auto w = info->add(&GCElement::width, "width");
-    w->setAffects(tr);
-    auto h = info->add(&GCElement::height, "height");
-    h->setAffects(tr);
+    auto w = childBlock.add(&GCElement::width, "width");
+    w->setAffects(affects, true);
+    auto h = childBlock.add(&GCElement::height, "height");
+    h->setAffects(affects, false);
 
-    auto l = info->add(&GCElement::left, "left");
-    l->setAffects(tr);
-    auto b = info->add(&GCElement::bottom, "bottom");
-    b->setAffects(tr);
+    auto l = childBlock.add(&GCElement::left, "left");
+    l->setAffects(affects, false);
+    auto b = childBlock.add(&GCElement::bottom, "bottom");
+    b->setAffects(affects, false);
 
-    info->add(&GCElement::interactionHandler, "interactionHandler");
+    childBlock.add(&GCElement::interactionHandler, "interactionHandler");
     }
   }
 
-const FloatProperty* GCElement::right()
+const Shift::FloatProperty* GCElement::right()
   {
   MCSimpleAdd* adder = children.findChild<MCSimpleAdd>("right");
   if(!adder)
@@ -101,7 +109,7 @@ const FloatProperty* GCElement::right()
   return &adder->output;
   }
 
-const FloatProperty* GCElement::horizontalCentre()
+const Shift::FloatProperty* GCElement::horizontalCentre()
   {
   GCElementCentre* centre = children.findChild<GCElementCentre>("hCentre");
   if(!centre)
@@ -115,7 +123,7 @@ const FloatProperty* GCElement::horizontalCentre()
   return &centre->output;
   }
 
-const FloatProperty* GCElement::verticalCentre()
+const Shift::FloatProperty* GCElement::verticalCentre()
   {
   GCElementCentre* centre = children.findChild<GCElementCentre>("vCentre");
   if(!centre)
@@ -129,7 +137,7 @@ const FloatProperty* GCElement::verticalCentre()
   return &centre->output;
   }
 
-void GCElement::setTopInput(const FloatProperty* input)
+void GCElement::setTopInput(const Shift::FloatProperty* input)
 {
   xAssert(!bottom.hasInput());
 
@@ -141,7 +149,7 @@ void GCElement::setTopInput(const FloatProperty* input)
   bottom.setInput(&top->output);
   }
 
-void GCElement::setHorizontalCentreInput(const FloatProperty* input)
+void GCElement::setHorizontalCentreInput(const Shift::FloatProperty* input)
   {
   xAssert(!left.hasInput());
 
@@ -153,7 +161,7 @@ void GCElement::setHorizontalCentreInput(const FloatProperty* input)
   left.setInput(&centre->output);
   }
 
-void GCElement::setVerticalCentreInput(const FloatProperty* input)
+void GCElement::setVerticalCentreInput(const Shift::FloatProperty* input)
   {
   xAssert(!bottom.hasInput());
 
@@ -165,14 +173,14 @@ void GCElement::setVerticalCentreInput(const FloatProperty* input)
   bottom.setInput(&centre->output);
   }
 
-void GCElement::render(XRenderer *r) const
+void GCElement::render(Eks::Renderer *r, const RenderState &state) const
   {
   if(!visible())
     {
     return;
     }
 
-  GCTransform::render(r);
+  GCTransform::render(r, state);
   }
 
 bool GCElement::hitTest(int x, int y) const
@@ -188,29 +196,31 @@ bool GCElement::hitTest(int x, int y) const
 
 void computeUnitElementTransform(GCUnitElement *e)
   {
-  XTransform t = XTransform::Identity();
+  Eks::Transform t = Eks::Transform::Identity();
 
-  t.translate(XVector3D(e->left(), e->bottom(), 0.0f));
+  t.translate(Eks::Vector3D(e->left(), e->bottom(), 0.0f));
 
-  t.scale(XVector3D(e->width(), e->height(), 1.0f));
+  t.scale(Eks::Vector3D(e->width(), e->height(), 1.0f));
 
   e->transform = t;
   }
 
 S_IMPLEMENT_PROPERTY(GCElementArray, GraphicsCore)
 
-void GCElementArray::createTypeInformation(SPropertyInformationTyped<GCElementArray> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCElementArray::createTypeInformation(Shift::PropertyInformationTyped<GCElementArray> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCElementArray::elements, "elements");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCElementArray::elements, "elements");
     }
   }
 
 GCElement *GCElementArray::addAsChild(GCElementArray *parent, GCShadingGroup *, GCElementArray **arrOpt)
   {
-  XOptional<GCElementArray*> arr(arrOpt);
+  Eks::Optional<GCElementArray*> arr(arrOpt);
 
   arr = parent->addChild<GCElementArray>();
 
@@ -219,9 +229,9 @@ GCElement *GCElementArray::addAsChild(GCElementArray *parent, GCShadingGroup *, 
   return arr;
   }
 
-void GCElementArray::render(XRenderer *renderer) const
+void GCElementArray::render(Eks::Renderer *renderer, const RenderState &state) const
   {
-  GCElement::render(renderer);
+  GCElement::render(renderer, state);
 
   xForeach(auto r, elements.walker<GCRenderablePointer>())
     {
@@ -232,18 +242,20 @@ void GCElementArray::render(XRenderer *renderer) const
       continue;
       }
 
-    ptd->render(renderer);
+    ptd->render(renderer, state);
     }
   }
 
 S_IMPLEMENT_PROPERTY(GCUnitElement, GraphicsCore)
 
-void GCUnitElement::createTypeInformation(SPropertyInformationTyped<GCUnitElement> *info,
-                                      const SPropertyInformationCreateData &data)
+void GCUnitElement::createTypeInformation(Shift::PropertyInformationTyped<GCUnitElement> *info,
+                                      const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto tr = info->child(&GCElement::transform);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto tr = childBlock.overrideChild(&GCElement::transform);
     tr->setCompute<computeUnitElementTransform>();
     }
   }

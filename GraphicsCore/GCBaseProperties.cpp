@@ -1,14 +1,16 @@
+#include "GCGlobal.h"
 #include "GCBaseProperties.h"
-#include "sdatabase.h"
-#include "spropertyinformationhelpers.h"
-#include "shandlerimpl.h"
+#include "shift/sdatabase.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
+#include "shift/TypeInformation/spropertytraits.h"
 
-void writeValue(SSaver &, const XShader &)
+void writeValue(Shift::Saver &, const Eks::Shader &)
   {
   xAssertFail();
   }
 
-void readValue(SLoader &, XShader &)
+void readValue(Shift::Loader &, Eks::Shader &)
   {
   xAssertFail();
   }
@@ -18,13 +20,9 @@ void readValue(SLoader &, XShader &)
 IMPLEMENT_POD_GC_PROPERTY(Matrix3x3Property);
 IMPLEMENT_POD_GC_PROPERTY(TransformProperty);
 IMPLEMENT_POD_GC_PROPERTY(ComplexTransformProperty);
-IMPLEMENT_POD_GC_PROPERTY(GCRuntimeShader)
-IMPLEMENT_POD_GC_PROPERTY(GCQImage)
-IMPLEMENT_POD_GC_PROPERTY(GCRuntimeGeometry)
 IMPLEMENT_POD_GC_PROPERTY(GCBoundingBox)
-IMPLEMENT_POD_GC_PROPERTY(GCRuntimeShaderInstance)
 
-void GCBoundingBox::assignProperty(const SProperty *f, SProperty *t)
+void GCBoundingBox::assignProperty(const Property *f, Property *t)
   {
   GCBoundingBox *to = t->uncheckedCastTo<GCBoundingBox>();
 
@@ -35,54 +33,8 @@ void GCBoundingBox::assignProperty(const SProperty *f, SProperty *t)
     return;
     }
   }
-void GCRuntimeGeometry::assignProperty(const SProperty *f, SProperty *t)
-  {
-  GCRuntimeGeometry *to = t->uncheckedCastTo<GCRuntimeGeometry>();
 
-  const GCRuntimeGeometry *sProp = f->castTo<GCRuntimeGeometry>();
-  if(sProp)
-    {
-    to->assign(sProp->value());
-    return;
-    }
-  }
-
-void GCQImage::assignProperty(const SProperty *f, SProperty *t)
-  {
-  SProfileFunction
-  GCQImage *to = t->uncheckedCastTo<GCQImage>();
-
-  const GCQImage *qImageProp = f->castTo<GCQImage>();
-  if(qImageProp)
-    {
-    to->assign(qImageProp->value());
-    }
-  }
-
-void GCRuntimeShader::assignProperty(const SProperty *f, SProperty *t)
-  {
-  GCRuntimeShader *to = t->uncheckedCastTo<GCRuntimeShader>();
-
-  const GCRuntimeShader *sProp = f->castTo<GCRuntimeShader>();
-  if(sProp)
-    {
-    to->assign(sProp->value());
-    return;
-    }
-  }
-void GCRuntimeShaderInstance::assignProperty(const SProperty *f, SProperty *t)
-  {
-  GCRuntimeShaderInstance *to = t->uncheckedCastTo<GCRuntimeShaderInstance>();
-
-  const GCRuntimeShaderInstance *sProp = f->castTo<GCRuntimeShaderInstance>();
-  if(sProp)
-    {
-    to->assign(sProp->value());
-    return;
-    }
-  }
-
-void Matrix3x3Property::assignProperty(const SProperty *f, SProperty *t)
+void Matrix3x3Property::assignProperty(const Property *f, Property *t)
   {
   Matrix3x3Property *to = t->uncheckedCastTo<Matrix3x3Property>();
 
@@ -94,7 +46,7 @@ void Matrix3x3Property::assignProperty(const SProperty *f, SProperty *t)
     }
   }
 
-void TransformProperty::assignProperty(const SProperty *f, SProperty *t)
+void TransformProperty::assignProperty(const Property *f, Property *t)
   {
   TransformProperty *to = t->uncheckedCastTo<TransformProperty>();
 
@@ -108,12 +60,12 @@ void TransformProperty::assignProperty(const SProperty *f, SProperty *t)
   const ComplexTransformProperty *tProp = f->castTo<ComplexTransformProperty>();
   if(tProp)
     {
-    to->assign(XTransform(tProp->value().matrix()));
+    to->assign(Eks::Transform(tProp->value().matrix()));
     return;
     }
   }
 
-void ComplexTransformProperty::assignProperty(const SProperty *f, SProperty *t)
+void ComplexTransformProperty::assignProperty(const Property *f, Property *t)
   {
   ComplexTransformProperty *to = t->uncheckedCastTo<ComplexTransformProperty>();
 
@@ -127,8 +79,91 @@ void ComplexTransformProperty::assignProperty(const SProperty *f, SProperty *t)
   const TransformProperty *sProp = f->castTo<TransformProperty>();
   if(sProp)
     {
-    to->assign(XComplexTransform(sProp->value().matrix()));
+    to->assign(Eks::ComplexTransform(sProp->value().matrix()));
     return;
     }
-
   }
+
+S_IMPLEMENT_PROPERTY(GCShaderRuntimeConstantData, GraphicsCore)
+
+void GCShaderRuntimeConstantData::createTypeInformation(
+    Shift::PropertyInformationTyped<GCShaderRuntimeConstantData> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+S_IMPLEMENT_PROPERTY(GCRuntimeShader, GraphicsCore)
+
+void GCRuntimeShader::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeShader> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+S_IMPLEMENT_PROPERTY(GCRuntimeShaderInstance, GraphicsCore)
+
+void GCRuntimeShaderInstance::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeShaderInstance> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+S_IMPLEMENT_PROPERTY(GCRuntimeGeometry, GraphicsCore)
+
+void GCRuntimeGeometry::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeGeometry> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+S_IMPLEMENT_PROPERTY(GCRuntimeRasteriserState, GraphicsCore)
+
+void GCRuntimeRasteriserState::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeRasteriserState> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+S_IMPLEMENT_PROPERTY(GCRuntimeIndexGeometry, GraphicsCore)
+
+void GCRuntimeIndexGeometry::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRuntimeIndexGeometry> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+class GCRenderer::Traits : public Shift::PODPropertyBase<Eks::Renderer *, GCRenderer>::Traits
+  {
+public:
+  static void assignProperty(const Shift::Property *p, Shift::Property *l )
+    {
+    const GCRenderer* f = p->uncheckedCastTo<GCRenderer>();
+    GCRenderer* t = l->uncheckedCastTo<GCRenderer>();
+
+    t->assign(f->value());
+    }
+  };
+
+S_IMPLEMENT_PROPERTY(GCRenderer, GraphicsCore)
+
+void GCRenderer::createTypeInformation(
+    Shift::PropertyInformationTyped<GCRenderer> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+void GCRenderer::EmbeddedInstanceInformation::initiateProperty(Property *propertyToInitiate) const
+  {
+  propertyToInitiate->uncheckedCastTo<GCRenderer>()->_value = 0;
+  }
+
+
+S_IMPLEMENT_PROPERTY(GCVertexLayout, GraphicsCore)
+
+void GCVertexLayout::createTypeInformation(
+    Shift::PropertyInformationTyped<GCVertexLayout> *,
+    const Shift::PropertyInformationCreateData &)
+  {
+  }
+
+S_IMPLEMENT_TYPED_POINTER_TYPE(GCVertexLayoutPointer, GraphicsCore)

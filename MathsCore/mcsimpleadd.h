@@ -2,7 +2,7 @@
 #define MCSIMPLEADD_H
 
 #include "mcsimple.h"
-#include "sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.h"
 
 class MATHSCORE_EXPORT MCSimpleAdd : public MCSimple
   {

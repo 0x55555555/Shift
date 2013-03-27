@@ -2,8 +2,8 @@
 #define GCGLOBAL_H
 
 #include "XGlobal"
-#include "sglobal.h"
-#include "spropertygroup.h"
+#include "shift/sglobal.h"
+#include "shift/TypeInformation/spropertygroup.h"
 
 #ifdef SHIFTGRAPHICSCORE_BUILD
 # define GRAPHICSCORE_EXPORT X_DECL_EXPORT
@@ -15,13 +15,14 @@
 #define GCProfileFunction XProfileFunctionBase(GCProfileScope)
 #define GCProfileFunctionScopedBlock(mess) XProfileScopedBlockBase(GCProfileScope, mess)
 
-S_DEFINE_INTERFACE_TYPE(GCShaderBindableInterface, 50)
-S_DEFINE_INTERFACE_TYPE(ManipulatableInterface, 51)
+S_DEFINE_INTERFACE_TYPE(GCShaderBindableResource, 50)
+S_DEFINE_INTERFACE_TYPE(GCShaderBindableData, 51)
+S_DEFINE_INTERFACE_TYPE(ManipulatableInterface, 52)
 
 namespace GraphicsCore
 {
 void GRAPHICSCORE_EXPORT initiate();
-SPropertyGroup &propertyGroup();
+Shift::PropertyGroup &propertyGroup();
 }
 
 #endif // GCGLOBAL_H

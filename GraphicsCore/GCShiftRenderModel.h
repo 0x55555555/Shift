@@ -3,33 +3,41 @@
 
 #include "XAbstractRenderModel.h"
 #include "GCGlobal.h"
-#include "sobserver.h"
-#include "sentityweakpointer.h"
-#include "siterator.h"
+#include "shift/Changes/sobserver.h"
+#include "shift/Utilities/sentityweakpointer.h"
+#include "shift/Utilities/siterator.h"
 
-class SEntity;
+namespace Shift
+{
+class Entity;
+}
 
-class GRAPHICSCORE_EXPORT GCShiftRenderModel : public XAbstractRenderModel, SConnectionObserver, STreeObserver
+#if 0
+
+class GRAPHICSCORE_EXPORT GCShiftRenderModel
+    : public Eks::AbstractRenderModel,
+    Shift::ConnectionObserver,
+    Shift::TreeObserver
   {
 XProperties:
-  XROProperty(SEntityWeakPointer, entity);
+  XROProperty(Shift::EntityWeakPointer, entity);
 
 public:
-  class GRAPHICSCORE_EXPORT Iterator : public XAbstractRenderModel::Iterator
+  class GRAPHICSCORE_EXPORT Iterator : public Eks::AbstractRenderModel::Iterator
     {
   XProperties:
     XROProperty(const GCShiftRenderModel *, model);
-    XROProperty(SProperty *, property);
+    XROProperty(Shift::Property *, property);
 
   public:
     Iterator(const GCShiftRenderModel *model);
     virtual bool next();
 
-    SEntity *entity() const
+    Shift::Entity *entity() const
       {
       if(property())
         {
-        SEntity *ent = property()->castTo<SEntity>();
+        Shift::Entity *ent = property()->castTo<Shift::Entity>();
         xAssert(ent);
         return ent;
         }
@@ -38,23 +46,25 @@ public:
 
   protected:
     void reset();
-    void setProperty(SProperty *p) { _property = p; }
+    void setProperty(Shift::Property *p) { _property = p; }
 
     friend class GCShiftRenderModel;
     };
 
-  GCShiftRenderModel(SEntity *ent=0);
+  GCShiftRenderModel(Shift::Entity *ent=0);
   ~GCShiftRenderModel();
 
-  void setEntity(SEntity *entity);
+  void setEntity(Shift::Entity *entity);
 
-  virtual XAbstractRenderModel::Iterator *createIterator() const;
+  virtual Eks::AbstractRenderModel::Iterator *createIterator() const;
 
-  virtual void resetIterator(XAbstractRenderModel::Iterator *) const;
+  virtual void resetIterator(Eks::AbstractRenderModel::Iterator *) const;
 
   void actOnChanges();
-  void onConnectionChange(const SChange *);
-  void onTreeChange(const SChange *);
+  void onConnectionChange(const Shift::Change *);
+  void onTreeChange(const Shift::Change *);
   };
+
+#endif
 
 #endif // GCSHIFTRENDERMODEL_H

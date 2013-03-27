@@ -1,37 +1,36 @@
 #include "MCCuboid.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "3D/Manipulators/GCDistanceManipulator.h"
 #include "3D/GCTransform.h"
-#include "shandlerimpl.h"
+#include "shift/Changes/shandler.inl"
 
 #include "MCPolyhedron.h"
 
 S_IMPLEMENT_PROPERTY(MCCuboid, MeshCore)
 
-void MCCuboid::createTypeInformation(SPropertyInformationTyped<MCCuboid> *info,
-                                     const SPropertyInformationCreateData &data)
+void MCCuboid::createTypeInformation(Shift::PropertyInformationTyped<MCCuboid> *info,
+                                     const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto inst = info->child(&MCShape::geometry);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto inst = childBlock.overrideChild(&MCShape::geometry);
     inst->setCompute<computeGeometry>();
 
-    auto wInfo = info->add(&MCCuboid::width, "width");
-    wInfo->setAffects(inst);
+    auto aff = childBlock.createAffects(&inst, 1);
+
+    auto wInfo = childBlock.add(&MCCuboid::width, "width");
+    wInfo->setAffects(aff, true);
     wInfo->setDefault(1.0f);
 
-    auto hInfo = info->add(&MCCuboid::height, "height");
-    hInfo->setAffects(inst);
+    auto hInfo = childBlock.add(&MCCuboid::height, "height");
+    hInfo->setAffects(aff, false);
     hInfo->setDefault(1.0f);
 
-    auto dInfo = info->add(&MCCuboid::depth, "depth");
-    dInfo->setAffects(inst);
+    auto dInfo = childBlock.add(&MCCuboid::depth, "depth");
+    dInfo->setAffects(aff, false);
     dInfo->setDefault(1.0f);
-    }
-
-  if(data.registerInterfaces)
-    {
-    info->addInheritedInterface<GCManipulatable>();
     }
   }
 
@@ -73,13 +72,13 @@ void MCCuboid::computeGeometry(MCCuboid* cube)
   p.computeNormals();
   }
 
-void MCCuboid::addManipulators(SPropertyArray *a, const GCTransform *tr)
+void MCCuboid::addManipulators(Shift::PropertyArray *a, const ManipInfo &info)
   {
   // X
     {
     GCDistanceManipulator *manip = a->add<GCDistanceManipulator>();
 
-    manip->lockDirection = XVector3D(1.0f, 0.0f, 0.0f);
+    manip->lockDirection = Eks::Vector3D(1.0f, 0.0f, 0.0f);
     manip->lockMode = GCDistanceManipulator::Linear;
     manip->scaleFactor = 0.5f;
 
@@ -87,9 +86,9 @@ void MCCuboid::addManipulators(SPropertyArray *a, const GCTransform *tr)
 
     manip->addDriven(&width);
 
-    if(tr)
+    if(info.parentTransform)
       {
-      tr->transform.connect(&manip->worldCentre);
+      manip->worldTransform.setInput(info->parentTransform);
       }
     }
 
@@ -97,7 +96,7 @@ void MCCuboid::addManipulators(SPropertyArray *a, const GCTransform *tr)
     {
     GCDistanceManipulator *manip = a->add<GCDistanceManipulator>();
 
-    manip->lockDirection = XVector3D(0.0f, 1.0f, 0.0f);
+    manip->lockDirection = Eks::Vector3D(0.0f, 1.0f, 0.0f);
     manip->lockMode = GCDistanceManipulator::Linear;
     manip->scaleFactor = 0.5f;
 
@@ -105,9 +104,9 @@ void MCCuboid::addManipulators(SPropertyArray *a, const GCTransform *tr)
 
     manip->addDriven(&height);
 
-    if(tr)
+    if(info.parentTransform)
       {
-      tr->transform.connect(&manip->worldCentre);
+      manip->worldTransform.setInput(info->parentTransform);
       }
     }
 
@@ -115,7 +114,7 @@ void MCCuboid::addManipulators(SPropertyArray *a, const GCTransform *tr)
     {
     GCDistanceManipulator *manip = a->add<GCDistanceManipulator>();
 
-    manip->lockDirection = XVector3D(0.0f, 0.0f, 1.0f);
+    manip->lockDirection = Eks::Vector3D(0.0f, 0.0f, 1.0f);
     manip->lockMode = GCDistanceManipulator::Linear;
     manip->scaleFactor = 0.5f;
 
@@ -123,9 +122,9 @@ void MCCuboid::addManipulators(SPropertyArray *a, const GCTransform *tr)
 
     manip->addDriven(&depth);
 
-    if(tr)
+    if(info.parentTransform)
       {
-      tr->transform.connect(&manip->worldCentre);
+      manip->worldTransform.setInput(info->parentTransform);
       }
     }
   }

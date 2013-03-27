@@ -1,18 +1,20 @@
+#if 0
+
 #include "mcimage.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "QImage"
 
 void MCImage::computeImageOutput(MCImage *image)
   {
-  QImage imInput(image->filename());
+  QImage imInput(image->filename().toQString());
 
   MCMathsOperation::ComputeLock l(&image->output);
   if(imInput.isNull())
     {
-    l.data()->load(XMathsOperation::None, 0, 0, 0, 0, 0, XVectorI2D::Zero());
+    l.data()->load(XMathsOperation::None, 0, 0, 0, 0, 0, Eks::VectorI2D::Zero());
     }
 
-  XVectorI2D transform = XVectorI2D::Zero();
+  Eks::VectorI2D transform = Eks::VectorI2D::Zero();
 
   xsize channels = 3;
   if(imInput.hasAlphaChannel())
@@ -58,22 +60,22 @@ void MCImage::computeImageOutput(MCImage *image)
 
 S_IMPLEMENT_PROPERTY(MCImage, MathsCore)
 
-void MCImage::createTypeInformation(SPropertyInformationTyped<MCImage> *info,
-                                    const SPropertyInformationCreateData &data)
+void MCImage::createTypeInformation(Shift::PropertyInformationTyped<MCImage> *info,
+                                    const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
     auto outputInst = info->child(&MCImage::output);
     outputInst->setCompute<computeImageOutput>();
 
-    auto preMultInst = info->add(&MCImage::premultiply, "premultiply");
-    preMultInst->setAffects(outputInst);
+    auto affectsOutput = info->createAffects(data, &outputInst, 1);
 
-    auto filenameInst = info->add(&MCImage::filename, "filename");
-    filenameInst->setAffects(outputInst);
+    auto preMultInst = info->add(data, &MCImage::premultiply, "premultiply");
+    preMultInst->setAffects(affectsOutput, true);
+
+    auto filenameInst = info->add(data, &MCImage::filename, "filename");
+    filenameInst->setAffects(affectsOutput, false);
     }
   }
 
-MCImage::MCImage()
-  {
-  }
+#endif

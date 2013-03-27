@@ -1,5 +1,5 @@
 #include "GCRenderable.h"
-#include "spropertyinformationhelpers.h"
+#include "shift/TypeInformation/spropertyinformationhelpers.h"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCRenderablePointer, GraphicsCore)
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCRenderArrayPointer, GraphicsCore)
@@ -7,12 +7,14 @@ S_IMPLEMENT_TYPED_POINTER_ARRAY_TYPE(GCRenderablePointerArray, GraphicsCore)
 
 S_IMPLEMENT_PROPERTY(GCRenderable, GraphicsCore)
 
-void GCRenderable::createTypeInformation(SPropertyInformationTyped<GCRenderable> *info,
-                                         const SPropertyInformationCreateData &data)
+void GCRenderable::createTypeInformation(Shift::PropertyInformationTyped<GCRenderable> *info,
+                                         const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    info->add(&GCRenderable::bounds, "bounds");
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCRenderable::bounds, "bounds");
     }
   }
 
@@ -20,11 +22,11 @@ GCRenderable::GCRenderable()
   {
   }
 
-void GCRenderable::intersect(const XLine &, Selector *)
+void GCRenderable::intersect(const Eks::Line &, Selector *)
   {
   }
 
-void GCRenderable::intersect(const XFrustum &, Selector *)
+void GCRenderable::intersect(const Eks::Frustum &, Selector *)
   {
   }
 
@@ -34,8 +36,8 @@ S_IMPLEMENT_PROPERTY(GCRenderArray, GraphicsCore)
 void unionBounds(GCRenderArray* array)
   {
   GCBoundingBox::ComputeLock l(&array->bounds);
-  XCuboid *data = l.data();
-  *data = XCuboid();
+  Eks::Cuboid *data = l.data();
+  *data = Eks::Cuboid();
 
   xForeach(auto r, array->renderGroup.walker<GCRenderablePointer>())
     {
@@ -45,25 +47,23 @@ void unionBounds(GCRenderArray* array)
     }
   }
 
-void GCRenderArray::createTypeInformation(SPropertyInformationTyped<GCRenderArray> *info,
-                                          const SPropertyInformationCreateData &data)
+void GCRenderArray::createTypeInformation(Shift::PropertyInformationTyped<GCRenderArray> *info,
+                                          const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
-    auto rGInst = info->add(&GCRenderArray::renderGroup, "renderGroup");
+    auto childBlock = info->createChildrenBlock(data);
 
-    auto bInst = info->child(&GCRenderArray::bounds);
+    auto rGInst = childBlock.add(&GCRenderArray::renderGroup, "renderGroup");
+
+    auto bInst = childBlock.overrideChild(&GCRenderArray::bounds);
     bInst->setCompute<unionBounds>();
 
-    rGInst->setAffects(bInst);
+    rGInst->setAffects(data, bInst);
     }
   }
 
-GCRenderArray::GCRenderArray()
-  {
-  }
-
-void GCRenderArray::render(XRenderer *renderer) const
+void GCRenderArray::render(Eks::Renderer *renderer, const RenderState &state) const
   {
   xForeach(auto r, renderGroup.walker<GCRenderablePointer>())
     {
@@ -74,11 +74,11 @@ void GCRenderArray::render(XRenderer *renderer) const
       continue;
       }
     
-    ptd->render(renderer);
+    ptd->render(renderer, state);
     }
   }
 
-void GCRenderArray::intersect(const XLine &line, Selector *s)
+void GCRenderArray::intersect(const Eks::Line &line, Selector *s)
   {
   xForeach(auto r, renderGroup.walker<GCRenderablePointer>())
     {
@@ -90,7 +90,7 @@ void GCRenderArray::intersect(const XLine &line, Selector *s)
     }
   }
 
-void GCRenderArray::intersect(const XFrustum &frus, Selector *s)
+void GCRenderArray::intersect(const Eks::Frustum &frus, Selector *s)
   {
   xForeach(auto r, renderGroup.walker<GCRenderablePointer>())
     {

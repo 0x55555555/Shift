@@ -2,24 +2,22 @@
 #define GCRENDERTARGET_H
 
 #include "GCGlobal.h"
-#include "sentity.h"
+#include "shift/sentity.h"
 #include "GCRenderable.h"
 
-class GRAPHICSCORE_EXPORT GCRenderTarget : public SEntity
+class GRAPHICSCORE_EXPORT GCRenderTarget : public Shift::Entity
   {
-  S_ENTITY(GCRenderTarget, SEntity, 0)
+  S_ENTITY(GCRenderTarget, Entity, 0)
 
 public:
-  GCRenderTarget();
-
   GCRenderablePointer source;
 
-  UnsignedIntProperty width;
-  UnsignedIntProperty height;
+  Shift::UnsignedIntProperty width;
+  Shift::UnsignedIntProperty height;
 
-  FloatProperty aspectRatio;
+  Shift::FloatProperty aspectRatio;
 
-  void render(XRenderer *);
+  void render(Eks::Renderer *);
   };
 
 S_PROPERTY_INTERFACE(GCRenderTarget)

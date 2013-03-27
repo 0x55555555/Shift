@@ -2,25 +2,36 @@
 #define GCBASEPROPERTIES_H
 
 #include "GCGlobal.h"
-#include "sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "XTransform.h"
-#include "QImage"
+#include "QtGui/QImage"
 #include "XShader.h"
 #include "XGeometry.h"
+#include "XRasteriserState.h"
 #include "XCuboid.h"
 
-class XShaderInstance
+namespace GraphicsCore
+{
+namespace detail
+{
+
+class ShaderInstance
   {
 public:
-  XShader *instance;
+  ShaderInstance() : instance(0) { }
+  Eks::Shader *instance;
 
-  bool operator !=(const XShaderInstance& i) const
+  bool operator !=(const ShaderInstance& i) const
     {
     return i.instance != instance;
     }
   };
+}
 
-Q_DECLARE_METATYPE(XShaderInstance)
+}
+
+Q_DECLARE_METATYPE(GraphicsCore::detail::ShaderInstance)
 
 namespace
 {
@@ -46,52 +57,161 @@ QTextStream &operator >>(QTextStream &str, QImage &data)
   return str;
   }
 
-QTextStream &operator<<(QTextStream &s, const XGeometry &)
+QTextStream &operator<<(QTextStream &s, const Eks::Geometry &)
   {
   xAssertFail();
   return s;
   }
 
-QTextStream &operator>>(QTextStream &s, const XGeometry &)
-  {
-  xAssertFail();
-  return s;
-  }
-
-
-QDataStream &operator>>(QDataStream& s, XShaderInstance&)
-  {
-  xAssertFail();
-  return s;
-  }
-
-QDataStream &operator<<(QDataStream& s, const XShaderInstance&)
+QTextStream &operator>>(QTextStream &s, const Eks::Geometry &)
   {
   xAssertFail();
   return s;
   }
 
 
-QTextStream &operator>>(QTextStream& s, XShaderInstance&)
+QDataStream &operator>>(QDataStream& s, GraphicsCore::detail::ShaderInstance&)
   {
   xAssertFail();
   return s;
   }
 
-QTextStream &operator<<(QTextStream& s, const XShaderInstance&)
+QDataStream &operator<<(QDataStream& s, const GraphicsCore::detail::ShaderInstance&)
+  {
+  xAssertFail();
+  return s;
+  }
+
+
+QTextStream &operator>>(QTextStream& s, GraphicsCore::detail::ShaderInstance&)
+  {
+  xAssertFail();
+  return s;
+  }
+
+QTextStream &operator<<(QTextStream& s, const GraphicsCore::detail::ShaderInstance&)
   {
   xAssertFail();
   return s;
   }
 }
 
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, XTransform, XTransform::Identity(), 150);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, XMatrix3x3, XMatrix3x3::Identity(), 157);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, XComplexTransform, XComplexTransform(), 151);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShader, XShader, XShader(), 152)
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCQImage, QImage, QImage(), 153)
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeGeometry, XGeometry, XGeometry(), 154)
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, XCuboid, XCuboid(), 155)
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCRuntimeShaderInstance, XShaderInstance, XShaderInstance(), 156)
+class GRAPHICSCORE_EXPORT GCRuntimeShader
+    : public Shift::PODPropertyBase<Eks::Shader,
+                                GCRuntimeShader>
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeShader> Traits;
+  enum { TypeId = 152 };
+  S_PROPERTY(GCRuntimeShader, Property, 0);
+  };
+
+class GRAPHICSCORE_EXPORT GCShaderRuntimeConstantData
+    : public Shift::PODPropertyBase<Eks::ShaderConstantData,
+                                GCShaderRuntimeConstantData>
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCShaderRuntimeConstantData> Traits;
+  enum { TypeId = 153 };
+  S_PROPERTY(GCShaderRuntimeConstantData, Property, 0);
+  };
+
+class GRAPHICSCORE_EXPORT GCRuntimeShaderInstance
+    : public Shift::PODPropertyBase<GraphicsCore::detail::ShaderInstance,
+                                GCRuntimeShaderInstance >
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeShaderInstance> Traits;
+  enum { TypeId = 156 };
+  S_PROPERTY(GCRuntimeShaderInstance, Property, 0);
+  };
+
+class GRAPHICSCORE_EXPORT GCRuntimeRasteriserState
+    : public Shift::PODPropertyBase<Eks::RasteriserState,
+                                GCRuntimeRasteriserState>
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeRasteriserState> Traits;
+  enum { TypeId = 160 };
+  S_PROPERTY(GCRuntimeRasteriserState, Property, 0);
+  };
+
+
+class GRAPHICSCORE_EXPORT GCRuntimeGeometry
+    : public Shift::PODPropertyBase<Eks::Geometry,
+                                GCRuntimeGeometry>
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeGeometry> Traits;
+  enum { TypeId = 154 };
+  S_PROPERTY(GCRuntimeGeometry, Property, 0);
+  };
+
+class GRAPHICSCORE_EXPORT GCRuntimeIndexGeometry
+    : public Shift::PODPropertyBase<Eks::IndexGeometry,
+                                GCRuntimeIndexGeometry>
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeIndexGeometry> Traits;
+  enum { TypeId = 158 };
+  S_PROPERTY(GCRuntimeIndexGeometry, Property, 0);
+  };
+
+class GRAPHICSCORE_EXPORT GCRenderer
+    : public Shift::PODProperty<Eks::Renderer *,
+                                GCRenderer>
+  {
+public:
+  class Traits;
+  class EmbeddedInstanceInformation : public Shift::PODPropertyBase<Eks::Renderer *, GCRenderer>::EmbeddedInstanceInformation
+    {
+  public:
+    void initiateProperty(Property *propertyToInitiate) const;
+    };
+
+  enum { TypeId = 151 };
+  S_PROPERTY(GCRenderer, Property, 0);
+
+private:
+  friend class EmbeddedInstanceInformation;
+  friend class Traits;
+  };
+
+struct GCVertexLayoutWrapper
+  {
+  const Eks::ShaderVertexLayoutDescription *layout;
+  xsize layoutCount;
+  };
+
+class GRAPHICSCORE_EXPORT GCVertexLayout
+    : public Shift::PODPropertyBase<GCVertexLayoutWrapper,
+                                GCVertexLayout>
+  {
+public:
+  typedef Shift::detail::BasePODPropertyTraits<GCVertexLayout> Traits;
+  enum { TypeId = 159 };
+  S_PROPERTY(GCVertexLayout, Property, 0);
+  };
+
+S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCVertexLayoutPointer, GCVertexLayout)
+
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, Eks::Transform, Eks::Transform::Identity(), 150);
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, Eks::Matrix3x3, Eks::Matrix3x3::Identity(), 157);
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, Eks::ComplexTransform, Eks::ComplexTransform(), 151);
+DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, Eks::Cuboid, Eks::Cuboid(), 155)
+
+
+S_PROPERTY_INTERFACE(GCRenderer)
+S_PROPERTY_INTERFACE(GCVertexLayout)
+S_PROPERTY_INTERFACE(GCShaderRuntimeConstantData)
+S_PROPERTY_INTERFACE(GCRuntimeShader)
+S_PROPERTY_INTERFACE(GCRuntimeGeometry)
+S_PROPERTY_INTERFACE(GCRuntimeIndexGeometry)
+S_PROPERTY_INTERFACE(GCRuntimeRasteriserState)
+S_PROPERTY_INTERFACE(TransformProperty)
+S_PROPERTY_INTERFACE(Matrix3x3Property)
+S_PROPERTY_INTERFACE(ComplexTransformProperty)
+S_PROPERTY_INTERFACE(GCBoundingBox)
+S_PROPERTY_INTERFACE(GCRuntimeShaderInstance)
 
 #endif // GCBASEPROPERTIES_H

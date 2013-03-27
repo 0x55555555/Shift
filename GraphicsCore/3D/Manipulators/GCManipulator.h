@@ -2,27 +2,46 @@
 #define GCMANIPULATOR_H
 
 #include "GCGlobal.h"
-#include "spropertycontainer.h"
-#include "sbasepointerproperties.h"
+#include "shift/Properties/spropertycontainer.h"
+#include "shift/Properties/sbasepointerproperties.h"
 #include "GCBaseProperties.h"
+#include "XUniquePointer"
 
-class XRenderer;
+namespace Eks
+{
+class Renderer;
+}
+
 class QPainter;
 class GCTransform;
 class GCCamera;
+class GCRenderable;
+class GCRenderablePointerArray;
 
-class GRAPHICSCORE_EXPORT GCManipulatable : public SInterfaceBase
+class GRAPHICSCORE_EXPORT GCManipulatable : public Shift::InterfaceBase
   {
-  S_INTERFACE_TYPE(ManipulatableInterface)  
+  S_INTERFACE_TYPE(ManipulatableInterface)
 public:
-  virtual void addManipulators(SPropertyArray *, const GCTransform *tr=0) = 0;
+
+  struct ManipInfo
+    {
+    ManipInfo() : parentTransform(0)
+      {
+      }
+    const TransformProperty *parentTransform;
+    };
+
+  virtual GCRenderablePointerArray *manipulatableChildren() { return 0; }
+  virtual void addManipulators(Shift::PropertyArray *parent, const ManipInfo &tr);
   };
 
-class GRAPHICSCORE_EXPORT GCVisualManipulator : public SPropertyContainer
+class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::PropertyContainer
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, SPropertyContainer, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, PropertyContainer, 0)
 
 public:
+  GCVisualManipulator();
+
   class Delegate
     {
   public:
@@ -32,76 +51,82 @@ public:
       const GCVisualManipulator *toRender,
       const QPoint &widgetSpacePoint,
       const GCCamera *camera,
-      const XVector3D &clickDirection, // in world space
-      float *distance) = 0;
+      const Eks::Vector3D &clickDirection, // in world space
+      float *distance) const = 0;
 
     virtual void render(const GCVisualManipulator *toRender,
                         const GCCamera *camera,
-                        XRenderer *) = 0;
+                        Eks::Renderer *) const = 0;
 
-    virtual XVector3D focalPoint(const GCVisualManipulator *toRender) const
+    virtual Eks::Vector3D focalPoint(const GCVisualManipulator *toRender) const
       {
-      return toRender->worldCentre().translation();
+      return toRender->worldTransform().translation();
       }
     };
 
-XProperties:
-  XProperty(Delegate *, delegate, setDelegate);
-
 public:
-  GCVisualManipulator();
-  
-  BoolProperty show;
-  TransformProperty worldCentre;
-  FloatProperty manipulatorsDisplayScale;
+  Shift::BoolProperty show;
+  TransformProperty parentTransform;
+  TransformProperty localTransform;
+  TransformProperty worldTransform;
+  Shift::FloatProperty manipulatorsDisplayScale;
 
-  virtual XVector3D focalPoint() const;
-  
+  virtual Eks::Vector3D focalPoint() const;
+
   virtual bool hitTest(
     const QPoint &widgetSpacePoint,
     const GCCamera *camera,
-    const XVector3D &clickDirection, // in world space
+    const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked);
-    
-  virtual void render(const GCCamera *camera, XRenderer *) const;
-  
+
+  virtual void render(const GCCamera *camera, Eks::Renderer *) const;
+
+  const Delegate *delegate() const;
+  template <typename T> T *createDelegate()
+    {
+    return _delegate.create<T>(generalPurposeAllocator());
+    }
+
   struct MouseEvent
     {
     QPoint widgetPoint;
     const GCCamera *cam;
-    XVector3D direction;
+    Eks::Vector3D direction;
     };
 
   struct MouseMoveEvent : public MouseEvent
     {
     QPoint lastWidgetPoint;
-    XVector3D lastDirection;
+    Eks::Vector3D lastDirection;
     };
 
   virtual void onMouseClick(const MouseEvent &) = 0;
   virtual void onMouseDoubleClick(const MouseEvent &) = 0;
   virtual void onMouseDrag(const MouseMoveEvent &) = 0;
   virtual void onMouseRelease(const MouseEvent &) = 0;
+
+private:
+  Eks::UniquePointer<Delegate> _delegate;
   };
 
 S_PROPERTY_INTERFACE(GCVisualManipulator);
-  
+
 class GRAPHICSCORE_EXPORT GCVisualCompoundManipulator : public GCVisualManipulator
   {
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualCompoundManipulator, GCVisualManipulator, 0)
 
 public:
   GCVisualCompoundManipulator();
-  
+
   virtual bool hitTest(
     const QPoint &widgetSpacePoint,
     const GCCamera *camera,
-    const XVector3D &clickDirection, // in world space
+    const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked);
 
-  virtual void render(const GCCamera *camera, XRenderer *r) const;
+  virtual void render(const GCCamera *camera, Eks::Renderer *r) const;
 
   virtual void onMouseClick(const MouseEvent &);
   virtual void onMouseDoubleClick(const MouseEvent &);
@@ -117,7 +142,7 @@ class GRAPHICSCORE_EXPORT GCVisualDragManipulator : public GCVisualManipulator
 
 public:
   GCVisualDragManipulator();
-  
+
   virtual void onDrag(const MouseMoveEvent &) = 0;
 
   virtual void onMouseClick(const MouseEvent &);
@@ -159,10 +184,10 @@ public:
     Linear
     };
 
-  EnumProperty lockMode;
-  Vector3DProperty lockDirection; // normal for planar, direction for linear, local space
+  Shift::EnumProperty lockMode;
+  Shift::Vector3DProperty lockDirection; // normal for planar, direction for linear, local space
 
-  void onDrag(const MouseMoveEvent &, XVector3D &rel);
+  void onDrag(const MouseMoveEvent &, Eks::Vector3D &rel);
   };
 
 S_PROPERTY_INTERFACE(GCLinearDragManipulator);

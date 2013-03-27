@@ -2,28 +2,30 @@
 #define GCGEOMETRY_H
 
 #include "GCGlobal.h"
-#include "spropertycontainer.h"
-#include "spropertyarray.h"
-#include "sarrayproperty.h"
-#include "sdatabase.h"
+#include "shift/Properties/spropertycontainer.h"
+#include "shift/Properties/spropertyarray.h"
+#include "shift/Properties/sbasepointerproperties.h"
+#include "shift/sdatabase.h"
 #include "XGeometry.h"
-#include "sbasepointerproperties.h"
 #include "GCBaseProperties.h"
 
-class GRAPHICSCORE_EXPORT GCGeometry : public SPropertyContainer
+class GRAPHICSCORE_EXPORT GCGeometry : public Shift::PropertyContainer
   {
-  S_PROPERTY_CONTAINER(GCGeometry, SPropertyContainer, 0)
+  S_PROPERTY_CONTAINER(GCGeometry, PropertyContainer, 0)
 
 public:
-  GCGeometry();
-
   GCRuntimeGeometry runtimeGeometry;
   };
 
+class GRAPHICSCORE_EXPORT GCIndexedGeometry : public GCGeometry
+  {
+  S_PROPERTY_CONTAINER(GCIndexedGeometry, GCGeometry, 0)
+
+public:
+  GCRuntimeIndexGeometry runtimeIndexGeometry;
+  };
+
 S_PROPERTY_INTERFACE(GCGeometry)
-
-S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCGeometryPointer, GCGeometry)
-
-S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCGeometryPointerArray, GCGeometryPointer)
+S_PROPERTY_INTERFACE(GCIndexedGeometry)
 
 #endif // GCGEOMETRY_H

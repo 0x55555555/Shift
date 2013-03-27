@@ -1,7 +1,13 @@
 TEMPLATE = subdirs
 
-CONFIG += ordered
+CONFIG += ordered minimal_shift
 
-SUBDIRS = shift.pro \
-          MathsCore/MathsCore.pro \
-          GraphicsCore/GraphicsCore.pro
+SUBDIRS = ShiftCore \
+          MathsCore \
+          GraphicsCore \
+          ShiftCoreTest
+
+
+!minimal_shift {
+SUBDIRS += MeshCore/MeshCore.pro
+}

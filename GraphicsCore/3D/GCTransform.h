@@ -4,7 +4,7 @@
 #include "GCGlobal.h"
 #include "GCRenderable.h"
 #include "XTransform.h"
-#include "sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.h"
 #include "3D/Manipulators/GCManipulator.h"
 #include "GCBaseProperties.h"
 
@@ -13,16 +13,16 @@ class GRAPHICSCORE_EXPORT GCTransform : public GCRenderArray, public GCManipulat
   S_ENTITY(GCTransform, GCRenderArray, 0)
 
 public:
-  GCTransform();
 
   TransformProperty transform;
 
-  virtual void render(XRenderer *) const;
+  void render(Eks::Renderer *, const RenderState &state) const X_OVERRIDE;
 
-  virtual void addManipulators(SPropertyArray *, const GCTransform *tr=0);
+  GCRenderablePointerArray *manipulatableChildren() { return &renderGroup; }
+  void addManipulators(Shift::PropertyArray *, const ManipInfo &info) X_OVERRIDE;
 
-  virtual void intersect(const XLine& line, Selector *);
-  virtual void intersect(const XFrustum& frus, Selector *);
+  void intersect(const Eks::Line& line, Selector *) X_OVERRIDE;
+  void intersect(const Eks::Frustum& frus, Selector *) X_OVERRIDE;
   };
 
 S_PROPERTY_INTERFACE(GCTransform)
