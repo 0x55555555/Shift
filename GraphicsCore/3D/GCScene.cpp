@@ -218,7 +218,7 @@ void GCManipulatableScene::render(Eks::Renderer *x, const RenderState &state) co
         }
       }
 
-    if(!manipulators.isEmpty())
+    if(manipulators.size())
       {
       state.framebuffer->clear(Eks::FrameBuffer::ClearDepth);
 

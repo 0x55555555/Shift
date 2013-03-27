@@ -5,6 +5,7 @@
 #include "shift/Properties/spropertycontainer.h"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "GCBaseProperties.h"
+#include "XUniquePointer"
 
 namespace Eks
 {
@@ -51,20 +52,17 @@ public:
       const QPoint &widgetSpacePoint,
       const GCCamera *camera,
       const Eks::Vector3D &clickDirection, // in world space
-      float *distance) = 0;
+      float *distance) const = 0;
 
     virtual void render(const GCVisualManipulator *toRender,
                         const GCCamera *camera,
-                        Eks::Renderer *) = 0;
+                        Eks::Renderer *) const = 0;
 
     virtual Eks::Vector3D focalPoint(const GCVisualManipulator *toRender) const
       {
       return toRender->worldTransform().translation();
       }
     };
-
-XProperties:
-  XProperty(UniquePointer<Delegate *>, delegate, setDelegate);
 
 public:
   Shift::BoolProperty show;
@@ -84,6 +82,12 @@ public:
 
   virtual void render(const GCCamera *camera, Eks::Renderer *) const;
 
+  const Delegate *delegate() const;
+  template <typename T> T *createDelegate()
+    {
+    return _delegate.create<T>(generalPurposeAllocator());
+    }
+
   struct MouseEvent
     {
     QPoint widgetPoint;
@@ -101,6 +105,9 @@ public:
   virtual void onMouseDoubleClick(const MouseEvent &) = 0;
   virtual void onMouseDrag(const MouseMoveEvent &) = 0;
   virtual void onMouseRelease(const MouseEvent &) = 0;
+
+private:
+  Eks::UniquePointer<Delegate> _delegate;
   };
 
 S_PROPERTY_INTERFACE(GCVisualManipulator);

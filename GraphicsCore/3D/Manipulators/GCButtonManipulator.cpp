@@ -84,13 +84,10 @@ void GCButtonManipulator::createTypeInformation(Shift::PropertyInformationTyped<
 
 GCButtonManipulator::GCButtonManipulator()
   {
-  setDelegate(new ButtonDelegate());
   }
 
 GCButtonManipulator::~GCButtonManipulator()
   {
-  delete delegate();
-  setDelegate(0);
   }
 
 void GCButtonManipulator::onClick()

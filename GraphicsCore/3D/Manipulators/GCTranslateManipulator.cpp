@@ -24,7 +24,7 @@ public:
       const QPoint &,
       const GCCamera *camera,
       const Eks::Vector3D &clickDirection, // in world space
-      float *)
+      float *) const
     {
     const Eks::Vector3D &camTrans = camera->transform().translation();
     Eks::Line l(camTrans, clickDirection, Eks::Line::PointAndDirection);
@@ -49,7 +49,7 @@ public:
 
   virtual void render(const GCVisualManipulator *,
       const GCCamera *,
-      Eks::Renderer *)
+      Eks::Renderer *) const
     {
     xAssertFail();
     /*
@@ -91,7 +91,7 @@ public:
       const QPoint &,
       const GCCamera *camera,
       const Eks::Vector3D &clickDirection, // in world space
-      float *distance)
+      float *distance) const
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
 
@@ -131,7 +131,7 @@ public:
 
   virtual void render(const GCVisualManipulator *manip,
       const GCCamera *,
-      Eks::Renderer *)
+      Eks::Renderer *) const
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
 
@@ -249,10 +249,10 @@ void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyp
 
 GCTranslateManipulator::GCTranslateManipulator()
   {
-  x.setDelegate(new LinearTranslateDelegate());
-  y.setDelegate(new LinearTranslateDelegate());
-  z.setDelegate(new LinearTranslateDelegate());
-  central.setDelegate(new CentralTranslateDelegate());
+  x.createDelegate<LinearTranslateDelegate>();
+  y.createDelegate<LinearTranslateDelegate>();
+  z.createDelegate<LinearTranslateDelegate>();
+  central.createDelegate<CentralTranslateDelegate>();
   }
 
 void GCTranslateManipulator::addDriven(TransformProperty *in)

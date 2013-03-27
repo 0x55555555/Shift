@@ -19,7 +19,7 @@ public:
       const QPoint &,
       const GCCamera *camera,
       const Eks::Vector3D &clickDirection, // in world space
-      float *distance)
+      float *distance) const
     {
     const GCDistanceManipulator *toRender = manip->uncheckedCastTo<GCDistanceManipulator>();
     const Eks::Vector3D &camTrans = camera->transform().translation();
@@ -45,7 +45,7 @@ public:
 
   virtual void render(const GCVisualManipulator *manip,
       const GCCamera *,
-      Eks::Renderer *r)
+      Eks::Renderer *r) const
     {
     if(!_geo.isValid())
       {
@@ -88,11 +88,11 @@ public:
     }
 
 private:
-  Eks::IndexGeometry _igeo;
-  Eks::Geometry _geo;
-  Eks::Shader *_shader;
-  Eks::ShaderVertexLayout *_layout;
-  Eks::ShaderConstantData _data;
+  mutable Eks::IndexGeometry _igeo;
+  mutable Eks::Geometry _geo;
+  mutable Eks::Shader *_shader;
+  mutable Eks::ShaderVertexLayout *_layout;
+  mutable Eks::ShaderConstantData _data;
   };
 
 S_IMPLEMENT_PROPERTY(GCDistanceManipulator, GraphicsCore)
@@ -122,12 +122,13 @@ void GCDistanceManipulator::createTypeInformation(Shift::PropertyInformationType
 
     auto sfInfo = childBlock.add(&GCDistanceManipulator::scaleFactor, "scaleFactor");
     sfInfo->setAffects(affectsAbsDisp, false);
+    sfInfo->setDefaultValue(1.0f);
     }
   }
 
 GCDistanceManipulator::GCDistanceManipulator()
   {
-  setDelegate( DistanceDelegate());
+  createDelegate<DistanceDelegate>();
   }
 
 void GCDistanceManipulator::addDriven(Shift::FloatProperty *in)

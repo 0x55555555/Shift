@@ -67,6 +67,11 @@ GCVisualManipulator::GCVisualManipulator() : _delegate(0)
   {
   }
 
+const GCVisualManipulator::Delegate *GCVisualManipulator::delegate() const
+  {
+  return _delegate.value();
+  }
+
 void GCVisualManipulator::render(const GCCamera *camera, Eks::Renderer *r) const
   {
   if(delegate())
