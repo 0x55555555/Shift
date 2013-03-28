@@ -22,7 +22,7 @@ void computeData(GCShaderConstantData *d)
   for(; it != end; ++it)
     {
     auto p = *it;
-    const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
+    const GCShaderBindableData *binder = p->findInterface<GCShaderBindableData>();
 
     xAssert(binder);
     binder->bindData(&data, p);
@@ -38,7 +38,7 @@ void computeData(GCShaderConstantData *d)
     for(; it != end; ++it)
       {
       auto p = *it;
-      const GCShaderBindableData *binder = p->interface<GCShaderBindableData>();
+      const GCShaderBindableData *binder = p->findInterface<GCShaderBindableData>();
 
       descs.resize(descs.size()+1);
       binder->getDescription(descs.back(), p);
@@ -91,8 +91,6 @@ void GCShader::createTypeInformation(Shift::PropertyInformationTyped<GCShader> *
 
     auto r = childBlock.add(&GCShader::renderer, "renderer");
     r->setAffects(data, rtInfoCore);
-
-    childBlock.add(&GCShader::layoutDescription, "layoutDescription");
     }
   }
 
@@ -112,7 +110,7 @@ void GCShader::setupShaderRuntime(GCShader *shader)
   lock.data()->instance = (Eks::Shader*)&shader->runtimeShaderCore();
   xForeach(auto p, shader->walkerFrom((Property*)&shader->runtimeShaderCore))
     {
-    const GCShaderBindableResource *binder = p->interface<GCShaderBindableResource>();
+    const GCShaderBindableResource *binder = p->findInterface<GCShaderBindableResource>();
     if(binder)
       {
       binder->bindResource(&shader->constantDatas, &shader->resources, p);
@@ -154,49 +152,24 @@ void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
     return;
     }
 
-  GCVertexLayout *gcLayout = shader->layoutDescription();
-  if(!gcLayout)
+  GCShaderInterface::Shader shaderStruct =
     {
-    return;
-    }
+    lock.data(),
+    &shader->fragment,
+    &shader->vertex,
+    &shader->layout
+    };
 
-  const GCVertexLayoutWrapper &layoutDesc = gcLayout->value();
-  if(!layoutDesc.layout)
-    {
-    return;
-    }
-
-  shader->layout.~ShaderVertexLayout();
-  new(&shader->layout) Eks::ShaderVertexLayout();
-
-  shader->vertex.~ShaderVertexComponent();
-  new(&shader->vertex) Eks::ShaderVertexComponent();
-
-  GCShaderInterface *ifc = shader->interface<GCShaderInterface>();
+  GCShaderInterface *ifc = shader->findInterface<GCShaderInterface>();
   xAssert(ifc);
-  if(!ifc->initVertexShader(
+  if(!ifc->initShader(
        shader,
        r,
-       &shader->vertex,
-       layoutDesc.layout,
-       layoutDesc.layoutCount,
-       &shader->layout))
+       &shaderStruct))
     {
     xAssertFail();
     return;
     }
-
-  shader->fragment.~ShaderFragmentComponent();
-  new(&shader->fragment) Eks::ShaderFragmentComponent();
-
-  if(!ifc->initFragmentShader(shader, r, &shader->fragment))
-    {
-    xAssertFail();
-    return;
-    }
-
-  lock.data()->~Shader();
-  new(lock.data()) Eks::Shader(r, &shader->vertex, &shader->fragment);
   }
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCShaderPointer, GraphicsCore)

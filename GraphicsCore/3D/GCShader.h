@@ -14,18 +14,18 @@ class GCShader;
 class GCShaderInterface : public Shift::StaticInterfaceBase
   {
 public:
-  virtual bool initVertexShader(
+  struct Shader
+    {
+    Eks::Shader *shader;
+    Eks::ShaderFragmentComponent *fragment;
+    Eks::ShaderVertexComponent *vertex;
+    Eks::ShaderVertexLayout *layout;
+    };
+
+  virtual bool initShader(
     GCShader *,
     Eks::Renderer *,
-    Eks::ShaderVertexComponent *,
-    const Eks::ShaderVertexLayoutDescription *,
-    xsize ,
-    Eks::ShaderVertexLayout *) const
-    { return false; }
-  virtual bool initFragmentShader(
-      GCShader *,
-      Eks::Renderer *,
-      Eks::ShaderFragmentComponent *) const
+    Shader *) const
     { return false; }
   };
 
@@ -78,7 +78,6 @@ public:
   GCRuntimeShaderInstance runtimeShader;
 
   GCRenderer renderer;
-  GCVertexLayoutPointer layoutDescription;
 
   GCRuntimeShader runtimeShaderCore;
 

@@ -20,7 +20,7 @@ void GCManipulatable::addManipulators(
     GCRenderable *geo = prop->pointed();
     if(geo)
       {
-      GCManipulatable *manip = geo->interface<GCManipulatable>();
+      GCManipulatable *manip = geo->findInterface<GCManipulatable>();
 
       if(manip)
         {
