@@ -23,6 +23,11 @@ public:
 
   void onDrag(const MouseMoveEvent &);
 
+  void setDriver(Shift::FloatProperty *f)
+    {
+    distance.setInput(f);
+    }
+
 private:
   QVector <Shift::FloatProperty *> _driven;
   };

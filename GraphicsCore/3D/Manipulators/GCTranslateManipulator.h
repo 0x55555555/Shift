@@ -22,7 +22,7 @@ private:
 
 S_PROPERTY_INTERFACE(GCSingularTranslateManipulator);
 
-class GCTranslateManipulator : public GCVisualCompoundManipulator
+class GRAPHICSCORE_EXPORT GCTranslateManipulator : public GCVisualCompoundManipulator
   {
   S_PROPERTY_CONTAINER(GCTranslateManipulator, GCVisualCompoundManipulator, 0);
 
@@ -35,6 +35,11 @@ public:
   GCSingularTranslateManipulator central;
 
   void addDriven(TransformProperty *in);
+
+  void setDriver(TransformProperty *f)
+    {
+    localTransform.setInput(f);
+    }
   };
 
 S_PROPERTY_INTERFACE(GCTranslateManipulator);

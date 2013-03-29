@@ -33,6 +33,25 @@ public:
 
   virtual GCRenderablePointerArray *manipulatableChildren() { return 0; }
   virtual void addManipulators(Shift::PropertyArray *parent, const ManipInfo &tr);
+
+protected:
+  template <typename T, typename X> static T *createManipulator(
+      Shift::PropertyArray *parent,
+      X *x,
+      const GCManipulatable::ManipInfo &info)
+    {
+    T *manip = parent->add<T>();
+
+    if(info.parentTransform)
+      {
+      manip->parentTransform.setInput(info.parentTransform);
+      }
+
+    manip->addDriven(x);
+
+    manip->setDriver(x);
+    return manip;
+    }
   };
 
 class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::PropertyContainer

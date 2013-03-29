@@ -289,6 +289,11 @@ void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3D &rel
       Eks::Vector3D lastHit = a.sample(lastHitT);
       Eks::Vector3D hit = b.sample(hitT);
 
+      if(lastHit.isApprox(hit))
+        {
+        return;
+        }
+
       float lastPT = p.closestPointTo(lastHit);
       float pT = p.closestPointTo(hit);
 
