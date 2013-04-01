@@ -12,15 +12,13 @@ public:
   virtual bool hitTest(
       const GCVisualManipulator *manip,
       const QPoint &,
-      const GCCamera *camera,
+      const GCViewableTransform *camera,
       const Eks::Vector3D &clickDirection, // in world space
       float *distance) const;
 
   virtual void render(const GCVisualManipulator *manip,
-      const GCCamera *,
+      const GCViewableTransform *,
       Eks::Renderer *r) const;
-
-  virtual Eks::Vector3D focalPoint(const GCVisualManipulator *manip) const;
 
 private:
   mutable Eks::IndexGeometry _igeo;
@@ -51,6 +49,8 @@ public:
     {
     distance.setInput(f);
     }
+
+  Eks::Transform resultTransform(const GCViewableTransform *tr) const X_OVERRIDE;
 
 private:
   QVector <Shift::FloatProperty *> _driven;

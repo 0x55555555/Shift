@@ -46,6 +46,8 @@ public:
   Shift::PropertyArray manipulators;
   Shift::PointerArray selection;
 
+  Shift::FloatProperty manipulatorDisplayScale;
+
   void initialise();
 
   void render(Eks::Renderer *, const RenderState &state) const;

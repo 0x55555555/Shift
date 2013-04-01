@@ -5,7 +5,7 @@
 #include "GCRenderable.h"
 #include "XTransform.h"
 #include "shift/Properties/sbaseproperties.h"
-#include "3D/Manipulators/GCManipulator.h"
+#include "3D/Manipulators/GCManipulatable.h"
 #include "GCBaseProperties.h"
 
 class GRAPHICSCORE_EXPORT GCTransform : public GCRenderArray, public GCManipulatable

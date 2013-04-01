@@ -5,6 +5,7 @@
 #include "shift/Properties/spropertycontainer.h"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "GCBaseProperties.h"
+#include "3D/GCCamera.h"
 #include "XUniquePointer"
 
 namespace Eks
@@ -17,48 +18,7 @@ class GCTransform;
 class GCCamera;
 class GCRenderable;
 class GCRenderablePointerArray;
-
-class GRAPHICSCORE_EXPORT GCManipulatable : public Shift::InterfaceBase
-  {
-  S_INTERFACE_TYPE(ManipulatableInterface)
-public:
-
-  struct ManipInfo
-    {
-    ManipInfo() : parentTransform(0)
-      {
-      }
-    const TransformProperty *parentTransform;
-    };
-
-  virtual GCRenderablePointerArray *manipulatableChildren() { return 0; }
-  virtual void addManipulators(Shift::PropertyArray *parent, const ManipInfo &tr);
-
-protected:
-  template <typename T, typename X> static T *createManipulator(
-      Shift::PropertyArray *parent,
-      X *x,
-      const GCManipulatable::ManipInfo &info,
-      TransformProperty *localTransform)
-    {
-    T *manip = parent->add<T>();
-
-    if(info.parentTransform)
-      {
-      manip->parentTransform.setInput(info.parentTransform);
-      }
-
-    if(localTransform)
-      {
-      manip->localTransform.setInput(localTransform);
-      }
-
-    manip->addDriven(x);
-
-    manip->setDriver(x);
-    return manip;
-    }
-  };
+class GCViewableTransform;
 
 class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::PropertyContainer
   {
@@ -75,18 +35,13 @@ public:
     virtual bool hitTest(
       const GCVisualManipulator *toRender,
       const QPoint &widgetSpacePoint,
-      const GCCamera *camera,
+      const GCViewableTransform *camera,
       const Eks::Vector3D &clickDirection, // in world space
       float *distance) const = 0;
 
     virtual void render(const GCVisualManipulator *toRender,
-                        const GCCamera *camera,
+                        const GCViewableTransform *camera,
                         Eks::Renderer *) const = 0;
-
-    virtual Eks::Vector3D focalPoint(const GCVisualManipulator *toRender) const
-      {
-      return toRender->worldTransform().translation();
-      }
     };
 
 public:
@@ -94,18 +49,33 @@ public:
   TransformProperty parentTransform;
   TransformProperty localTransform;
   TransformProperty worldTransform;
-  TransformProperty resultTransform;
+
+  virtual Eks::Transform resultTransform(const GCViewableTransform *tr) const;
+
+  enum ScaleMode
+    {
+    ScreenSpaceScale,
+    WorldSpaceScale,
+
+    ScaleModeCount
+    };
+  typedef xuint32 ScaleType;
+
+  static Eks::Transform computeScaledResultTransform(
+      const Eks::Transform &worldTransform,
+      ScaleType mode,
+      const GCViewableTransform *scalePartnerTransform,
+      float displayScale);
 
 
-  TransformProperty scaleTransform;
   Shift::EnumProperty scaleMode;
-  Shift::FloatProperty manipulatorsDisplayScale;
+  Shift::FloatProperty displayScale;
 
-  virtual Eks::Vector3D focalPoint() const;
+  virtual Eks::Vector3D focalPoint(const GCViewableTransform *cam) const;
 
   virtual bool hitTest(
     const QPoint &widgetSpacePoint,
-    const GCCamera *camera,
+    const GCViewableTransform *camera,
     const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked);
@@ -121,7 +91,7 @@ public:
   struct MouseEvent
     {
     QPoint widgetPoint;
-    const GCCamera *cam;
+    const GCViewableTransform *cam;
     Eks::Vector3D direction;
     };
 

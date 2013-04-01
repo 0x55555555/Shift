@@ -103,6 +103,9 @@ void GCManipulatableScene::createTypeInformation(
 
     auto selInfo = childBlock.add(&GCManipulatableScene::selection, "selection");
     selInfo->setAffects(data, manInfo);
+
+    auto scale = childBlock.add(&GCManipulatableScene::manipulatorDisplayScale, "manipulatorDisplayScale");
+    scale->setDefaultValue(100.0f);
     }
   }
 
@@ -184,6 +187,9 @@ void GCManipulatableScene::refreshManipulators()
   manip.scene = this;
 
   GCManipulatable::ManipInfo info;
+  info.viewTransform = activeCamera();
+
+  info.displayScale = &manipulatorDisplayScale;
   manip.addManipulators(&manipulators, info);
   }
 

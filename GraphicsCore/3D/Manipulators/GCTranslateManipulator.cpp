@@ -16,7 +16,7 @@ public:
   virtual bool hitTest(
       const GCVisualManipulator *manip,
       const QPoint &,
-      const GCCamera *camera,
+      const GCViewableTransform *camera,
       const Eks::Vector3D &clickDirection, // in world space
       float *distance) const
     {
@@ -27,7 +27,7 @@ public:
 
     Eks::Line manipLine(Eks::Vector3D(0.0f, 0.0f, 0.0f), toRender->lockDirection().normalized());
 
-    const Eks::Transform &wC = toRender->worldTransform();
+    const Eks::Transform &wC = toRender->resultTransform(camera);
     manipLine.transform(wC);
 
     float clickT = clickLine.closestPointOn(manipLine);
@@ -57,7 +57,7 @@ public:
     }
 
   virtual void render(const GCVisualManipulator *manip,
-      const GCCamera *,
+      const GCViewableTransform *cam,
       Eks::Renderer *r) const
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
@@ -94,7 +94,7 @@ public:
       Eks::ShaderConstantData::delayedCreate(_data, r, dataDesc, X_ARRAY_COUNT(dataDesc), col.data());
       }
 
-    Eks::Transform wC = toRender->worldTransform();
+    Eks::Transform wC = toRender->resultTransform(cam);
 
     Eks::Vector3D x = Eks::Vector3D(1.0f, 0.0f, 0.0f);
     Eks::Vector3D lockDir = toRender->lockDirection().normalized();
@@ -135,12 +135,6 @@ void GCSingularTranslateManipulator::createTypeInformation(Shift::PropertyInform
   if(data.registerAttributes)
     {
     auto childBlock = info->createChildrenBlock(data);
-
-    auto world = childBlock.child(&GCDistanceManipulator::worldTransform);
-
-
-    auto result = childBlock.overrideChild(&GCDistanceManipulator::resultTransform);
-    result->setDefaultInput(world);
     }
   }
 
@@ -166,6 +160,48 @@ void GCSingularTranslateManipulator::onDrag(const MouseMoveEvent &e)
     }
   }
 
+template <typename Parent, typename Child, typename Fn>
+void embedChildManipulator(
+    Shift::PropertyInformationTyped<Parent> *parentInfo,
+    const Shift::PropertyInformationCreateData &data,
+    Shift::PropertyInformationChildrenCreatorTyped<Parent> &parentBlock,
+    Shift::PropertyInstanceInformationTyped<Parent, Child> *inst,
+    const Fn &extraInit)
+  {
+  auto iInfo = parentInfo->extendContainedProperty(data, inst);
+  auto block = iInfo->createChildrenBlock(data);
+
+  auto rt = parentBlock.child(&GCTranslateManipulator::worldTransform);
+  auto sm = parentBlock.child(&GCTranslateManipulator::scaleMode);
+  auto ds = parentBlock.child(&GCTranslateManipulator::displayScale);
+
+  auto iPt = block.overrideChild(&GCSingularTranslateManipulator::parentTransform);
+  iPt->setDefaultInput(rt);
+
+  auto iSm = block.overrideChild(&GCSingularTranslateManipulator::scaleMode);
+  iSm->setDefaultInput(sm);
+
+  auto iDs = block.overrideChild(&GCSingularTranslateManipulator::displayScale);
+  iDs->setDefaultInput(ds);
+
+  extraInit(block);
+  }
+
+template <typename Parent, typename Child>
+void embedChildManipulator(
+    Shift::PropertyInformationTyped<Parent> *info,
+    const Shift::PropertyInformationCreateData &data,
+    Shift::PropertyInformationChildrenCreatorTyped<Parent> &parentBlock,
+    Shift::PropertyInstanceInformationTyped<Parent, Child> *inst)
+  {
+  embedChildManipulator(
+    info,
+    data,
+    parentBlock,
+    inst,
+    [](Shift::PropertyInformationChildrenCreatorTyped<Child> &) { }
+    );
+  }
 
 S_IMPLEMENT_PROPERTY(GCTranslateManipulator, GraphicsCore)
 
@@ -175,8 +211,6 @@ void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyp
   if(data.registerAttributes)
     {
     auto childBlock = info->createChildrenBlock(data);
-
-    auto wt = childBlock.child(&GCTranslateManipulator::worldTransform);
 
     auto x = childBlock.add(&GCTranslateManipulator::x, "x");
     auto y = childBlock.add(&GCTranslateManipulator::y, "y");
@@ -193,25 +227,24 @@ void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyp
       *components[] = { x, y, z };
     for(xsize i = 0; i < X_ARRAY_COUNT(components); ++i)
       {
-      auto iInfo = info->extendContainedProperty(data, components[i]);
-      auto iChildBlock = iInfo->createChildrenBlock(data);
+      embedChildManipulator(
+        info,
+        data,
+        childBlock,
+        components[i],
+        [&dir, i](Shift::PropertyInformationChildrenCreatorTyped<GCSingularTranslateManipulator> &block)
+          {
+          auto lm = block.overrideChild(&GCSingularTranslateManipulator::lockMode);
+          lm->setDefaultValue(GCSingularTranslateManipulator::Linear);
 
-      auto iWt = iChildBlock.overrideChild(&GCSingularTranslateManipulator::parentTransform);
-      iWt->setDefaultInput(wt);
-
-      auto lm = iChildBlock.overrideChild(&GCSingularTranslateManipulator::lockMode);
-      lm->setDefaultValue(GCSingularTranslateManipulator::Linear);
-
-      auto ld = iChildBlock.overrideChild(&GCSingularTranslateManipulator::lockDirection);
-      ld->setDefaultValue(dir[i]);
+          auto ld = block.overrideChild(&GCSingularTranslateManipulator::lockDirection);
+          ld->setDefaultValue(dir[i]);
+          }
+        );
       }
 
     auto cent = childBlock.add(&GCTranslateManipulator::central, "central");
-
-    auto iInfo = info->extendContainedProperty(data, cent);
-    auto iChildBlock = iInfo->createChildrenBlock(data);
-    auto iWt = iChildBlock.overrideChild(&GCSingularTranslateManipulator::parentTransform);
-    iWt->setDefaultInput(wt);
+    embedChildManipulator(info, data, childBlock, cent);
     }
   }
 

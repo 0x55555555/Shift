@@ -5,31 +5,6 @@
 #include "XPlane.h"
 #include "XLine.h"
 
-void GCManipulatable::addManipulators(
-    Shift::PropertyArray *arr,
-    const ManipInfo &info)
-  {
-  GCRenderablePointerArray *children = manipulatableChildren();
-  if(!children)
-    {
-    return;
-    }
-
-  xForeach(auto prop, children->walker<GCRenderablePointer>())
-    {
-    GCRenderable *geo = prop->pointed();
-    if(geo)
-      {
-      GCManipulatable *manip = geo->findInterface<GCManipulatable>();
-
-      if(manip)
-        {
-        manip->addManipulators(arr, info);
-        }
-      }
-    }
-  }
-
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualManipulator, GraphicsCore)
 
 void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualManipulator> *info,
@@ -48,47 +23,60 @@ void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<
         {
         manip->worldTransform = manip->parentTransform() * manip->localTransform();
         }
-
-      static void generateScale(GCVisualManipulator *manip)
-        {
-        const Eks::Transform &tr = manip->resultTransform();
-        const Eks::Transform &sc = manip->scaleTransform();
-
-        float scale = manip->manipulatorDisplayScale();
-
-        float dist = (tr.translation()-sc.translation()).norm();
-        manip->manipulatorsDisplayScale = 1.0f / dist;
-        }
       };
 
     auto wt = childBlock.add(&GCVisualManipulator::worldTransform, "worldTransform");
     wt->setCompute<Utils::computeWorldTransform>();
 
-    auto affects = childBlock.createAffects(&wt, 1);
+    auto wtAff = childBlock.createAffects(&wt, 1);
 
     auto pt = childBlock.add(&GCVisualManipulator::parentTransform, "parentTransform");
-    pt->setAffects(affects, true);
+    pt->setAffects(wtAff, true);
     auto lt = childBlock.add(&GCVisualManipulator::localTransform, "localTransform");
-    lt->setAffects(affects, false);
+    lt->setAffects(wtAff, false);
 
-    auto resScale = childBlock.add(&GCVisualManipulator::resultManipulatorsDisplayScale, "resultManipulatorsDisplayScale");
-    resScale->setCompute<Util::generateScale>();
 
-    auto scaleAffects = childBlock.createAffects(&resScale, 1);
+    auto scale = childBlock.add(&GCVisualManipulator::displayScale, "displayScale");
+    scale->setDefaultValue(1.0f);
 
-    auto scale = childBlock.add(&GCVisualManipulator::manipulatorsDisplayScale, "manipulatorsDisplayScale");
-    scale->setAffects(scaleAffects, true);
-
-    auto scaleTransform = childBlock.add(&GCVisualManipulator::scaleTransform, "scaleTransform");
-    scaleTransform->setAffects(scaleAffects, true);
-
-    auto rt = childBlock.add(&GCVisualManipulator::resultTransform, "resultTransform");
-    rt->setAffects(scaleAffects, true);
+    auto scaleMode = childBlock.add(&GCVisualManipulator::scaleMode, "scaleMode");
+    scaleMode->setDefaultValue(ScreenSpaceScale);
     }
   }
 
 GCVisualManipulator::GCVisualManipulator() : _delegate(0)
   {
+  }
+
+Eks::Transform GCVisualManipulator::resultTransform(const GCViewableTransform *tr) const
+  {
+  return computeScaledResultTransform(worldTransform(), scaleMode(), tr, displayScale());
+  }
+
+Eks::Transform GCVisualManipulator::computeScaledResultTransform(
+    const Eks::Transform &worldTransform,
+    ScaleType mode,
+    const GCViewableTransform *tr,
+    float displayScale)
+  {
+  float scaleToApply = displayScale;
+  if(mode == ScreenSpaceScale)
+    {
+    xAssert(tr);
+    if(tr)
+      {
+      float dist = (worldTransform.translation() - tr->transform().translation()).norm();
+
+      float x = 0.0f, y = 0.0f;
+      tr->approximatePixelSizeAtDistance(dist, x, y);
+
+      scaleToApply *= x;
+      }
+    }
+
+  Eks::Transform result = worldTransform;
+  result.scale(scaleToApply);
+  return result;
   }
 
 const GCVisualManipulator::Delegate *GCVisualManipulator::delegate() const
@@ -104,18 +92,18 @@ void GCVisualManipulator::render(const GCCamera *camera, Eks::Renderer *r) const
     }
   }
 
-Eks::Vector3D GCVisualManipulator::focalPoint() const
+Eks::Vector3D GCVisualManipulator::focalPoint(const GCViewableTransform *cam) const
   {
   if(delegate())
     {
-    return delegate()->focalPoint(this);
+    return resultTransform(cam).translation();
     }
   return Eks::Vector3D::Zero();
   }
 
 bool GCVisualManipulator::hitTest(
     const QPoint &widgetSpacePoint,
-    const GCCamera *camera,
+    const GCViewableTransform *camera,
     const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked)
@@ -286,7 +274,7 @@ void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3D &rel
   {
   rel = Eks::Vector3D::Zero();
 
-  Eks::Vector3D focus = focalPoint();
+  Eks::Vector3D focus = focalPoint(e.cam);
   const Eks::Vector3D &camPosition = e.cam->transform().translation();
   float focalDistanceFromCamera = (camPosition - focus).norm();
 
@@ -299,9 +287,6 @@ void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3D &rel
 
     float lastHitT = a.closestPointOn(p);
     float hitT = b.closestPointOn(p);
-
-    xAssert(fabs(lastHitT) < HUGE_VAL);
-    xAssert(fabs(hitT) < HUGE_VAL);
 
     if(lastHitT > 0.0f && lastHitT < HUGE_VAL &&
        hitT > 0.0f && hitT < HUGE_VAL)
