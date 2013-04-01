@@ -121,7 +121,7 @@ void GCShader::setupShaderRuntime(GCShader *shader)
 void GCShader::bind(Eks::Renderer *r) const
   {
   Eks::Shader *s = runtimeShader().instance;
-  r->setShader(s, &layout);
+  r->setShader(s, &_layout);
 
   s->setShaderConstantDatas(0, constantDatas.size(), constantDatas.data());
   s->setShaderResources(0, resources.size(), resources.data());
@@ -157,7 +157,7 @@ void GCStaticShader::computeShaderRuntime(GCStaticShader *shader)
     lock.data(),
     &shader->fragment,
     &shader->vertex,
-    &shader->layout
+    &shader->_layout
     };
 
   GCShaderInterface *ifc = shader->findInterface<GCShaderInterface>();

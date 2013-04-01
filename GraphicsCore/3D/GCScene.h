@@ -81,7 +81,7 @@ private:
   Eks::IndexGeometry _boundIndices;
   Eks::Shader *_shader;
   Eks::ShaderConstantData *_shaderData;
-  Eks::ShaderVertexLayout *_shaderLayout;
+  const Eks::ShaderVertexLayout *_shaderLayout;
   };
 
 S_PROPERTY_INTERFACE(GCManipulatableScene)

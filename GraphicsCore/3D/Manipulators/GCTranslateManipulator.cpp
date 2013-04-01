@@ -1,4 +1,5 @@
 #include "GCTranslateManipulator.h"
+#include "GCDistanceManipulator.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
 #include "3D/GCCamera.h"
@@ -9,83 +10,9 @@
 #include "XLine.h"
 #include "XCuboid.h"
 
-class CentralTranslateDelegate : public GCVisualManipulator::Delegate
-  {
-public:
-  CentralTranslateDelegate()
-    {
-    /*XModeller m(&_geo, 64);
-
-    m.drawCube(Eks::Vector3D(0.1f, 0.0f, 0.0f), Eks::Vector3D(0.0f, 0.1f, 0.0f), Eks::Vector3D(0.0f, 0.0f, 0.1f));
-    */}
-
-  virtual bool hitTest(
-      const GCVisualManipulator *toRender,
-      const QPoint &,
-      const GCCamera *camera,
-      const Eks::Vector3D &clickDirection, // in world space
-      float *) const
-    {
-    const Eks::Vector3D &camTrans = camera->transform().translation();
-    Eks::Line l(camTrans, clickDirection, Eks::Line::PointAndDirection);
-
-    const Eks::Transform &wC = toRender->worldTransform();
-
-    Eks::Matrix4x4 t = wC.matrix();
-    Eks::Matrix4x4 tInv = t.inverse();
-    Eks::Transform lineTransform(tInv);
-    l.transform(lineTransform);
-
-    /* // need to rethink this.
-    if(Eks::MeshUtilities::intersect("vertex", l, _geo))
-      {
-      const Eks::Vector3D &wcTrans = wC.translation();
-      *distance = (camTrans - wcTrans).norm() - 0.05f;
-      return true;
-      }*/
-
-    return false;
-    }
-
-  virtual void render(const GCVisualManipulator *,
-      const GCCamera *,
-      Eks::Renderer *) const
-    {
-    xAssertFail();
-    /*
-    const Eks::Transform &wC = toRender->worldCentre();
-
-    r->pushTransform(wC);
-    r->setShader(&_shader);
-    r->drawGeometry(_geo);
-    r->setShader(0);
-    r->popTransform();*/
-    }
-
-private:
-  Eks::Geometry _geo;
-  Eks::Shader _shader;
-  };
-
-
 class LinearTranslateDelegate : public GCVisualManipulator::Delegate
   {
 public:
-  LinearTranslateDelegate()
-    {
-    /*
-    XModeller m(&_geo, 64);
-
-    m.begin(XModeller::Lines);
-      m.vertex(0.0f, 0.0f, 0.0f);
-      m.vertex(1.0f, 0.0f, 0.0f);
-    m.end();
-
-    m.drawCone(Eks::Vector3D(0.8f, 0.0f, 0.0f), Eks::Vector3D(1.0f, 0.0f, 0.0f), 0.2f, 0.06f);
-
-    _shader.setToDefinedType("plainColour");*/
-    }
-
   virtual bool hitTest(
       const GCVisualManipulator *manip,
       const QPoint &,
@@ -131,9 +58,41 @@ public:
 
   virtual void render(const GCVisualManipulator *manip,
       const GCCamera *,
-      Eks::Renderer *) const
+      Eks::Renderer *r) const
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
+
+    if(!_geo.isValid())
+      {
+      Eks::TemporaryAllocator alloc(manip->temporaryAllocator());
+      Eks::Modeller m(&alloc, 64);
+
+      m.begin(Eks::Modeller::Lines);
+        m.vertex(0.0f, 0.0f, 0.0f);
+        m.vertex(1.0f, 0.0f, 0.0f);
+      m.end();
+
+      m.drawCone(Eks::Vector3D(0.8f, 0.0f, 0.0f), Eks::Vector3D(1.0f, 0.0f, 0.0f), 0.2f, 0.06f);
+
+      Eks::ShaderVertexLayoutDescription::Semantic sem[] =
+      {
+        Eks::ShaderVertexLayoutDescription::Position
+      };
+
+      m.bakeVertices(r, sem, X_ARRAY_COUNT(sem), &_geo);
+
+      m.bakeTriangles(r, sem, X_ARRAY_COUNT(sem), &_tigeo);
+      m.bakeLines(r, sem, X_ARRAY_COUNT(sem), &_ligeo);
+
+      _shader = r->stockShader(Eks::PlainColour, &_layout);
+
+      Eks::ShaderConstantDataDescription dataDesc[] =
+      {
+        { "colour", Eks::ShaderConstantDataDescription::Float4 }
+      };
+      const Eks::Colour &col = Eks::Colour(toRender->lockDirection());
+      Eks::ShaderConstantData::delayedCreate(_data, r, dataDesc, X_ARRAY_COUNT(dataDesc), col.data());
+      }
 
     Eks::Transform wC = toRender->worldTransform();
 
@@ -150,19 +109,22 @@ public:
     Eks::Vector4D col;
     col(3) = 1.0f;
     col.head<3>() = toRender->lockDirection();
-/*
-    _shader.getVariable("colour")->setValue(col);
 
-    r->pushTransform(wC);
-    r->setShader(&_shader);
-    r->drawGeometry(_geo);
-    r->setShader(0);
-    r->popTransform();*/
+    r->setTransform(wC);
+
+    _shader->setShaderConstantData(0, &_data);
+    r->setShader(_shader, _layout);
+    r->drawTriangles(&_tigeo, &_geo);
+    r->drawLines(&_ligeo, &_geo);
     }
 
 private:
-  Eks::Geometry _geo;
-  Eks::Shader _shader;
+  mutable Eks::Geometry _geo;
+  mutable Eks::IndexGeometry _tigeo;
+  mutable Eks::IndexGeometry _ligeo;
+  mutable Eks::Shader *_shader;
+  mutable const Eks::ShaderVertexLayout *_layout;
+  mutable Eks::ShaderConstantData _data;
   };
 
 S_IMPLEMENT_PROPERTY(GCSingularTranslateManipulator, GraphicsCore)
@@ -172,7 +134,13 @@ void GCSingularTranslateManipulator::createTypeInformation(Shift::PropertyInform
   {
   if(data.registerAttributes)
     {
-    info->createChildrenBlock(data);
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto world = childBlock.child(&GCDistanceManipulator::worldTransform);
+
+
+    auto result = childBlock.overrideChild(&GCDistanceManipulator::resultTransform);
+    result->setDefaultInput(world);
     }
   }
 
@@ -228,7 +196,7 @@ void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyp
       auto iInfo = info->extendContainedProperty(data, components[i]);
       auto iChildBlock = iInfo->createChildrenBlock(data);
 
-      auto iWt = iChildBlock.overrideChild(&GCSingularTranslateManipulator::worldTransform);
+      auto iWt = iChildBlock.overrideChild(&GCSingularTranslateManipulator::parentTransform);
       iWt->setDefaultInput(wt);
 
       auto lm = iChildBlock.overrideChild(&GCSingularTranslateManipulator::lockMode);
@@ -242,7 +210,7 @@ void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyp
 
     auto iInfo = info->extendContainedProperty(data, cent);
     auto iChildBlock = iInfo->createChildrenBlock(data);
-    auto iWt = iChildBlock.overrideChild(&GCSingularTranslateManipulator::worldTransform);
+    auto iWt = iChildBlock.overrideChild(&GCSingularTranslateManipulator::parentTransform);
     iWt->setDefaultInput(wt);
     }
   }
@@ -252,7 +220,7 @@ GCTranslateManipulator::GCTranslateManipulator()
   x.createDelegate<LinearTranslateDelegate>();
   y.createDelegate<LinearTranslateDelegate>();
   z.createDelegate<LinearTranslateDelegate>();
-  central.createDelegate<CentralTranslateDelegate>();
+  central.createDelegate<GCManipulatorDistanceDelegate>();
   }
 
 void GCTranslateManipulator::addDriven(TransformProperty *in)

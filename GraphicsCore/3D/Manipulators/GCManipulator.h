@@ -38,13 +38,19 @@ protected:
   template <typename T, typename X> static T *createManipulator(
       Shift::PropertyArray *parent,
       X *x,
-      const GCManipulatable::ManipInfo &info)
+      const GCManipulatable::ManipInfo &info,
+      TransformProperty *localTransform)
     {
     T *manip = parent->add<T>();
 
     if(info.parentTransform)
       {
       manip->parentTransform.setInput(info.parentTransform);
+      }
+
+    if(localTransform)
+      {
+      manip->localTransform.setInput(localTransform);
       }
 
     manip->addDriven(x);
@@ -88,6 +94,11 @@ public:
   TransformProperty parentTransform;
   TransformProperty localTransform;
   TransformProperty worldTransform;
+  TransformProperty resultTransform;
+
+
+  TransformProperty scaleTransform;
+  Shift::EnumProperty scaleMode;
   Shift::FloatProperty manipulatorsDisplayScale;
 
   virtual Eks::Vector3D focalPoint() const;
@@ -194,8 +205,6 @@ class GRAPHICSCORE_EXPORT GCLinearDragManipulator : public GCVisualDragManipulat
   S_ABSTRACT_PROPERTY_CONTAINER(GCLinearDragManipulator, GCVisualDragManipulator, 0)
 
 public:
-  GCLinearDragManipulator();
-
   enum LockMode
     {
     Free,

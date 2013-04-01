@@ -81,8 +81,10 @@ public:
 
   GCRuntimeShader runtimeShaderCore;
 
+  const Eks::ShaderVertexLayout *layout() { return &_layout; }
+
 protected:
-  Eks::ShaderVertexLayout layout;
+  Eks::ShaderVertexLayout _layout;
 
   GCShaderBindableResource::DataBlock constantDatas;
   GCShaderBindableResource::ResourceBlock resources;

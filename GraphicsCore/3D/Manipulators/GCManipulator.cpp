@@ -39,13 +39,25 @@ void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&GCVisualManipulator::show, "show");
+    auto sh = childBlock.add(&GCVisualManipulator::show, "show");
+    sh->setDefaultValue(true);
 
     struct Utils
       {
       static void computeWorldTransform(GCVisualManipulator *manip)
         {
         manip->worldTransform = manip->parentTransform() * manip->localTransform();
+        }
+
+      static void generateScale(GCVisualManipulator *manip)
+        {
+        const Eks::Transform &tr = manip->resultTransform();
+        const Eks::Transform &sc = manip->scaleTransform();
+
+        float scale = manip->manipulatorDisplayScale();
+
+        float dist = (tr.translation()-sc.translation()).norm();
+        manip->manipulatorsDisplayScale = 1.0f / dist;
         }
       };
 
@@ -59,7 +71,19 @@ void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<
     auto lt = childBlock.add(&GCVisualManipulator::localTransform, "localTransform");
     lt->setAffects(affects, false);
 
-    childBlock.add(&GCVisualManipulator::manipulatorsDisplayScale, "manipulatorsDisplayScale");
+    auto resScale = childBlock.add(&GCVisualManipulator::resultManipulatorsDisplayScale, "resultManipulatorsDisplayScale");
+    resScale->setCompute<Util::generateScale>();
+
+    auto scaleAffects = childBlock.createAffects(&resScale, 1);
+
+    auto scale = childBlock.add(&GCVisualManipulator::manipulatorsDisplayScale, "manipulatorsDisplayScale");
+    scale->setAffects(scaleAffects, true);
+
+    auto scaleTransform = childBlock.add(&GCVisualManipulator::scaleTransform, "scaleTransform");
+    scaleTransform->setAffects(scaleAffects, true);
+
+    auto rt = childBlock.add(&GCVisualManipulator::resultTransform, "resultTransform");
+    rt->setAffects(scaleAffects, true);
     }
   }
 
@@ -74,7 +98,7 @@ const GCVisualManipulator::Delegate *GCVisualManipulator::delegate() const
 
 void GCVisualManipulator::render(const GCCamera *camera, Eks::Renderer *r) const
   {
-  if(delegate())
+  if(show() && delegate())
     {
     delegate()->render(this, camera, r);
     }
@@ -256,10 +280,6 @@ void GCLinearDragManipulator::createTypeInformation(Shift::PropertyInformationTy
     childBlock.add(&GCLinearDragManipulator::lockMode, "lockMode");
     childBlock.add(&GCLinearDragManipulator::lockDirection, "lockDirection");
     }
-  }
-
-GCLinearDragManipulator::GCLinearDragManipulator()
-  {
   }
 
 void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3D &rel)

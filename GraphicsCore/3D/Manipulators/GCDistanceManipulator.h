@@ -6,6 +6,30 @@
 #include "shift/Properties/sbaseproperties.h"
 #include "shift/Properties/sbasepointerproperties.h"
 
+class GCManipulatorDistanceDelegate : public GCVisualManipulator::Delegate
+  {
+public:
+  virtual bool hitTest(
+      const GCVisualManipulator *manip,
+      const QPoint &,
+      const GCCamera *camera,
+      const Eks::Vector3D &clickDirection, // in world space
+      float *distance) const;
+
+  virtual void render(const GCVisualManipulator *manip,
+      const GCCamera *,
+      Eks::Renderer *r) const;
+
+  virtual Eks::Vector3D focalPoint(const GCVisualManipulator *manip) const;
+
+private:
+  mutable Eks::IndexGeometry _igeo;
+  mutable Eks::Geometry _geo;
+  mutable Eks::Shader *_shader;
+  mutable const Eks::ShaderVertexLayout *_layout;
+  mutable Eks::ShaderConstantData _data;
+  };
+
 class GRAPHICSCORE_EXPORT GCDistanceManipulator : public GCLinearDragManipulator
   {
   S_PROPERTY_CONTAINER(GCDistanceManipulator, GCLinearDragManipulator, 0);
