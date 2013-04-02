@@ -130,13 +130,9 @@ void GCVisualCompoundManipulator::createTypeInformation(Shift::PropertyInformati
     }
   }
 
-GCVisualCompoundManipulator::GCVisualCompoundManipulator()
-  {
-  }
-
 bool GCVisualCompoundManipulator::hitTest(
     const QPoint &widgetSpacePoint,
-    const GCCamera *camera,
+    const GCViewableTransform *camera,
     const Eks::Vector3D &clickDirection, // in world space
     float *distance,
     GCVisualManipulator **clicked)
@@ -201,10 +197,6 @@ void GCVisualDragManipulator::createTypeInformation(Shift::PropertyInformationTy
     }
   }
 
-GCVisualDragManipulator::GCVisualDragManipulator()
-  {
-  }
-
 void GCVisualDragManipulator::onMouseClick(const MouseEvent &)
   {
   }
@@ -232,10 +224,6 @@ void GCVisualClickManipulator::createTypeInformation(Shift::PropertyInformationT
     {
     info->createChildrenBlock(data);
     }
-  }
-
-GCVisualClickManipulator::GCVisualClickManipulator()
-  {
   }
 
 void GCVisualClickManipulator::onMouseClick(const MouseEvent &)

@@ -117,21 +117,19 @@ class GRAPHICSCORE_EXPORT GCVisualCompoundManipulator : public GCVisualManipulat
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualCompoundManipulator, GCVisualManipulator, 0)
 
 public:
-  GCVisualCompoundManipulator();
-
-  virtual bool hitTest(
+  bool hitTest(
     const QPoint &widgetSpacePoint,
-    const GCCamera *camera,
+    const GCViewableTransform *camera,
     const Eks::Vector3D &clickDirection, // in world space
     float *distance,
-    GCVisualManipulator **clicked);
+    GCVisualManipulator **clicked) X_OVERRIDE;
 
-  virtual void render(const GCCamera *camera, Eks::Renderer *r) const;
+  void render(const GCCamera *camera, Eks::Renderer *r) const X_OVERRIDE;
 
-  virtual void onMouseClick(const MouseEvent &);
-  virtual void onMouseDoubleClick(const MouseEvent &);
-  virtual void onMouseDrag(const MouseMoveEvent &);
-  virtual void onMouseRelease(const MouseEvent &);
+  void onMouseClick(const MouseEvent &) X_OVERRIDE;
+  void onMouseDoubleClick(const MouseEvent &) X_OVERRIDE;
+  void onMouseDrag(const MouseMoveEvent &) X_OVERRIDE;
+  void onMouseRelease(const MouseEvent &) X_OVERRIDE;
   };
 
 S_PROPERTY_INTERFACE(GCVisualCompoundManipulator);
@@ -141,14 +139,12 @@ class GRAPHICSCORE_EXPORT GCVisualDragManipulator : public GCVisualManipulator
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualDragManipulator, GCVisualManipulator, 0)
 
 public:
-  GCVisualDragManipulator();
-
   virtual void onDrag(const MouseMoveEvent &) = 0;
 
-  virtual void onMouseClick(const MouseEvent &);
-  virtual void onMouseDoubleClick(const MouseEvent &);
-  virtual void onMouseDrag(const MouseMoveEvent &);
-  virtual void onMouseRelease(const MouseEvent &);
+  void onMouseClick(const MouseEvent &) X_OVERRIDE;
+  void onMouseDoubleClick(const MouseEvent &) X_OVERRIDE;
+  void onMouseDrag(const MouseMoveEvent &) X_OVERRIDE;
+  void onMouseRelease(const MouseEvent &) X_OVERRIDE;
   };
 
 S_PROPERTY_INTERFACE(GCVisualDragManipulator);
@@ -158,14 +154,12 @@ class GRAPHICSCORE_EXPORT GCVisualClickManipulator : public GCVisualManipulator
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualClickManipulator, GCVisualManipulator, 0)
 
 public:
-  GCVisualClickManipulator();
-
   virtual void onClick() = 0;
 
-  virtual void onMouseClick(const MouseEvent &);
-  virtual void onMouseDoubleClick(const MouseEvent &);
-  virtual void onMouseDrag(const MouseMoveEvent &);
-  virtual void onMouseRelease(const MouseEvent &);
+  void onMouseClick(const MouseEvent &) X_OVERRIDE;
+  void onMouseDoubleClick(const MouseEvent &) X_OVERRIDE;
+  void onMouseDrag(const MouseMoveEvent &) X_OVERRIDE;
+  void onMouseRelease(const MouseEvent &) X_OVERRIDE;
   };
 
 S_PROPERTY_INTERFACE(GCVisualClickManipulator);
