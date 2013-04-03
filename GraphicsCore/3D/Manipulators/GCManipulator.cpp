@@ -342,7 +342,7 @@ void GCAngularDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Quaternion &
 
   Eks::Vector3D focus = focalPoint(e.cam);
   const Eks::Vector3D &camPosition = e.cam->transform().translation();
-  float focalDistanceFromCamera = (camPosition - focus).norm();
+  //float focalDistanceFromCamera = (camPosition - focus).norm();
 
   xuint32 lock = lockMode();
   if(lock == Planar)
@@ -356,9 +356,11 @@ void GCAngularDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Quaternion &
     Eks::Vector3D lastHit = a.sample(p.intersection(a));
     Eks::Vector3D hit = b.sample(p.intersection(b));
 
-    float angle =
+    float oldAngle = f.up().dot(lastHit - p.position());
+    float angle = f.up().dot(hit - p.position());
 
-    rel = hit - lastHit;
+
+    rel = Eigen::AngleAxisf(angle-oldAngle, p.normal());
     }
   else // Free.
     {
