@@ -29,6 +29,7 @@ HEADERS += GCGlobal.h \
     3D/Manipulators/GCButtonManipulator.h \
     3D/Manipulators/GCDistanceManipulator.h \
     3D/Manipulators/GCTranslateManipulator.h \
+    3D/Manipulators/GCRotateManipulator.h \
     3D/GCShaderDataBindings.h \
     3D/GCTexture.h \
     GCComposeTransform.h \
@@ -38,7 +39,8 @@ HEADERS += GCGlobal.h \
     2D/GCElement.h \
     2D/GCProject3D.h \
     GCNodeController.h \
-    3D/Manipulators/GCManipulatable.h
+    3D/Manipulators/GCManipulatable.h \
+    3D/Manipulators/GCManipulatorHelpers.h
 
 INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
 
@@ -64,6 +66,7 @@ SOURCES += \
     3D/Manipulators/GCButtonManipulator.cpp \
     3D/Manipulators/GCDistanceManipulator.cpp \
     3D/Manipulators/GCTranslateManipulator.cpp \
+    3D/Manipulators/GCRotateManipulator.cpp \
     3D/GCShaderDataBindings.cpp \
     3D/GCTexture.cpp \
     GCComposeTransform.cpp \

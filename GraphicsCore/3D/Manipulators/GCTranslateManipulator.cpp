@@ -2,6 +2,7 @@
 #include "GCDistanceManipulator.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
+#include "GCManipulatorHelpers.h"
 #include "3D/GCCamera.h"
 #include "XModeller.h"
 #include "XRenderer.h"
@@ -25,7 +26,7 @@ public:
     const Eks::Vector3D &camTrans = camera->transform().translation();
     Eks::Line clickLine(camTrans, clickDirection, Eks::Line::PointAndDirection);
 
-    Eks::Line manipLine(Eks::Vector3D(0.0f, 0.0f, 0.0f), toRender->lockDirection().normalized());
+    Eks::Line manipLine(Eks::Vector3D::Zero(), toRender->lockDirection().normalized());
 
     const Eks::Transform &wC = toRender->resultTransform(camera);
     manipLine.transform(wC);
@@ -139,6 +140,7 @@ void GCSingularTranslateManipulator::createTypeInformation(Shift::PropertyInform
   }
 
 GCSingularTranslateManipulator::GCSingularTranslateManipulator()
+    : _driven(generalPurposeAllocator())
   {
   }
 
@@ -150,57 +152,14 @@ void GCSingularTranslateManipulator::addDriven(TransformProperty *in)
 void GCSingularTranslateManipulator::onDrag(const MouseMoveEvent &e)
   {
   Eks::Vector3D relativeDisp;
-  GCLinearDragManipulator::onDrag(e, relativeDisp);
+  GCDisplacementDragManipulator::onDrag(e, relativeDisp);
 
-  Q_FOREACH(TransformProperty *t, _driven)
+  xForeach(TransformProperty *t, _driven)
     {
     Eks::Transform trans = t->value();
     trans.translation() += relativeDisp;
     *t = trans;
     }
-  }
-
-template <typename Parent, typename Child, typename Fn>
-void embedChildManipulator(
-    Shift::PropertyInformationTyped<Parent> *parentInfo,
-    const Shift::PropertyInformationCreateData &data,
-    Shift::PropertyInformationChildrenCreatorTyped<Parent> &parentBlock,
-    Shift::PropertyInstanceInformationTyped<Parent, Child> *inst,
-    const Fn &extraInit)
-  {
-  auto iInfo = parentInfo->extendContainedProperty(data, inst);
-  auto block = iInfo->createChildrenBlock(data);
-
-  auto rt = parentBlock.child(&GCTranslateManipulator::worldTransform);
-  auto sm = parentBlock.child(&GCTranslateManipulator::scaleMode);
-  auto ds = parentBlock.child(&GCTranslateManipulator::displayScale);
-
-  auto iPt = block.overrideChild(&GCSingularTranslateManipulator::parentTransform);
-  iPt->setDefaultInput(rt);
-
-  auto iSm = block.overrideChild(&GCSingularTranslateManipulator::scaleMode);
-  iSm->setDefaultInput(sm);
-
-  auto iDs = block.overrideChild(&GCSingularTranslateManipulator::displayScale);
-  iDs->setDefaultInput(ds);
-
-  extraInit(block);
-  }
-
-template <typename Parent, typename Child>
-void embedChildManipulator(
-    Shift::PropertyInformationTyped<Parent> *info,
-    const Shift::PropertyInformationCreateData &data,
-    Shift::PropertyInformationChildrenCreatorTyped<Parent> &parentBlock,
-    Shift::PropertyInstanceInformationTyped<Parent, Child> *inst)
-  {
-  embedChildManipulator(
-    info,
-    data,
-    parentBlock,
-    inst,
-    [](Shift::PropertyInformationChildrenCreatorTyped<Child> &) { }
-    );
   }
 
 S_IMPLEMENT_PROPERTY(GCTranslateManipulator, GraphicsCore)

@@ -164,9 +164,9 @@ public:
 
 S_PROPERTY_INTERFACE(GCVisualClickManipulator);
 
-class GRAPHICSCORE_EXPORT GCLinearDragManipulator : public GCVisualDragManipulator
+class GRAPHICSCORE_EXPORT GCDisplacementDragManipulator : public GCVisualDragManipulator
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCLinearDragManipulator, GCVisualDragManipulator, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCDisplacementDragManipulator, GCVisualDragManipulator, 0)
 
 public:
   enum LockMode
@@ -182,6 +182,25 @@ public:
   void onDrag(const MouseMoveEvent &, Eks::Vector3D &rel);
   };
 
-S_PROPERTY_INTERFACE(GCLinearDragManipulator);
+S_PROPERTY_INTERFACE(GCDisplacementDragManipulator);
+
+class GRAPHICSCORE_EXPORT GCAngularDragManipulator : public GCVisualDragManipulator
+  {
+  S_ABSTRACT_PROPERTY_CONTAINER(GCAngularDragManipulator, GCVisualDragManipulator, 0)
+
+public:
+  enum LockMode
+    {
+    Free,
+    Planar
+    };
+
+  Shift::EnumProperty lockMode;
+  Shift::Vector3DProperty lockDirection; // normal for planar, direction for linear, local space
+
+  void onDrag(const MouseMoveEvent &, Eks::Quaternion &rel);
+  };
+
+S_PROPERTY_INTERFACE(GCAngularDragManipulator);
 
 #endif // GCMANIPULATOR_H

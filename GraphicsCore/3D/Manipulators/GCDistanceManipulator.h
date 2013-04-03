@@ -28,9 +28,9 @@ private:
   mutable Eks::ShaderConstantData _data;
   };
 
-class GRAPHICSCORE_EXPORT GCDistanceManipulator : public GCLinearDragManipulator
+class GRAPHICSCORE_EXPORT GCDistanceManipulator : public GCDisplacementDragManipulator
   {
-  S_PROPERTY_CONTAINER(GCDistanceManipulator, GCLinearDragManipulator, 0);
+  S_PROPERTY_CONTAINER(GCDistanceManipulator, GCDisplacementDragManipulator, 0);
 
 public:
   GCDistanceManipulator();

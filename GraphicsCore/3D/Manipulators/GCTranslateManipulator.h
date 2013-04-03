@@ -1,13 +1,13 @@
 #ifndef GCTRANSLATEMANIPULATOR_H
-#define GCTRANSLATEANIPULATOR_H
+#define GCTRANSLATEMANIPULATOR_H
 
 #include "GCManipulator.h"
 #include "shift/Properties/sbaseproperties.h"
 #include "shift/Properties/sbasepointerproperties.h"
 
-class GCSingularTranslateManipulator : public GCLinearDragManipulator
+class GCSingularTranslateManipulator : public GCDisplacementDragManipulator
   {
-  S_PROPERTY_CONTAINER(GCSingularTranslateManipulator, GCLinearDragManipulator, 0);
+  S_PROPERTY_CONTAINER(GCSingularTranslateManipulator, GCDisplacementDragManipulator, 0);
 
 public:
   GCSingularTranslateManipulator();
@@ -17,7 +17,7 @@ public:
   void onDrag(const MouseMoveEvent &);
 
 private:
-  QVector <TransformProperty *> _driven;
+  Eks::Vector <TransformProperty *> _driven;
   };
 
 S_PROPERTY_INTERFACE(GCSingularTranslateManipulator);
@@ -44,4 +44,4 @@ public:
 
 S_PROPERTY_INTERFACE(GCTranslateManipulator);
 
-#endif // GCDISTANCEMANIPULATOR_H
+#endif // GCTRANSLATEMANIPULATOR_H

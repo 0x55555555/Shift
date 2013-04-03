@@ -128,7 +128,7 @@ void GCDistanceManipulator::addDriven(Shift::FloatProperty *in)
 void GCDistanceManipulator::onDrag(const MouseMoveEvent &e)
   {
   Eks::Vector3D relativeDisp;
-  GCLinearDragManipulator::onDrag(e, relativeDisp);
+  GCDisplacementDragManipulator::onDrag(e, relativeDisp);
 
   float rel = relativeDisp.norm() / scaleFactor();
 
@@ -137,7 +137,7 @@ void GCDistanceManipulator::onDrag(const MouseMoveEvent &e)
     rel *= -1.0f;
     }
 
-  Q_FOREACH(Shift::FloatProperty *f, _driven)
+  xForeach(Shift::FloatProperty *f, _driven)
     {
     float newVal = f->value() + rel;
     if(newVal == newVal && newVal < HUGE_VAL)

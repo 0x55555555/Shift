@@ -4,6 +4,7 @@
 #include "GCRenderable.h"
 #include "XPlane.h"
 #include "XLine.h"
+#include "XFrame"
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualManipulator, GraphicsCore)
 
@@ -244,21 +245,21 @@ void GCVisualClickManipulator::onMouseRelease(const MouseEvent &)
   }
 
 
-S_IMPLEMENT_ABSTRACT_PROPERTY(GCLinearDragManipulator, GraphicsCore)
+S_IMPLEMENT_ABSTRACT_PROPERTY(GCDisplacementDragManipulator, GraphicsCore)
 
-void GCLinearDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCLinearDragManipulator> *info,
+void GCDisplacementDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCDisplacementDragManipulator> *info,
                                                     const Shift::PropertyInformationCreateData &data)
   {
   if(data.registerAttributes)
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&GCLinearDragManipulator::lockMode, "lockMode");
-    childBlock.add(&GCLinearDragManipulator::lockDirection, "lockDirection");
+    childBlock.add(&GCDisplacementDragManipulator::lockMode, "lockMode");
+    childBlock.add(&GCDisplacementDragManipulator::lockDirection, "lockDirection");
     }
   }
 
-void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3D &rel)
+void GCDisplacementDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3D &rel)
   {
   rel = Eks::Vector3D::Zero();
 
@@ -316,5 +317,54 @@ void GCLinearDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3D &rel
     Eks::Vector3D b = camPosition + e.direction*focalDistanceFromCamera;
 
     rel = b - a;
+    }
+  }
+
+
+
+S_IMPLEMENT_ABSTRACT_PROPERTY(GCAngularDragManipulator, GraphicsCore)
+
+void GCAngularDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCAngularDragManipulator> *info,
+                                                    const Shift::PropertyInformationCreateData &data)
+  {
+  if(data.registerAttributes)
+    {
+    auto childBlock = info->createChildrenBlock(data);
+
+    childBlock.add(&GCAngularDragManipulator::lockMode, "lockMode");
+    childBlock.add(&GCAngularDragManipulator::lockDirection, "lockDirection");
+    }
+  }
+
+void GCAngularDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Quaternion &rel)
+  {
+  rel = Eks::Quaternion::Identity();
+
+  Eks::Vector3D focus = focalPoint(e.cam);
+  const Eks::Vector3D &camPosition = e.cam->transform().translation();
+  float focalDistanceFromCamera = (camPosition - focus).norm();
+
+  xuint32 lock = lockMode();
+  if(lock == Planar)
+    {
+    Eks::Plane p(focus, lockDirection());
+    Eks::Line a(camPosition, e.lastDirection, Eks::Line::PointAndDirection);
+    Eks::Line b(camPosition, e.direction, Eks::Line::PointAndDirection);
+
+    Eks::Frame f(p.normal());
+
+    Eks::Vector3D lastHit = a.sample(p.intersection(a));
+    Eks::Vector3D hit = b.sample(p.intersection(b));
+
+    float angle =
+
+    rel = hit - lastHit;
+    }
+  else // Free.
+    {
+    /*Eks::Vector3D a = camPosition + e.lastDirection*focalDistanceFromCamera;
+    Eks::Vector3D b = camPosition + e.direction*focalDistanceFromCamera;
+
+    rel = b - a;*/
     }
   }
