@@ -353,15 +353,18 @@ void GCAngularDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Quaternion &
 
     Eks::Frame f(p.normal());
 
-    Eks::Vector3D lastHit = a.sample(p.intersection(a));
-    Eks::Vector3D hit = b.sample(p.intersection(b));
+    Eks::Vector3D lastHitDir = (a.sample(p.intersection(a)) - p.position()).normalized();
+    Eks::Vector3D hitDir = (b.sample(p.intersection(b)) - p.position()).normalized();
 
-    float oldAngle = f.up().dot((lastHit - p.position()).normalized());
-    float angle = f.up().dot((hit - p.position()).normalized());
+    float x1 = lastHitDir.dot(f.across());
+    float x2 = hitDir.dot(f.across());
+    float y1 = lastHitDir.dot(f.up());
+    float y2 = hitDir.dot(f.up());
 
-    qDebug() << oldAngle << angle << angle - oldAngle;
+    float oldAngle = atan2f(y1, x1);
+    float angle = atan2f(y2, x2);
 
-    rel = Eigen::AngleAxisf(acosf(angle) - acosf(oldAngle), f.facing());
+    rel = Eigen::AngleAxisf(angle - oldAngle, f.facing());
     }
   else // Free.
     {
