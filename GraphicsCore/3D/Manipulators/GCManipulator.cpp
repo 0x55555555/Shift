@@ -267,10 +267,12 @@ void GCDisplacementDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3
   const Eks::Vector3D &camPosition = e.cam->transform().translation();
   float focalDistanceFromCamera = (camPosition - focus).norm();
 
+  Eks::Vector3D lockDir = resultTransform(e.cam) * lockDirection();
+
   xuint32 lock = lockMode();
   if(lock == Linear)
     {
-    Eks::Line p(focus, lockDirection(), Eks::Line::PointAndDirection);
+    Eks::Line p(focus, lockDir, Eks::Line::PointAndDirection);
     Eks::Line a(camPosition, e.lastDirection, Eks::Line::PointAndDirection);
     Eks::Line b(camPosition, e.direction, Eks::Line::PointAndDirection);
 
@@ -292,7 +294,7 @@ void GCDisplacementDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3
       float pT = p.closestPointTo(hit);
 
       rel = p.sample(pT) - p.sample(lastPT);
-      xAssert(fabs(rel.normalized().dot(p.direction())) > 0.97f);
+      xAssert(fabs(rel.normalized().dot(p.direction())) > 0.80f);
 
       if(rel.norm() > HUGE_VAL)
         {
@@ -302,7 +304,7 @@ void GCDisplacementDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3
     }
   else if(lock == Planar)
     {
-    Eks::Plane p(focus, lockDirection());
+    Eks::Plane p(focus, lockDir);
     Eks::Line a(camPosition, e.lastDirection, Eks::Line::PointAndDirection);
     Eks::Line b(camPosition, e.direction, Eks::Line::PointAndDirection);
 
