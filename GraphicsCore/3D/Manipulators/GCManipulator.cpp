@@ -294,7 +294,7 @@ void GCDisplacementDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3
       float pT = p.closestPointTo(hit);
 
       rel = p.sample(pT) - p.sample(lastPT);
-      xAssert(fabs(rel.normalized().dot(p.direction())) > 0.80f);
+      xAssert(fabs(rel.normalized().dot(p.direction().normalized())) > 0.80f);
 
       if(rel.norm() > HUGE_VAL)
         {
