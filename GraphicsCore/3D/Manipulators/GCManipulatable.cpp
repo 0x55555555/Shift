@@ -2,7 +2,7 @@
 #include "GCRenderable.h"
 
 void GCManipulatable::addManipulators(
-    Shift::PropertyArray *arr,
+    Shift::Array *arr,
     const ManipInfo &info)
   {
   GCRenderablePointerArray *children = manipulatableChildren();

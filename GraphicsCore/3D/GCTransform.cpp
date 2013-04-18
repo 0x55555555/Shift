@@ -53,7 +53,7 @@ void GCTransform::render(Eks::Renderer *r, const RenderState &state) const
   }
 
 void GCTransform::addManipulators(
-    Shift::PropertyArray *a,
+    Shift::Array *a,
     const ManipInfo &info)
   {
   GCTranslateManipulator *manip = a->add<GCTranslateManipulator>();

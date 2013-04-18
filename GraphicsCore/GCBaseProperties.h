@@ -166,7 +166,7 @@ public:
   class EmbeddedInstanceInformation : public Shift::PODPropertyBase<Eks::Renderer *, GCRenderer>::EmbeddedInstanceInformation
     {
   public:
-    void initiateProperty(Property *propertyToInitiate) const;
+    void initiateAttribute(Attribute *propertyToInitiate) const;
     };
 
   enum { TypeId = 151 };

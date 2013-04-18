@@ -2,7 +2,7 @@
 #define GCMANIPULATOR_H
 
 #include "GCGlobal.h"
-#include "shift/Properties/spropertycontainer.h"
+#include "shift/Properties/scontainer.h"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "GCBaseProperties.h"
 #include "3D/GCCamera.h"
@@ -20,9 +20,9 @@ class GCRenderable;
 class GCRenderablePointerArray;
 class GCViewableTransform;
 
-class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::PropertyContainer
+class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::Container
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, PropertyContainer, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, Container, 0)
 
 public:
   GCVisualManipulator();

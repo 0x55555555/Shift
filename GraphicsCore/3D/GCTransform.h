@@ -19,7 +19,7 @@ public:
   void render(Eks::Renderer *, const RenderState &state) const X_OVERRIDE;
 
   GCRenderablePointerArray *manipulatableChildren() { return &renderGroup; }
-  void addManipulators(Shift::PropertyArray *, const ManipInfo &info) X_OVERRIDE;
+  void addManipulators(Shift::Array *, const ManipInfo &info) X_OVERRIDE;
 
   void intersect(const Eks::Line& line, Selector *) X_OVERRIDE;
   void intersect(const Eks::Frustum& frus, Selector *) X_OVERRIDE;

@@ -16,7 +16,7 @@ public:
   Shift::FloatProperty depth;
 
 private:
-  void addManipulators(Shift::PropertyArray *, const ManipInfo &info) X_OVERRIDE;
+  void addManipulators(Shift::Array *, const ManipInfo &info) X_OVERRIDE;
   static void computeGeometry(MCCuboid* cube);
   };
 

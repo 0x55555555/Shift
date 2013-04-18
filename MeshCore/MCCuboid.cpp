@@ -72,7 +72,7 @@ void MCCuboid::computeGeometry(MCCuboid* cube)
   p.computeNormals();
   }
 
-void MCCuboid::addManipulators(Shift::PropertyArray *a, const ManipInfo &info)
+void MCCuboid::addManipulators(Shift::Array *a, const ManipInfo &info)
   {
   // X
     {

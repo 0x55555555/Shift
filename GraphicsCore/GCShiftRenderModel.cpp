@@ -1,7 +1,7 @@
 #include "GCShiftRenderModel.h"
 #include "shift/sentity.h"
-#include "shift/Properties/spropertycontaineriterators.h"
-#include "shift/Properties/sproperty.inl"
+#include "shift/Properties/scontaineriterators.h"
+#include "shift/Properties/sattribute.inl"
 
 #if 0
 
