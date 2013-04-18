@@ -57,9 +57,9 @@ public:
       const Shift::Property *) const = 0;
   };
 
-class GRAPHICSCORE_EXPORT GCShaderConstantData : public Shift::PropertyContainer
+class GRAPHICSCORE_EXPORT GCShaderConstantData : public Shift::Container
   {
-  S_PROPERTY_CONTAINER(GCShaderConstantData, Shift::PropertyContainer, 0)
+  S_PROPERTY_CONTAINER(GCShaderConstantData, Shift::Container, 0)
 
 public:
   GCRenderer renderer;

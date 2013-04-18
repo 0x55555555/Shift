@@ -21,9 +21,9 @@ class GCElementUnCentre : public MCSimple
   S_ENTITY(GCElementUnCentre, MCSimple, 0)
   };
 
-class GRAPHICSCORE_EXPORT GCInteractionHandler : public Shift::PropertyContainer
+class GRAPHICSCORE_EXPORT GCInteractionHandler : public Shift::Container
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCInteractionHandler, Shift::PropertyContainer, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCInteractionHandler, Shift::Container, 0)
 
 public:
   virtual void onRelease(GCElement *e, int x, int y) = 0;
@@ -97,19 +97,19 @@ public:
 
   inline void first(Iterator &i) const
     {
-    Property *prop = Base<GCElementWithUIHandler, GCElement, NilExtraData>::property();
+    Attribute *prop = Base<GCElementWithUIHandler, GCElement, NilExtraData>::attribute();
     GCElement *el = prop->castTo<GCElement>();
     if(el && el->interactionHandler() != 0)
       {
-      i.setProperty(el);
+      i.setAttribute(el);
       return;
       }
-    i.setProperty(0);
+    i.setAttribute(0);
     }
 
   inline static void next(Iterator &i)
     {
-    i.setProperty(0);
+    i.setAttribute(0);
     }
   };
 }

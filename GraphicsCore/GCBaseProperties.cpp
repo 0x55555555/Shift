@@ -22,7 +22,7 @@ IMPLEMENT_POD_GC_PROPERTY(TransformProperty);
 IMPLEMENT_POD_GC_PROPERTY(ComplexTransformProperty);
 IMPLEMENT_POD_GC_PROPERTY(GCBoundingBox)
 
-void GCBoundingBox::assignProperty(const Property *f, Property *t)
+void GCBoundingBox::assignBetween(const Attribute *f, Attribute *t)
   {
   GCBoundingBox *to = t->uncheckedCastTo<GCBoundingBox>();
 
@@ -34,7 +34,7 @@ void GCBoundingBox::assignProperty(const Property *f, Property *t)
     }
   }
 
-void Matrix3x3Property::assignProperty(const Property *f, Property *t)
+void Matrix3x3Property::assignBetween(const Attribute *f, Attribute *t)
   {
   Matrix3x3Property *to = t->uncheckedCastTo<Matrix3x3Property>();
 
@@ -46,7 +46,7 @@ void Matrix3x3Property::assignProperty(const Property *f, Property *t)
     }
   }
 
-void TransformProperty::assignProperty(const Property *f, Property *t)
+void TransformProperty::assignBetween(const Attribute *f, Attribute *t)
   {
   TransformProperty *to = t->uncheckedCastTo<TransformProperty>();
 
@@ -65,7 +65,7 @@ void TransformProperty::assignProperty(const Property *f, Property *t)
     }
   }
 
-void ComplexTransformProperty::assignProperty(const Property *f, Property *t)
+void ComplexTransformProperty::assignBetween(const Attribute *f, Attribute *t)
   {
   ComplexTransformProperty *to = t->uncheckedCastTo<ComplexTransformProperty>();
 
@@ -152,7 +152,7 @@ void GCRenderer::createTypeInformation(
   {
   }
 
-void GCRenderer::EmbeddedInstanceInformation::initiateProperty(Property *propertyToInitiate) const
+void GCRenderer::EmbeddedInstanceInformation::initiateAttribute(Attribute *propertyToInitiate) const
   {
   propertyToInitiate->uncheckedCastTo<GCRenderer>()->_value = 0;
   }

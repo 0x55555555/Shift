@@ -18,7 +18,7 @@ public:
   virtual float evaluate(const Eks::Vector3D &p) const;
 
 private:
-  virtual void addManipulators(Shift::PropertyArray *, const ManipInfo &info) X_OVERRIDE;
+  virtual void addManipulators(Shift::Array *, const ManipInfo &info) X_OVERRIDE;
   };
 
 S_PROPERTY_INTERFACE(MCSphere);

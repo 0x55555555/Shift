@@ -43,7 +43,7 @@ XProperties:
 public:
   GCManipulatableScene();
 
-  Shift::PropertyArray manipulators;
+  Shift::Array manipulators;
   Shift::PointerArray selection;
 
   Shift::FloatProperty manipulatorDisplayScale;

@@ -25,11 +25,11 @@ public:
     };
 
   virtual GCRenderablePointerArray *manipulatableChildren() { return 0; }
-  virtual void addManipulators(Shift::PropertyArray *parent, const ManipInfo &tr);
+  virtual void addManipulators(Shift::Array *parent, const ManipInfo &tr);
 
 protected:
   template <typename T, typename X> static T *createManipulator(
-      Shift::PropertyArray *parent,
+      Shift::Array *parent,
       X *x,
       const GCManipulatable::ManipInfo &info,
       TransformProperty *localTransform)

@@ -27,7 +27,7 @@ float MCSphere::evaluate(const Eks::Vector3D &p) const
   return x2+y2+z2 - (r*r);
   }
 
-void MCSphere::addManipulators(Shift::PropertyArray *a, const ManipInfo &info)
+void MCSphere::addManipulators(Shift::Array *a, const ManipInfo &info)
   {
   // radius
     {
