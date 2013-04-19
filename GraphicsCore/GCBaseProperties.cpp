@@ -5,6 +5,22 @@
 #include "shift/Changes/shandler.inl"
 #include "shift/TypeInformation/spropertytraits.h"
 
+namespace Shift
+{
+namespace detail
+{
+void getDefault(Eks::Transform *t)
+  {
+  *t = Eks::Transform::Identity();
+  }
+
+void getDefault(Eks::Matrix3x3 *t)
+  {
+  *t = Eks::Matrix3x3::Identity();
+  }
+}
+}
+
 void writeValue(Shift::Saver &, const Eks::Shader &)
   {
   xAssertFail();
