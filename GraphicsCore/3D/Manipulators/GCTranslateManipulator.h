@@ -20,8 +20,6 @@ private:
   Eks::Vector <TransformProperty *> _driven;
   };
 
-S_PROPERTY_INTERFACE(GCSingularTranslateManipulator);
-
 class GRAPHICSCORE_EXPORT GCTranslateManipulator : public GCVisualCompoundManipulator
   {
   S_PROPERTY_CONTAINER(GCTranslateManipulator, GCVisualCompoundManipulator, 0);
@@ -41,7 +39,5 @@ public:
     localTransform.setInput(f);
     }
   };
-
-S_PROPERTY_INTERFACE(GCTranslateManipulator);
 
 #endif // GCTRANSLATEMANIPULATOR_H

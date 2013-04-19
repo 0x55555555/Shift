@@ -12,6 +12,4 @@ public:
   GCScreenRenderTarget();
   };
 
-S_PROPERTY_INTERFACE(GCScreenRenderTarget)
-
 #endif // GCRENDERTOSCREEN_H

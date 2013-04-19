@@ -19,8 +19,6 @@ private:
   XMathsOperation _preOperation;
   };
 
-S_PROPERTY_INTERFACE(MCImage)
-
 #endif
 
 #endif // MCIMAGE_H

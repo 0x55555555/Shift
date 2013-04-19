@@ -20,6 +20,4 @@ private:
   static void computeGeometry(MCCuboid* cube);
   };
 
-S_PROPERTY_INTERFACE(MCCuboid);
-
 #endif // MCSPHERE_H

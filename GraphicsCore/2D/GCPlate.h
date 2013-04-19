@@ -31,6 +31,5 @@ class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
   virtual void transformPoint(float inX, float inY, float &x, float &y) = 0;
   };
 
-S_PROPERTY_INTERFACE(GCPlate)
 
 #endif // GCPLATE_H

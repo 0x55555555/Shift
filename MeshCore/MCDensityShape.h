@@ -19,6 +19,4 @@ private:
   static void computeGeometry(MCDensityShape* cube);
   };
 
-S_PROPERTY_INTERFACE(MCDensityShape);
-
 #endif // MCDENSITYSHAPE_H

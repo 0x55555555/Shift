@@ -20,6 +20,5 @@ public:
   void render(Eks::Renderer *);
   };
 
-S_PROPERTY_INTERFACE(GCRenderTarget)
 
 #endif // GCRENDERTARGET_H

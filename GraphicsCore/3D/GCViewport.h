@@ -14,6 +14,4 @@ public:
   Shift::UnsignedIntProperty y;
   };
 
-S_PROPERTY_INTERFACE(GCViewport)
-
 #endif // GCVIEWPORT_H

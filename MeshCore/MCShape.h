@@ -17,6 +17,4 @@ public:
   virtual void intersect(const Eks::Frustum& frus, Selector *);
   };
 
-S_PROPERTY_INTERFACE(MCShape)
-
 #endif // MCSHAPE_H

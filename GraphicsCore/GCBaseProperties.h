@@ -200,18 +200,4 @@ DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, Eks::Matrix3x3, Eks:
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, Eks::ComplexTransform, Eks::ComplexTransform(), 151);
 DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, Eks::Cuboid, Eks::Cuboid(), 155)
 
-
-S_PROPERTY_INTERFACE(GCRenderer)
-S_PROPERTY_INTERFACE(GCVertexLayout)
-S_PROPERTY_INTERFACE(GCShaderRuntimeConstantData)
-S_PROPERTY_INTERFACE(GCRuntimeShader)
-S_PROPERTY_INTERFACE(GCRuntimeGeometry)
-S_PROPERTY_INTERFACE(GCRuntimeIndexGeometry)
-S_PROPERTY_INTERFACE(GCRuntimeRasteriserState)
-S_PROPERTY_INTERFACE(TransformProperty)
-S_PROPERTY_INTERFACE(Matrix3x3Property)
-S_PROPERTY_INTERFACE(ComplexTransformProperty)
-S_PROPERTY_INTERFACE(GCBoundingBox)
-S_PROPERTY_INTERFACE(GCRuntimeShaderInstance)
-
 #endif // GCBASEPROPERTIES_H

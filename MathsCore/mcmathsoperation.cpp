@@ -24,7 +24,7 @@ void MCMathsOperation::createTypeInformation(Shift::PropertyInformationTyped<MCM
     }
   }
 
-void MCMathsOperation::assignProperty(const Property *f, Property *t)
+void MCMathsOperation::assign(const Attribute *f, Attribute *t)
   {
   MCProfileFunction
   MCMathsOperation *to = t->uncheckedCastTo<MCMathsOperation>();

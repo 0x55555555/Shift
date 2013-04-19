@@ -110,8 +110,6 @@ private:
   Eks::UniquePointer<Delegate> _delegate;
   };
 
-S_PROPERTY_INTERFACE(GCVisualManipulator);
-
 class GRAPHICSCORE_EXPORT GCVisualCompoundManipulator : public GCVisualManipulator
   {
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualCompoundManipulator, GCVisualManipulator, 0)
@@ -132,8 +130,6 @@ public:
   void onMouseRelease(const MouseEvent &) X_OVERRIDE;
   };
 
-S_PROPERTY_INTERFACE(GCVisualCompoundManipulator);
-
 class GRAPHICSCORE_EXPORT GCVisualDragManipulator : public GCVisualManipulator
   {
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualDragManipulator, GCVisualManipulator, 0)
@@ -147,8 +143,6 @@ public:
   void onMouseRelease(const MouseEvent &) X_OVERRIDE;
   };
 
-S_PROPERTY_INTERFACE(GCVisualDragManipulator);
-
 class GRAPHICSCORE_EXPORT GCVisualClickManipulator : public GCVisualManipulator
   {
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualClickManipulator, GCVisualManipulator, 0)
@@ -161,8 +155,6 @@ public:
   void onMouseDrag(const MouseMoveEvent &) X_OVERRIDE;
   void onMouseRelease(const MouseEvent &) X_OVERRIDE;
   };
-
-S_PROPERTY_INTERFACE(GCVisualClickManipulator);
 
 class GRAPHICSCORE_EXPORT GCDisplacementDragManipulator : public GCVisualDragManipulator
   {
@@ -182,8 +174,6 @@ public:
   void onDrag(const MouseMoveEvent &, Eks::Vector3D &rel);
   };
 
-S_PROPERTY_INTERFACE(GCDisplacementDragManipulator);
-
 class GRAPHICSCORE_EXPORT GCAngularDragManipulator : public GCVisualDragManipulator
   {
   S_ABSTRACT_PROPERTY_CONTAINER(GCAngularDragManipulator, GCVisualDragManipulator, 0)
@@ -200,7 +190,5 @@ public:
 
   void onDrag(const MouseMoveEvent &, Eks::Quaternion &rel);
   };
-
-S_PROPERTY_INTERFACE(GCAngularDragManipulator);
 
 #endif // GCMANIPULATOR_H

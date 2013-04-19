@@ -58,7 +58,6 @@ public:
   };
 
 S_PROPERTY_INTERFACE(GCRenderable)
-S_PROPERTY_INTERFACE(GCRenderArray)
 S_PROPERTY_INTERFACE(GCRenderablePointerArray)
 S_PROPERTY_INTERFACE(Shift::TypedPointerArray<GCRenderablePointer>)
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCRenderArrayPointer, GCRenderArray)

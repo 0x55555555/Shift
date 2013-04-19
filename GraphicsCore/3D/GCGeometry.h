@@ -25,7 +25,4 @@ public:
   GCRuntimeIndexGeometry runtimeIndexGeometry;
   };
 
-S_PROPERTY_INTERFACE(GCGeometry)
-S_PROPERTY_INTERFACE(GCIndexedGeometry)
-
 #endif // GCGEOMETRY_H

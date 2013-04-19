@@ -17,6 +17,4 @@ public:
   Shift::Vector3DProperty vectorOut;
   };
 
-S_PROPERTY_INTERFACE(GCComposeVector3)
-
 #endif // GCCOMPOSEVECTOR3_H

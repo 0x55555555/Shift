@@ -12,13 +12,11 @@ class MATHSCORE_EXPORT MCMathsOperation : public Shift::PODPropertyBase<XMathsOp
   S_PROPERTY(MCMathsOperation, Shift::Property, 0)
 
 public:
-  static void assignProperty(const Shift::Property *, Shift::Property *);
+  static void assign(const Shift::Attribute *, Shift::Attribute *);
 
   bool saveResultToFile(QString filename);
   QImage asQImage(const Eks::VectorI2D &pt, xuint32 scale, xuint32 w, xuint32 h) const;
   };
-
-S_PROPERTY_INTERFACE(MCMathsOperation)
 
 #endif
 

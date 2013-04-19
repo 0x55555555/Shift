@@ -91,8 +91,6 @@ public:
   Shift::FloatProperty farClip;
   };
 
-S_PROPERTY_INTERFACE(GCPerspectiveCamera)
-
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCCameraPointer, GCCamera)
 
 #endif // GCCAMERA_H

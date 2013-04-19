@@ -104,9 +104,6 @@ private:
   static void computeShaderRuntime(GCStaticShader *cont);
   };
 
-S_PROPERTY_INTERFACE(GCShader)
-S_PROPERTY_INTERFACE(GCStaticShader)
-S_PROPERTY_INTERFACE(GCShaderConstantData)
 
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShaderPointer, GCShader);
 

@@ -20,8 +20,6 @@ private:
   Eks::Vector <TransformProperty *> _driven;
   };
 
-S_PROPERTY_INTERFACE(GCSingularRotateManipulator);
-
 class GRAPHICSCORE_EXPORT GCRotateManipulator : public GCVisualCompoundManipulator
   {
   S_PROPERTY_CONTAINER(GCRotateManipulator, GCVisualCompoundManipulator, 0);
@@ -42,7 +40,5 @@ public:
     localTransform.setInput(f);
     }
   };
-
-S_PROPERTY_INTERFACE(GCRotateManipulator);
 
 #endif // GCROTATEMANIPULATOR_H

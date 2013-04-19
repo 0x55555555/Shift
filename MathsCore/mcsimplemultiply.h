@@ -9,6 +9,5 @@ class MATHSCORE_EXPORT MCSimpleMultiply : public MCSimple
   S_ENTITY(MCSimpleMultiply, MCSimple, 0)
   };
 
-S_PROPERTY_INTERFACE(MCSimpleMultiply)
 
 #endif // MCSIMPLEMULTIPLY_H

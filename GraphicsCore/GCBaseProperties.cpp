@@ -135,7 +135,7 @@ void GCRuntimeIndexGeometry::createTypeInformation(
 class GCRenderer::Traits : public Shift::PODPropertyBase<Eks::Renderer *, GCRenderer>::Traits
   {
 public:
-  static void assignProperty(const Shift::Property *p, Shift::Property *l )
+  static void assign(const Shift::Attribute *p, Shift::Attribute *l )
     {
     const GCRenderer* f = p->uncheckedCastTo<GCRenderer>();
     GCRenderer* t = l->uncheckedCastTo<GCRenderer>();

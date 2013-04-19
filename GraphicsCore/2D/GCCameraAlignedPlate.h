@@ -17,6 +17,5 @@ public:
   void transformPoint(float inX, float inY, float &x, float &y) X_OVERRIDE;
   };
 
-S_PROPERTY_INTERFACE(GCCameraAlignedPlate)
 
 #endif // GCCAMERAALIGNEDPLATE_H

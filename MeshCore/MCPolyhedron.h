@@ -66,6 +66,4 @@ public:
   typedef Shift::detail::BasePODPropertyTraits<MCPolyhedronProperty> Traits;
   };
 
-S_PROPERTY_INTERFACE(MCPolyhedronProperty);
-
 #endif // MCPOLYHEDRON_H

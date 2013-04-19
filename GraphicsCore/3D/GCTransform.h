@@ -25,6 +25,4 @@ public:
   void intersect(const Eks::Frustum& frus, Selector *) X_OVERRIDE;
   };
 
-S_PROPERTY_INTERFACE(GCTransform)
-
 #endif // GCTRANSFORM3D_H

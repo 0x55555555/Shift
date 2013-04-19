@@ -14,7 +14,4 @@ class MATHSCORE_EXPORT MCSimpleSubtract : public MCSimple
   S_ENTITY(MCSimpleSubtract, MCSimple, 0)
   };
 
-S_PROPERTY_INTERFACE(MCSimpleAdd)
-S_PROPERTY_INTERFACE(MCSimpleSubtract)
-
 #endif // MCSIMPLEADD_H

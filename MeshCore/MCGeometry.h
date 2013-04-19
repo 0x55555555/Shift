@@ -21,6 +21,4 @@ public:
       Eks::IndexGeometry *iGeo) const;
   };
 
-S_PROPERTY_INTERFACE(MCGeometry);
-
 #endif // MCGEOMETRY_H

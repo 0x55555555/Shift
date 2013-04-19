@@ -21,6 +21,4 @@ private:
   virtual void addManipulators(Shift::Array *, const ManipInfo &info) X_OVERRIDE;
   };
 
-S_PROPERTY_INTERFACE(MCSphere);
-
 #endif // MCSPHERE_H

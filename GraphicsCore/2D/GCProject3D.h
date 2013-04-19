@@ -21,6 +21,4 @@ public:
   Shift::BoolProperty validPosition;
   };
 
-S_PROPERTY_INTERFACE(GCProject3D)
-
 #endif // GCPROJECT3D_H

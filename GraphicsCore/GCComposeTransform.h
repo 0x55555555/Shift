@@ -18,6 +18,4 @@ public:
   TransformProperty transformOut;
   };
 
-S_PROPERTY_INTERFACE(GCComposeTransform)
-
 #endif // GCCOMPOSETRANSFORM_H

@@ -16,6 +16,4 @@ public:
   Shift::FloatProperty output;
   };
 
-S_PROPERTY_INTERFACE(MCSimple)
-
 #endif // MCSIMPLE_H
