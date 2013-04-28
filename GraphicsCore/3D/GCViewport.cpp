@@ -1,5 +1,6 @@
 #include "GCViewport.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/sbaseproperties.inl"
 
 S_IMPLEMENT_PROPERTY(GCViewport, GraphicsCore)
 

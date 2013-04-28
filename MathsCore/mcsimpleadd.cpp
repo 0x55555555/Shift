@@ -1,12 +1,11 @@
 #include "mcsimpleadd.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
+#include "shift/Properties/sbaseproperties.inl"
 
 void computeAddOutput(MCSimpleAdd *add)
   {
-  Shift::FloatProperty::ComputeLock l(&add->output);
-
-  *l.data() = add->inputA() + add->inputB();
+  add->output.computeLock() = add->inputA() + add->inputB();
   }
 
 S_IMPLEMENT_PROPERTY(MCSimpleAdd, MathsCore)

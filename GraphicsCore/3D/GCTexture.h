@@ -7,12 +7,7 @@
 #include "shift/Properties/sbasepointerproperties.h"
 #include "XTexture.h"
 
-class GRAPHICSCORE_EXPORT GCTexture2D
-    : public Shift::PODPropertyBase<Eks::Texture2D,
-      GCTexture2D>
-  {
-  S_PROPERTY(GCTexture2D, Property, 0)
-  };
+typedef Shift::Data<Eks::Texture2D, Shift::ComputedData> GCTexture2D;
 
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCTexture2DPointer, GCTexture2D);
 

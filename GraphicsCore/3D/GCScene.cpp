@@ -1,5 +1,6 @@
 #include "GCScene.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/sbaseproperties.inl"
 #include "shift/Utilities/siterator.h"
 #include "XShader.h"
 #include "XRenderer.h"
@@ -16,12 +17,12 @@ void GCScene::computeRasteriser(GCScene *s)
     return;
     }
   
-  GCRuntimeRasteriserState::ComputeLock l(&s->_rasteriserState);
-  if(l->isValid())
+  auto lock = s->_rasteriserState.computeLock();
+  if(lock->isValid())
     {
-    l->~RasteriserState();
+    lock->~RasteriserState();
     }
-  new(l.data()) Eks::RasteriserState(r, Eks::RasteriserState::CullBack);
+  new(lock.data()) Eks::RasteriserState(r, Eks::RasteriserState::CullBack);
   }
 
 S_IMPLEMENT_PROPERTY(GCScene, GraphicsCore)

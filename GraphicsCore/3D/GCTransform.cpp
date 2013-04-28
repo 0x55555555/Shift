@@ -7,21 +7,21 @@
 #include "XRenderer.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
+#include "shift/Properties/sbaseproperties.inl"
 
 void unionTransformedBounds(GCTransform* tr)
   {
-  GCBoundingBox::ComputeLock l(&tr->bounds);
-  Eks::Cuboid *data = l.data();
-  *data = Eks::Cuboid();
+  auto lock = tr->bounds.computeLock();
+  lock = Eks::Cuboid();
 
   xForeach(auto r, tr->renderGroup.walker<GCRenderablePointer>())
     {
     const GCRenderable* ptd = r->pointed();
 
-    data->unite(ptd->bounds());
+    lock->unite(ptd->bounds());
     }
 
-  *data = tr->transform() * *data;
+  lock = tr->transform() * lock;
   }
 
 S_IMPLEMENT_PROPERTY(GCTransform, GraphicsCore)

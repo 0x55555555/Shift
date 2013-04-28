@@ -1,5 +1,6 @@
 #include "GCRenderable.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/sbaseproperties.inl"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCRenderablePointer, GraphicsCore)
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCRenderArrayPointer, GraphicsCore)
@@ -35,15 +36,14 @@ S_IMPLEMENT_PROPERTY(GCRenderArray, GraphicsCore)
 
 void unionBounds(GCRenderArray* array)
   {
-  GCBoundingBox::ComputeLock l(&array->bounds);
-  Eks::Cuboid *data = l.data();
-  *data = Eks::Cuboid();
+  auto lock = array->bounds.computeLock();
+  lock = Eks::Cuboid();
 
   xForeach(auto r, array->renderGroup.walker<GCRenderablePointer>())
     {
     const GCRenderable* ptd = r->pointed();
 
-    data->unite(ptd->bounds());
+    lock->unite(ptd->bounds());
     }
   }
 

@@ -1,12 +1,8 @@
 #include "GCComposeVector3.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
-
-void computeVector(GCComposeVector3 *vec)
-  {
-  Shift::Vector3DProperty::ComputeLock l(&vec->vectorOut);
-  *l.data() = Eks::Vector3D(vec->xIn(), vec->yIn(), vec->zIn());
-  }
+#include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sbaseproperties.inl"
 
 S_IMPLEMENT_PROPERTY(GCComposeVector3, GraphicsCore)
 
@@ -18,7 +14,10 @@ void GCComposeVector3::createTypeInformation(Shift::PropertyInformationTyped<GCC
     auto childBlock = info->createChildrenBlock(data);
 
     auto vectorInst = childBlock.add(&GCComposeVector3::vectorOut, "vectorOut");
-    vectorInst->setCompute<computeVector>();
+    vectorInst->setCompute([](GCComposeVector3 *vec)
+      {
+      vec->vectorOut.computeLock() = Eks::Vector3D(vec->xIn(), vec->yIn(), vec->zIn());
+      });
 
     auto xInst = childBlock.add(&GCComposeVector3::xIn, "xIn");
     auto yInst = childBlock.add(&GCComposeVector3::yIn, "yIn");

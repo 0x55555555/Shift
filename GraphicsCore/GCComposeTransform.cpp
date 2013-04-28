@@ -1,6 +1,7 @@
 #include "GCComposeTransform.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XMacroHelpers"
+#include "shift/Properties/sbaseproperties.inl"
 #include "shift/Changes/shandler.inl"
 
 void computeTransform(GCComposeTransform *vec)
@@ -11,8 +12,7 @@ void computeTransform(GCComposeTransform *vec)
   tr.translation() = vec->translationIn();
 
 
-  TransformProperty::ComputeLock l(&vec->transformOut);
-  *l.data() = tr;
+  vec->transformOut.computeLock() = tr;
   }
 
 S_IMPLEMENT_PROPERTY(GCComposeTransform, GraphicsCore)
