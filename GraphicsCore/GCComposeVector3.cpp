@@ -2,7 +2,7 @@
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
 #include "shift/Properties/sbaseproperties.h"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 
 S_IMPLEMENT_PROPERTY(GCComposeVector3, GraphicsCore)
 

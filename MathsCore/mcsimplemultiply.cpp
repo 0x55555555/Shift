@@ -1,6 +1,6 @@
 #include "mcsimplemultiply.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 
 void computeAddOutput(MCSimpleMultiply *add)
   {

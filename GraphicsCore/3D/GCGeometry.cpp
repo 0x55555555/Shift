@@ -1,6 +1,6 @@
 #include "GCGeometry.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 #include "shift/TypeInformation/styperegistry.h"
 
 S_IMPLEMENT_PROPERTY(GCGeometry, GraphicsCore)

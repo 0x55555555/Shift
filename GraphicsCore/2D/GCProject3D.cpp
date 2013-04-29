@@ -1,6 +1,6 @@
 #include "GCProject3D.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 #include "XOptional"
 
 void computeAlignTransform(GCProject3D *el)

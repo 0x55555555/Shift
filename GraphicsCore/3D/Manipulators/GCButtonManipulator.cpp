@@ -1,6 +1,6 @@
 #include "GCButtonManipulator.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 #include "3D/GCCamera.h"
 #include "XModeller.h"
 #include "XRenderer.h"

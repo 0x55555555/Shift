@@ -1,6 +1,6 @@
 #include "GCCamera.h"
 #include "shift/TypeInformation/styperegistry.h"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XRenderer.h"
 #include "XPlane.h"

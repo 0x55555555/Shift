@@ -1,7 +1,7 @@
 #include "mcsimpleadd.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 
 void computeAddOutput(MCSimpleAdd *add)
   {

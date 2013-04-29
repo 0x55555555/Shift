@@ -1,7 +1,7 @@
 #include "GCShader.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XRenderer.h"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 #include "shift/Changes/shandler.inl"
 
 void computeData(GCShaderConstantData *d)

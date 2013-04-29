@@ -2,7 +2,7 @@
 #include "GCBaseProperties.h"
 #include "shift/sdatabase.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 #include "shift/Changes/shandler.inl"
 #include "shift/TypeInformation/spropertytraits.h"
 

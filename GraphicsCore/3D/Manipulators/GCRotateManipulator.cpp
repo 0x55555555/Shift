@@ -1,7 +1,7 @@
 #include "GCRotateManipulator.h"
 #include "GCDistanceManipulator.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
-#include "shift/Properties/sbaseproperties.inl"
+#include "shift/Properties/sdata.inl"
 #include "GCManipulatorHelpers.h"
 #include "shift/Changes/shandler.inl"
 #include "3D/GCCamera.h"
