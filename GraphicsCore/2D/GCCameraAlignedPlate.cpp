@@ -1,5 +1,6 @@
 #include "GCCameraAlignedPlate.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/sdata.inl"
 
 S_IMPLEMENT_PROPERTY(GCCameraAlignedPlate, GraphicsCore)
 

@@ -2,30 +2,69 @@
 #include "GCBaseProperties.h"
 #include "shift/sdatabase.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/sdata.inl"
 #include "shift/Changes/shandler.inl"
 #include "shift/TypeInformation/spropertytraits.h"
 
-void writeValue(Shift::Saver &, const Eks::Shader &)
+
+QTextStream &operator<<(QTextStream &s, Eks::Renderer *)
   {
   xAssertFail();
+  return s;
   }
 
-void readValue(Shift::Loader &, Eks::Shader &)
+QDataStream &operator<<(QDataStream &s, Eks::Renderer *)
   {
   xAssertFail();
+  return s;
   }
 
-#define IMPLEMENT_POD_GC_PROPERTY(name) IMPLEMENT_POD_PROPERTY(name, GraphicsCore)
-
-IMPLEMENT_POD_GC_PROPERTY(Matrix3x3Property);
-IMPLEMENT_POD_GC_PROPERTY(TransformProperty);
-IMPLEMENT_POD_GC_PROPERTY(ComplexTransformProperty);
-IMPLEMENT_POD_GC_PROPERTY(GCBoundingBox)
-
-void GCBoundingBox::assignBetween(const Attribute *f, Attribute *t)
+QTextStream &operator>>(QTextStream &s, Eks::Renderer *)
   {
-  GCBoundingBox *to = t->uncheckedCastTo<GCBoundingBox>();
+  xAssertFail();
+  return s;
+  }
 
+QDataStream &operator>>(QDataStream &s, Eks::Renderer *)
+  {
+  xAssertFail();
+  return s;
+  }
+
+namespace Shift
+{
+namespace detail
+{
+void getDefault(Eks::Transform *t)
+  {
+  *t = Eks::Transform::Identity();
+  }
+
+void getDefault(Eks::Matrix3x3 *t)
+  {
+  *t = Eks::Matrix3x3::Identity();
+  }
+
+template <int IsAttribute> class PODPropertyTraits<GCRenderer, IsAttribute, true>
+    : public Shift::detail::PropertyBaseTraits
+  {
+public:
+  static bool shouldSaveValue(const Shift::Attribute *)
+    {
+    return false;
+    }
+
+  static void assign(const Shift::Attribute *p, Shift::Attribute *l )
+    {
+    const GCRenderer* f = p->uncheckedCastTo<GCRenderer>();
+    GCRenderer* t = l->uncheckedCastTo<GCRenderer>();
+
+    t->assign(f->value());
+    }
+  };
+
+void assignTo(const Shift::Attribute *f, GCBoundingBox *to)
+  {
   const GCBoundingBox *sProp = f->castTo<GCBoundingBox>();
   if(sProp)
     {
@@ -34,10 +73,8 @@ void GCBoundingBox::assignBetween(const Attribute *f, Attribute *t)
     }
   }
 
-void Matrix3x3Property::assignBetween(const Attribute *f, Attribute *t)
+void assignTo(const Shift::Attribute *f, Matrix3x3Property *to)
   {
-  Matrix3x3Property *to = t->uncheckedCastTo<Matrix3x3Property>();
-
   const Matrix3x3Property *sProp = f->castTo<Matrix3x3Property>();
   if(sProp)
     {
@@ -46,10 +83,8 @@ void Matrix3x3Property::assignBetween(const Attribute *f, Attribute *t)
     }
   }
 
-void TransformProperty::assignBetween(const Attribute *f, Attribute *t)
+void assignTo(const Shift::Attribute *f, TransformProperty *to)
   {
-  TransformProperty *to = t->uncheckedCastTo<TransformProperty>();
-
   const TransformProperty *sProp = f->castTo<TransformProperty>();
   if(sProp)
     {
@@ -65,10 +100,8 @@ void TransformProperty::assignBetween(const Attribute *f, Attribute *t)
     }
   }
 
-void ComplexTransformProperty::assignBetween(const Attribute *f, Attribute *t)
+void assignTo(const Shift::Attribute *f, ComplexTransformProperty *to)
   {
-  ComplexTransformProperty *to = t->uncheckedCastTo<ComplexTransformProperty>();
-
   const ComplexTransformProperty *tProp = f->castTo<ComplexTransformProperty>();
   if(tProp)
     {
@@ -83,87 +116,22 @@ void ComplexTransformProperty::assignBetween(const Attribute *f, Attribute *t)
     return;
     }
   }
+}
+}
 
-S_IMPLEMENT_PROPERTY(GCShaderRuntimeConstantData, GraphicsCore)
+#define IMPLEMENT_POD_GC_PROPERTY(T, Mode, name) IMPLEMENT_POD_PROPERTY(GRAPHICSCORE_EXPORT, GraphicsCore, T, Mode, name)
 
-void GCShaderRuntimeConstantData::createTypeInformation(
-    Shift::PropertyInformationTyped<GCShaderRuntimeConstantData> *,
-    const Shift::PropertyInformationCreateData &)
-  {
-  }
-
-S_IMPLEMENT_PROPERTY(GCRuntimeShader, GraphicsCore)
-
-void GCRuntimeShader::createTypeInformation(
-    Shift::PropertyInformationTyped<GCRuntimeShader> *,
-    const Shift::PropertyInformationCreateData &)
-  {
-  }
-
-S_IMPLEMENT_PROPERTY(GCRuntimeShaderInstance, GraphicsCore)
-
-void GCRuntimeShaderInstance::createTypeInformation(
-    Shift::PropertyInformationTyped<GCRuntimeShaderInstance> *,
-    const Shift::PropertyInformationCreateData &)
-  {
-  }
-
-S_IMPLEMENT_PROPERTY(GCRuntimeGeometry, GraphicsCore)
-
-void GCRuntimeGeometry::createTypeInformation(
-    Shift::PropertyInformationTyped<GCRuntimeGeometry> *,
-    const Shift::PropertyInformationCreateData &)
-  {
-  }
-
-S_IMPLEMENT_PROPERTY(GCRuntimeRasteriserState, GraphicsCore)
-
-void GCRuntimeRasteriserState::createTypeInformation(
-    Shift::PropertyInformationTyped<GCRuntimeRasteriserState> *,
-    const Shift::PropertyInformationCreateData &)
-  {
-  }
-
-S_IMPLEMENT_PROPERTY(GCRuntimeIndexGeometry, GraphicsCore)
-
-void GCRuntimeIndexGeometry::createTypeInformation(
-    Shift::PropertyInformationTyped<GCRuntimeIndexGeometry> *,
-    const Shift::PropertyInformationCreateData &)
-  {
-  }
-
-class GCRenderer::Traits : public Shift::PODPropertyBase<Eks::Renderer *, GCRenderer>::Traits
-  {
-public:
-  static void assign(const Shift::Attribute *p, Shift::Attribute *l )
-    {
-    const GCRenderer* f = p->uncheckedCastTo<GCRenderer>();
-    GCRenderer* t = l->uncheckedCastTo<GCRenderer>();
-
-    t->assign(f->value());
-    }
-  };
-
-S_IMPLEMENT_PROPERTY(GCRenderer, GraphicsCore)
-
-void GCRenderer::createTypeInformation(
-    Shift::PropertyInformationTyped<GCRenderer> *,
-    const Shift::PropertyInformationCreateData &)
-  {
-  }
-
-void GCRenderer::EmbeddedInstanceInformation::initiateAttribute(Attribute *propertyToInitiate) const
-  {
-  propertyToInitiate->uncheckedCastTo<GCRenderer>()->_value = 0;
-  }
-
-
-S_IMPLEMENT_PROPERTY(GCVertexLayout, GraphicsCore)
-
-void GCVertexLayout::createTypeInformation(
-    Shift::PropertyInformationTyped<GCVertexLayout> *,
-    const Shift::PropertyInformationCreateData &)
-  {
-  }
+IMPLEMENT_POD_GC_PROPERTY(Eks::Renderer *, FullData, ren);
+IMPLEMENT_POD_GC_PROPERTY(Eks::Matrix3x3, FullData, mat3x3);
+IMPLEMENT_POD_GC_PROPERTY(Eks::Transform, FullData, trans);
+IMPLEMENT_POD_GC_PROPERTY(Eks::ComplexTransform, FullData, complexTrans);
+IMPLEMENT_POD_GC_PROPERTY(Eks::Cuboid, FullData, bb);
+IMPLEMENT_POD_GC_PROPERTY(Eks::ShaderConstantData, ComputedData, data);
+IMPLEMENT_POD_GC_PROPERTY(Eks::Shader, ComputedData, shad);
+IMPLEMENT_POD_GC_PROPERTY(GraphicsCore::detail::ShaderInstance, ComputedData, shadInst);
+IMPLEMENT_POD_GC_PROPERTY(Eks::Geometry, ComputedData, geo);
+IMPLEMENT_POD_GC_PROPERTY(Eks::RasteriserState, ComputedData, ras);
+IMPLEMENT_POD_GC_PROPERTY(Eks::IndexGeometry, ComputedData, igeo);
+IMPLEMENT_POD_GC_PROPERTY(GCVertexLayoutWrapper, ComputedData, vertLay);
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCVertexLayoutPointer, GraphicsCore)

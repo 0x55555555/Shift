@@ -1,5 +1,6 @@
 #include "GCElement.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/sdata.inl"
 #include "mcsimpleadd.h"
 #include "XRenderer.h"
 #include "XOptional"

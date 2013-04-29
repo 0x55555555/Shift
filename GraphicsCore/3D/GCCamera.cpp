@@ -1,5 +1,6 @@
 #include "GCCamera.h"
 #include "shift/TypeInformation/styperegistry.h"
+#include "shift/Properties/sdata.inl"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XRenderer.h"
 #include "XPlane.h"
@@ -19,7 +20,7 @@ void computeView(GCViewableTransform *tr)
   tr->transform().matrix().computeInverseWithCheck(inv.matrix(),invertible);
   xAssert(invertible);
 
-  tr->viewTransform = inv;
+  tr->viewTransform.computeLock() = inv;
   }
 
 void computeInverseProjection(GCViewableTransform *tr)
@@ -30,7 +31,7 @@ void computeInverseProjection(GCViewableTransform *tr)
   tr->projection().matrix().computeInverseWithCheck(inv.matrix(),invertible);
   xAssert(invertible);
 
-  tr->inverseProjection = inv;
+  tr->inverseProjection.computeLock() = inv;
   }
 
 void GCViewableTransform::createTypeInformation(
@@ -336,11 +337,6 @@ void GCCamera::createTypeInformation(Shift::PropertyInformationTyped<GCCamera> *
 
 S_IMPLEMENT_PROPERTY(GCPerspectiveCamera, GraphicsCore)
 
-void computePerspective(GCPerspectiveCamera *c)
-  {
-  c->projection = Eks::TransformUtilities::perspective(c->fieldOfView(), (float)c->viewportWidth() / (float)c->viewportHeight(), c->nearClip(), c->farClip());
-  }
-
 void GCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<GCPerspectiveCamera> *info,
                                                 const Shift::PropertyInformationCreateData &data)
   {
@@ -349,7 +345,14 @@ void GCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<
     auto childBlock = info->createChildrenBlock(data);
 
     auto proj = childBlock.overrideChild(&GCCamera::projection);
-    proj->setCompute<computePerspective>();
+    proj->setCompute([](GCPerspectiveCamera *c)
+      {
+      c->projection.computeLock() = Eks::TransformUtilities::perspective(
+        c->fieldOfView(),
+        (float)c->viewportWidth() / (float)c->viewportHeight(),
+        c->nearClip(),
+        c->farClip());
+      });
 
     auto affectsProj = childBlock.createAffects(&proj, 1);
 

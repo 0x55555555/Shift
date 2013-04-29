@@ -1,6 +1,7 @@
 #include "GCShader.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "XRenderer.h"
+#include "shift/Properties/sdata.inl"
 #include "shift/Changes/shandler.inl"
 
 void computeData(GCShaderConstantData *d)
@@ -28,9 +29,9 @@ void computeData(GCShaderConstantData *d)
     binder->bindData(&data, p);
     }
 
-  GCShaderRuntimeConstantData::ComputeLock l(&d->runtimeData);
+  auto lock = d->runtimeData.computeLock();
 
-  if(!l.data()->isValid())
+  if(!lock->isValid())
     {
     Eks::Vector<Eks::ShaderConstantDataDescription> descs;
 
@@ -44,11 +45,11 @@ void computeData(GCShaderConstantData *d)
       binder->getDescription(descs.back(), p);
       }
 
-    Eks::ShaderConstantData::delayedCreate(*l.data(), r, descs.data(), descs.size(), data.data());
+    Eks::ShaderConstantData::delayedCreate(*lock.data(), r, descs.data(), descs.size(), data.data());
     }
   else
     {
-    l.data()->update(data.data());
+    lock->update(data.data());
     }
   }
 

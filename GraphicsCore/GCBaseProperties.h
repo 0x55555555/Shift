@@ -11,6 +11,32 @@
 #include "XRasteriserState.h"
 #include "XCuboid.h"
 
+namespace Shift
+{
+namespace detail
+{
+GRAPHICSCORE_EXPORT void getDefault(Eks::Transform *);
+GRAPHICSCORE_EXPORT void getDefault(Eks::Matrix3x3 *);
+
+template <int IsFull> class PODEmbeddedInstanceInformation<Shift::Data<Eks::Renderer *>, IsFull>
+    : public Shift::Property::EmbeddedInstanceInformation
+  {
+public:
+  void initiateAttribute(Attribute *propertyToInitiate) const
+    {
+    propertyToInitiate->uncheckedCastTo<Shift::Data<Eks::Renderer *>>()->_value = 0;
+    }
+
+  Eks::Renderer *defaultValue() const { return 0; }
+  };
+}
+}
+
+GRAPHICSCORE_EXPORT QTextStream &operator<<(QTextStream &s, Eks::Renderer *v);
+GRAPHICSCORE_EXPORT QDataStream &operator<<(QDataStream &s, Eks::Renderer *v);
+GRAPHICSCORE_EXPORT QTextStream &operator>>(QTextStream &s, Eks::Renderer *v);
+GRAPHICSCORE_EXPORT QDataStream &operator>>(QDataStream &s, Eks::Renderer *v);
+
 namespace GraphicsCore
 {
 namespace detail
@@ -30,8 +56,6 @@ public:
 }
 
 }
-
-Q_DECLARE_METATYPE(GraphicsCore::detail::ShaderInstance)
 
 namespace
 {
@@ -96,86 +120,11 @@ QTextStream &operator<<(QTextStream& s, const GraphicsCore::detail::ShaderInstan
   }
 }
 
-class GRAPHICSCORE_EXPORT GCRuntimeShader
-    : public Shift::PODPropertyBase<Eks::Shader,
-                                GCRuntimeShader>
-  {
-public:
-  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeShader> Traits;
-  enum { TypeId = 152 };
-  S_PROPERTY(GCRuntimeShader, Property, 0);
-  };
+#if X_QT_INTEROP
 
-class GRAPHICSCORE_EXPORT GCShaderRuntimeConstantData
-    : public Shift::PODPropertyBase<Eks::ShaderConstantData,
-                                GCShaderRuntimeConstantData>
-  {
-public:
-  typedef Shift::detail::BasePODPropertyTraits<GCShaderRuntimeConstantData> Traits;
-  enum { TypeId = 153 };
-  S_PROPERTY(GCShaderRuntimeConstantData, Property, 0);
-  };
+Q_DECLARE_METATYPE(GraphicsCore::detail::ShaderInstance)
 
-class GRAPHICSCORE_EXPORT GCRuntimeShaderInstance
-    : public Shift::PODPropertyBase<GraphicsCore::detail::ShaderInstance,
-                                GCRuntimeShaderInstance >
-  {
-public:
-  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeShaderInstance> Traits;
-  enum { TypeId = 156 };
-  S_PROPERTY(GCRuntimeShaderInstance, Property, 0);
-  };
-
-class GRAPHICSCORE_EXPORT GCRuntimeRasteriserState
-    : public Shift::PODPropertyBase<Eks::RasteriserState,
-                                GCRuntimeRasteriserState>
-  {
-public:
-  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeRasteriserState> Traits;
-  enum { TypeId = 160 };
-  S_PROPERTY(GCRuntimeRasteriserState, Property, 0);
-  };
-
-
-class GRAPHICSCORE_EXPORT GCRuntimeGeometry
-    : public Shift::PODPropertyBase<Eks::Geometry,
-                                GCRuntimeGeometry>
-  {
-public:
-  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeGeometry> Traits;
-  enum { TypeId = 154 };
-  S_PROPERTY(GCRuntimeGeometry, Property, 0);
-  };
-
-class GRAPHICSCORE_EXPORT GCRuntimeIndexGeometry
-    : public Shift::PODPropertyBase<Eks::IndexGeometry,
-                                GCRuntimeIndexGeometry>
-  {
-public:
-  typedef Shift::detail::BasePODPropertyTraits<GCRuntimeIndexGeometry> Traits;
-  enum { TypeId = 158 };
-  S_PROPERTY(GCRuntimeIndexGeometry, Property, 0);
-  };
-
-class GRAPHICSCORE_EXPORT GCRenderer
-    : public Shift::PODProperty<Eks::Renderer *,
-                                GCRenderer>
-  {
-public:
-  class Traits;
-  class EmbeddedInstanceInformation : public Shift::PODPropertyBase<Eks::Renderer *, GCRenderer>::EmbeddedInstanceInformation
-    {
-  public:
-    void initiateAttribute(Attribute *propertyToInitiate) const;
-    };
-
-  enum { TypeId = 151 };
-  S_PROPERTY(GCRenderer, Property, 0);
-
-private:
-  friend class EmbeddedInstanceInformation;
-  friend class Traits;
-  };
+#endif
 
 struct GCVertexLayoutWrapper
   {
@@ -183,21 +132,32 @@ struct GCVertexLayoutWrapper
   xsize layoutCount;
   };
 
-class GRAPHICSCORE_EXPORT GCVertexLayout
-    : public Shift::PODPropertyBase<GCVertexLayoutWrapper,
-                                GCVertexLayout>
-  {
-public:
-  typedef Shift::detail::BasePODPropertyTraits<GCVertexLayout> Traits;
-  enum { TypeId = 159 };
-  S_PROPERTY(GCVertexLayout, Property, 0);
-  };
+typedef Shift::Data<Eks::Shader, Shift::ComputedData>
+  GCRuntimeShader;
+typedef Shift::Data<Eks::ShaderConstantData, Shift::ComputedData>
+  GCShaderRuntimeConstantData;
+typedef Shift::Data<GraphicsCore::detail::ShaderInstance, Shift::ComputedData>
+  GCRuntimeShaderInstance;
+typedef Shift::Data<Eks::RasteriserState, Shift::ComputedData>
+  GCRuntimeRasteriserState;
+typedef Shift::Data<Eks::Geometry, Shift::ComputedData>
+  GCRuntimeGeometry;
+typedef Shift::Data<Eks::IndexGeometry, Shift::ComputedData>
+  GCRuntimeIndexGeometry;
+typedef Shift::Data<GCVertexLayoutWrapper, Shift::ComputedData>
+  GCVertexLayout;
+typedef Shift::Data<Eks::Renderer *>
+  GCRenderer;
+typedef Shift::Data<Eks::Transform>
+  TransformProperty;
+typedef Shift::Data<Eks::Matrix3x3>
+  Matrix3x3Property;
+typedef Shift::Data<Eks::ComplexTransform>
+  ComplexTransformProperty;
+typedef Shift::Data<Eks::Cuboid>
+  GCBoundingBox;
+
 
 S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCVertexLayoutPointer, GCVertexLayout)
-
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, TransformProperty, Eks::Transform, Eks::Transform::Identity(), 150);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, Matrix3x3Property, Eks::Matrix3x3, Eks::Matrix3x3::Identity(), 157);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, ComplexTransformProperty, Eks::ComplexTransform, Eks::ComplexTransform(), 151);
-DEFINE_POD_PROPERTY(GRAPHICSCORE_EXPORT, GCBoundingBox, Eks::Cuboid, Eks::Cuboid(), 155)
 
 #endif // GCBASEPROPERTIES_H

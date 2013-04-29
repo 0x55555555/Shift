@@ -2,12 +2,13 @@
 #include "shift/TypeInformation/styperegistry.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
+#include "shift/Properties/sdata.inl"
 
 S_IMPLEMENT_PROPERTY(GCRenderTarget, GraphicsCore)
 
 void computeAspectRatio(GCRenderTarget *vp)
   {
-  vp->aspectRatio = (float)vp->width() / (float)vp->height();
+  vp->aspectRatio.computeLock() = (float)vp->width() / (float)vp->height();
   }
 
 

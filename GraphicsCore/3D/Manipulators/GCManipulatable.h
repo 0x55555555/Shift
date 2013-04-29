@@ -4,10 +4,10 @@
 #include "GCGlobal.h"
 #include "shift/TypeInformation/sinterface.h"
 #include "shift/Properties/sbaseproperties.h"
+#include "GCBaseProperties.h"
 
 class GCViewableTransform;
 class GCRenderablePointerArray;
-class TransformProperty;
 
 class GRAPHICSCORE_EXPORT GCManipulatable : public Shift::InterfaceBase
   {

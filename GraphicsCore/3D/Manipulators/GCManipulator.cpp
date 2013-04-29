@@ -1,5 +1,6 @@
 #include "GCManipulator.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/sdata.inl"
 #include "3D/GCCamera.h"
 #include "GCRenderable.h"
 #include "XPlane.h"

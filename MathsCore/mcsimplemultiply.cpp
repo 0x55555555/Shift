@@ -1,11 +1,10 @@
 #include "mcsimplemultiply.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/sdata.inl"
 
 void computeAddOutput(MCSimpleMultiply *add)
   {
-  Shift::FloatProperty::ComputeLock l(&add->output);
-
-  *l.data() = add->inputA() * add->inputB();
+  add->output.computeLock() = add->inputA() * add->inputB();
   }
 
 S_IMPLEMENT_PROPERTY(MCSimpleMultiply, MathsCore)
