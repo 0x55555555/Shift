@@ -35,6 +35,8 @@ public:
   Shift::UnsignedIntProperty viewportWidth;
   Shift::UnsignedIntProperty viewportHeight;
 
+  GCBoundingBox viewBounds;
+
   // inverse of transform
   TransformProperty viewTransform;
 
@@ -59,6 +61,7 @@ public:
 
   Eks::Vector3D worldSpaceInPlaneFromScreenSpace(xuint32 x, xuint32 y, const Eks::Plane& plane) const;
   Eks::Vector3D worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const;
+  Eks::Vector3D worldSpaceFromUnitSpace(const Eks::Vector4D &vpSpace) const;
   virtual Eks::Vector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const = 0;
 
   void zoom(float factor, float x, float y);

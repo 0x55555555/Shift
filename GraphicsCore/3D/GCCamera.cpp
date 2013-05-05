@@ -25,13 +25,28 @@ void computeView(GCViewableTransform *tr)
 
 void computeInverseProjection(GCViewableTransform *tr)
   {
-  Eks::Transform inv;
+  Eks::ComplexTransform inv;
 
   bool invertible = false;
   tr->projection().matrix().computeInverseWithCheck(inv.matrix(),invertible);
   xAssert(invertible);
 
   tr->inverseProjection.computeLock() = inv;
+  }
+
+void computeViewBounds(GCViewableTransform *tr)
+  {
+  auto cb = tr->viewBounds.computeLock();
+
+  cb->clear();
+  cb->unite(tr->worldSpaceFromUnitSpace(Eks::Vector4D(-1.0f, -1.0f, -1.0f, 1.0f)));
+  cb->unite(tr->worldSpaceFromUnitSpace(Eks::Vector4D( 1.0f, -1.0f, -1.0f, 1.0f)));
+  cb->unite(tr->worldSpaceFromUnitSpace(Eks::Vector4D(-1.0f,  1.0f, -1.0f, 1.0f)));
+  cb->unite(tr->worldSpaceFromUnitSpace(Eks::Vector4D( 1.0f,  1.0f, -1.0f, 1.0f)));
+  cb->unite(tr->worldSpaceFromUnitSpace(Eks::Vector4D(-1.0f, -1.0f,  1.0f, 1.0f)));
+  cb->unite(tr->worldSpaceFromUnitSpace(Eks::Vector4D( 1.0f, -1.0f,  1.0f, 1.0f)));
+  cb->unite(tr->worldSpaceFromUnitSpace(Eks::Vector4D(-1.0f,  1.0f,  1.0f, 1.0f)));
+  cb->unite(tr->worldSpaceFromUnitSpace(Eks::Vector4D( 1.0f,  1.0f,  1.0f, 1.0f)));
   }
 
 void GCViewableTransform::createTypeInformation(
@@ -48,8 +63,12 @@ void GCViewableTransform::createTypeInformation(
     auto focalInfo = childBlock.add(&GCViewableTransform::focalDistance, "focalDistance");
     focalInfo->setDefault(1.0f);
 
+    auto bnds = childBlock.add(&GCViewableTransform::viewBounds, "viewBounds");
+    bnds->setCompute<computeViewBounds>();
+
     auto invProjInfo = childBlock.add(&GCViewableTransform::inverseProjection, "inverseProjection");
     invProjInfo->setCompute<computeInverseProjection>();
+    invProjInfo->setAffects(data, bnds);
 
     auto projInfo = childBlock.add(&GCViewableTransform::projection, "projection");
     projInfo->setAffects(data, invProjInfo);
@@ -59,13 +78,15 @@ void GCViewableTransform::createTypeInformation(
     childBlock.add(&GCViewableTransform::viewportWidth, "viewportWidth");
     childBlock.add(&GCViewableTransform::viewportHeight, "viewportHeight");
 
+
     auto viewInfo = childBlock.add(&GCViewableTransform::viewTransform, "viewTransform");
     viewInfo->setCompute<computeView>();
 
     const Shift::EmbeddedPropertyInstanceInformation *affects[] =
       {
       childBlock.child(&GCViewableTransform::bounds),
-      viewInfo
+      viewInfo,
+      bnds
       };
 
     auto transformInfo = childBlock.overrideChild(&GCViewableTransform::transform);
@@ -224,14 +245,18 @@ Eks::Vector3D GCViewableTransform::worldSpaceInPlaneFromScreenSpace(
   return l.sample(t);
   }
 
+Eks::Vector3D GCViewableTransform::worldSpaceFromUnitSpace(const Eks::Vector4D &vpSpace) const
+  {
+  auto downZAxisWorld = inverseProjection() * vpSpace;
+  auto world = transform() * (downZAxisWorld.head<3>() / downZAxisWorld(3));
+  return world;
+  }
+
 Eks::Vector3D GCViewableTransform::worldSpaceFromScreenSpace(xuint32 x, xuint32 y) const
   {
   Eks::Vector4D vpSpace(0.0f, 0.0f, 1.0f, 1.0f);
   unitViewportCoordinates(x, y, vpSpace(0), vpSpace(1));
-
-  auto downZAxisWorld = inverseProjection() * vpSpace;
-  auto world = transform() * downZAxisWorld.head<3>();
-  return world;
+  return worldSpaceFromUnitSpace(vpSpace);
   }
 
 bool GCViewableTransform::screenSpaceFromWorldSpace(const Eks::Vector3D &worldPos, Eks::Vector3D &posOut)

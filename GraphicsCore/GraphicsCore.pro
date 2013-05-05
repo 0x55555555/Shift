@@ -40,7 +40,8 @@ HEADERS += GCGlobal.h \
     2D/GCProject3D.h \
     GCNodeController.h \
     3D/Manipulators/GCManipulatable.h \
-    3D/Manipulators/GCManipulatorHelpers.h
+    3D/Manipulators/GCManipulatorHelpers.h \
+    GCSceneExplorer.h
 
 INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
 
@@ -76,7 +77,8 @@ SOURCES += \
     2D/GCCameraAlignedPlate.cpp \
     2D/GCElement.cpp \
     2D/GCProject3D.cpp \
-    3D/Manipulators/GCManipulatable.cpp
+    3D/Manipulators/GCManipulatable.cpp \
+    GCSceneExplorer.cpp
 
 
 
