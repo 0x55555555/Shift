@@ -133,7 +133,7 @@ void GCSingularRotateManipulator::createTypeInformation(Shift::PropertyInformati
   }
 
 GCSingularRotateManipulator::GCSingularRotateManipulator()
-    : _driven(generalPurposeAllocator())
+    : _driven(Shift::TypeRegistry::generalPurposeAllocator())
   {
   }
 

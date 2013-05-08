@@ -2,6 +2,7 @@
 #include "shift/TypeInformation/styperegistry.h"
 #include "shift/Properties/sdata.inl"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Changes/shandler.inl"
 #include "XRenderer.h"
 #include "XPlane.h"
 #include "Eigen/Geometry"

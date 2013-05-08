@@ -1,6 +1,7 @@
 #include "GCProject3D.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Properties/sdata.inl"
+#include "shift/Changes/shandler.inl"
 #include "XOptional"
 
 void computeAlignTransform(GCProject3D *el)
@@ -11,24 +12,24 @@ void computeAlignTransform(GCProject3D *el)
 
   if(!c)
     {
-    el->xPosition = 0.0f;
-    el->yPosition = 0.0f;
-    el->validPosition = false;
+    el->xPosition.computeLock() = 0.0f;
+    el->yPosition.computeLock() = 0.0f;
+    el->validPosition.computeLock() = false;
     return;
     }
 
   Eks::Vector3D screenPosition;
   if(!c->screenSpaceFromWorldSpace(pos, screenPosition))
     {
-    el->xPosition = 0.0f;
-    el->yPosition = 0.0f;
-    el->validPosition = false;
+    el->xPosition.computeLock() = 0.0f;
+    el->yPosition.computeLock() = 0.0f;
+    el->validPosition.computeLock() = false;
     return;
     }
 
-  el->xPosition = screenPosition.x();
-  el->yPosition = -screenPosition.y();
-  el->validPosition = true;
+  el->xPosition.computeLock() = screenPosition.x();
+  el->yPosition.computeLock() = -screenPosition.y();
+  el->validPosition.computeLock() = true;
   }
 
 S_IMPLEMENT_PROPERTY(GCProject3D, GraphicsCore)

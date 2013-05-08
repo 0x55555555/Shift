@@ -141,7 +141,7 @@ void GCSingularTranslateManipulator::createTypeInformation(Shift::PropertyInform
   }
 
 GCSingularTranslateManipulator::GCSingularTranslateManipulator()
-    : _driven(generalPurposeAllocator())
+    : _driven(Shift::TypeRegistry::generalPurposeAllocator())
   {
   }
 

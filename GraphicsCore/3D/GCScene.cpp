@@ -1,6 +1,7 @@
 #include "GCScene.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Properties/sdata.inl"
+#include "shift/Changes/shandler.inl"
 #include "shift/Utilities/siterator.h"
 #include "XShader.h"
 #include "XRenderer.h"

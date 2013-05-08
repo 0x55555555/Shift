@@ -85,7 +85,7 @@ public:
   const Delegate *delegate() const;
   template <typename T> T *createDelegate()
     {
-    return _delegate.create<T>(generalPurposeAllocator());
+    return _delegate.create<T>(Shift::TypeRegistry::generalPurposeAllocator());
     }
 
   struct MouseEvent
