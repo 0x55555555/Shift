@@ -28,9 +28,9 @@ GCSceneExplorer::GCSceneExplorer(GCScene *scene)
   layout->addWidget(view);
   view->setModel(&_inputModel);
 
-  QTreeView *debugView = new QTreeView(this);
-  layout->addWidget(debugView);
-  debugView->setModel(&_model);
+  //QTreeView *debugView = new QTreeView(this);
+  //layout->addWidget(debugView);
+  //debugView->setModel(&_model);
   }
 
 void GCSceneExplorer::create()
