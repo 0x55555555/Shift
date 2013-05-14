@@ -17,7 +17,7 @@ void GCScene::computeRasteriser(GCScene *s)
     {
     return;
     }
-  
+
   auto lock = s->_rasteriserState.computeLock();
   if(lock->isValid())
     {

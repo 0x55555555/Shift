@@ -41,7 +41,7 @@ public:
   typedef Eks::Vector<const Eks::Resource *, ResourceCount> ResourceBlock;
   typedef Eks::Vector<const Eks::ShaderConstantData *, ResourceCount> DataBlock;
 
-  virtual void bindResource(DataBlock *data, ResourceBlock *resources, const Shift::Property *) const = 0;
+  virtual void bindResource(DataBlock *data, ResourceBlock *resources, const Shift::Attribute *) const = 0;
   };
 
 class GCShaderBindableData : public Shift::StaticInterfaceBase
@@ -51,10 +51,10 @@ public:
 
   typedef Eks::Vector<xuint8> DataBlock;
 
-  virtual void bindData(DataBlock *data, const Shift::Property *) const = 0;
+  virtual void bindData(DataBlock *data, const Shift::Attribute *) const = 0;
   virtual void getDescription(
       Eks::ShaderConstantDataDescription &desc,
-      const Shift::Property *) const = 0;
+      const Shift::Attribute *) const = 0;
   };
 
 class GRAPHICSCORE_EXPORT GCShaderConstantData : public Shift::Container

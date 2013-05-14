@@ -82,7 +82,6 @@ private:
   Eks::Geometry _bounds;
   Eks::IndexGeometry _boundIndices;
   Eks::Shader *_shader;
-  Eks::ShaderConstantData *_shaderData;
   const Eks::ShaderVertexLayout *_shaderLayout;
   };
 

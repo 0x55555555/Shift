@@ -12,7 +12,6 @@ void computeData(GCShaderConstantData *d)
     return;
     }
 
-  xAssertFail(); // ensure typeless walker.
   auto walker = d->walkerFrom(&d->runtimeData);
   auto it = ++walker.begin();
   auto end = walker.end();
@@ -33,7 +32,7 @@ void computeData(GCShaderConstantData *d)
 
   if(!lock->isValid())
     {
-    Eks::Vector<Eks::ShaderConstantDataDescription> descs;
+    Eks::Vector<Eks::ShaderConstantDataDescription> descs(&alloc);
 
     it = ++walker.begin();
     for(; it != end; ++it)
