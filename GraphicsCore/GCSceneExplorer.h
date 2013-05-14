@@ -6,6 +6,7 @@
 #include "shift/UI/sdatabasemodel.h"
 
 class GCScene;
+class QTreeView;
 
 class GRAPHICSCORE_EXPORT GCSceneExplorer : public QWidget
   {
@@ -18,8 +19,10 @@ public slots:
   void create();
 
 private:
+  void updateSelection(const QModelIndexList &lst);
+  void onContextMenu(const QPoint& pt, const QModelIndexList &lst);
+
   GCScene *_scene;
-  Shift::DatabaseModel _model;
   Shift::InputModel _inputModel;
   };
 

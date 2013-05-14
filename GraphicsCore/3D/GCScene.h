@@ -44,7 +44,7 @@ public:
   GCManipulatableScene();
 
   Shift::Array manipulators;
-  Shift::PointerArray selection;
+  GCRenderablePointerArray selection;
 
   Shift::FloatProperty manipulatorDisplayScale;
 

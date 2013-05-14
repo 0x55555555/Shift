@@ -42,9 +42,10 @@ public:
 
     Eks::Cuboid c(Eks::Vector3D(0.0f, 0.0f, 0.0f), Eks::Vector3D(20.0f, 20.0f, 0.1f));
 
-    if(c.intersects(l, *distance))
+    float isctPt = 0.0f;
+    if(c.intersects(l, isctPt))
       {
-      *distance *= t.row(0).norm();
+      *distance *= (l.sample(isctPt) - l.position()).norm() * t.row(0).norm();
       return true;
       }
 

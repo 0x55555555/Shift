@@ -182,16 +182,17 @@ void GCManipulatableScene::refreshManipulators()
   class Manipulator : public GCManipulatable
     {
   public:
-    GCScene *scene;
-    GCRenderablePointerArray *manipulatableChildren() { return &scene->renderGroup; }
+    GCRenderablePointerArray *arr;
+    GCRenderablePointerArray *manipulatableChildren() { return arr; }
     } manip;
 
-  manip.scene = this;
 
   GCManipulatable::ManipInfo info;
   info.viewTransform = activeCamera();
 
   info.displayScale = &manipulatorDisplayScale;
+
+  manip.arr = &selection;
   manip.addManipulators(&manipulators, info);
   }
 
