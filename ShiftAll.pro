@@ -5,7 +5,9 @@ CONFIG += ordered minimal_shift
 SUBDIRS = ShiftCore \
           MathsCore \
           GraphicsCore \
-          ShiftCoreTest
+          ShiftCoreTest \
+          SketchCore \
+          SketchCore\SketchCoreTest\SketchCoreTest.pro
 
 
 !minimal_shift {

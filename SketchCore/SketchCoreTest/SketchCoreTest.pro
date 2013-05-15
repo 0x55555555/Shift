@@ -8,9 +8,9 @@ QT       += testlib
 
 QT       -= gui
 
-include("../../Eks/EksCore/GeneralOptions.pri")
+include("../../../Eks/EksCore/GeneralOptions.pri")
 
-TARGET = ShiftCoreTest
+TARGET = SketchCoreTest
 CONFIG   += console
 CONFIG   -= app_bundle
 
@@ -18,19 +18,18 @@ TEMPLATE = app
 
 
 SOURCES += \
-    shiftcomputetests.cpp \
-    shiftbasictests.cpp \
-    shifttestcore.cpp
+    sketchtest.cpp
+
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 INCLUDEPATH += $$ROOT/shift/GraphicsCore \
     $$ROOT/Eks/EksCore \
     $$ROOT/Eks/Eks3D/include \
     $$ROOT/Eks/EksScript \
-    $$ROOT/Shift/ShiftCore/include
+    $$ROOT/Shift/ShiftCore/include \
+    $$ROOT/Shift/SketchCore
 
-LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript
+LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftGraphicsCore -lShiftSketchCore
 
 HEADERS += \
-    shifttest.h \
-    shifttestcommon.h
+    sketchtest.h
