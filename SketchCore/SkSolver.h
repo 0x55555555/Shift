@@ -14,12 +14,11 @@ public:
 
   ConstraintPointerArray constraints;
 
-  Point *addPoint();
+  Shift::Array points;
 
 private:
   void solve();
 
-  Shift::Array points;
   };
 
 #endif // SKSOLVER_H

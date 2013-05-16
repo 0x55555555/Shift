@@ -22,15 +22,9 @@ void Solver::createTypeInformation(
     }
   }
 
-Point *Solver::addPoint()
-  {
-  auto pt = points.add<Point>();
-  return pt;
-  }
-
 struct PointSolve
   {
-  Point pt;
+  Point *pt;
 
   enum LockType
     {
@@ -40,41 +34,45 @@ struct PointSolve
     Free
     } lockType;
 
-  union
+  struct
     {
-    struct
-      {
-      Eks::Vector2D position;
-      float radius;
-      } circle;
+    Eks::Vector2D position;
+    float radius;
+    } circle;
 
-    struct
-      {
-      Eks::Vector2D position;
-      } full;
+  struct
+    {
+    Eks::Vector2D position;
+    } full;
 
-    struct
-      {
-      Eks::Vector2D position;
-      Eks::Vector2D direction;
-      } line;
-    };
+  struct
+    {
+    Eks::Vector2D position;
+    Eks::Vector2D direction;
+    } line;
   };
 
-void solvePointSystem(PointSolve &pt, Eks::Vector<PointSolve> &pts, Solver *s)
+void solvePointSystem(
+    PointSolve &pt,
+    Eks::Vector<PointSolve> &pts,
+    const Eks::Vector<Constraint *> &constraints,
+    Solver *s)
   {
-  Eks::TemporaryAllocator alloc(temporaryAllocator());
+  Eks::TemporaryAllocator alloc(s->temporaryAllocator());
   Eks::Vector<Constraint *> constraintsToSolve(&alloc);
-  constraintsToSolve.reserve(s->constraints.size());
+  constraintsToSolve.reserve(constraints.size());
 
   pt.lockType = PointSolve::Full;
+  (void)pts;
   }
 
 void Solver::solve()
   {
   Eks::TemporaryAllocator alloc(temporaryAllocator());
   Eks::Vector<PointSolve> pts(&alloc);
+  Eks::Vector<Constraint *> allConstraints(&alloc);
   pts.reserve(points.size());
+  allConstraints.reserve(constraints.size());
 
   xForeach(auto pt, points.walker<Point>())
     {
@@ -90,7 +88,7 @@ void Solver::solve()
     {
     auto back = pts.back();
     pts.popBack();
-    solvePointSystem(back, pts, this);
+    solvePointSystem(back, pts, allConstraints, this);
     }
 
   }

@@ -11,8 +11,8 @@ class SKETCHCORE_EXPORT Distance : public Constraint
 public:
 
   Shift::Data<float> distance;
-  PointPointer a;
-  PointPointer b;
+  ConstraintPointPointer a;
+  ConstraintPointPointer b;
   };
 
 #endif // SKDISTANCE_H

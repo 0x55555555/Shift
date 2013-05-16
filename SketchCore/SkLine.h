@@ -10,7 +10,7 @@ class SKETCHCORE_EXPORT Line : public Constraint
   S_ENTITY(Line, Constraint, 0)
 public:
 
-  PointPointerArray points;
+  ConstraintPointPointerArray points;
   };
 
 #endif // SKLINE_H

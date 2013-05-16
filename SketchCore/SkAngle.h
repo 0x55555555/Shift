@@ -10,9 +10,9 @@ class SKETCHCORE_EXPORT Angle : public Constraint
   S_ENTITY(Angle, Constraint, 0)
 public:
 
-  PointPointer origin;
-  PointPointer a;
-  PointPointer b;
+  ConstraintPointPointer origin;
+  ConstraintPointPointer a;
+  ConstraintPointPointer b;
   Shift::Data<float> angle;
   };
 
