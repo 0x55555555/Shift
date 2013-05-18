@@ -22,11 +22,14 @@ void SketchTest::simpleTest()
   QCOMPARE(solver->constraints.isDirty(), false);
   QCOMPARE(solver->points.isDirty(), false);
   a->preGet();
-
+  
+  QCOMPARE(a->isDirty(), false);
   QCOMPARE(solver->constraints.isDirty(), false);
   QCOMPARE(solver->points.isDirty(), false);
   auto b = solver->points.add<Point>();
   auto c = solver->points.add<Point>();
+  
+  QCOMPARE(a->isDirty(), true);
 
   auto l = sk->addChild<Line>();
   l->points.addPointer(a);
@@ -41,7 +44,7 @@ void SketchTest::simpleTest()
   auto d2 = sk->addChild<Distance>();
   d->a.setPointed(c);
   d->b.setPointed(b);
-  d->distance = -25.0f;
+  d->distance = 25.0f;
   
   QCOMPARE(solver->constraints.isDirty(), false);
   QCOMPARE(solver->points.isDirty(), false);
@@ -49,6 +52,8 @@ void SketchTest::simpleTest()
   solver->constraints.addPointer(l);
   solver->constraints.addPointer(d);
   solver->constraints.addPointer(d2);
+  
+  QCOMPARE(a->isDirty(), true);
   
   QCOMPARE(solver->constraints.isDirty(), false);
   QCOMPARE(solver->points.isDirty(), true);

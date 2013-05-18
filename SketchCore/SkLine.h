@@ -10,6 +10,10 @@ class SKETCHCORE_EXPORT Line : public Constraint
   S_ENTITY(Line, Constraint, 0)
 public:
 
+  void gatherPoints(Eks::Vector<Point *> &) X_OVERRIDE;
+  Solution apply(Point::SolvingMap &m) X_OVERRIDE;
+
+  Shift::Data<Eks::Vector2D> direction;
   ConstraintPointPointerArray points;
   };
 

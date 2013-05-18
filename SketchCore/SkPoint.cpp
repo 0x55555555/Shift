@@ -39,15 +39,15 @@ void ConstraintPointPointer::setPointed(const Point *p)
   Pointer::setPointed(&p->constraint);
   }
 
-Point *ConstraintPointPointer::point()
+Point *ConstraintPointPointer::pointed()
   {
-  auto p = pointed();
+  auto p = Pointer::pointed();
   if(!p)
     {
     return 0;
     }
 
-  auto c = pointed()->parent();
+  auto c = p->parent();
   if(!c)
     {
     xAssertFail();

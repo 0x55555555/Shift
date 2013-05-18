@@ -4,11 +4,22 @@
 #include "SkGlobal.h"
 #include "shift/sentity.h"
 #include "shift/Properties/sbasepointerproperties.h"
+#include "SkPoint.h"
 
 class SKETCHCORE_EXPORT Constraint : public Shift::Entity
   {
-  S_ENTITY(Constraint, Entity, 0)
+  S_ABSTRACT_ENTITY(Constraint, Entity, 0)
 public:
+
+  enum Solution
+    {
+    UnderConstrained,
+    Constrained,
+    OverConstrained
+    };
+
+  virtual void gatherPoints(Eks::Vector<Point *> &) = 0;
+  virtual Solution apply(Point::SolvingMap &m) = 0;
 
   };
 

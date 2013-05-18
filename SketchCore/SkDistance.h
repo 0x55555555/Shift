@@ -10,6 +10,9 @@ class SKETCHCORE_EXPORT Distance : public Constraint
   S_ENTITY(Distance, Constraint, 0)
 public:
 
+  void gatherPoints(Eks::Vector<Point *> &) X_OVERRIDE;
+  Solution apply(Point::SolvingMap &m) X_OVERRIDE;
+
   Shift::Data<float> distance;
   ConstraintPointPointer a;
   ConstraintPointPointer b;

@@ -10,6 +10,9 @@ class SKETCHCORE_EXPORT Angle : public Constraint
   S_ENTITY(Angle, Constraint, 0)
 public:
 
+  void gatherPoints(Eks::Vector<Point *> &) X_OVERRIDE;
+  Solution apply(Point::SolvingMap &m) X_OVERRIDE;
+
   ConstraintPointPointer origin;
   ConstraintPointPointer a;
   ConstraintPointPointer b;

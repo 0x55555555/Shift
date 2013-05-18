@@ -5,7 +5,7 @@
 S_IMPLEMENT_TYPED_POINTER_TYPE(ConstraintPointer, SketchCore)
 S_IMPLEMENT_TYPED_POINTER_ARRAY_TYPE(ConstraintPointerArray, SketchCore)
 
-S_IMPLEMENT_PROPERTY(Constraint, SketchCore)
+S_IMPLEMENT_ABSTRACT_PROPERTY(Constraint, SketchCore)
 
 void Constraint::createTypeInformation(
     Shift::PropertyInformationTyped<Constraint> *info,

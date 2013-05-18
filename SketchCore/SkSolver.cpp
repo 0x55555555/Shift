@@ -2,6 +2,7 @@
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "SkGlobal.h"
 #include "XTemporaryAllocator"
+#include <map>
 
 S_IMPLEMENT_PROPERTY(Solver, SketchCore)
 
@@ -22,73 +23,138 @@ void Solver::createTypeInformation(
     }
   }
 
-struct PointSolve
+struct ConstraintSolve
   {
-  Point *pt;
-
-  enum LockType
-    {
-    Full,
-    Circle,
-    Line,
-    Free
-    } lockType;
-
-  struct
-    {
-    Eks::Vector2D position;
-    float radius;
-    } circle;
-
-  struct
-    {
-    Eks::Vector2D position;
-    } full;
-
-  struct
-    {
-    Eks::Vector2D position;
-    Eks::Vector2D direction;
-    } line;
+  Constraint *constraint;
+  Eks::Vector<Point::Solve*> points;
+  bool solved;
   };
 
-void solvePointSystem(
-    PointSolve &pt,
-    Eks::Vector<PointSolve> &pts,
-    const Eks::Vector<Constraint *> &constraints,
+typedef std::multimap<Point *, ConstraintSolve*, std::less<Point *>,
+  Eks::TypedAllocator<std::pair<const Point*, ConstraintSolve*> > > PointMap;
+
+Constraint::Solution solvePointSystem(
+    Point::Solve &pt,
+    Point::SolvingMap &pts,
+    const PointMap &ptMap,
     Solver *s)
   {
-  Eks::TemporaryAllocator alloc(s->temporaryAllocator());
-  Eks::Vector<Constraint *> constraintsToSolve(&alloc);
-  constraintsToSolve.reserve(constraints.size());
+  if(pt.lockType == Point::Solve::Full)
+    {
+    return Constraint::UnderConstrained;
+    }
 
-  pt.lockType = PointSolve::Full;
-  (void)pts;
+  Eks::TemporaryAllocator alloc(s->temporaryAllocator());
+  Eks::Vector<Point::Solve *> pointsToSolve(&alloc);
+  pointsToSolve.reserve(pts.size());
+  Eks::UnorderedMap<Point::Solve*, bool> visited(&alloc);
+
+  auto solution = Constraint::UnderConstrained;
+
+  pt.lockType = Point::Solve::Full;
+  pt.full.position = Eks::Vector2D::Zero();
+  pointsToSolve << &pt;
+
+  while(pointsToSolve.size())
+    {
+    auto pt = pointsToSolve.back();
+    pointsToSolve.popBack();
+
+    if(visited[pt] == true)
+      {
+      continue;
+      }
+    visited[pt] = true;
+
+    qDebug() << pt->point << pt->point->path();
+    auto it = ptMap.lower_bound(pt->point);
+    auto end = ptMap.upper_bound(pt->point);
+    for(; it != end; ++it)
+      {
+      auto constraint = it->second;
+      if(!constraint->solved)
+        {
+        constraint->solved = true;
+
+        // apply constraint
+        auto newSol = constraint->constraint->apply(pts);
+        if(newSol == Constraint::OverConstrained)
+          {
+          return newSol;
+          }
+
+        // append points for constraint.
+        if(pt->lockType != Point::Solve::Full)
+          {
+          xForeach(auto pt, constraint->points)
+            {
+            pointsToSolve << pt;
+            }
+          }
+
+        solution = xMax(solution, newSol);
+        }
+      }
+    }
+  return solution;
   }
 
 void Solver::solve()
   {
   Eks::TemporaryAllocator alloc(temporaryAllocator());
-  Eks::Vector<PointSolve> pts(&alloc);
-  Eks::Vector<Constraint *> allConstraints(&alloc);
-  pts.reserve(points.size());
+  Eks::UnorderedMap<Point *, Point::Solve> pts(&alloc);
+  Eks::Vector<ConstraintSolve> allConstraints(&alloc);
+  PointMap pointMap(&alloc);
+  pts.reserve((int)points.size());
   allConstraints.reserve(constraints.size());
+
+  Eks::Vector<Point*> tmpPoints(&alloc);
+
+  xForeach(auto ct, constraints.walker<ConstraintPointer>())
+    {
+    allConstraints.resize(allConstraints.size()+1);
+
+    auto ptd = ct->pointed();
+    if(!ptd)
+      {
+      continue;
+      }
+
+    ConstraintSolve &sol = allConstraints.back();
+
+    sol.constraint = ptd;
+    sol.solved = false;
+    sol.points.allocator() = &alloc;
+
+    tmpPoints.clear();
+    ptd->gatherPoints(tmpPoints);
+    xForeach(auto pt, tmpPoints)
+      {
+      sol.points << &pts[pt];
+      if(pt)
+        {
+        qDebug() << pt << pt->path();
+        pointMap.insert(std::pair<Point*, ConstraintSolve*>(pt, &sol));
+        }
+      }
+    }
 
   xForeach(auto pt, points.walker<Point>())
     {
-    pts.resize(pts.size()+1);
+    Point::Solve &sol = pts[pt];
 
-    PointSolve &sol = pts.back();
+    qDebug() << pt << pt->path();
 
-    sol.pt = pt;
-    sol.lockType = PointSolve::Free;
+    sol.point = pt;
+    sol.lockType = Point::Solve::Free;
     }
 
-  while(pts.size())
+  auto it = pts.begin();
+  auto end = pts.end();
+  for(; it != end; ++it)
     {
-    auto back = pts.back();
-    pts.popBack();
-    solvePointSystem(back, pts, allConstraints, this);
+    auto pt = it.value();
+    solvePointSystem(pt, pts, pointMap, this);
     }
 
   }

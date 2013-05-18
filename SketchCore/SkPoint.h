@@ -5,11 +5,50 @@
 #include "shift/sentity.h"
 #include "shift/Properties/sbaseproperties.h"
 #include "shift/Properties/sbasepointerproperties.h"
+#include "XLine.h"
 
 class SKETCHCORE_EXPORT Point : public Shift::Entity
   {
   S_ENTITY(Point, Entity, 0)
 public:
+
+    struct Solve
+      {
+      Solve() : line(Eks::Vector3D::Zero(), Eks::Vector3D::Zero())
+        {
+        }
+      Point *point;
+
+      enum LockType
+        {
+        Full,
+        Circle,
+        Line,
+        TwoPoint,
+        Free
+        } lockType;
+
+      struct
+        {
+        Eks::Vector2D position;
+        float radius;
+        } circle;
+
+      struct
+        {
+        Eks::Vector2D position;
+        } full;
+
+      struct
+        {
+        Eks::Vector2D a;
+        Eks::Vector2D b;
+        } twoPoint;
+
+      Eks::Line line;
+      };
+
+  typedef Eks::UnorderedMap<Point*, Solve> SolvingMap;
 
   Shift::Data<float> &x() { return coord[0]; }
   Shift::Data<float> &y() { return coord[1]; }
@@ -32,7 +71,7 @@ class SKETCHCORE_EXPORT ConstraintPointPointer : public Shift::Pointer
 public:
   typedef Point PtrType;
   void setPointed(const Point *p);
-  Point *point();
+  Point *pointed();
   };
 
 S_TYPED_POINTER_ARRAY_TYPE(SKETCHCORE_EXPORT, ConstraintPointPointerArray, ConstraintPointPointer)
