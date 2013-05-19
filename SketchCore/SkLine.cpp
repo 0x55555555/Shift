@@ -2,6 +2,7 @@
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "SkGlobal.h"
 #include "shift/Properties/sdata.inl"
+#include "XPlane.h"
 
 S_IMPLEMENT_PROPERTY(Line, SketchCore)
 
@@ -58,9 +59,9 @@ Line::Solution Line::apply(Point::SolvingMap &m)
       if(ptd.lockType == Point::Solve::Full)
         {
         // check on line.
-        Eks::Line l(s->full.position.head<3>(), dir.head<3>(), Eks::Line::PointAndDirection);
-        float closestT = l.closestPointTo(ptd.full.position.head<3>());
-        Eks::Vector3D pt = l.sample(closestT);
+        Eks::Line2D l(s->full.position, dir, Eks::Line2D::PointAndDirection);
+        float closestT = l.closestPointTo(ptd.full.position);
+        Eks::Vector2D pt = l.sample(closestT);
 
         float dot = (pt-l.position()).normalized().dot(l.direction());
         if(dot < 0.995f)
@@ -84,15 +85,15 @@ Line::Solution Line::apply(Point::SolvingMap &m)
           {
           Eks::Vector3D pt = s->line.sample(s->line.closestPointOn(ptd.line));
           ptd.lockType = Point::Solve::Full;
-          ptd.full.position = pt.head<2>();
+          ptd.full.position = pt;
           return Constrained;
           }
         }
       else if(ptd.lockType == Point::Solve::Circle)
         {
         // two points
-        Eks::Line l(s->full.position.head<3>(), dir.head<3>(), Eks::Line::PointAndDirection);
-        Eks::Vector2D closestPt = l.sample(l.closestPointTo(ptd.circle.position.head<3>())).head<2>();
+        Eks::Line2D l(s->full.position, dir, Eks::Line2D::PointAndDirection);
+        Eks::Vector2D closestPt = l.sample(l.closestPointTo(ptd.circle.position));
 
         Eks::Vector2D circleToLine = closestPt - ptd.circle.position;
         float circLineLen = circleToLine.norm();
@@ -110,7 +111,7 @@ Line::Solution Line::apply(Point::SolvingMap &m)
 
         float distAlongLine = sqrtf(ptd.circle.radius*ptd.circle.radius - circLineLen*circLineLen);
 
-        Eks::Vector2D dirNorm = l.direction().head<2>().normalized();
+        Eks::Vector2D dirNorm = l.direction().normalized();
 
         ptd.lockType = Point::Solve::TwoPoint;
         ptd.twoPoint.a = closestPt + dirNorm * distAlongLine;
@@ -120,8 +121,8 @@ Line::Solution Line::apply(Point::SolvingMap &m)
       else if(ptd.lockType == Point::Solve::TwoPoint)
         {
         // one point
-        bool aMatch = s->line.sample(s->line.closestPointTo(ptd.twoPoint.a.head<3>())).head<2>().isApprox(ptd.twoPoint.a);
-        bool bMatch = s->line.sample(s->line.closestPointTo(ptd.twoPoint.b.head<3>())).head<2>().isApprox(ptd.twoPoint.b);
+        bool aMatch = s->line.sample(s->line.closestPointTo(ptd.twoPoint.a)).isApprox(ptd.twoPoint.a);
+        bool bMatch = s->line.sample(s->line.closestPointTo(ptd.twoPoint.b)).isApprox(ptd.twoPoint.b);
 
         if(aMatch && !bMatch)
           {
@@ -144,8 +145,8 @@ Line::Solution Line::apply(Point::SolvingMap &m)
       else if(ptd.lockType == Point::Solve::Free)
         {
         ptd.lockType = Point::Solve::Line;
-        ptd.line.setPosition(s->full.position.head<3>());
-        ptd.line.setDirection(dir.head<3>());
+        ptd.line.setPosition(s->full.position);
+        ptd.line.setDirection(dir);
         }
       else
         {

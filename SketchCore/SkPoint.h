@@ -14,7 +14,7 @@ public:
 
     struct Solve
       {
-      Solve() : line(Eks::Vector3D::Zero(), Eks::Vector3D::Zero())
+      Solve() : line(Eks::Vector2D::Zero(), Eks::Vector2D::Zero())
         {
         }
       Point *point;
@@ -45,7 +45,7 @@ public:
         Eks::Vector2D b;
         } twoPoint;
 
-      Eks::Line line;
+      Eks::Line2D line;
       };
 
   typedef Eks::UnorderedMap<Point*, Solve> SolvingMap;

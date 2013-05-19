@@ -20,6 +20,7 @@ public:
 
   virtual void gatherPoints(Eks::Vector<Point *> &) = 0;
   virtual Solution apply(Point::SolvingMap &m) = 0;
+  virtual bool canApply(const Point::SolvingMap &) { return true; }
 
   };
 

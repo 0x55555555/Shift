@@ -55,10 +55,10 @@ Constraint::Solution solvePointSystem(
   pt.full.position = Eks::Vector2D::Zero();
   pointsToSolve << &pt;
 
-  while(pointsToSolve.size())
+  xsize i = 0;
+  while(i < pointsToSolve.size())
     {
-    auto pt = pointsToSolve.back();
-    pointsToSolve.popBack();
+    auto pt = pointsToSolve[i++];
 
     if(visited[pt] == true)
       {
@@ -66,12 +66,18 @@ Constraint::Solution solvePointSystem(
       }
     visited[pt] = true;
 
-    qDebug() << pt->point << pt->point->path();
     auto it = ptMap.lower_bound(pt->point);
     auto end = ptMap.upper_bound(pt->point);
     for(; it != end; ++it)
       {
       auto constraint = it->second;
+
+      if(!constraint->constraint->canApply(pts))
+        {
+        pointsToSolve << pt;
+        continue;
+        }
+
       if(!constraint->solved)
         {
         constraint->solved = true;
@@ -130,30 +136,24 @@ void Solver::solve()
     ptd->gatherPoints(tmpPoints);
     xForeach(auto pt, tmpPoints)
       {
-      sol.points << &pts[pt];
+      Point::Solve &ptd = pts[pt];
+
+      ptd.point = pt;
+      ptd.lockType = Point::Solve::Free;
+
+      sol.points << &ptd;
       if(pt)
         {
-        qDebug() << pt << pt->path();
         pointMap.insert(std::pair<Point*, ConstraintSolve*>(pt, &sol));
         }
       }
-    }
-
-  xForeach(auto pt, points.walker<Point>())
-    {
-    Point::Solve &sol = pts[pt];
-
-    qDebug() << pt << pt->path();
-
-    sol.point = pt;
-    sol.lockType = Point::Solve::Free;
     }
 
   auto it = pts.begin();
   auto end = pts.end();
   for(; it != end; ++it)
     {
-    auto pt = it.value();
+    Point::Solve &pt = it.value();
     solvePointSystem(pt, pts, pointMap, this);
     }
 

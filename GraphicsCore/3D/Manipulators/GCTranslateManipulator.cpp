@@ -10,6 +10,7 @@
 #include "XTransform.h"
 #include "XShader.h"
 #include "XLine.h"
+#include "XPlane.h"
 #include "XCuboid.h"
 
 class LinearTranslateDelegate : public GCVisualManipulator::Delegate
