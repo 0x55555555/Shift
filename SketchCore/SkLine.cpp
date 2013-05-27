@@ -14,7 +14,6 @@ void Line::createTypeInformation(
     {
     auto cb = info->createChildrenBlock(data);
 
-    cb.add(&Line::direction, "direction");
     cb.add(&Line::points, "points");
     }
   }
@@ -48,7 +47,8 @@ Line::Solution Line::apply(Point::SolvingMap &m)
     return OverConstrained;
     }
 
-  auto &&dir = direction();
+  xAssertFail();
+  /*auto &&dir = direction();
 
   xForeach(auto p, points.walker<ConstraintPointPointer>())
     {
@@ -83,7 +83,7 @@ Line::Solution Line::apply(Point::SolvingMap &m)
           }
         else
           {
-          Eks::Vector3D pt = s->line.sample(s->line.closestPointOn(ptd.line));
+          Eks::Vector2D pt = s->line.sample(s->line.closestPointOn(ptd.line));
           ptd.lockType = Point::Solve::Full;
           ptd.full.position = pt;
           return Constrained;
@@ -153,7 +153,7 @@ Line::Solution Line::apply(Point::SolvingMap &m)
         xAssertFail();
         }
       }
-    }
+    }*/
 
 
   return UnderConstrained;
