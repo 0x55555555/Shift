@@ -65,6 +65,8 @@ void GCRenderArray::createTypeInformation(Shift::PropertyInformationTyped<GCRend
 
 void GCRenderArray::render(Eks::Renderer *renderer, const RenderState &state) const
   {
+  X_EVENT_FUNCTION;
+
   xForeach(auto r, renderGroup.walker<GCRenderablePointer>())
     {
     const GCRenderable* ptd = r->pointed();
