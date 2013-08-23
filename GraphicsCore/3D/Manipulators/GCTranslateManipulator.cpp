@@ -21,7 +21,7 @@ public:
       const QPoint &,
       const GCViewableTransform *camera,
       const Eks::Vector3D &clickDirection, // in world space
-      float *distance) const
+      float *distance) const X_OVERRIDE
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
 
@@ -61,7 +61,7 @@ public:
 
   virtual void render(const GCVisualManipulator *manip,
       const GCViewableTransform *cam,
-      Eks::Renderer *r) const
+      Eks::Renderer *r) const X_OVERRIDE
     {
     const GCSingularTranslateManipulator *toRender = manip->uncheckedCastTo<GCSingularTranslateManipulator>();
 
