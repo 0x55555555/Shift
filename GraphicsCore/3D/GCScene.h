@@ -44,7 +44,6 @@ public:
   GCManipulatableScene();
 
   Shift::Array manipulators;
-  GCRenderablePointerArray selection;
 
   Shift::FloatProperty manipulatorDisplayScale;
 
@@ -52,8 +51,9 @@ public:
 
   void render(Eks::Renderer *, const RenderState &state) const;
 
-  void clearManipulators();
-  void refreshManipulators();
+  void clearSelection();
+  void select(GCRenderable* r);
+  void select(const Eks::Vector<GCRenderable*> &r);
 
   void beginMouseSelection(const Eks::Vector3D &sel);
   void moveMouseSelection(const Eks::Vector3D &sel);
@@ -78,6 +78,11 @@ private:
     Eks::Vector3D normal;
     GCRenderable *object;
     };
+
+  GCRenderablePointerArray selection;
+
+  void clearManipulators();
+  void refreshManipulators();
 
   Eks::Geometry _bounds;
   Eks::IndexGeometry _boundIndices;

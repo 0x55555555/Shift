@@ -87,11 +87,6 @@ void GCScene::setCamera(GCViewableTransform *e)
 
 S_IMPLEMENT_PROPERTY(GCManipulatableScene, GraphicsCore)
 
-void computeManips(GCManipulatableScene *s)
-  {
-  s->refreshManipulators();
-  }
-
 void GCManipulatableScene::createTypeInformation(
     Shift::PropertyInformationTyped<GCManipulatableScene> *info,
     const Shift::PropertyInformationCreateData &data)
@@ -100,11 +95,9 @@ void GCManipulatableScene::createTypeInformation(
     {
     auto childBlock = info->createChildrenBlock(data);
 
-    auto manInfo = childBlock.add(&GCManipulatableScene::manipulators, "manipulators");
-    manInfo->setCompute<computeManips>();
+    childBlock.add(&GCManipulatableScene::manipulators, "manipulators");
 
-    auto selInfo = childBlock.add(&GCManipulatableScene::selection, "selection");
-    selInfo->setAffects(data, manInfo);
+    childBlock.add(&GCManipulatableScene::selection, "selection");
 
     auto scale = childBlock.add(&GCManipulatableScene::manipulatorDisplayScale, "manipulatorDisplayScale");
     scale->setDefaultValue(100.0f);
@@ -365,6 +358,32 @@ void GCManipulatableScene::endMouseSelection(const Eks::Vector3D &sel)
     }
   }
 
+void GCManipulatableScene::clearSelection()
+  {
+  selection.clear();
+  refreshManipulators();
+  }
+
+void GCManipulatableScene::select(GCRenderable* r)
+  {
+  selection.clear();
+  selection.addPointer(r);
+
+  refreshManipulators();
+  }
+
+void GCManipulatableScene::select(const Eks::Vector<GCRenderable *> &r)
+  {
+  selection.clear();
+
+  xForeach(auto x, r)
+    {
+    selection.addPointer(x);
+    }
+
+  refreshManipulators();
+  }
+
 bool GCManipulatableScene::isMouseSelecting() const
   {
   return _mouseSelecting;
@@ -414,9 +433,12 @@ void GCManipulatableScene::raySelect(const Eks::Vector3D &dir)
     {
     selection.addPointer(interface.hit().object);
     }
+
+  refreshManipulators();
   }
 
 void GCManipulatableScene::marqueeSelect(const Eks::Frustum &)
   {
   xAssertFail();
+  refreshManipulators();
   }

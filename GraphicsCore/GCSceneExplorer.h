@@ -18,6 +18,9 @@ public:
 public slots:
   void create();
 
+private slots:
+  void onItemAction();
+
 private:
   void updateSelection(const QModelIndexList &lst);
   void onContextMenu(const QPoint& pt, const QModelIndexList &lst);

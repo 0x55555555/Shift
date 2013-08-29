@@ -43,7 +43,10 @@ void unionBounds(GCRenderArray* array)
     {
     const GCRenderable* ptd = r->pointed();
 
-    lock->unite(ptd->bounds());
+    if(ptd)
+      {
+      lock->unite(ptd->bounds());
+      }
     }
   }
 
