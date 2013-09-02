@@ -7,7 +7,7 @@
 
 class GCComposeTransform : public Shift::Entity
   {
-  S_ENTITY(GCComposeTransform, Entity, 0)
+  S_ENTITY(GCComposeTransform, Entity)
 
 public:
   Shift::Vector3DProperty rotationAxisIn;

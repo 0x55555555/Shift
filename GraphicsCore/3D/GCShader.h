@@ -59,7 +59,7 @@ public:
 
 class GRAPHICSCORE_EXPORT GCShaderConstantData : public Shift::Container
   {
-  S_PROPERTY_CONTAINER(GCShaderConstantData, Shift::Container, 0)
+  S_PROPERTY_CONTAINER(GCShaderConstantData, Shift::Container)
 
 public:
   GCRenderer renderer;
@@ -71,7 +71,7 @@ S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCShaderConstantDataPointer, GCShaderC
 
 class GRAPHICSCORE_EXPORT GCShader : public Shift::Entity
   {
-  S_ENTITY(GCShader, Shift::Entity, 0)
+  S_ENTITY(GCShader, Shift::Entity)
 public:
 
   void bind(Eks::Renderer *r) const;
@@ -95,7 +95,7 @@ private:
 
 class GRAPHICSCORE_EXPORT GCStaticShader : public GCShader
   {
-  S_ABSTRACT_ENTITY(GCStaticShader, GCShader, 0)
+  S_ABSTRACT_ENTITY(GCStaticShader, GCShader)
 
 private:
   Eks::ShaderFragmentComponent fragment;

@@ -9,7 +9,7 @@
 
 class SKETCHCORE_EXPORT Point : public Shift::Entity
   {
-  S_ENTITY(Point, Entity, 0)
+  S_ENTITY(Point, Entity)
 public:
 
     struct Solve
@@ -61,12 +61,12 @@ public:
 
 class SKETCHCORE_EXPORT PointPointer : public Shift::TypedPointer<Point>
   {
-  S_PROPERTY(PointPointer, Pointer, 0);
+  S_PROPERTY(PointPointer, Pointer);
   };
 
 class SKETCHCORE_EXPORT ConstraintPointPointer : public Shift::Pointer
   {
-  S_PROPERTY(ConstraintPointPointer, Pointer, 0)
+  S_PROPERTY(ConstraintPointPointer, Pointer)
 
 public:
   typedef Point PtrType;

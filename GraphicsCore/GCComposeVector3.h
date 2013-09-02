@@ -7,7 +7,7 @@
 
 class GRAPHICSCORE_EXPORT GCComposeVector3 : public Shift::Entity
   {
-  S_ENTITY(GCComposeVector3, Entity, 0)
+  S_ENTITY(GCComposeVector3, Entity)
 
 public:
   Shift::FloatProperty xIn;

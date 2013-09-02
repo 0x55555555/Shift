@@ -7,7 +7,7 @@
 
 class GRAPHICSCORE_EXPORT GCViewport : public GCScreenRenderTarget
   {
-  S_ENTITY(GCViewport, GCScreenRenderTarget, 0)
+  S_ENTITY(GCViewport, GCScreenRenderTarget)
 
 public:
   Shift::UnsignedIntProperty x;

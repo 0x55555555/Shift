@@ -5,7 +5,7 @@
 
 class GRAPHICSCORE_EXPORT GCButtonManipulator : public GCVisualClickManipulator
   {
-  S_PROPERTY_CONTAINER(GCButtonManipulator, GCVisualClickManipulator, 0)
+  S_PROPERTY_CONTAINER(GCButtonManipulator, GCVisualClickManipulator)
 
 public:
   GCButtonManipulator();

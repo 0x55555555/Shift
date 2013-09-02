@@ -7,7 +7,7 @@
 
 class GRAPHICSCORE_EXPORT GCRenderTarget : public Shift::Entity
   {
-  S_ENTITY(GCRenderTarget, Entity, 0)
+  S_ENTITY(GCRenderTarget, Entity)
 
 public:
   GCRenderablePointer source;

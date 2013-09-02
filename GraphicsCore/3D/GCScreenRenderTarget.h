@@ -6,7 +6,7 @@
 
 class GRAPHICSCORE_EXPORT GCScreenRenderTarget : public GCRenderTarget
   {
-  S_ENTITY(GCScreenRenderTarget, GCRenderTarget, 0)
+  S_ENTITY(GCScreenRenderTarget, GCRenderTarget)
 
 public:
   GCScreenRenderTarget();

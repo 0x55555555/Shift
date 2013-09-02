@@ -8,7 +8,7 @@
 
 class SKETCHCORE_EXPORT Constraint : public Shift::Entity
   {
-  S_ABSTRACT_ENTITY(Constraint, Entity, 0)
+  S_ABSTRACT_ENTITY(Constraint, Entity)
 public:
 
   enum Solution
@@ -26,7 +26,7 @@ public:
 
 class SKETCHCORE_EXPORT ConstraintPointer : public Shift::TypedPointer<Constraint>
   {
-  S_PROPERTY(ConstraintPointer, Pointer, 0);
+  S_PROPERTY(ConstraintPointer, Pointer);
   };
 
 S_TYPED_POINTER_ARRAY_TYPE(SKETCHCORE_EXPORT, ConstraintPointerArray, ConstraintPointer)

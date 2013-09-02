@@ -11,7 +11,7 @@
 
 class GRAPHICSCORE_EXPORT GCGeometry : public Shift::Container
   {
-  S_PROPERTY_CONTAINER(GCGeometry, Container, 0)
+  S_PROPERTY_CONTAINER(GCGeometry, Container)
 
 public:
   GCRuntimeGeometry runtimeGeometry;
@@ -19,7 +19,7 @@ public:
 
 class GRAPHICSCORE_EXPORT GCIndexedGeometry : public GCGeometry
   {
-  S_PROPERTY_CONTAINER(GCIndexedGeometry, GCGeometry, 0)
+  S_PROPERTY_CONTAINER(GCIndexedGeometry, GCGeometry)
 
 public:
   GCRuntimeIndexGeometry runtimeIndexGeometry;

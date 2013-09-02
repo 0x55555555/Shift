@@ -7,7 +7,7 @@
 
 class SKETCHCORE_EXPORT Line : public Constraint
   {
-  S_ENTITY(Line, Constraint, 0)
+  S_ENTITY(Line, Constraint)
 public:
 
   void gatherPoints(Eks::Vector<Point *> &) X_OVERRIDE;

@@ -11,7 +11,7 @@
 
 class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
   {
-  S_ABSTRACT_ENTITY(GCPlate, GCElementArray, 0)
+  S_ABSTRACT_ENTITY(GCPlate, GCElementArray)
 
   template <typename T> GCShadingGroup *addMaterial(T **matOut = 0)
     {

@@ -6,7 +6,7 @@
 
 class GRAPHICSCORE_EXPORT GCTextureRenderTarget : public GCRenderTarget
   {
-  S_ENTITY(GCTextureRenderTarget, GCRenderTarget, 0)
+  S_ENTITY(GCTextureRenderTarget, GCRenderTarget)
   };
 
 #endif // GCRENDERTOTEXTURE_H

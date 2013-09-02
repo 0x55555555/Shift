@@ -10,7 +10,7 @@ class GCViewableTransform;
 
 class GRAPHICSCORE_EXPORT GCScene : public GCRenderArray, public Eks::CameraCanvasController
   {
-  S_ENTITY(GCScene, GCRenderArray, 0);
+  S_ENTITY(GCScene, GCRenderArray);
 
 public:
   GCScene();
@@ -35,7 +35,7 @@ S_PROPERTY_INTERFACE(GCScene)
 
 class GRAPHICSCORE_EXPORT GCManipulatableScene : public GCScene
   {
-  S_ENTITY(GCManipulatableScene, GCScene, 0);
+  S_ENTITY(GCManipulatableScene, GCScene);
 
 XProperties:
   XROProperty(GCVisualManipulator *, currentManipulator);

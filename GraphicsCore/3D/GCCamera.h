@@ -16,7 +16,7 @@ class GRAPHICSCORE_EXPORT GCViewableTransform
     : public GCTransform,
     public Eks::CameraCanvasController::CameraInterface
   {
-  S_ABSTRACT_ENTITY(GCViewableTransform, GCTransform, 0)
+  S_ABSTRACT_ENTITY(GCViewableTransform, GCTransform)
 
 XProperties:
   XProperty(bool, rotateEnabled, setRotateEnabled);
@@ -76,14 +76,14 @@ S_PROPERTY_ABSTRACT_INTERFACE(GCViewableTransform)
 
 class GRAPHICSCORE_EXPORT GCCamera : public GCViewableTransform
   {
-  S_ABSTRACT_ENTITY(GCCamera, GCViewableTransform, 0)
+  S_ABSTRACT_ENTITY(GCCamera, GCViewableTransform)
   };
 
 S_PROPERTY_ABSTRACT_INTERFACE(GCCamera)
 
 class GRAPHICSCORE_EXPORT GCPerspectiveCamera : public GCCamera
   {
-  S_ENTITY(GCPerspectiveCamera, GCCamera, 0)
+  S_ENTITY(GCPerspectiveCamera, GCCamera)
 
 public:
   Eks::Vector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const;

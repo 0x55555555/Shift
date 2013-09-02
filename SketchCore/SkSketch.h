@@ -6,7 +6,7 @@
 
 class SKETCHCORE_EXPORT Sketch : public Shift::Entity
   {
-  S_ENTITY(Sketch, Entity, 0)
+  S_ENTITY(Sketch, Entity)
 public:
   };
 

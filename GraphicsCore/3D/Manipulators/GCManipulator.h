@@ -22,7 +22,7 @@ class GCViewableTransform;
 
 class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::Container
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, Container, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, Container)
 
 public:
   GCVisualManipulator();
@@ -113,7 +113,7 @@ private:
 
 class GRAPHICSCORE_EXPORT GCVisualCompoundManipulator : public GCVisualManipulator
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualCompoundManipulator, GCVisualManipulator, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualCompoundManipulator, GCVisualManipulator)
 
 public:
   bool hitTest(
@@ -133,7 +133,7 @@ public:
 
 class GRAPHICSCORE_EXPORT GCVisualDragManipulator : public GCVisualManipulator
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualDragManipulator, GCVisualManipulator, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualDragManipulator, GCVisualManipulator)
 
 public:
   virtual void onDrag(const MouseMoveEvent &) = 0;
@@ -146,7 +146,7 @@ public:
 
 class GRAPHICSCORE_EXPORT GCVisualClickManipulator : public GCVisualManipulator
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualClickManipulator, GCVisualManipulator, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCVisualClickManipulator, GCVisualManipulator)
 
 public:
   virtual void onClick() = 0;
@@ -159,7 +159,7 @@ public:
 
 class GRAPHICSCORE_EXPORT GCDisplacementDragManipulator : public GCVisualDragManipulator
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCDisplacementDragManipulator, GCVisualDragManipulator, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCDisplacementDragManipulator, GCVisualDragManipulator)
 
 public:
   enum LockMode
@@ -177,7 +177,7 @@ public:
 
 class GRAPHICSCORE_EXPORT GCAngularDragManipulator : public GCVisualDragManipulator
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCAngularDragManipulator, GCVisualDragManipulator, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCAngularDragManipulator, GCVisualDragManipulator)
 
 public:
   enum LockMode

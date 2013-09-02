@@ -15,7 +15,7 @@ class Frustum;
 
 class GRAPHICSCORE_EXPORT GCRenderable : public Shift::Entity
   {
-  S_ABSTRACT_ENTITY(GCRenderable, Entity, 0)
+  S_ABSTRACT_ENTITY(GCRenderable, Entity)
 
 public:
   GCRenderable();
@@ -46,7 +46,7 @@ S_TYPED_POINTER_ARRAY_TYPE(GRAPHICSCORE_EXPORT, GCRenderablePointerArray, GCRend
 
 class GRAPHICSCORE_EXPORT GCRenderArray : public GCRenderable
   {
-  S_ENTITY(GCRenderArray, GCRenderable, 0)
+  S_ENTITY(GCRenderArray, GCRenderable)
 
 public:
   GCRenderablePointerArray renderGroup;

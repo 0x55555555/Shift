@@ -30,7 +30,7 @@ private:
 
 class GRAPHICSCORE_EXPORT GCDistanceManipulator : public GCDisplacementDragManipulator
   {
-  S_PROPERTY_CONTAINER(GCDistanceManipulator, GCDisplacementDragManipulator, 0);
+  S_PROPERTY_CONTAINER(GCDistanceManipulator, GCDisplacementDragManipulator);
 
 public:
   GCDistanceManipulator();

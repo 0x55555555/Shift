@@ -9,7 +9,7 @@
 
 class GRAPHICSCORE_EXPORT GCProject3D : public Shift::Entity
   {
-  S_ENTITY(GCProject3D, Entity, 0)
+  S_ENTITY(GCProject3D, Entity)
 
 public:
 

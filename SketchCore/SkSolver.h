@@ -9,7 +9,7 @@
 
 class SKETCHCORE_EXPORT Solver : public Shift::Entity
   {
-  S_ENTITY(Solver, Entity, 0)
+  S_ENTITY(Solver, Entity)
 public:
 
   ConstraintPointerArray constraints;

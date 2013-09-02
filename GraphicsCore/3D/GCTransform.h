@@ -10,7 +10,7 @@
 
 class GRAPHICSCORE_EXPORT GCTransform : public GCRenderArray, public GCManipulatable
   {
-  S_ENTITY(GCTransform, GCRenderArray, 0)
+  S_ENTITY(GCTransform, GCRenderArray)
 
 public:
 

@@ -7,7 +7,7 @@
 
 class GCSingularTranslateManipulator : public GCDisplacementDragManipulator
   {
-  S_PROPERTY_CONTAINER(GCSingularTranslateManipulator, GCDisplacementDragManipulator, 0);
+  S_PROPERTY_CONTAINER(GCSingularTranslateManipulator, GCDisplacementDragManipulator);
 
 public:
   GCSingularTranslateManipulator();
@@ -22,7 +22,7 @@ private:
 
 class GRAPHICSCORE_EXPORT GCTranslateManipulator : public GCVisualCompoundManipulator
   {
-  S_PROPERTY_CONTAINER(GCTranslateManipulator, GCVisualCompoundManipulator, 0);
+  S_PROPERTY_CONTAINER(GCTranslateManipulator, GCVisualCompoundManipulator);
 
 public:
   GCTranslateManipulator();

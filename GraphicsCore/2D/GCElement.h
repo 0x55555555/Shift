@@ -13,17 +13,17 @@ class GCElement;
 
 class GCElementCentre : public MCSimple
   {
-  S_ENTITY(GCElementCentre, MCSimple, 0)
+  S_ENTITY(GCElementCentre, MCSimple)
   };
 
 class GCElementUnCentre : public MCSimple
   {
-  S_ENTITY(GCElementUnCentre, MCSimple, 0)
+  S_ENTITY(GCElementUnCentre, MCSimple)
   };
 
 class GRAPHICSCORE_EXPORT GCInteractionHandler : public Shift::Container
   {
-  S_ABSTRACT_PROPERTY_CONTAINER(GCInteractionHandler, Shift::Container, 0)
+  S_ABSTRACT_PROPERTY_CONTAINER(GCInteractionHandler, Shift::Container)
 
 public:
   virtual void onRelease(GCElement *e, int x, int y) = 0;
@@ -33,7 +33,7 @@ S_TYPED_POINTER_TYPE(GRAPHICSCORE_EXPORT, GCInteractionHandlerPointer, GCInterac
 
 class GRAPHICSCORE_EXPORT GCElement : public GCTransform
   {
-  S_ENTITY(GCElement, GCTransform, 0)
+  S_ENTITY(GCElement, GCTransform)
 
 public:
 
@@ -62,7 +62,7 @@ public:
 
 class GRAPHICSCORE_EXPORT GCElementArray : public GCElement
   {
-  S_ENTITY(GCElementArray, GCElement, 0)
+  S_ENTITY(GCElementArray, GCElement)
 
   template <typename T> GCElement *addChildElement(T **out = 0, GCShadingGroup *material = 0)
     {
@@ -81,7 +81,7 @@ class GRAPHICSCORE_EXPORT GCElementArray : public GCElement
 
 class GRAPHICSCORE_EXPORT GCUnitElement : public GCElement
   {
-  S_ENTITY(GCUnitElement, GCElement, 0)
+  S_ENTITY(GCUnitElement, GCElement)
 
 public:
   };

@@ -5,7 +5,7 @@
 
 class GRAPHICSCORE_EXPORT GCCameraAlignedPlate : public GCPlate
   {
-  S_ENTITY(GCCameraAlignedPlate, GCPlate, 0)
+  S_ENTITY(GCCameraAlignedPlate, GCPlate)
 
 public:
   TransformProperty cameraTransform;

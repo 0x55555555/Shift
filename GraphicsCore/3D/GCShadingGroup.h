@@ -9,7 +9,7 @@
 
 class GRAPHICSCORE_EXPORT GCShadingGroup : public GCRenderArray, public GCManipulatable
   {
-  S_ENTITY(GCShadingGroup, GCRenderArray, 0)
+  S_ENTITY(GCShadingGroup, GCRenderArray)
 
 public:
   GCShadingGroup();

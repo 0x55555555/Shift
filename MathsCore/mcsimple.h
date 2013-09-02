@@ -7,7 +7,7 @@
 
 class MATHSCORE_EXPORT MCSimple : public Shift::Entity
   {
-  S_ENTITY(MCSimple, Shift::Entity, 0)
+  S_ENTITY(MCSimple, Shift::Entity)
 
 public:
   Shift::FloatProperty inputA;

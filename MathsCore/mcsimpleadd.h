@@ -6,12 +6,12 @@
 
 class MATHSCORE_EXPORT MCSimpleAdd : public MCSimple
   {
-  S_ENTITY(MCSimpleAdd, MCSimple, 0)
+  S_ENTITY(MCSimpleAdd, MCSimple)
   };
 
 class MATHSCORE_EXPORT MCSimpleSubtract : public MCSimple
   {
-  S_ENTITY(MCSimpleSubtract, MCSimple, 0)
+  S_ENTITY(MCSimpleSubtract, MCSimple)
   };
 
 #endif // MCSIMPLEADD_H

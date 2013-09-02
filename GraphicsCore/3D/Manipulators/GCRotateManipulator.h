@@ -7,7 +7,7 @@
 
 class GCSingularRotateManipulator : public GCAngularDragManipulator
   {
-  S_PROPERTY_CONTAINER(GCSingularRotateManipulator, GCAngularDragManipulator, 0);
+  S_PROPERTY_CONTAINER(GCSingularRotateManipulator, GCAngularDragManipulator);
 
 public:
   GCSingularRotateManipulator();
@@ -22,7 +22,7 @@ private:
 
 class GRAPHICSCORE_EXPORT GCRotateManipulator : public GCVisualCompoundManipulator
   {
-  S_PROPERTY_CONTAINER(GCRotateManipulator, GCVisualCompoundManipulator, 0);
+  S_PROPERTY_CONTAINER(GCRotateManipulator, GCVisualCompoundManipulator);
 
 public:
   GCRotateManipulator();

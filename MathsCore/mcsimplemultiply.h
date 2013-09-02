@@ -6,7 +6,7 @@
 
 class MATHSCORE_EXPORT MCSimpleMultiply : public MCSimple
   {
-  S_ENTITY(MCSimpleMultiply, MCSimple, 0)
+  S_ENTITY(MCSimpleMultiply, MCSimple)
   };
 
 
