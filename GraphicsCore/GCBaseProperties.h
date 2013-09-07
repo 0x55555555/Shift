@@ -18,7 +18,7 @@ namespace detail
 GRAPHICSCORE_EXPORT void getDefault(Eks::Transform *);
 GRAPHICSCORE_EXPORT void getDefault(Eks::Matrix3x3 *);
 
-template <int IsFull> class PODEmbeddedInstanceInformation<Shift::Data<Eks::Renderer *>, IsFull>
+template <int IsFull> class PODEmbeddedInstanceInformation3<Shift::Data<Eks::Renderer *>, IsFull>
     : public Shift::Property::EmbeddedInstanceInformation
   {
 public:
