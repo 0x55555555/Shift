@@ -17,7 +17,7 @@ HEADERS += \
     mcsimplemultiply.h \
     mcsimple.h
 
-INCLUDEPATH += $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Shift/ShiftCore/include
+INCLUDEPATH += $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore/include $$ROOT/Eks/EksScript $$ROOT/Shift/ShiftCore/include
 
 LIBS += -lShiftCore -lEksCore -lEksScript
 

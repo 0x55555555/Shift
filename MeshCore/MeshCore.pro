@@ -20,7 +20,7 @@ HEADERS += MeshCore.h \
     MCShape.h
 
 INCLUDEPATH += $$ROOT/shift/GraphicsCore \
-    $$ROOT/Eks/EksCore \
+    $$ROOT/Eks/EksCore/include \
     $$ROOT/Eks/Eks3D/include \
     $$ROOT/Eks/EksScript \
     $$ROOT/Shift/ShiftCore/include \

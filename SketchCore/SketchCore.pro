@@ -8,7 +8,7 @@ TEMPLATE = lib
 
 include("../../Eks/EksCore/GeneralOptions.pri")
 
-INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/Eks/EksCore $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
+INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/Eks/EksCore/include $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
 
 LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftGraphicsCore
 
