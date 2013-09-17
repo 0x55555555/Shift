@@ -298,6 +298,36 @@ void GCViewableTransform::zoom(float factor, float, float)
   transform = t;
   }
 
+void GCViewableTransform::moveToFit(const Eks::BoundingBox &bnds)
+  {
+  Eks::Vector3D pos = bnds.centre();
+
+  Eks::AxisAlignedBoundingBox bbox(Eks::Frame::XYZ(), bnds);
+
+  Eks::Vector3D across = acrossDirection().normalized();
+  Eks::Vector3D up = upDirection().normalized();
+  Eks::Vector3D look = lookDirection().normalized();
+
+  float minX, maxX;
+  bbox.maximumExtents(across, minX, maxX);
+
+  float minY, maxY;
+  bbox.maximumExtents(up, minY, maxY);
+
+  float minZ, maxZ;
+  bbox.maximumExtents(look, minZ, maxZ);
+
+  float centreX = pos.dot(across);
+  float centreY = pos.dot(up);
+  float centreZ = pos.dot(look);
+
+  float axisX = xMax(centreX - minX, maxX - centreX) / aspectRatio();
+  float axisY = xMax(centreY - minY, maxY - centreY);
+  float minDist = centreZ - minZ;
+
+  moveToFit(pos, lookDirection(), xMax(axisX, axisY), minDist);
+  }
+
 void GCViewableTransform::track(float x, float y)
   {
   Eks::Transform t = transform();
@@ -375,7 +405,7 @@ void GCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<
       {
       c->projection.computeLock() = Eks::TransformUtilities::perspective(
         c->fieldOfView(),
-        (float)c->viewportWidth() / (float)c->viewportHeight(),
+        c->aspectRatio(),
         c->nearClip(),
         c->farClip());
       });
@@ -389,7 +419,7 @@ void GCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<
     height->setAffects(affectsProj, false);
 
     auto fov = childBlock.add(&GCPerspectiveCamera::fieldOfView, "fieldOfView");
-    fov->setDefault(45.0f);
+    fov->setDefault(Eks::degreesToRadians(45.0f));
     fov->setAffects(affectsProj, false);
 
     auto nC = childBlock.add(&GCPerspectiveCamera::nearClip, "nearClip");
@@ -410,4 +440,18 @@ Eks::Vector3D GCPerspectiveCamera::worldSpaceAtDepthFromScreenSpace(xuint32 x, x
   Eks::Vector3D camToPoint = wsFSS - camPos;
 
   return camPos + (camToPoint.normalized() * depth);
+  }
+
+void GCPerspectiveCamera::moveToFit(
+    const Eks::Vector3D &pos,
+    const Eks::Vector3D &lookDir,
+    float upDist,
+    float upDistDist)
+  {
+  const float distFromCamera = upDist * tanf(fieldOfView());
+
+  const Eks::Vector3D cameraPos = pos + (lookDir * (distFromCamera + upDistDist));
+
+  setPosition(cameraPos);
+  setFocalPoint(pos);
   }

@@ -268,7 +268,7 @@ void GCDisplacementDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3
   const Eks::Vector3D &camPosition = e.cam->transform().translation();
   float focalDistanceFromCamera = (camPosition - focus).norm();
 
-  Eks::Vector3D lockDir = resultTransform(e.cam) * lockDirection();
+  Eks::Vector3D lockDir = resultTransform(e.cam).linear() * lockDirection();
 
   xuint32 lock = lockMode();
   if(lock == Linear)

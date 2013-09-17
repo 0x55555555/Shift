@@ -37,7 +37,7 @@ S_IMPLEMENT_PROPERTY(GCRenderArray, GraphicsCore)
 void unionBounds(GCRenderArray* array)
   {
   auto lock = array->bounds.computeLock();
-  lock = Eks::Cuboid();
+  lock = Eks::BoundingBox();
 
   xForeach(auto r, array->renderGroup.walker<GCRenderablePointer>())
     {

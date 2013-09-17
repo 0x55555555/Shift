@@ -5,6 +5,7 @@
 #include "GCTransform.h"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "XCameraCanvasController.h"
+#include "XFrame"
 
 namespace Eks
 {
@@ -35,10 +36,34 @@ public:
   Shift::UnsignedIntProperty viewportWidth;
   Shift::UnsignedIntProperty viewportHeight;
 
+  float aspectRatio() const { return (float)viewportWidth() / (float)viewportHeight(); };
+
   GCBoundingBox viewBounds;
 
   // inverse of transform
   TransformProperty viewTransform;
+
+  Eks::Vector3D lookDirection()
+    {
+    return transform().matrix().col(2).head<3>();
+    }
+
+  Eks::Vector3D upDirection()
+    {
+    return transform().matrix().col(1).head<3>();
+    }
+
+  Eks::Vector3D acrossDirection()
+    {
+    return transform().matrix().col(0).head<3>();
+    }
+
+  Eks::Frame frame()
+    {
+    return Eks::Frame(lookDirection(),
+                      upDirection(),
+                      acrossDirection());
+    }
 
   void setPosition(float x, float y, float z) {setPosition(Eks::Vector3D(x, y, z)); }
   void setPosition(const Eks::Vector3D &point);
@@ -64,6 +89,13 @@ public:
   Eks::Vector3D worldSpaceFromUnitSpace(const Eks::Vector4D &vpSpace) const;
   virtual Eks::Vector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const = 0;
 
+  void moveToFit(const Eks::BoundingBox &bbox);
+  virtual void moveToFit(
+      const Eks::Vector3D &centre,
+      const Eks::Vector3D &lookDir,
+      float upDist,
+      float upDistDist) = 0;
+
   void zoom(float factor, float x, float y);
   void track(float x, float y);
   void dolly(float x, float y);
@@ -87,6 +119,12 @@ class GRAPHICSCORE_EXPORT GCPerspectiveCamera : public GCCamera
 
 public:
   Eks::Vector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const;
+
+  void moveToFit(
+      const Eks::Vector3D &centre,
+      const Eks::Vector3D &lookDir,
+      float upDist,
+      float upDistDist) X_OVERRIDE;
 
   Shift::FloatProperty fieldOfView;
 

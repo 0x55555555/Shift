@@ -12,7 +12,7 @@ S_IMPLEMENT_PROPERTY(MCShape, MeshCore)
 void unionBounds(MCShape* shape)
   {
   GCBoundingBox::ComputeLock l(&shape->bounds);
-  Eks::Cuboid *data = l.data();
+  Eks::BoundingBox *data = l.data();
 
   xAssertFail();
   //*data = shape->geometry.runtimeGeometry().computeBounds();

@@ -7,7 +7,7 @@
 #include "XTransform.h"
 #include "XShader.h"
 #include "XLine.h"
-#include "XCuboid.h"
+#include "XBoundingBox.h"
 
 class ButtonDelegate : public GCVisualManipulator::Delegate
   {
@@ -40,7 +40,7 @@ public:
 
     l.transform(lineTransform);
 
-    Eks::Cuboid c(Eks::Vector3D(0.0f, 0.0f, 0.0f), Eks::Vector3D(20.0f, 20.0f, 0.1f));
+    Eks::BoundingBox c(Eks::Vector3D(0.0f, 0.0f, 0.0f), Eks::Vector3D(20.0f, 20.0f, 0.1f));
 
     float isctPt = 0.0f;
     if(c.intersects(l, isctPt))

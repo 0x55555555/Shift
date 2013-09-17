@@ -7,7 +7,7 @@
 #include "XTransform.h"
 #include "XShader.h"
 #include "XLine.h"
-#include "XCuboid.h"
+#include "XBoundingBox.h"
 #include "shift/Changes/shandler.inl"
 
 

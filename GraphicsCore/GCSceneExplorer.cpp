@@ -23,13 +23,18 @@ GCSceneExplorer::GCSceneExplorer(GCScene *scene)
   QToolBar *toolbar = new QToolBar(this);
   layout->addWidget(toolbar);
 
-  toolbar->addAction("Create", this, SLOT(create()));
-
   QTreeView *view = new QTreeView(this);
   layout->addWidget(view);
   view->setModel(&_inputModel);
-
   QItemSelectionModel *sel = view->selectionModel();
+
+  QAction *action = toolbar->addAction("Frame");
+  connect(action, &QAction::triggered, [this, sel]()
+    {
+    frameSelection(sel->selectedIndexes());
+    });
+
+
   connect(sel, &QItemSelectionModel::selectionChanged, [this, sel]()
     {
     updateSelection(sel->selectedIndexes());
@@ -42,9 +47,32 @@ GCSceneExplorer::GCSceneExplorer(GCScene *scene)
     });
   }
 
-void GCSceneExplorer::create()
+void GCSceneExplorer::frameSelection(const QModelIndexList &lst)
   {
-  qDebug() << "Create";
+  if(!_scene->activeCamera() || lst.isEmpty())
+    {
+    return;
+    }
+
+  Eks::BoundingBox bbox;
+
+  xForeach(auto item, lst)
+    {
+    Shift::Attribute *attr = _inputModel.attributeFromIndex(lst[0]);
+    xAssert(attr);
+
+    if(GCRenderable *r = attr->castTo<GCRenderable>())
+      {
+      bbox.unite(r->bounds());
+      }
+    }
+
+  if(!bbox.isValid())
+    {
+    return;
+    }
+
+  _scene->activeCamera()->moveToFit(bbox);
   }
 
 struct ContextData

@@ -12,7 +12,7 @@
 void unionTransformedBounds(GCTransform* tr)
   {
   auto lock = tr->bounds.computeLock();
-  lock = Eks::Cuboid();
+  lock = Eks::BoundingBox();
 
   xForeach(auto r, tr->renderGroup.walker<GCRenderablePointer>())
     {
@@ -56,19 +56,10 @@ void GCTransform::addManipulators(
     Shift::Array *a,
     const ManipInfo &info)
   {
-  GCTranslateManipulator *manip = a->add<GCTranslateManipulator>();
-
-  manip->addDriven(&transform);
-
-  if(info.parentTransform)
-    {
-    manip->parentTransform.setInput(info.parentTransform);
-    }
-
-  manip->localTransform.setInput(&transform);
+  auto *t = createManipulator<GCTranslateManipulator>(a, &transform, info, &transform);
 
   ManipInfo newInfo(info);
-  newInfo.parentTransform = &manip->worldTransform;
+  newInfo.parentTransform = &t->worldTransform;
 
   GCManipulatable::addManipulators(a, newInfo);
   }

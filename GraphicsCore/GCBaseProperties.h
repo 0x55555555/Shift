@@ -9,7 +9,7 @@
 #include "XShader.h"
 #include "XGeometry.h"
 #include "XRasteriserState.h"
-#include "XCuboid.h"
+#include "XBoundingBox.h"
 
 namespace Shift
 {
@@ -154,7 +154,7 @@ typedef Shift::Data<Eks::Matrix3x3>
   Matrix3x3Property;
 typedef Shift::Data<Eks::ComplexTransform>
   ComplexTransformProperty;
-typedef Shift::Data<Eks::Cuboid>
+typedef Shift::Data<Eks::BoundingBox>
   GCBoundingBox;
 
 

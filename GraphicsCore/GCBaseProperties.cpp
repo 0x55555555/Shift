@@ -125,7 +125,7 @@ IMPLEMENT_POD_GC_PROPERTY(Eks::Renderer *, FullData, ren);
 IMPLEMENT_POD_GC_PROPERTY(Eks::Matrix3x3, FullData, mat3x3);
 IMPLEMENT_POD_GC_PROPERTY(Eks::Transform, FullData, trans);
 IMPLEMENT_POD_GC_PROPERTY(Eks::ComplexTransform, FullData, complexTrans);
-IMPLEMENT_POD_GC_PROPERTY(Eks::Cuboid, FullData, bb);
+IMPLEMENT_POD_GC_PROPERTY(Eks::BoundingBox, FullData, bb);
 IMPLEMENT_POD_GC_PROPERTY(Eks::ShaderConstantData, ComputedData, data);
 IMPLEMENT_POD_GC_PROPERTY(Eks::Shader, ComputedData, shad);
 IMPLEMENT_POD_GC_PROPERTY(GraphicsCore::detail::ShaderInstance, ComputedData, shadInst);

@@ -8,7 +8,7 @@
 #include "XFrameBuffer.h"
 #include "XMathMatrix"
 #include "XLine.h"
-#include "XCuboid.h"
+#include "XBoundingBox.h"
 
 void GCScene::computeRasteriser(GCScene *s)
   {
@@ -126,13 +126,13 @@ void GCManipulatableScene::initialise()
 
   Eks::Geometry::delayedCreate(
     _bounds,
-      renderer(),
+    renderer(),
     vertices,
     sizeof(vertices[0]),
     X_ARRAY_COUNT(vertices));
 
 
-  xuint32 lines[] = {
+  xuint16 lines[] = {
     0, 1,
     2, 3,
     4, 5,
@@ -159,6 +159,15 @@ void GCManipulatableScene::initialise()
     {
     xAssertFail();
     }
+
+  Eks::ShaderConstantDataDescription desc[] =
+    {
+    { "colour", Eks::ShaderConstantDataDescription::Float4 }
+    };
+
+  Eks::Colour white = Eks::Colour(1.0f, 1.0f, 1.0f, 1.0f);
+
+  Eks::ShaderConstantData::delayedCreate(_shaderData, r, desc, X_ARRAY_COUNT(desc), &white);
   }
 
 void GCManipulatableScene::clearManipulators()
@@ -200,13 +209,14 @@ void GCManipulatableScene::render(Eks::Renderer *x, const RenderState &state) co
     x->setViewTransform(cameraTransform());
 
     x->setShader(_shader, _shaderLayout);
+    _shader->setShaderConstantData(0, &_shaderData);
     xForeach(auto m, selection.walker<Shift::Pointer>())
       {
       const GCRenderable* ren = m->pointed<GCRenderable>();
 
       if(ren)
         {
-        Eks::Cuboid bounds = ren->bounds();
+        Eks::BoundingBox bounds = ren->bounds();
         bounds.expand(0.015f);
 
         Eks::Transform trans = Eks::Transform::Identity();
@@ -216,7 +226,7 @@ void GCManipulatableScene::render(Eks::Renderer *x, const RenderState &state) co
         Eks::Transform fullTransform = state.transform * trans;
 
         x->setTransform(fullTransform);
-        x->drawLines(&_bounds);
+        x->drawLines(&_boundIndices, &_bounds);
         }
       }
 

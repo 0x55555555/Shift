@@ -15,13 +15,11 @@ class GRAPHICSCORE_EXPORT GCSceneExplorer : public QWidget
 public:
   GCSceneExplorer(GCScene *scene);
 
-public slots:
-  void create();
-
 private slots:
   void onItemAction();
 
 private:
+  void frameSelection(const QModelIndexList &lst);
   void updateSelection(const QModelIndexList &lst);
   void onContextMenu(const QPoint& pt, const QModelIndexList &lst);
 
