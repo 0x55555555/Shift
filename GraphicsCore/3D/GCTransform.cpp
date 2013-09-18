@@ -1,6 +1,7 @@
 #include "3D/GCTransform.h"
 #include "shift/TypeInformation/styperegistry.h"
 #include "Manipulators/GCTranslateManipulator.h"
+#include "Manipulators/GCRotateManipulator.h"
 #include "shift/sdatabase.h"
 #include "XLine.h"
 #include "XFrustum.h"
@@ -56,6 +57,7 @@ void GCTransform::addManipulators(
     Shift::Array *a,
     const ManipInfo &info)
   {
+  createManipulator<GCRotateManipulator>(a, &transform, info, nullptr);
   auto *t = createManipulator<GCTranslateManipulator>(a, &transform, info, &transform);
 
   ManipInfo newInfo(info);

@@ -42,9 +42,11 @@ public:
     Eks::Vector3D closest = clickLine.sample(t);
     float worldDist = closest.norm();
 
-    const float maxPixels = 2.5f;
+    const float maxPixels = 5.0f;
 
-    *distance = (closest - camTrans).norm();
+    Eks::Vector3D worldClosest = wC * closest;
+
+    *distance = (worldClosest - camTrans).norm();
 
     float pixelSizeX, pixelSizeY;
     camera->approximatePixelSizeAtDistance(*distance, pixelSizeX, pixelSizeY);
