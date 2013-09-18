@@ -356,11 +356,11 @@ void GCAngularDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Quaternion &
 
     Eks::Frame f(p.normal());
     
-    Eks::Vector3D isectA = a.sample(p.intersection(a));
-    Eks::Vector3D isectB = b.sample(p.intersection(b));
+    auto isectA = a.sample(p.intersection(a));
+    auto isectB = b.sample(p.intersection(b));
     
-    Eks::Vector3D subA = isectA - focus;
-    Eks::Vector3D subB = isectB - focus;
+    auto subA = isectA - focus;
+    auto subB = isectB - focus;
 
     Eks::Vector3D lastHitDir = subA.normalized();
     Eks::Vector3D hitDir = subB.normalized();
