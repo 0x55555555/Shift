@@ -4,7 +4,7 @@ Eks.SubModule {
   name: "Shift"
   toRoot: "../"
 
-  moduleSearchPaths: [ "./", "../" ]
+  moduleSearchPaths: base.concat( [ "../" ] )
 
   references: [
     "ShiftCore/ShiftCore.qbs",
