@@ -1,7 +1,7 @@
 import "../../Eks/EksBuild" as Eks;
 
 Eks.Library {
-  name: "ShiftCore"
+  name: "MeshCore"
   toRoot: "../../"
 
   property bool uiSupport: true

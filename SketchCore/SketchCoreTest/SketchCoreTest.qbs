@@ -1,28 +1,13 @@
 import "../../../Eks/EksBuild" as Eks;
 
-Eks.Library {
-  name: "ShiftCore"
-  toRoot: "../../"
+Eks.Test {
+  name: "SketchCoreTest"
+  toRoot: "../../../"
 
-  property bool uiSupport: true
+  Depends { name: "ShiftCore" }
+  Depends { name: "SketchCore" }
 
-  Depends { name: "EksCore" }
+  cpp.includePaths: base.concat( [ toRoot + "Shift/ShiftCoreTest" ] )
 
-  Properties {
-    condition: uiSupport
-
-    Depends { name: "Qt.gui" }
-    Depends { name: "Qt.widgets" }
-  }
-
-  Export {
-    Depends { name: "cpp" }
-    Depends { name: "EksCore" }
-
-    cpp.includePaths: [ "./include" ]
-  }
-
-  Depends {
-    name: "ShiftCoreTest"
-  }
+  files: [ "*.h", "*.cpp" ]
 }

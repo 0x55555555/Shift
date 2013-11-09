@@ -4,6 +4,7 @@ CONFIG += ordered minimal_shift
 
 SUBDIRS = ShiftCore \
           MathsCore \
+          RenderCore \
           GraphicsCore \
           ShiftCoreTest \
           SketchCore \

@@ -4,14 +4,15 @@ Eks.SubModule {
   name: "Shift"
   toRoot: "../"
 
-  moduleSearchPaths: base.concat( [ "../" ] )
+  qbsSearchPaths: base.concat( [ "C:/Users/Jorj/SpaceGamez/Eks" ] )
 
   references: [
     "ShiftCore/ShiftCore.qbs",
     "ShiftCoreTest/ShiftCoreTest.qbs",
+    "RenderCore/RenderCore.qbs",
     "GraphicsCore/GraphicsCore.qbs",
     "MathsCore/MathsCore.qbs",
-    "MeshCore/MeshCore.qbs",
+    //"MeshCore/MeshCore.qbs",
     "SketchCore/SketchCore.qbs",
     "SketchCore/SketchCoreTest/SketchCoreTest.qbs",
   ]

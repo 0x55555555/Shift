@@ -11,74 +11,48 @@ QT += opengl
 include("../../Eks/EksCore/GeneralOptions.pri")
 
 HEADERS += GCGlobal.h \
-    GCShiftRenderModel.h \
-    GCAbstractNodeDelegate.h \
-    GCBaseProperties.h \
-    3D/GCTransform.h \
-    3D/GCRenderTarget.h \
-    3D/GCTextureRenderTarget.h \
-    3D/GCScreenRenderTarget.h \
-    3D/GCGeometry.h \
-    3D/GCCamera.h \
-    GCRenderable.h \
-    3D/GCScene.h \
-    3D/GCViewport.h \
-    3D/GCShadingGroup.h \
-    3D/GCShader.h \
-    3D/Manipulators/GCManipulator.h \
-    3D/Manipulators/GCButtonManipulator.h \
-    3D/Manipulators/GCDistanceManipulator.h \
-    3D/Manipulators/GCTranslateManipulator.h \
-    3D/Manipulators/GCRotateManipulator.h \
-    3D/GCShaderDataBindings.h \
-    3D/GCTexture.h \
-    GCComposeTransform.h \
-    GCComposeVector3.h \
+    UI/NodeGraph/GCShiftRenderModel.h \
+    UI/NodeGraph/GCAbstractNodeDelegate.h \
+    UI/NodeGraph/GCNodeController.h \
+    Utilities/GCComposeTransform.h \
+    Utilities/GCComposeVector3.h \
+    Manipulators/GCManipulator.h \
+    Manipulators/GCButtonManipulator.h \
+    Manipulators/GCDistanceManipulator.h \
+    Manipulators/GCTranslateManipulator.h \
+    Manipulators/GCRotateManipulator.h \
+    Manipulators/GCManipulatable.h \
+    Manipulators/GCManipulatorHelpers.h \
     2D/GCPlate.h \
     2D/GCCameraAlignedPlate.h \
     2D/GCElement.h \
     2D/GCProject3D.h \
-    GCNodeController.h \
-    3D/Manipulators/GCManipulatable.h \
-    3D/Manipulators/GCManipulatorHelpers.h \
-    GCSceneExplorer.h
+    UI/GCSceneExplorer.h \
+    GCManipulatableScene.h
 
-INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/shift/MathsCore $$ROOT/Eks/EksCore/include $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
+INCLUDEPATH += $$ROOT/shift $$ROOT/shift/GraphicsCore $$ROOT/Eks/EksCore/include $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
 
-LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftMathsCore
+LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftMathsCore -lShiftRenderCore
 
 SOURCES += \
-    GCShiftRenderModel.cpp \
-    GCAbstractNodeDelegate.cpp \
-    GCNodeController.cpp \
-    GCBaseProperties.cpp \
-    3D/GCTransform.cpp \
-    3D/GCRenderTarget.cpp \
-    3D/GCTextureRenderTarget.cpp \
-    3D/GCScreenRenderTarget.cpp \
-    3D/GCGeometry.cpp \
-    3D/GCCamera.cpp \
-    GCRenderable.cpp \
-    3D/GCScene.cpp \
-    3D/GCViewport.cpp \
-    3D/GCShadingGroup.cpp \
-    3D/GCShader.cpp \
-    3D/Manipulators/GCManipulator.cpp \
-    3D/Manipulators/GCButtonManipulator.cpp \
-    3D/Manipulators/GCDistanceManipulator.cpp \
-    3D/Manipulators/GCTranslateManipulator.cpp \
-    3D/Manipulators/GCRotateManipulator.cpp \
-    3D/GCShaderDataBindings.cpp \
-    3D/GCTexture.cpp \
-    GCComposeTransform.cpp \
-    GCComposeVector3.cpp \
+    UI/NodeGraph/GCShiftRenderModel.cpp \
+    UI/NodeGraph/GCAbstractNodeDelegate.cpp \
+    UI/NodeGraph/GCNodeController.cpp \
+    Manipulators/GCManipulator.cpp \
+    Manipulators/GCButtonManipulator.cpp \
+    Manipulators/GCDistanceManipulator.cpp \
+    Manipulators/GCTranslateManipulator.cpp \
+    Manipulators/GCRotateManipulator.cpp \
+    Manipulators/GCManipulatable.cpp \
+    Utilities/GCComposeTransform.cpp \
+    Utilities/GCComposeVector3.cpp \
     GCGlobal.cpp \
     2D/GCPlate.cpp \
     2D/GCCameraAlignedPlate.cpp \
     2D/GCElement.cpp \
     2D/GCProject3D.cpp \
-    3D/Manipulators/GCManipulatable.cpp \
-    GCSceneExplorer.cpp
+    UI/GCSceneExplorer.cpp \
+    GCManipulatableScene.cpp
 
 
 

@@ -6,8 +6,14 @@ Eks.Library {
 
   property bool uiSupport: true
 
+  Depends { name: "Eks3D" }
   Depends { name: "ShiftCore" }
-  Depends { name: "SketchCoreTest" }
 
-  files: [ "*.h", "*.cpp" ]
+  Export {
+    Depends { name: "Eks3D" }
+    Depends { name: "cpp" }
+    cpp.includePaths: [ "./include" ]
+  }
+
+  Eks.TestDependency { name: "SketchCoreTest" }
 }

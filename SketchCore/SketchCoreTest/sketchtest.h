@@ -5,7 +5,7 @@
 #include "XCore"
 #include "XGlobalAllocator"
 #include "SkGlobal.h"
-#include "../ShiftCoreTest/shifttestcommon.h"
+#include "shifttestcommon.h"
 #include "shift/TypeInformation/styperegistry.h"
 
 
