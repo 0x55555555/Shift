@@ -12,7 +12,7 @@ class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
   {
   S_ABSTRACT_ENTITY(GCPlate, GCElementArray)
 
-  template <typename T> GCShadingGroup *addMaterial(T **matOut = 0)
+  template <typename T> RCShadingGroup *addMaterial(T **matOut = 0)
     {
     XOptional<T> mat(matOut);
 

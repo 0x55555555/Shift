@@ -6,6 +6,7 @@ Eks.Library {
 
   Depends { name: "Eks3D" }
   Depends { name: "ShiftCore" }
+  Depends { name: "Qt.gui" }
 
   Export {
     Depends { name: "cpp" }

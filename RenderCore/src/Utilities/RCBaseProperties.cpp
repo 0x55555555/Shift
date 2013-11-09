@@ -35,6 +35,18 @@ namespace Shift
 {
 namespace detail
 {
+template <> class DataEmbeddedInstanceInformation<Shift::Data<Eks::Renderer *>>
+    : public Shift::Property::EmbeddedInstanceInformation
+  {
+public:
+  void initiateAttribute(Attribute *propertyToInitiate) const
+    {
+    propertyToInitiate->uncheckedCastTo<Shift::Data<Eks::Renderer *>>()->_value = 0;
+    }
+
+  Eks::Renderer *defaultValue() const { return 0; }
+  };
+
 void getDefault(Eks::Transform *t)
   {
   *t = Eks::Transform::Identity();
@@ -63,9 +75,24 @@ public:
     }
   };
 
+void assignTo(const Shift::Attribute *f, Shift::Attribute *to)
+  {
+  xAssertFail();
+  }
+
 void assignTo(const Shift::Attribute *f, RCBoundingBox *to)
   {
   const RCBoundingBox *sProp = f->castTo<RCBoundingBox>();
+  if(sProp)
+    {
+    to->assign(sProp->value());
+    return;
+    }
+  }
+
+void assignTo(const Shift::Attribute *f, Shift::Data<Eks::Renderer *> *to)
+  {
+  const RCRenderer *sProp = f->castTo<RCRenderer>();
   if(sProp)
     {
     to->assign(sProp->value());

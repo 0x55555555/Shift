@@ -22,6 +22,8 @@ Eks.Library {
   }
 
   Export {
+    Depends { name: "RenderCore" }
+
     Depends { name: "cpp" }
     cpp.includePaths: [ "./include" ]
   }

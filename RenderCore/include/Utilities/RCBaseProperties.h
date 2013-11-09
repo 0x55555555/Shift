@@ -11,27 +11,6 @@
 #include "XRasteriserState.h"
 #include "XBoundingBox.h"
 
-namespace Shift
-{
-namespace detail
-{
-RENDERCORE_EXPORT void getDefault(Eks::Transform *);
-RENDERCORE_EXPORT void getDefault(Eks::Matrix3x3 *);
-
-template <> class DataEmbeddedInstanceInformation<Shift::Data<Eks::Renderer *>>
-    : public Shift::Property::EmbeddedInstanceInformation
-  {
-public:
-  void initiateAttribute(Attribute *propertyToInitiate) const
-    {
-    propertyToInitiate->uncheckedCastTo<Shift::Data<Eks::Renderer *>>()->_value = 0;
-    }
-
-  Eks::Renderer *defaultValue() const { return 0; }
-  };
-}
-}
-
 RENDERCORE_EXPORT QTextStream &operator<<(QTextStream &s, Eks::Renderer *v);
 RENDERCORE_EXPORT QDataStream &operator<<(QDataStream &s, Eks::Renderer *v);
 RENDERCORE_EXPORT QTextStream &operator>>(QTextStream &s, Eks::Renderer *v);
@@ -157,6 +136,19 @@ typedef Shift::Data<Eks::ComplexTransform>
 typedef Shift::Data<Eks::BoundingBox>
   RCBoundingBox;
 
+namespace Shift
+{
+namespace detail
+{
+RENDERCORE_EXPORT void getDefault(Eks::Transform *);
+RENDERCORE_EXPORT void getDefault(Eks::Matrix3x3 *);
+
+RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, TransformProperty *to);
+RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, ComplexTransformProperty *to);
+RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, Shift::Data<Eks::Renderer *> *to);
+RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, RCBoundingBox *to);
+}
+}
 
 S_TYPED_POINTER_TYPE(RENDERCORE_EXPORT, RCVertexLayoutPointer, RCVertexLayout)
 

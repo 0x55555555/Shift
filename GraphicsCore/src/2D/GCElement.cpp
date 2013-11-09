@@ -219,7 +219,7 @@ void GCElementArray::createTypeInformation(Shift::PropertyInformationTyped<GCEle
     }
   }
 
-GCElement *GCElementArray::addAsChild(GCElementArray *parent, GCShadingGroup *, GCElementArray **arrOpt)
+GCElement *GCElementArray::addAsChild(GCElementArray *parent, RCShadingGroup *, GCElementArray **arrOpt)
   {
   Eks::Optional<GCElementArray*> arr(arrOpt);
 

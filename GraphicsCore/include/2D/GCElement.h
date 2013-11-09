@@ -8,7 +8,7 @@
 #include "MCSimple.h"
 
 class XRenderer;
-class GCShadingGroup;
+class RCShadingGroup;
 class GCElement;
 
 class GCElementCentre : public MCSimple
@@ -64,13 +64,13 @@ class GRAPHICSCORE_EXPORT GCElementArray : public GCElement
   {
   S_ENTITY(GCElementArray, GCElement)
 
-  template <typename T> GCElement *addChildElement(T **out = 0, GCShadingGroup *material = 0)
+  template <typename T> GCElement *addChildElement(T **out = 0, RCShadingGroup *material = 0)
     {
     GCElement *el = T::addAsChild(this, material, out);
     return el;
     }
 
-  static GCElement *addAsChild(GCElementArray *parent, GCShadingGroup *material, GCElementArray **arr);
+  static GCElement *addAsChild(GCElementArray *parent, RCShadingGroup *material, GCElementArray **arr);
 
   RCRenderablePointerArray elements;
 
