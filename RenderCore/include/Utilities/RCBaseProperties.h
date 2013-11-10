@@ -141,6 +141,7 @@ namespace Shift
 namespace detail
 {
 RENDERCORE_EXPORT void getDefault(Eks::Transform *);
+RENDERCORE_EXPORT void getDefault(Eks::Renderer **);
 RENDERCORE_EXPORT void getDefault(Eks::Matrix3x3 *);
 
 RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, TransformProperty *to);

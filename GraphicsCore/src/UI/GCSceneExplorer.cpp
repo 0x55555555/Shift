@@ -28,10 +28,16 @@ GCSceneExplorer::GCSceneExplorer(RCScene *scene)
   view->setModel(&_inputModel);
   QItemSelectionModel *sel = view->selectionModel();
 
-  QAction *action = toolbar->addAction("Frame");
-  connect(action, &QAction::triggered, [this, sel]()
+  QAction *frame = toolbar->addAction("Frame");
+  connect(frame, &QAction::triggered, [this, sel]()
     {
     frameSelection(sel->selectedIndexes());
+    });
+
+  QAction *frameAll = toolbar->addAction("Frame All");
+  connect(frameAll, &QAction::triggered, [this, sel]()
+    {
+    _scene->activeCamera()->moveToFit(_scene->bounds());
     });
 
 

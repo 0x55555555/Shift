@@ -57,6 +57,11 @@ void getDefault(Eks::Matrix3x3 *t)
   *t = Eks::Matrix3x3::Identity();
   }
 
+void getDefault(Eks::Renderer **t)
+  {
+  *t = nullptr;
+  }
+
 template <int IsAttribute> class PODPropertyTraits<RCRenderer, IsAttribute, true>
     : public Shift::detail::PropertyBaseTraits
   {
