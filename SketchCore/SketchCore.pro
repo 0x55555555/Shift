@@ -12,20 +12,20 @@ INCLUDEPATH += $$ROOT/shift/GraphicsCore $$ROOT/Eks/EksCore/include $$ROOT/Eks/E
 
 LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftGraphicsCore
 
-SOURCES += SkGlobal.cpp \
-    SkSketch.cpp \
-    SkPoint.cpp \
-    SkSolver.cpp \
-    SkLine.cpp \
-    SkAngle.cpp \
-    SkDistance.cpp \
-    SkConstraint.cpp
+SOURCES += src/SkGlobal.cpp \
+    src/SkSketch.cpp \
+    src/SkPoint.cpp \
+    src/SkSolver.cpp \
+    src/SkLine.cpp \
+    src/SkAngle.cpp \
+    src/SkDistance.cpp \
+    src/SkConstraint.cpp
 
-HEADERS += SkGlobal.h \
-    SkSketch.h \
-    SkPoint.h \
-    SkSolver.h \
-    SkLine.h \
-    SkAngle.h \
-    SkDistance.h \
-    SkConstraint.h
+HEADERS += include/SkGlobal.h \
+    include/SkSketch.h \
+    include/SkPoint.h \
+    include/SkSolver.h \
+    include/SkLine.h \
+    include/SkAngle.h \
+    include/SkDistance.h \
+    include/SkConstraint.h

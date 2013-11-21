@@ -3,56 +3,56 @@
 # Project created by QtCreator 2011-01-29T15:56:15
 #
 #-------------------------------------------------
-TARGET = ShiftGraphicsCore
+TARGET = GraphicsCore
 TEMPLATE = lib
 
 QT += opengl
 
 include("../../Eks/EksCore/GeneralOptions.pri")
 
-HEADERS += GCGlobal.h \
-    UI/NodeGraph/GCShiftRenderModel.h \
-    UI/NodeGraph/GCAbstractNodeDelegate.h \
-    UI/NodeGraph/GCNodeController.h \
-    Utilities/GCComposeTransform.h \
-    Utilities/GCComposeVector3.h \
-    Manipulators/GCManipulator.h \
-    Manipulators/GCButtonManipulator.h \
-    Manipulators/GCDistanceManipulator.h \
-    Manipulators/GCTranslateManipulator.h \
-    Manipulators/GCRotateManipulator.h \
-    Manipulators/GCManipulatable.h \
-    Manipulators/GCManipulatorHelpers.h \
-    2D/GCPlate.h \
-    2D/GCCameraAlignedPlate.h \
-    2D/GCElement.h \
-    2D/GCProject3D.h \
-    UI/GCSceneExplorer.h \
-    GCManipulatableScene.h
+HEADERS += include/GCGlobal.h \
+    include/UI/NodeGraph/GCShiftRenderModel.h \
+    include/UI/NodeGraph/GCAbstractNodeDelegate.h \
+    include/UI/NodeGraph/GCNodeController.h \
+    include/Utilities/GCComposeTransform.h \
+    include/Utilities/GCComposeVector3.h \
+    include/Manipulators/GCManipulator.h \
+    include/Manipulators/GCButtonManipulator.h \
+    include/Manipulators/GCDistanceManipulator.h \
+    include/Manipulators/GCTranslateManipulator.h \
+    include/Manipulators/GCRotateManipulator.h \
+    include/Manipulators/GCManipulatable.h \
+    include/Manipulators/GCManipulatorHelpers.h \
+    include/2D/GCPlate.h \
+    include/2D/GCCameraAlignedPlate.h \
+    include/2D/GCElement.h \
+    include/2D/GCProject3D.h \
+    include/UI/GCSceneExplorer.h \
+    include/GCManipulatableScene.h
 
 INCLUDEPATH += $$ROOT/shift $$ROOT/shift/GraphicsCore $$ROOT/Eks/EksCore/include $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
 
 LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftMathsCore -lShiftRenderCore
 
 SOURCES += \
-    UI/NodeGraph/GCShiftRenderModel.cpp \
-    UI/NodeGraph/GCAbstractNodeDelegate.cpp \
-    UI/NodeGraph/GCNodeController.cpp \
-    Manipulators/GCManipulator.cpp \
-    Manipulators/GCButtonManipulator.cpp \
-    Manipulators/GCDistanceManipulator.cpp \
-    Manipulators/GCTranslateManipulator.cpp \
-    Manipulators/GCRotateManipulator.cpp \
-    Manipulators/GCManipulatable.cpp \
-    Utilities/GCComposeTransform.cpp \
-    Utilities/GCComposeVector3.cpp \
-    GCGlobal.cpp \
-    2D/GCPlate.cpp \
-    2D/GCCameraAlignedPlate.cpp \
-    2D/GCElement.cpp \
-    2D/GCProject3D.cpp \
-    UI/GCSceneExplorer.cpp \
-    GCManipulatableScene.cpp
+    src/UI/NodeGraph/GCShiftRenderModel.cpp \
+    src/UI/NodeGraph/GCAbstractNodeDelegate.cpp \
+    src/UI/NodeGraph/GCNodeController.cpp \
+    src/Manipulators/GCManipulator.cpp \
+    src/Manipulators/GCButtonManipulator.cpp \
+    src/Manipulators/GCDistanceManipulator.cpp \
+    src/Manipulators/GCTranslateManipulator.cpp \
+    src/Manipulators/GCRotateManipulator.cpp \
+    src/Manipulators/GCManipulatable.cpp \
+    src/Utilities/GCComposeTransform.cpp \
+    src/Utilities/GCComposeVector3.cpp \
+    src/GCGlobal.cpp \
+    src/2D/GCPlate.cpp \
+    src/2D/GCCameraAlignedPlate.cpp \
+    src/2D/GCElement.cpp \
+    src/2D/GCProject3D.cpp \
+    src/UI/GCSceneExplorer.cpp \
+    src/GCManipulatableScene.cpp
 
 
 

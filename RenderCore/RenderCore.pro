@@ -15,38 +15,38 @@ INCLUDEPATH += $$ROOT/shift $$ROOT/shift/RenderCore $$ROOT/Eks/EksCore/include $
 LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript
 
 SOURCES += \
-    RCViewport.cpp \
-    RCTransform.cpp \
-    RCTexture.cpp \
-    RCScene.cpp \
-    RCRenderable.cpp \
-    RCGlobal.cpp \
-    RCGeometry.cpp \
-    RCCamera.cpp \
-    Shader/RCShadingGroup.cpp \
-    Shader/RCShaderDataBindings.cpp \
-    Shader/RCShader.cpp \
-    Targets/RCTextureRenderTarget.cpp \
-    Targets/RCScreenRenderTarget.cpp \
-    Targets/RCRenderTarget.cpp \
-    Utilities/RCBaseProperties.cpp
+    src/RCViewport.cpp \
+    src/RCTransform.cpp \
+    src/RCTexture.cpp \
+    src/RCScene.cpp \
+    src/RCRenderable.cpp \
+    src/RCGlobal.cpp \
+    src/RCGeometry.cpp \
+    src/RCCamera.cpp \
+    src/Shader/RCShadingGroup.cpp \
+    src/Shader/RCShaderDataBindings.cpp \
+    src/Shader/RCShader.cpp \
+    src/Targets/RCTextureRenderTarget.cpp \
+    src/Targets/RCScreenRenderTarget.cpp \
+    src/Targets/RCRenderTarget.cpp \
+    src/Utilities/RCBaseProperties.cpp
 
 HEADERS += \
-    RCViewport.h \
-    RCTransform.h \
-    RCTexture.h \
-    RCScene.h \
-    RCRenderable.h \
-    RCGlobal.h \
-    RCGeometry.h \
-    RCCamera.h \
-    Shader/RCShadingGroup.h \
-    Shader/RCShaderDataBindings.h \
-    Shader/RCShader.h \
-    Targets/RCTextureRenderTarget.h \
-    Targets/RCScreenRenderTarget.h \
-    Targets/RCRenderTarget.h \
-    Utilities/RCBaseProperties.h
+    include/RCViewport.h \
+    include/RCTransform.h \
+    include/RCTexture.h \
+    include/RCScene.h \
+    include/RCRenderable.h \
+    include/RCGlobal.h \
+    include/RCGeometry.h \
+    include/RCCamera.h \
+    include/Shader/RCShadingGroup.h \
+    include/Shader/RCShaderDataBindings.h \
+    include/Shader/RCShader.h \
+    include/Targets/RCTextureRenderTarget.h \
+    include/Targets/RCScreenRenderTarget.h \
+    include/Targets/RCRenderTarget.h \
+    include/Utilities/RCBaseProperties.h
 
 
 
