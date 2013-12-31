@@ -33,6 +33,11 @@ class GRAPHICSCORE_EXPORT GCDistanceManipulator : public GCDisplacementDragManip
   S_PROPERTY_CONTAINER(GCDistanceManipulator, GCDisplacementDragManipulator);
 
 public:
+  enum
+    {
+    StaticChildMode = Shift::NamedChildren
+    };
+
   GCDistanceManipulator();
 
   Shift::FloatProperty distance;

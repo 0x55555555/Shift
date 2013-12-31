@@ -25,6 +25,11 @@ class GRAPHICSCORE_EXPORT GCTranslateManipulator : public GCVisualCompoundManipu
   S_PROPERTY_CONTAINER(GCTranslateManipulator, GCVisualCompoundManipulator);
 
 public:
+  enum
+    {
+    StaticChildMode = Shift::NamedChildren
+    };
+
   GCTranslateManipulator();
 
   GCSingularTranslateManipulator x;

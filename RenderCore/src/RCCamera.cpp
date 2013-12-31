@@ -5,7 +5,7 @@
 #include "shift/Changes/shandler.inl"
 #include "XRenderer.h"
 #include "XPlane.h"
-#include "Eigen/Geometry"
+#include "Math/Eigen/Geometry"
 #include "XLine.h"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(RCViewableTransformPointer, RenderCore)
@@ -192,17 +192,17 @@ Eks::Transform RCViewableTransform::getPixelScaleFacingTransform(const Eks::Vect
 
 bool RCViewableTransform::unitViewportCoordinates(xuint32 x, xuint32 y, float &xUnit, float &yUnit) const
   {
-  x -= viewportX();
-  y -= viewportY();
-  if(x < 0 || y < 0 || x > viewportWidth() || y > viewportHeight())
+  xint32 adjX = x - viewportX();
+  xint32 adjY = y - viewportY();
+  if(adjX < 0 || adjY < 0 || adjX > (xint32)viewportWidth() || adjY > (xint32)viewportHeight())
     {
     xUnit = 0.0f;
     yUnit = 0.0f;
     return false;
     }
 
-  xUnit = (float)x/viewportWidth();
-  yUnit = (float)y/viewportHeight();
+  xUnit = (float)adjX/viewportWidth();
+  yUnit = (float)adjY/viewportHeight();
 
   xUnit *= 2.0f;
   yUnit *= 2.0f;

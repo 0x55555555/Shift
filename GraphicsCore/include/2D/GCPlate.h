@@ -6,7 +6,7 @@
 #include "Utilities/RCBaseProperties.h"
 #include "2D/GCElement.h"
 #include "Shader/RCShadingGroup.h"
-#include "XOptional"
+#include "Utilities/XOptional.h"
 
 class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
   {
@@ -14,9 +14,9 @@ class GRAPHICSCORE_EXPORT GCPlate : public GCElementArray
 
   template <typename T> RCShadingGroup *addMaterial(T **matOut = 0)
     {
-    XOptional<T> mat(matOut);
+    Eks::Optional<T> mat(matOut);
 
-    GCShadingGroup* grp = addChild<GCShadingGroup>();
+    RCShadingGroup* grp = addChild<RCShadingGroup>();
     renderGroup.addPointer(grp);
 
     mat = addChild<T>();

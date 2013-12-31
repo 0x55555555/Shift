@@ -1,11 +1,12 @@
 #include "Manipulators/GCManipulator.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Properties/sdata.inl"
+#include "shift/Properties/scontainer.inl"
 #include "RCCamera.h"
 #include "RCRenderable.h"
 #include "XPlane.h"
 #include "XLine.h"
-#include "XFrame"
+#include "Math/XFrame.h"
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualManipulator, GraphicsCore)
 
@@ -19,16 +20,11 @@ void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<
     auto sh = childBlock.add(&GCVisualManipulator::show, "show");
     sh->setDefaultValue(true);
 
-    struct Utils
-      {
-      static void computeWorldTransform(GCVisualManipulator *manip)
-        {
-        manip->worldTransform = manip->parentTransform() * manip->localTransform();
-        }
-      };
-
     auto wt = childBlock.add(&GCVisualManipulator::worldTransform, "worldTransform");
-    wt->setCompute<Utils::computeWorldTransform>();
+    wt->setCompute([](GCVisualManipulator *manip)
+      {
+      manip->worldTransform = manip->parentTransform() * manip->localTransform();
+      });
 
     auto wtAff = childBlock.createAffects(&wt, 1);
 
@@ -46,7 +42,7 @@ void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<
     }
   }
 
-GCVisualManipulator::GCVisualManipulator() : _delegate(0)
+GCVisualManipulator::GCVisualManipulator() : _delegate(nullptr)
   {
   }
 
@@ -260,7 +256,7 @@ void GCDisplacementDragManipulator::createTypeInformation(Shift::PropertyInforma
     }
   }
 
-void GCDisplacementDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Vector3D &rel)
+void GCDisplacementDragManipulator::onDragHelper(const MouseMoveEvent &e, Eks::Vector3D &rel)
   {
   rel = Eks::Vector3D::Zero();
 
@@ -339,7 +335,7 @@ void GCAngularDragManipulator::createTypeInformation(Shift::PropertyInformationT
     }
   }
 
-void GCAngularDragManipulator::onDrag(const MouseMoveEvent &e, Eks::Quaternion &rel)
+void GCAngularDragManipulator::onDragHelper(const MouseMoveEvent &e, Eks::Quaternion &rel)
   {
   rel = Eks::Quaternion::Identity();
 

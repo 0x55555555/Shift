@@ -17,7 +17,7 @@ public:
 
   struct ManipInfo
     {
-    ManipInfo() : parentTransform(0), viewTransform(0), displayScale(0)
+    ManipInfo() : viewTransform(0), parentTransform(0), displayScale(0)
       {
       }
     const RCViewableTransform *viewTransform;

@@ -2,6 +2,7 @@
 #define RCBASEPROPERTIES_H
 
 #include "RCGlobal.h"
+#include "Math/XMathVector.h"
 #include "shift/Properties/sbaseproperties.h"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "XTransform.h"
@@ -11,10 +12,11 @@
 #include "XRasteriserState.h"
 #include "XBoundingBox.h"
 
-RENDERCORE_EXPORT QTextStream &operator<<(QTextStream &s, Eks::Renderer *v);
-RENDERCORE_EXPORT QDataStream &operator<<(QDataStream &s, Eks::Renderer *v);
-RENDERCORE_EXPORT QTextStream &operator>>(QTextStream &s, Eks::Renderer *v);
-RENDERCORE_EXPORT QDataStream &operator>>(QDataStream &s, Eks::Renderer *v);
+namespace Eks
+{
+RENDERCORE_EXPORT std::ostream &operator<<(std::ostream &s, Eks::Renderer *);
+RENDERCORE_EXPORT std::istream &operator>>(std::istream &s, Eks::Renderer *);
+}
 
 namespace GraphicsCore
 {
@@ -34,69 +36,6 @@ public:
   };
 }
 
-}
-
-namespace
-{
-QTextStream &operator <<(QTextStream &str, const QImage &data)
-  {
-  QByteArray arr;
-  // approximate hopeful size?
-  arr.resize(data.byteCount() + 64);
-  QDataStream dStr(&arr, QIODevice::WriteOnly);
-  dStr << data;
-
-  return str << arr.toHex();
-  }
-
-QTextStream &operator >>(QTextStream &str, QImage &data)
-  {
-  QByteArray arr;
-  str >> arr;
-  arr = QByteArray::fromHex(arr);
-
-  QDataStream dStr(&arr, QIODevice::ReadOnly);
-  dStr >> data;
-  return str;
-  }
-
-QTextStream &operator<<(QTextStream &s, const Eks::Geometry &)
-  {
-  xAssertFail();
-  return s;
-  }
-
-QTextStream &operator>>(QTextStream &s, const Eks::Geometry &)
-  {
-  xAssertFail();
-  return s;
-  }
-
-
-QDataStream &operator>>(QDataStream& s, GraphicsCore::detail::ShaderInstance&)
-  {
-  xAssertFail();
-  return s;
-  }
-
-QDataStream &operator<<(QDataStream& s, const GraphicsCore::detail::ShaderInstance&)
-  {
-  xAssertFail();
-  return s;
-  }
-
-
-QTextStream &operator>>(QTextStream& s, GraphicsCore::detail::ShaderInstance&)
-  {
-  xAssertFail();
-  return s;
-  }
-
-QTextStream &operator<<(QTextStream& s, const GraphicsCore::detail::ShaderInstance&)
-  {
-  xAssertFail();
-  return s;
-  }
 }
 
 #if X_QT_INTEROP
@@ -144,6 +83,7 @@ RENDERCORE_EXPORT void getDefault(Eks::Transform *);
 RENDERCORE_EXPORT void getDefault(Eks::Renderer **);
 RENDERCORE_EXPORT void getDefault(Eks::Matrix3x3 *);
 
+RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, Matrix3x3Property *to);
 RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, TransformProperty *to);
 RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, ComplexTransformProperty *to);
 RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, Shift::Data<Eks::Renderer *> *to);

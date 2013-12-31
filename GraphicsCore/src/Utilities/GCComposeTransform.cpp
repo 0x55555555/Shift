@@ -1,6 +1,6 @@
 #include "Utilities/GCComposeTransform.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
-#include "XMacroHelpers"
+#include "Utilities/XMacroHelpers.h"
 #include "shift/Properties/sdata.inl"
 #include "shift/Changes/shandler.inl"
 

@@ -154,7 +154,7 @@ void GCSingularTranslateManipulator::addDriven(TransformProperty *in)
 void GCSingularTranslateManipulator::onDrag(const MouseMoveEvent &e)
   {
   Eks::Vector3D relativeDisp;
-  GCDisplacementDragManipulator::onDrag(e, relativeDisp);
+  GCDisplacementDragManipulator::onDragHelper(e, relativeDisp);
 
   xForeach(TransformProperty *t, _driven)
     {

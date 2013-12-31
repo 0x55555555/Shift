@@ -62,6 +62,11 @@ class RENDERCORE_EXPORT RCShaderConstantData : public Shift::Container
   S_PROPERTY_CONTAINER(RCShaderConstantData, Shift::Container)
 
 public:
+  enum
+    {
+    StaticChildMode = Shift::NamedChildren
+    };
+
   RCRenderer renderer;
   RCShaderRuntimeConstantData runtimeData;
   };

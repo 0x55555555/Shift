@@ -14,6 +14,11 @@ class RENDERCORE_EXPORT RCGeometry : public Shift::Container
   S_PROPERTY_CONTAINER(RCGeometry, Container)
 
 public:
+  enum
+    {
+    StaticChildMode = Shift::NamedChildren,
+    };
+
   RCRuntimeGeometry runtimeGeometry;
   };
 

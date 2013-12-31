@@ -6,6 +6,7 @@ Eks.Library {
 
   property bool uiSupport: true
 
+  Depends { name: "Qt.core" }
   Depends { name: "Eks3D" }
   Depends { name: "ShiftCore" }
 

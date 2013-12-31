@@ -1,7 +1,7 @@
 #ifndef GCGLOBAL_H
 #define GCGLOBAL_H
 
-#include "XGlobal"
+#include "XGlobal.h"
 #include "shift/sglobal.h"
 #include "shift/TypeInformation/spropertygroup.h"
 

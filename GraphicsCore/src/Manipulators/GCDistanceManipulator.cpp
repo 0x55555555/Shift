@@ -129,7 +129,7 @@ void GCDistanceManipulator::addDriven(Shift::FloatProperty *in)
 void GCDistanceManipulator::onDrag(const MouseMoveEvent &e)
   {
   Eks::Vector3D relativeDisp;
-  GCDisplacementDragManipulator::onDrag(e, relativeDisp);
+  GCDisplacementDragManipulator::onDragHelper(e, relativeDisp);
 
   float rel = relativeDisp.norm() / scaleFactor();
 

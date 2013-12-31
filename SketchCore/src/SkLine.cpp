@@ -2,6 +2,7 @@
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "SkGlobal.h"
 #include "shift/Properties/sdata.inl"
+#include "shift/Properties/scontainer.inl"
 #include "XPlane.h"
 
 S_IMPLEMENT_PROPERTY(Line, SketchCore)

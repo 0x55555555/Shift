@@ -1,9 +1,10 @@
 #include "2D/GCElement.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Properties/sdata.inl"
+#include "shift/Properties/scontainer.inl"
 #include "MCSimpleAdd.h"
 #include "XRenderer.h"
-#include "XOptional"
+#include "Utilities/XOptional.h"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(GCInteractionHandlerPointer, GraphicsCore)
 

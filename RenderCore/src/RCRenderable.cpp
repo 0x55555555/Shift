@@ -1,5 +1,6 @@
 #include "RCRenderable.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/scontainer.inl"
 #include "shift/Properties/sdata.inl"
 
 S_IMPLEMENT_TYPED_POINTER_TYPE(RCRenderablePointer, RenderCore)

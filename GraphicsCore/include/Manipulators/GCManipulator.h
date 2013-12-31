@@ -6,7 +6,7 @@
 #include "shift/Properties/sbasepointerproperties.h"
 #include "Utilities/RCBaseProperties.h"
 #include "RCCamera.h"
-#include "XUniquePointer"
+#include "Memory/XUniquePointer.h"
 
 namespace Eks
 {
@@ -24,6 +24,10 @@ class GRAPHICSCORE_EXPORT GCVisualManipulator : public Shift::Container
   S_ABSTRACT_PROPERTY_CONTAINER(GCVisualManipulator, Container)
 
 public:
+  enum
+    {
+    StaticChildMode = Shift::NamedChildren
+    };
   GCVisualManipulator();
 
   class Delegate
@@ -43,7 +47,6 @@ public:
                         Eks::Renderer *) const = 0;
     };
 
-public:
   Shift::BoolProperty show;
   TransformProperty parentTransform;
   TransformProperty localTransform;
@@ -171,7 +174,8 @@ public:
   Shift::EnumProperty lockMode;
   Shift::Vector3DProperty lockDirection; // normal for planar, direction for linear, local space
 
-  void onDrag(const MouseMoveEvent &, Eks::Vector3D &rel);
+protected:
+  void onDragHelper(const MouseMoveEvent &, Eks::Vector3D &rel);
   };
 
 class GRAPHICSCORE_EXPORT GCAngularDragManipulator : public GCVisualDragManipulator
@@ -188,7 +192,8 @@ public:
   Shift::EnumProperty lockMode;
   Shift::Vector3DProperty lockDirection; // normal for planar, direction for linear, local space
 
-  void onDrag(const MouseMoveEvent &, Eks::Quaternion &rel);
+protected:
+  void onDragHelper(const MouseMoveEvent &, Eks::Quaternion &rel);
   };
 
 #endif // GCMANIPULATOR_H

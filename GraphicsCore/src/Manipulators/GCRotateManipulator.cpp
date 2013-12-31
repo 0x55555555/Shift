@@ -147,7 +147,7 @@ void GCSingularRotateManipulator::addDriven(TransformProperty *in)
 void GCSingularRotateManipulator::onDrag(const MouseMoveEvent &e)
   {
   Eks::Quaternion relativeDisp;
-  GCAngularDragManipulator::onDrag(e, relativeDisp);
+  GCAngularDragManipulator::onDragHelper(e, relativeDisp);
 
   xForeach(TransformProperty *t, _driven)
     {

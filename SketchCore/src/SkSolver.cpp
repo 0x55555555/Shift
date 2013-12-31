@@ -1,7 +1,8 @@
 #include "SkSolver.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
+#include "shift/Properties/scontainer.inl"
 #include "SkGlobal.h"
-#include "XTemporaryAllocator"
+#include "Memory/XTemporaryAllocator.h"
 #include <map>
 
 S_IMPLEMENT_PROPERTY(Solver, SketchCore)

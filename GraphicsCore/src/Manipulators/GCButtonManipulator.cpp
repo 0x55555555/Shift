@@ -24,12 +24,12 @@ public:
     m.drawQuad(XVector3D(20.0f, 0.0f, 0.0f), XVector3D(0.0f, 20.0f, 0.0f));*/
     }
 
-  virtual bool hitTest(
+  bool hitTest(
       const GCVisualManipulator *toRender,
       const QPoint &,
-      const RCCamera *camera,
+      const RCViewableTransform *camera,
       const Eks::Vector3D &clickDirection, // in world space
-      float *distance)
+      float *distance) const X_OVERRIDE
     {
     Eks::Line l(camera->transform().translation(), clickDirection, Eks::Line::PointAndDirection);
 
@@ -53,8 +53,8 @@ public:
     }
 
   virtual void render(const GCVisualManipulator *,
-      const RCCamera *,
-      Eks::Renderer *)
+      const RCViewableTransform *,
+      Eks::Renderer *) const X_OVERRIDE
     {
     /*XTransform t = camera->getPixelScaleFacingTransform(toRender->worldCentre().translation());
 

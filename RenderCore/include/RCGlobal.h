@@ -1,7 +1,7 @@
 #ifndef RCGLOBAL_H
 #define RCGLOBAL_H
 
-#include "XGlobal"
+#include "XGlobal.h"
 #include "shift/sglobal.h"
 #include "shift/TypeInformation/spropertygroup.h"
 

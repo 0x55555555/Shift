@@ -1,7 +1,7 @@
 #ifndef MCGLOBAL_H
 #define MCGLOBAL_H
 
-#include "XGlobal"
+#include "XGlobal.h"
 #include "shift/sglobal.h"
 
 #ifdef MATHSCORE_BUILD

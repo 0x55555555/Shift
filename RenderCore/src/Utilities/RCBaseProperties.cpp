@@ -6,30 +6,20 @@
 #include "shift/Changes/shandler.inl"
 #include "shift/TypeInformation/spropertytraits.h"
 
-
-QTextStream &operator<<(QTextStream &s, Eks::Renderer *)
+namespace Eks
+{
+std::ostream &operator<<(std::ostream &s, Eks::Renderer *)
   {
   xAssertFail();
   return s;
   }
 
-QDataStream &operator<<(QDataStream &s, Eks::Renderer *)
+std::istream &operator>>(std::istream &s, Eks::Renderer *)
   {
   xAssertFail();
   return s;
   }
-
-QTextStream &operator>>(QTextStream &s, Eks::Renderer *)
-  {
-  xAssertFail();
-  return s;
-  }
-
-QDataStream &operator>>(QDataStream &s, Eks::Renderer *)
-  {
-  xAssertFail();
-  return s;
-  }
+}
 
 namespace Shift
 {
@@ -39,7 +29,7 @@ template <> class DataEmbeddedInstanceInformation<Shift::Data<Eks::Renderer *>>
     : public Shift::Property::EmbeddedInstanceInformation
   {
 public:
-  void initiateAttribute(Attribute *propertyToInitiate) const
+  void initiateAttribute(Attribute *propertyToInitiate, AttributeInitialiserHelper *) const X_OVERRIDE
     {
     propertyToInitiate->uncheckedCastTo<Shift::Data<Eks::Renderer *>>()->_value = 0;
     }
@@ -80,7 +70,7 @@ public:
     }
   };
 
-void assignTo(const Shift::Attribute *f, Shift::Attribute *to)
+void assignTo(const Shift::Attribute *, Shift::Attribute *)
   {
   xAssertFail();
   }

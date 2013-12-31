@@ -7,6 +7,7 @@
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Changes/shandler.inl"
 #include "shift/Properties/sdata.inl"
+#include "shift/Properties/scontainer.inl"
 
 void unionTransformedBounds(RCTransform* tr)
   {

@@ -25,6 +25,11 @@ class GRAPHICSCORE_EXPORT GCRotateManipulator : public GCVisualCompoundManipulat
   S_PROPERTY_CONTAINER(GCRotateManipulator, GCVisualCompoundManipulator);
 
 public:
+  enum
+    {
+    StaticChildMode = Shift::NamedChildren
+    };
+
   GCRotateManipulator();
 
   GCSingularRotateManipulator x;

@@ -1,5 +1,5 @@
 #include "UI/GCSceneExplorer.h"
-#include "XTemporaryAllocator"
+#include "Memory/XTemporaryAllocator.h"
 #include "QToolBar"
 #include "shift/sdatabase.h"
 #include "GCManipulatableScene.h"
@@ -64,7 +64,7 @@ void GCSceneExplorer::frameSelection(const QModelIndexList &lst)
 
   xForeach(auto item, lst)
     {
-    Shift::Attribute *attr = _inputModel.attributeFromIndex(lst[0]);
+    Shift::Attribute *attr = _inputModel.attributeFromIndex(item);
     xAssert(attr);
 
     if(RCRenderable *r = attr->castTo<RCRenderable>())
@@ -107,7 +107,7 @@ void GCSceneExplorer::onContextMenu(const QPoint& pt, const QModelIndexList &lst
     auto api = r->apiInterface();
     while(api)
       {
-      for(auto i = 0; i < api->functionCount(); ++i)
+      for(xsize i = 0; i < api->functionCount(); ++i)
         {
         auto fn = api->function(i);
         if (fn.argCount == 0)
@@ -121,7 +121,7 @@ void GCSceneExplorer::onContextMenu(const QPoint& pt, const QModelIndexList &lst
       api = api->parent();
       }
     }
-  else if(RCRenderablePointer *r = attr->castTo<RCRenderablePointer>())
+  else if(attr->castTo<RCRenderablePointer>())
     {
     m.addAction("[Remove Null Renderable]");
     }
@@ -170,7 +170,7 @@ void GCSceneExplorer::updateSelection(const QModelIndexList &lst)
       {
       selection << r;
       }
-    else if(RCRenderablePointer *r = attrItem->castTo<RCRenderablePointer>())
+    else if(attrItem->castTo<RCRenderablePointer>())
       {
       // null renderable... nothing to select, but useful to allow right click and cleanup.
       }
