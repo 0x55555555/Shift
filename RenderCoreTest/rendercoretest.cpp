@@ -159,7 +159,7 @@ void RenderCoreTest::simpleExample()
     float data[] =
       {
       0,  0,  0,    1, 0, 0,
-      0,  10, 0,   0, 1, 0,
+      0,  10, 0,    0, 1, 0,
       10, 0,  0,    0, 0, 1,
       };
 
@@ -181,7 +181,7 @@ void RenderCoreTest::simpleExample()
 
   try
     {
-    test.grabSequence(1000);
+    test.grab("triangletest");
     }
   catch(...)
     {
