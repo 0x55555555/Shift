@@ -14,4 +14,8 @@ Eks.Library {
 
     cpp.includePaths: [ "./include" ]
   }
+
+  Eks.TestDependency {
+    name: "ShiftCoreTest"
+  }
 }
