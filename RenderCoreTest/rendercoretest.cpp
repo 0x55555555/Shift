@@ -181,7 +181,7 @@ void RenderCoreTest::simpleExample()
 
   try
     {
-    test.grab("triangletest");
+    QCOMPARE(test.grab("triangletest"), QImage(":/images/triangletest.png").convertToFormat(test.canvasFormat()));
     }
   catch(...)
     {
