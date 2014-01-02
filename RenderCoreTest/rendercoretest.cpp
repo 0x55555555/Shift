@@ -6,6 +6,12 @@
 #include "XFramebuffer.h"
 #include "../examples/Simple3DExample.h"
 
+#ifdef Q_OS_OSX
+# define IMAGE_WAIT
+# include <unistd.h>
+#endif
+
+
 TestCanvas::TestCanvas()
   {
   widget = Eks::Canvas3D::createBest(nullptr, &canvas);
@@ -60,10 +66,6 @@ QImage TestCanvas::grab(
 
     auto scale = widget->devicePixelRatio();
     QImage img = glWidget->grabFrameBuffer();
-
-#ifdef Q_OS_OSX
-#define IMAGE_WAIT
-#endif
 
 #ifdef IMAGE_WAIT
     sleep(1);
