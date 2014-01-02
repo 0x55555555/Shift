@@ -5,7 +5,6 @@
 #include "XRenderer.h"
 #include "XFramebuffer.h"
 #include "../examples/Simple3DExample.h"
-#include <unistd.h>
 
 TestCanvas::TestCanvas()
   {
@@ -62,7 +61,10 @@ QImage TestCanvas::grab(
     auto scale = widget->devicePixelRatio();
     QImage img = glWidget->grabFrameBuffer();
 
+#ifdef Q_OS_OSX
 #define IMAGE_WAIT
+#endif
+
 #ifdef IMAGE_WAIT
     sleep(1);
 #endif
@@ -181,7 +183,11 @@ void RenderCoreTest::simpleExample()
 
   try
     {
-    QCOMPARE(test.grab("triangletest"), QImage(":/images/triangletest.png").convertToFormat(test.canvasFormat()));
+    QImage testImg(":/images/triangletest.png");
+    testImg = testImg.convertToFormat(test.canvasFormat());
+    testImg = testImg.scaled(test.canvasSize());
+
+    QCOMPARE(test.grab("triangletest"), testImg);
     }
   catch(...)
     {

@@ -1,6 +1,7 @@
 #include "RCGeometry.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Properties/sdata.inl"
+#include "shift/Properties/scontainer.inl"
 #include "shift/TypeInformation/styperegistry.h"
 
 S_IMPLEMENT_PROPERTY(RCGeometry, RenderCore)
