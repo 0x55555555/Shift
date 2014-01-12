@@ -14,16 +14,13 @@ class SketchTest : public QObject
   Q_OBJECT
 
 public:
-  SketchTest()
+  SketchTest() : registry(core.defaultAllocator())
     {
-    Shift::TypeRegistry::initiate(core.defaultAllocator());
-
-    SketchCore::initiate();
+    registry.installModule(SketchCore::shiftModule());
     }
 
   ~SketchTest()
     {
-    Shift::TypeRegistry::terminate();
     }
 
 private Q_SLOTS:
@@ -31,6 +28,7 @@ private Q_SLOTS:
 
 private:
   Eks::Core core;
+  Shift::TypeRegistry registry;
   };
 
 #endif // COMPUTETEST_H

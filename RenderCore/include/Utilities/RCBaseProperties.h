@@ -93,4 +93,11 @@ RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, RCBoundingBox *to);
 
 S_TYPED_POINTER_TYPE(RENDERCORE_EXPORT, RCVertexLayoutPointer, RCVertexLayout)
 
+S_DECLARE_METATYPE(RCRuntimeShader, "RuntimeShader");
+S_DECLARE_METATYPE(RCRuntimeShaderInstance, "RuntimeShaderInstance");
+S_DECLARE_METATYPE(RCRenderer, "Renderer");
+S_DECLARE_METATYPE(RCBoundingBox, "BoundingBox");
+S_DECLARE_METATYPE(RCRuntimeIndexGeometry, "IndexGeometry");
+S_DECLARE_METATYPE(RCRuntimeGeometry, "Geometry");
+
 #endif // RCBASEPROPERTIES_H

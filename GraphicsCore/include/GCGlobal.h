@@ -3,7 +3,6 @@
 
 #include "XGlobal.h"
 #include "shift/sglobal.h"
-#include "shift/TypeInformation/spropertygroup.h"
 
 #ifdef GRAPHICSCORE_BUILD
 # define GRAPHICSCORE_EXPORT X_DECL_EXPORT
@@ -15,12 +14,8 @@
 #define GCProfileFunction XProfileFunctionBase(GCProfileScope)
 #define GCProfileFunctionScopedBlock(mess) XProfileScopedBlockBase(GCProfileScope, mess)
 
-S_DEFINE_INTERFACE_TYPE(ManipulatableInterface, 52)
+S_DEFINE_INTERFACE_TYPE(ManipulatableInterface, 100)
 
-namespace GraphicsCore
-{
-void GRAPHICSCORE_EXPORT initiate();
-Shift::PropertyGroup &propertyGroup();
-}
+S_MODULE(GRAPHICSCORE_EXPORT, GraphicsCore)
 
 #endif // GCGLOBAL_H

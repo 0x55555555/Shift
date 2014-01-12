@@ -16,8 +16,6 @@ public:
   Shift::UnsignedIntProperty height;
 
   Shift::FloatProperty aspectRatio;
-
-  void render(Eks::Renderer *);
   };
 
 

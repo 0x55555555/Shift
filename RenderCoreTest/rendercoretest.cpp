@@ -1,9 +1,17 @@
 #include "rendercoretest.h"
 #include "QGLWidget"
-#include "shift/TypeInformation/spropertygroup.h"
+#include "Utilities/RCBaseProperties.h"
+#include "shift/Properties/sdata.inl"
 #include "X3DCanvas.h"
 #include "XRenderer.h"
 #include "XFramebuffer.h"
+#include "RCViewport.h"
+#include "RCScene.h"
+#include "RCTransform.h"
+#include "RCGeometry.h"
+#include "Shader/RCShader.h"
+#include "Shader/RCShadingGroup.h"
+#include "XModeller.h"
 #include "../examples/Simple3DExample.h"
 
 #ifdef Q_OS_OSX
@@ -11,6 +19,86 @@
 # include <unistd.h>
 #endif
 
+class TestRenderable : public RCRenderable
+  {
+  S_ENTITY(TestRenderable, RCRenderable)
+
+public:
+  RCGeometry geometry;
+  RCRenderer renderer;
+
+  void render(Eks::Renderer *r, const RenderState &) const X_OVERRIDE
+    {
+    r->drawTriangles(&geometry.runtimeGeometry());
+    }
+  };
+
+S_IMPLEMENT_PROPERTY(TestRenderable, Test)
+
+void TestRenderable::createTypeInformation(
+    Shift::PropertyInformationTyped<TestRenderable> *info,
+    const Shift::PropertyInformationCreateData &data)
+  {
+  if(data.registerAttributes)
+    {
+    auto childBlock = info->createChildrenBlock(data);
+
+    auto geo = childBlock.add(&TestRenderable::geometry, "geometry");
+    geo->setCompute([](TestRenderable *r)
+      {
+      Eks::Renderer *renderer = r->renderer();
+
+      auto lock = r->geometry.runtimeGeometry.computeLock();
+
+      Eks::Modeller m(Eks::Core::globalAllocator(), 100);
+      m.drawCube();
+
+      lock->~Geometry();
+      new(lock.data()) Eks::Geometry();
+
+      Eks::ShaderVertexLayoutDescription::Semantic semantics[] =
+        {
+        Eks::ShaderVertexLayoutDescription::Position,
+        Eks::ShaderVertexLayoutDescription::Normal
+        };
+
+      m.bakeVertices(renderer, semantics, X_ARRAY_COUNT(semantics), lock.data());
+      });
+
+    auto renderer = childBlock.add(&TestRenderable::renderer, "renderer");
+    renderer->setAffects(data, geo);
+    }
+  }
+
+
+class TestShader : public RCShader, public RCShaderInterface
+  {
+  S_ENTITY(TestShader, RCShader)
+
+public:
+  bool initShader(
+      RCShader *,
+      Eks::Renderer *,
+      Shader *) const X_OVERRIDE
+    {
+    xAssertFail();
+    return false;
+    }
+  };
+
+S_IMPLEMENT_PROPERTY(TestShader, Test)
+
+void TestShader::createTypeInformation(
+    Shift::PropertyInformationTyped<TestShader> *info,
+    const Shift::PropertyInformationCreateData &data)
+  {
+  if(data.registerAttributes)
+    {
+    auto childBlock = info->createChildrenBlock(data);
+
+    data.module.addInheritedInterface<TestShader, RCShaderInterface>();
+    }
+  }
 
 TestCanvas::TestCanvas()
   {
@@ -107,6 +195,14 @@ void TestCanvas::grabSequence(xsize count)
   return;
   }
 
+QImage TestCanvas::getTestImage(const char *name)
+  {
+  QImage img(name);
+  img = img.convertToFormat(canvasFormat());
+  img = img.scaled(canvasSize());
+  return img;
+  }
+
 QSize TestCanvas::canvasSize()
   {
   auto scale = widget->devicePixelRatio();
@@ -154,6 +250,7 @@ void RenderCoreTest::basicRender()
 
 void RenderCoreTest::simpleExample()
   {
+#if 0
   TestCanvas test;
 
   Eks::Demo::Simple3DExample example;
@@ -185,9 +282,7 @@ void RenderCoreTest::simpleExample()
 
   try
     {
-    QImage testImg(":/images/triangletest.png");
-    testImg = testImg.convertToFormat(test.canvasFormat());
-    testImg = testImg.scaled(test.canvasSize());
+    QImage testImg = test.getTestImage(":/images/triangletest.png");
 
     QCOMPARE(test.grab("triangletest"), testImg);
     }
@@ -195,6 +290,67 @@ void RenderCoreTest::simpleExample()
     {
     return;
     }
+  }
+
+void RenderCoreTest::renderCoreSimple()
+  {
+  TestCanvas test;
+  TestDatabase db;
+
+  try
+    {
+    auto renderer = db.addChild<RCRenderer>();
+    auto viewport = db.addChild<RCViewport>();
+
+    auto scene = db.addChild<RCScene>();
+    scene->renderer.setInput(renderer);
+    viewport->source.setInput(scene);
+
+    test.init = [renderer](Eks::Renderer *r)
+      {
+      renderer->computeLock() = r;
+      };
+
+    test.paint = [scene](Eks::Renderer *r, Eks::FrameBuffer *fb)
+      {
+      Eks::FrameBufferRenderFrame frame(r, fb);
+
+      RCScene::RenderState state;
+      state.framebuffer = nullptr;
+      state.transform = Eks::Transform::Identity();
+
+      scene->render(r, state);
+      };
+
+    test.resize = [viewport](Eks::Renderer *, xuint32 w, xuint32 h)
+      {
+      viewport->width = w;
+      viewport->height = h;
+      };
+
+    auto shadingGroup = db.addChild<RCShadingGroup>();
+    scene->renderGroup.addPointer(shadingGroup);
+
+    auto shader = db.addChild<RCShader>();
+    shader->renderer.setInput(renderer);
+    shadingGroup->shader.setInput(shader);
+
+    auto transform = db.addChild<RCTransform>();
+    shadingGroup->renderGroup.addPointer(transform);
+
+    transform->transform = Eks::Transform::Identity();
+
+    auto cube = db.addChild<TestRenderable>();
+    cube->renderer.setInput(renderer);
+    transform->renderGroup.addPointer(cube);
+
+    QCOMPARE(test.grab("triangletest"), test.getTestImage("rendercoresimple"));
+    }
+  catch(...)
+    {
+    return;
+    }
+#endif
   }
 
 S_IMPLEMENT_TEST

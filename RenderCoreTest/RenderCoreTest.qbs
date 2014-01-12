@@ -1,10 +1,6 @@
 import "../../Eks/EksBuild" as Eks;
 
 Eks.Test {
-  property bool windows: qbs.targetOS == "windows"
-  property bool linux: qbs.targetOS == "linux"
-  property bool osx: !windows && !linux
-
   name: "RenderCoreTest"
   toRoot: "../../"
 
@@ -13,10 +9,8 @@ Eks.Test {
   Depends { name: "ShiftCore" }
   Depends { name: "RenderCore" }
 
-  files: [ "*.h", "*.cpp", "*.qrc" ]
-
   Properties {
-    condition: osx
+    condition: buildtools.osx
     cpp.frameworks: [ "OpenGL" ]
   }
 }

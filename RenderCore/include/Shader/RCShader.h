@@ -13,6 +13,8 @@ class RCShader;
 
 class RCShaderInterface : public Shift::StaticInterfaceBase
   {
+  S_STATIC_INTERFACE_TYPE(RCShaderInterface, RCShaderInterface)
+
 public:
   struct Shader
     {

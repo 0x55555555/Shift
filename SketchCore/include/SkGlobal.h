@@ -3,7 +3,6 @@
 
 #include "XGlobal.h"
 #include "shift/sglobal.h"
-#include "shift/TypeInformation/spropertygroup.h"
 
 #ifdef SKETCHCORE_BUILD
 # define SKETCHCORE_EXPORT X_DECL_EXPORT
@@ -12,10 +11,6 @@
 #endif
 
 
-namespace SketchCore
-{
-void SKETCHCORE_EXPORT initiate();
-Shift::PropertyGroup &propertyGroup();
-}
+S_MODULE(SKETCHCORE_EXPORT, SketchCore)
 
 #endif // SKGLOBAL_H

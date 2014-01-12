@@ -1,5 +1,4 @@
 #include "GCGlobal.h"
-#include "shift/TypeInformation/styperegistry.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/TypeInformation/sinterface.h"
 #include "shift/Properties/sbaseproperties.h"
@@ -38,22 +37,16 @@ class TransformManipulator : public GCManipulatable
     }
   };
 
-void initiate()
-  {
-  Shift::TypeRegistry::addPropertyGroup(propertyGroup());
-
-  Shift::Interface::addStaticInterface<Shift::Vector3DProperty, RCShaderDataBindings::Vector3>();
-  Shift::Interface::addStaticInterface<Shift::ColourProperty, RCShaderDataBindings::Vector4>();
-  Shift::Interface::addStaticInterface<RCTexture2DPointer, RCShaderDataBindings::Texture2DRef>();
-  Shift::Interface::addStaticInterface<RCShaderConstantDataPointer, RCShaderDataBindings::DataRef>();
-
-  Shift::Interface::addStaticInterface<RCShadingGroup, GCManipulatable>();
-  Shift::Interface::addStaticInterface<RCTransform, TransformManipulator>();
-  }
-
-Shift::PropertyGroup &propertyGroup()
-  {
-  static Shift::PropertyGroup grp;
-  return grp;
-  }
 }
+
+S_IMPLEMENT_MODULE_WITH_INTERFACES(GraphicsCore)
+  {
+  module.addStaticInterface<Shift::Vector3DProperty, RCShaderDataBindings::Vector3>();
+  module.addStaticInterface<Shift::ColourProperty, RCShaderDataBindings::Vector4>();
+  module.addStaticInterface<RCTexture2DPointer, RCShaderDataBindings::Texture2DRef>();
+  module.addStaticInterface<RCShaderConstantDataPointer, RCShaderDataBindings::DataRef>();
+
+  module.addStaticInterface<RCShadingGroup, GCManipulatable>();
+  module.addStaticInterface<RCTransform, GraphicsCore::TransformManipulator>();
+
+  }

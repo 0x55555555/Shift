@@ -12,7 +12,7 @@ class RCRenderablePointerArray;
 
 class GRAPHICSCORE_EXPORT GCManipulatable : public Shift::StaticInterfaceBase
   {
-  S_INTERFACE_TYPE(ManipulatableInterface)
+  S_STATIC_INTERFACE_TYPE(GCManipulatable, ManipulatableInterface)
 public:
 
   struct ManipInfo

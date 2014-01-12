@@ -22,16 +22,13 @@ class RenderCoreTest : public QObject
   Q_OBJECT
 
 public:
-  RenderCoreTest()
+  RenderCoreTest() : registry(core.defaultAllocator())
     {
-    Shift::TypeRegistry::initiate(core.defaultAllocator());
-
-    Shift::TypeRegistry::addPropertyGroup(Test::propertyGroup());
+    registry.installModule(Test::shiftModule());
     }
 
   ~RenderCoreTest()
     {
-    Shift::TypeRegistry::terminate();
     }
 
 private Q_SLOTS:
@@ -40,6 +37,7 @@ private Q_SLOTS:
 
 private:
   Eks::Core core;
+  Shift::TypeRegistry registry;
   };
 
 class TestCanvas : public QObject
@@ -54,6 +52,8 @@ public:
 
   QSize canvasSize();
   QImage::Format canvasFormat();
+
+  QImage getTestImage(const char *name);
 
 public slots:
   void initialise3D(Eks::Renderer *r);

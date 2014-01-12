@@ -14,10 +14,6 @@
 #define MCProfileFunction XProfileFunctionBase(MCProfileScope)
 #define MCProfileFunctionScopedBlock(mess) XProfileScopedBlockBase(MCProfileScope, mess)
 
-namespace MathsCore
-{
-void MATHSCORE_EXPORT initiate();
-Shift::PropertyGroup &propertyGroup();
-}
+S_MODULE(MATHSCORE_EXPORT, MathsCore)
 
 #endif // MCGLOBAL_H

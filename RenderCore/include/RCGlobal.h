@@ -3,7 +3,6 @@
 
 #include "XGlobal.h"
 #include "shift/sglobal.h"
-#include "shift/TypeInformation/spropertygroup.h"
 
 #ifdef RENDERCORE_BUILD
 # define RENDERCORE_EXPORT X_DECL_EXPORT
@@ -17,11 +16,8 @@
 
 S_DEFINE_INTERFACE_TYPE(RCShaderBindableResource, 50)
 S_DEFINE_INTERFACE_TYPE(RCShaderBindableData, 51)
+S_DEFINE_INTERFACE_TYPE(RCShaderInterface, 52)
 
-namespace RenderCore
-{
-void RENDERCORE_EXPORT initiate();
-Shift::PropertyGroup &propertyGroup();
-}
+S_MODULE(RENDERCORE_EXPORT, RenderCore)
 
 #endif // RCGLOBAL_H
