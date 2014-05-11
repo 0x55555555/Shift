@@ -30,14 +30,18 @@ HEADERS += include/GCGlobal.h \
     include/UI/GCSceneExplorer.h \
     include/GCManipulatableScene.h
 
-INCLUDEPATH += $$ROOT/shift $$ROOT/shift/GraphicsCore $$ROOT/Eks/EksCore/include $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
+INCLUDEPATH += $$ROOT/shift \
+  $$ROOT/shift/RenderCore/include \
+  $$ROOT/shift/GraphicsCore/include \
+  $$ROOT/shift/MathsCore/include \
+  $$ROOT/Eks/EksCore/include \
+  $$ROOT/Eks/EksScript \
+  $$ROOT/Eks/Eks3D/include \
+  $$ROOT/Shift/ShiftCore/include
 
-LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftMathsCore -lShiftRenderCore
+LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lMathsCore -lShiftRenderCore
 
 SOURCES += \
-    src/UI/NodeGraph/GCShiftRenderModel.cpp \
-    src/UI/NodeGraph/GCAbstractNodeDelegate.cpp \
-    src/UI/NodeGraph/GCNodeController.cpp \
     src/Manipulators/GCManipulator.cpp \
     src/Manipulators/GCButtonManipulator.cpp \
     src/Manipulators/GCDistanceManipulator.cpp \

@@ -9,12 +9,9 @@ S_IMPLEMENT_PROPERTY(RCGeometry, RenderCore)
 void RCGeometry::createTypeInformation(Shift::PropertyInformationTyped<RCGeometry> *info,
                                        const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&RCGeometry::runtimeGeometry, "runtimeGeometry");
-    }
+  childBlock.add(&RCGeometry::runtimeGeometry, "runtimeGeometry");
   }
 
 S_IMPLEMENT_PROPERTY(RCIndexedGeometry, RenderCore)
@@ -22,9 +19,6 @@ S_IMPLEMENT_PROPERTY(RCIndexedGeometry, RenderCore)
 void RCIndexedGeometry::createTypeInformation(Shift::PropertyInformationTyped<RCIndexedGeometry> *info,
                                        const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
-    childBlock.add(&RCIndexedGeometry::runtimeIndexGeometry, "runtimeIndexGeometry");
-    }
+  auto childBlock = info->createChildrenBlock(data);
+  childBlock.add(&RCIndexedGeometry::runtimeIndexGeometry, "runtimeIndexGeometry");
   }

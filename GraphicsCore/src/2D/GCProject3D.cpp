@@ -37,26 +37,23 @@ S_IMPLEMENT_PROPERTY(GCProject3D, GraphicsCore)
 void GCProject3D::createTypeInformation(Shift::PropertyInformationTyped<GCProject3D> *info,
                                     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto x = childBlock.add(&GCProject3D::xPosition, "xPosition");
-    x->setCompute<computeAlignTransform>();
+  auto x = childBlock.add(&GCProject3D::xPosition, "xPosition");
+  x->setCompute<computeAlignTransform>();
 
-    auto y = childBlock.add(&GCProject3D::yPosition, "yPosition");
-    y->setCompute<computeAlignTransform>();
+  auto y = childBlock.add(&GCProject3D::yPosition, "yPosition");
+  y->setCompute<computeAlignTransform>();
 
-    auto v = childBlock.add(&GCProject3D::validPosition, "validPosition");
-    v->setCompute<computeAlignTransform>();
+  auto v = childBlock.add(&GCProject3D::validPosition, "validPosition");
+  v->setCompute<computeAlignTransform>();
 
-    const Shift::EmbeddedPropertyInstanceInformation *aff[] = { x, y };
-    auto affects = childBlock.createAffects(aff, X_ARRAY_COUNT(aff));
+  const Shift::EmbeddedPropertyInstanceInformation *aff[] = { x, y };
+  auto affects = childBlock.createAffects(aff, X_ARRAY_COUNT(aff));
 
-    auto cam = childBlock.add(&GCProject3D::camera, "camera");
-    cam->setAffects(affects, true);
+  auto cam = childBlock.add(&GCProject3D::camera, "camera");
+  cam->setAffects(affects, true);
 
-    auto taTr = childBlock.add(&GCProject3D::targetTransform, "targetTransform");
-    taTr->setAffects(affects, false);
-    }
+  auto taTr = childBlock.add(&GCProject3D::targetTransform, "targetTransform");
+  taTr->setAffects(affects, false);
   }

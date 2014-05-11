@@ -1,4 +1,5 @@
 #include "Shader/RCShaderDataBindings.h"
+#include "shift/Properties/sattribute.inl"
 #include "RCTexture.h"
 
 namespace RCShaderDataBindings

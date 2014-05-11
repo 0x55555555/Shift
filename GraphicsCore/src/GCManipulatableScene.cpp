@@ -19,17 +19,14 @@ void GCManipulatableScene::createTypeInformation(
     Shift::PropertyInformationTyped<GCManipulatableScene> *info,
     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&GCManipulatableScene::manipulators, "manipulators");
+  childBlock.add(&GCManipulatableScene::manipulators, "manipulators");
 
-    childBlock.add(&GCManipulatableScene::selection, "selection");
+  childBlock.add(&GCManipulatableScene::selection, "selection");
 
-    auto scale = childBlock.add(&GCManipulatableScene::manipulatorDisplayScale, "manipulatorDisplayScale");
-    scale->setDefaultValue(100.0f);
-    }
+  auto scale = childBlock.add(&GCManipulatableScene::manipulatorDisplayScale, "manipulatorDisplayScale");
+  scale->setDefaultValue(100.0f);
   }
 
 GCManipulatableScene::GCManipulatableScene() : _currentManipulator(0), _mouseSelecting(false)

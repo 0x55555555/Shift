@@ -135,10 +135,7 @@ S_IMPLEMENT_PROPERTY(GCSingularTranslateManipulator, GraphicsCore)
 void GCSingularTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCSingularTranslateManipulator> *info,
                                                            const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
-    }
+  auto childBlock = info->createChildrenBlock(data);
   }
 
 GCSingularTranslateManipulator::GCSingularTranslateManipulator()
@@ -169,44 +166,41 @@ S_IMPLEMENT_PROPERTY(GCTranslateManipulator, GraphicsCore)
 void GCTranslateManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCTranslateManipulator> *info,
                                                    const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
+  auto childBlock = info->createChildrenBlock(data);
+
+  auto x = childBlock.add(&GCTranslateManipulator::x, "x");
+  auto y = childBlock.add(&GCTranslateManipulator::y, "y");
+  auto z = childBlock.add(&GCTranslateManipulator::z, "z");
+
+  Eks::Vector3D dir[] =
     {
-    auto childBlock = info->createChildrenBlock(data);
+    Eks::Vector3D(1.0f, 0.0f, 0.0f),
+    Eks::Vector3D(0.0f, 1.0f, 0.0f),
+    Eks::Vector3D(0.0f, 0.0f, 1.0f),
+    };
 
-    auto x = childBlock.add(&GCTranslateManipulator::x, "x");
-    auto y = childBlock.add(&GCTranslateManipulator::y, "y");
-    auto z = childBlock.add(&GCTranslateManipulator::z, "z");
+  Shift::PropertyInstanceInformationTyped<GCTranslateManipulator, GCSingularTranslateManipulator>
+    *components[] = { x, y, z };
+  for(xsize i = 0; i < X_ARRAY_COUNT(components); ++i)
+    {
+    embedChildManipulator(
+      info,
+      data,
+      childBlock,
+      components[i],
+      [&dir, i](Shift::PropertyInformationChildrenCreatorTyped<GCSingularTranslateManipulator> &block)
+        {
+        auto lm = block.overrideChild(&GCSingularTranslateManipulator::lockMode);
+        lm->setDefaultValue(GCSingularTranslateManipulator::Linear);
 
-    Eks::Vector3D dir[] =
-      {
-      Eks::Vector3D(1.0f, 0.0f, 0.0f),
-      Eks::Vector3D(0.0f, 1.0f, 0.0f),
-      Eks::Vector3D(0.0f, 0.0f, 1.0f),
-      };
-
-    Shift::PropertyInstanceInformationTyped<GCTranslateManipulator, GCSingularTranslateManipulator>
-      *components[] = { x, y, z };
-    for(xsize i = 0; i < X_ARRAY_COUNT(components); ++i)
-      {
-      embedChildManipulator(
-        info,
-        data,
-        childBlock,
-        components[i],
-        [&dir, i](Shift::PropertyInformationChildrenCreatorTyped<GCSingularTranslateManipulator> &block)
-          {
-          auto lm = block.overrideChild(&GCSingularTranslateManipulator::lockMode);
-          lm->setDefaultValue(GCSingularTranslateManipulator::Linear);
-
-          auto ld = block.overrideChild(&GCSingularTranslateManipulator::lockDirection);
-          ld->setDefaultValue(dir[i]);
-          }
-        );
-      }
-
-    auto cent = childBlock.add(&GCTranslateManipulator::central, "central");
-    embedChildManipulator(info, data, childBlock, cent);
+        auto ld = block.overrideChild(&GCSingularTranslateManipulator::lockDirection);
+        ld->setDefaultValue(dir[i]);
+        }
+      );
     }
+
+  auto cent = childBlock.add(&GCTranslateManipulator::central, "central");
+  embedChildManipulator(info, data, childBlock, cent);
   }
 
 GCTranslateManipulator::GCTranslateManipulator()

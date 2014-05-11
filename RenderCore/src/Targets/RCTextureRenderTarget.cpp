@@ -7,8 +7,5 @@ S_IMPLEMENT_PROPERTY(RCTextureRenderTarget, RenderCore)
 void RCTextureRenderTarget::createTypeInformation(Shift::PropertyInformationTyped<RCTextureRenderTarget> *info,
                                                   const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    info->createChildrenBlock(data);
-    }
+  info->createChildrenBlock(data);
   }

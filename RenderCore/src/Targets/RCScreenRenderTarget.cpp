@@ -7,10 +7,7 @@ S_IMPLEMENT_PROPERTY(RCScreenRenderTarget, RenderCore)
 void RCScreenRenderTarget::createTypeInformation(Shift::PropertyInformationTyped<RCScreenRenderTarget> *info,
                                                  const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    info->createChildrenBlock(data);
-    }
+  info->createChildrenBlock(data);
   }
 
 RCScreenRenderTarget::RCScreenRenderTarget()

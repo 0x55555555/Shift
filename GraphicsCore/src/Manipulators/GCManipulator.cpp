@@ -13,33 +13,30 @@ S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualManipulator, GraphicsCore)
 void GCVisualManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualManipulator> *info,
                                                 const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
+  auto childBlock = info->createChildrenBlock(data);
+
+  auto sh = childBlock.add(&GCVisualManipulator::show, "show");
+  sh->setDefaultValue(true);
+
+  auto wt = childBlock.add(&GCVisualManipulator::worldTransform, "worldTransform");
+  wt->setCompute([](GCVisualManipulator *manip)
     {
-    auto childBlock = info->createChildrenBlock(data);
+    manip->worldTransform = manip->parentTransform() * manip->localTransform();
+    });
 
-    auto sh = childBlock.add(&GCVisualManipulator::show, "show");
-    sh->setDefaultValue(true);
+  auto wtAff = childBlock.createAffects(&wt, 1);
 
-    auto wt = childBlock.add(&GCVisualManipulator::worldTransform, "worldTransform");
-    wt->setCompute([](GCVisualManipulator *manip)
-      {
-      manip->worldTransform = manip->parentTransform() * manip->localTransform();
-      });
-
-    auto wtAff = childBlock.createAffects(&wt, 1);
-
-    auto pt = childBlock.add(&GCVisualManipulator::parentTransform, "parentTransform");
-    pt->setAffects(wtAff, true);
-    auto lt = childBlock.add(&GCVisualManipulator::localTransform, "localTransform");
-    lt->setAffects(wtAff, false);
+  auto pt = childBlock.add(&GCVisualManipulator::parentTransform, "parentTransform");
+  pt->setAffects(wtAff, true);
+  auto lt = childBlock.add(&GCVisualManipulator::localTransform, "localTransform");
+  lt->setAffects(wtAff, false);
 
 
-    auto scale = childBlock.add(&GCVisualManipulator::displayScale, "displayScale");
-    scale->setDefaultValue(1.0f);
+  auto scale = childBlock.add(&GCVisualManipulator::displayScale, "displayScale");
+  scale->setDefaultValue(1.0f);
 
-    auto scaleMode = childBlock.add(&GCVisualManipulator::scaleMode, "scaleMode");
-    scaleMode->setDefaultValue(ScreenSpaceScale);
-    }
+  auto scaleMode = childBlock.add(&GCVisualManipulator::scaleMode, "scaleMode");
+  scaleMode->setDefaultValue(ScreenSpaceScale);
   }
 
 GCVisualManipulator::GCVisualManipulator() : _delegate(nullptr)
@@ -79,7 +76,7 @@ Eks::Transform GCVisualManipulator::computeScaledResultTransform(
 
 const GCVisualManipulator::Delegate *GCVisualManipulator::delegate() const
   {
-  return _delegate.value();
+  return _delegate.get();
   }
 
 void GCVisualManipulator::render(const RCCamera *camera, Eks::Renderer *r) const
@@ -122,10 +119,7 @@ S_IMPLEMENT_PROPERTY(GCVisualCompoundManipulator, GraphicsCore)
 void GCVisualCompoundManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualCompoundManipulator> *info,
                                                         const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    info->createChildrenBlock(data);
-    }
+  info->createChildrenBlock(data);
   }
 
 bool GCVisualCompoundManipulator::hitTest(
@@ -189,10 +183,7 @@ S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualDragManipulator, GraphicsCore)
 void GCVisualDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualDragManipulator> *info,
                                                     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    info->createChildrenBlock(data);
-    }
+  info->createChildrenBlock(data);
   }
 
 void GCVisualDragManipulator::onMouseClick(const MouseEvent &)
@@ -218,10 +209,7 @@ S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualClickManipulator, GraphicsCore)
 void GCVisualClickManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCVisualClickManipulator> *info,
                                                      const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    info->createChildrenBlock(data);
-    }
+  info->createChildrenBlock(data);
   }
 
 void GCVisualClickManipulator::onMouseClick(const MouseEvent &)
@@ -247,13 +235,10 @@ S_IMPLEMENT_ABSTRACT_PROPERTY(GCDisplacementDragManipulator, GraphicsCore)
 void GCDisplacementDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCDisplacementDragManipulator> *info,
                                                     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&GCDisplacementDragManipulator::lockMode, "lockMode");
-    childBlock.add(&GCDisplacementDragManipulator::lockDirection, "lockDirection");
-    }
+  childBlock.add(&GCDisplacementDragManipulator::lockMode, "lockMode");
+  childBlock.add(&GCDisplacementDragManipulator::lockDirection, "lockDirection");
   }
 
 void GCDisplacementDragManipulator::onDragHelper(const MouseMoveEvent &e, Eks::Vector3D &rel)
@@ -326,13 +311,10 @@ S_IMPLEMENT_ABSTRACT_PROPERTY(GCAngularDragManipulator, GraphicsCore)
 void GCAngularDragManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCAngularDragManipulator> *info,
                                                     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&GCAngularDragManipulator::lockMode, "lockMode");
-    childBlock.add(&GCAngularDragManipulator::lockDirection, "lockDirection");
-    }
+  childBlock.add(&GCAngularDragManipulator::lockMode, "lockMode");
+  childBlock.add(&GCAngularDragManipulator::lockDirection, "lockDirection");
   }
 
 void GCAngularDragManipulator::onDragHelper(const MouseMoveEvent &e, Eks::Quaternion &rel)

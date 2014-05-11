@@ -60,17 +60,14 @@ void RCShaderConstantData::createTypeInformation(
     Shift::PropertyInformationTyped<RCShaderConstantData> *info,
     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto rend = childBlock.add(&RCShaderConstantData::renderer, "renderer");
+  auto rend = childBlock.add(&RCShaderConstantData::renderer, "renderer");
 
-    auto rtInfo = childBlock.add(&RCShaderConstantData::runtimeData, "runtimeData");
+  auto rtInfo = childBlock.add(&RCShaderConstantData::runtimeData, "runtimeData");
 
-    rtInfo->setCompute<computeData>();
-    rend->setAffects(data, rtInfo);
-    }
+  rtInfo->setCompute<computeData>();
+  rend->setAffects(data, rtInfo);
   }
 
 
@@ -79,19 +76,16 @@ S_IMPLEMENT_PROPERTY(RCShader, RenderCore)
 void RCShader::createTypeInformation(Shift::PropertyInformationTyped<RCShader> *info,
                                      const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto rtInfo = childBlock.add(&RCShader::runtimeShader, "runtimeShader");
-    rtInfo->setCompute<setupShaderRuntime>();
+  auto rtInfo = childBlock.add(&RCShader::runtimeShader, "runtimeShader");
+  rtInfo->setCompute<setupShaderRuntime>();
 
-    auto rtInfoCore = childBlock.add(&RCShader::runtimeShaderCore, "runtimeShaderCore");
-    rtInfoCore->setAffects(data, rtInfo);
+  auto rtInfoCore = childBlock.add(&RCShader::runtimeShaderCore, "runtimeShaderCore");
+  rtInfoCore->setAffects(data, rtInfo);
 
-    auto r = childBlock.add(&RCShader::renderer, "renderer");
-    r->setAffects(data, rtInfoCore);
-    }
+  auto r = childBlock.add(&RCShader::renderer, "renderer");
+  r->setAffects(data, rtInfoCore);
   }
 
 void RCShader::setupShaderRuntime(RCShader *shader)
@@ -133,13 +127,10 @@ S_IMPLEMENT_ABSTRACT_PROPERTY(RCStaticShader, RenderCore)
 void RCStaticShader::createTypeInformation(Shift::PropertyInformationTyped<RCStaticShader> *info,
                                      const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto rtInfoCore = childBlock.overrideChild(&RCShader::runtimeShaderCore);
-    rtInfoCore->setCompute<computeShaderRuntime>();
-    }
+  auto rtInfoCore = childBlock.overrideChild(&RCShader::runtimeShaderCore);
+  rtInfoCore->setCompute<computeShaderRuntime>();
   }
 
 void RCStaticShader::computeShaderRuntime(RCStaticShader *shader)

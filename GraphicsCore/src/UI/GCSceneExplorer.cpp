@@ -1,4 +1,7 @@
 #include "UI/GCSceneExplorer.h"
+
+#if 0
+
 #include "Memory/XTemporaryAllocator.h"
 #include "QToolBar"
 #include "shift/sdatabase.h"
@@ -7,6 +10,7 @@
 #include "QVBoxLayout"
 #include "QMenu"
 #include "QDebug"
+
 
 GCSceneExplorer::GCSceneExplorer(RCScene *scene)
     : QWidget(),
@@ -84,7 +88,6 @@ void GCSceneExplorer::frameSelection(const QModelIndexList &lst)
 struct ContextData
   {
   RCRenderable* renderable;
-  const XScript::InterfaceBase *ifc;
   xsize function;
   };
 
@@ -92,7 +95,7 @@ Q_DECLARE_METATYPE(ContextData)
 
 void GCSceneExplorer::onContextMenu(const QPoint& pt, const QModelIndexList &lst)
   {
-  if(!lst.size() == 1)
+  if(lst.size() != 1)
     {
     return;
     }
@@ -102,26 +105,7 @@ void GCSceneExplorer::onContextMenu(const QPoint& pt, const QModelIndexList &lst
 
   QMenu m(this);
 
-  if(RCRenderable *r = attr->castTo<RCRenderable>())
-    {
-    auto api = r->apiInterface();
-    while(api)
-      {
-      for(xsize i = 0; i < api->functionCount(); ++i)
-        {
-        auto fn = api->function(i);
-        if (fn.argCount == 0)
-          {
-          QAction* act = m.addAction(fn.name, this, SLOT(onItemAction()));
-
-          ContextData data = { r, api, i };
-          act->setData(QVariant::fromValue(data));
-          }
-        }
-      api = api->parent();
-      }
-    }
-  else if(attr->castTo<RCRenderablePointer>())
+  if(attr->castTo<RCRenderablePointer>())
     {
     m.addAction("[Remove Null Renderable]");
     }
@@ -142,11 +126,6 @@ void GCSceneExplorer::onItemAction()
     {
     return;
     }
-
-  ContextData data = v.value<ContextData>();
-
-  auto fn = data.ifc->function(data.function);
-  data.ifc->invoke(fn, data.renderable);
   }
 
 void GCSceneExplorer::updateSelection(const QModelIndexList &lst)
@@ -182,3 +161,5 @@ void GCSceneExplorer::updateSelection(const QModelIndexList &lst)
 
   manScene->select(selection);
   }
+
+#endif

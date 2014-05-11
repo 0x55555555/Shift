@@ -1,9 +1,12 @@
 #ifndef GCSCENEEXPLORER_H
 #define GCSCENEEXPLORER_H
 
+#if 0
+
 #include "QtWidgets/QWidget"
 #include "GCGlobal.h"
-#include "shift/UI/sdatabasemodel.h"
+#include "shift/QtExtensions/UI/sdatabasemodel.h"
+#include "shift/Properties/sattribute.inl"
 
 class RCScene;
 class QTreeView;
@@ -15,7 +18,7 @@ class GRAPHICSCORE_EXPORT GCSceneExplorer : public QWidget
 public:
   GCSceneExplorer(RCScene *scene);
 
-private slots:
+private Q_SLOTS:
   void onItemAction();
 
 private:
@@ -26,5 +29,7 @@ private:
   RCScene *_scene;
   Shift::InputModel _inputModel;
   };
+
+#endif
 
 #endif // GCSCENEEXPLORER_H

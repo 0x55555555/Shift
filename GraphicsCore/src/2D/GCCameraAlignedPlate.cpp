@@ -30,27 +30,24 @@ void computeTransform(GCCameraAlignedPlate *plate)
 void GCCameraAlignedPlate::createTypeInformation(Shift::PropertyInformationTyped<GCCameraAlignedPlate> *info,
                                                  const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto tr = childBlock.overrideChild(&GCCameraAlignedPlate::transform);
-    tr->setCompute<computeTransform>();
+  auto tr = childBlock.overrideChild(&GCCameraAlignedPlate::transform);
+  tr->setCompute<computeTransform>();
 
-    auto aff = childBlock.createAffects(&tr, 1);
+  auto aff = childBlock.createAffects(&tr, 1);
 
-    auto cam = childBlock.add(&GCCameraAlignedPlate::cameraTransform, "cameraTransform");
-    cam->setAffects(aff, true);
+  auto cam = childBlock.add(&GCCameraAlignedPlate::cameraTransform, "cameraTransform");
+  cam->setAffects(aff, true);
 
-    auto offset = childBlock.add(&GCCameraAlignedPlate::offsetTransform, "offsetTransform");
-    offset->setAffects(aff, false);
+  auto offset = childBlock.add(&GCCameraAlignedPlate::offsetTransform, "offsetTransform");
+  offset->setAffects(aff, false);
 
-    auto dist = childBlock.add(&GCCameraAlignedPlate::distanceFromCamera, "distanceFromCamera");
-    dist->setAffects(aff, false);
+  auto dist = childBlock.add(&GCCameraAlignedPlate::distanceFromCamera, "distanceFromCamera");
+  dist->setAffects(aff, false);
 
-    auto fov = childBlock.add(&GCCameraAlignedPlate::cameraFieldOfView, "cameraFieldOfView");
-    fov->setAffects(aff, false);
-    }
+  auto fov = childBlock.add(&GCCameraAlignedPlate::cameraFieldOfView, "cameraFieldOfView");
+  fov->setAffects(aff, false);
   }
 
 void GCCameraAlignedPlate::transformPoint(float inX, float inY, float &x, float &y)

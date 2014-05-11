@@ -8,8 +8,5 @@ void Sketch::createTypeInformation(
     Shift::PropertyInformationTyped<Sketch> *info,
     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto cb = info->createChildrenBlock(data);
-    }
+  auto cb = info->createChildrenBlock(data);
   }

@@ -88,7 +88,7 @@ public:
   template <typename T> T *createDelegate()
     {
     _delegate = Shift::TypeRegistry::generalPurposeAllocator()->createUnique<T>();
-    return static_cast<T*>(_delegate.pointer());
+    return static_cast<T*>(_delegate.get());
     }
 
   struct MouseEvent

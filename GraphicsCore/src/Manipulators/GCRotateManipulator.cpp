@@ -128,10 +128,7 @@ S_IMPLEMENT_PROPERTY(GCSingularRotateManipulator, GraphicsCore)
 void GCSingularRotateManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCSingularRotateManipulator> *info,
                                                            const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
-    }
+  auto childBlock = info->createChildrenBlock(data);
   }
 
 GCSingularRotateManipulator::GCSingularRotateManipulator()
@@ -162,45 +159,42 @@ S_IMPLEMENT_PROPERTY(GCRotateManipulator, GraphicsCore)
 void GCRotateManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCRotateManipulator> *info,
                                                    const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
+  auto childBlock = info->createChildrenBlock(data);
+
+  auto x = childBlock.add(&GCRotateManipulator::x, "x");
+  auto y = childBlock.add(&GCRotateManipulator::y, "y");
+  auto z = childBlock.add(&GCRotateManipulator::z, "z");
+
+  Eks::Vector3D dir[] =
     {
-    auto childBlock = info->createChildrenBlock(data);
+    Eks::Vector3D(1.0f, 0.0f, 0.0f),
+    Eks::Vector3D(0.0f, 1.0f, 0.0f),
+    Eks::Vector3D(0.0f, 0.0f, 1.0f),
+    };
 
-    auto x = childBlock.add(&GCRotateManipulator::x, "x");
-    auto y = childBlock.add(&GCRotateManipulator::y, "y");
-    auto z = childBlock.add(&GCRotateManipulator::z, "z");
+  Shift::PropertyInstanceInformationTyped<GCRotateManipulator, GCSingularRotateManipulator>
+    *components[] = { x, y, z };
 
-    Eks::Vector3D dir[] =
-      {
-      Eks::Vector3D(1.0f, 0.0f, 0.0f),
-      Eks::Vector3D(0.0f, 1.0f, 0.0f),
-      Eks::Vector3D(0.0f, 0.0f, 1.0f),
-      };
+  for(xsize i = 0; i < X_ARRAY_COUNT(components); ++i)
+    {
+    embedChildManipulator(
+      info,
+      data,
+      childBlock,
+      components[i],
+      [&dir, i](Shift::PropertyInformationChildrenCreatorTyped<GCSingularRotateManipulator> &block)
+        {
+        auto lm = block.overrideChild(&GCSingularRotateManipulator::lockMode);
+        lm->setDefaultValue(GCSingularRotateManipulator::Planar);
 
-    Shift::PropertyInstanceInformationTyped<GCRotateManipulator, GCSingularRotateManipulator>
-      *components[] = { x, y, z };
-
-    for(xsize i = 0; i < X_ARRAY_COUNT(components); ++i)
-      {
-      embedChildManipulator(
-        info,
-        data,
-        childBlock,
-        components[i],
-        [&dir, i](Shift::PropertyInformationChildrenCreatorTyped<GCSingularRotateManipulator> &block)
-          {
-          auto lm = block.overrideChild(&GCSingularRotateManipulator::lockMode);
-          lm->setDefaultValue(GCSingularRotateManipulator::Planar);
-
-          auto ld = block.overrideChild(&GCSingularRotateManipulator::lockDirection);
-          ld->setDefaultValue(dir[i]);
-          }
-        );
-      }
-
-    //auto cent = childBlock.add(&GCTranslateManipulator::central, "central");
-    //embedChildManipulator(info, data, childBlock, cent);
+        auto ld = block.overrideChild(&GCSingularRotateManipulator::lockDirection);
+        ld->setDefaultValue(dir[i]);
+        }
+      );
     }
+
+  //auto cent = childBlock.add(&GCTranslateManipulator::central, "central");
+  //embedChildManipulator(info, data, childBlock, cent);
   }
 
 GCRotateManipulator::GCRotateManipulator()

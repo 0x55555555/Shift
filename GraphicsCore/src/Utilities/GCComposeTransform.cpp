@@ -20,21 +20,18 @@ S_IMPLEMENT_PROPERTY(GCComposeTransform, GraphicsCore)
 void GCComposeTransform::createTypeInformation(Shift::PropertyInformationTyped<GCComposeTransform> *info,
                                                const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto transformInst = childBlock.add(&GCComposeTransform::transformOut, "transformOut");
-    transformInst->setCompute<computeTransform>();
+  auto transformInst = childBlock.add(&GCComposeTransform::transformOut, "transformOut");
+  transformInst->setCompute<computeTransform>();
 
-    auto axInst = childBlock.add(&GCComposeTransform::rotationAxisIn, "rotationAxisIn");
-    auto angInst = childBlock.add(&GCComposeTransform::rotationAngleIn, "rotationAngleIn");
-    auto trInst = childBlock.add(&GCComposeTransform::translationIn, "translationIn");
+  auto axInst = childBlock.add(&GCComposeTransform::rotationAxisIn, "rotationAxisIn");
+  auto angInst = childBlock.add(&GCComposeTransform::rotationAngleIn, "rotationAngleIn");
+  auto trInst = childBlock.add(&GCComposeTransform::translationIn, "translationIn");
 
-    auto affectsTransform = childBlock.createAffects(&transformInst, 1);
+  auto affectsTransform = childBlock.createAffects(&transformInst, 1);
 
-    axInst->setAffects(affectsTransform, true);
-    angInst->setAffects(affectsTransform, false);
-    trInst->setAffects(affectsTransform, false);
-    }
+  axInst->setAffects(affectsTransform, true);
+  angInst->setAffects(affectsTransform, false);
+  trInst->setAffects(affectsTransform, false);
   }

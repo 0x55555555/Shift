@@ -12,12 +12,9 @@ S_IMPLEMENT_PROPERTY(RCRenderable, RenderCore)
 void RCRenderable::createTypeInformation(Shift::PropertyInformationTyped<RCRenderable> *info,
                                          const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&RCRenderable::bounds, "bounds");
-    }
+  childBlock.add(&RCRenderable::bounds, "bounds");
   }
 
 RCRenderable::RCRenderable()
@@ -54,23 +51,18 @@ void unionBounds(RCRenderArray* array)
 void RCRenderArray::createTypeInformation(Shift::PropertyInformationTyped<RCRenderArray> *info,
                                           const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto rGInst = childBlock.add(&RCRenderArray::renderGroup, "renderGroup");
+  auto rGInst = childBlock.add(&RCRenderArray::renderGroup, "renderGroup");
 
-    auto bInst = childBlock.overrideChild(&RCRenderArray::bounds);
-    bInst->setCompute<unionBounds>();
+  auto bInst = childBlock.overrideChild(&RCRenderArray::bounds);
+  bInst->setCompute<unionBounds>();
 
-    rGInst->setAffects(data, bInst);
-    }
+  rGInst->setAffects(data, bInst);
   }
 
 void RCRenderArray::render(Eks::Renderer *renderer, const RenderState &state) const
   {
-  X_EVENT_FUNCTION;
-
   xForeach(auto r, renderGroup.walker<RCRenderablePointer>())
     {
     const RCRenderable* ptd = r->pointed();

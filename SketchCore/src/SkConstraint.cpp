@@ -11,9 +11,6 @@ void Constraint::createTypeInformation(
     Shift::PropertyInformationTyped<Constraint> *info,
     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto cb = info->createChildrenBlock(data);
-    }
+  auto cb = info->createChildrenBlock(data);
   }
 

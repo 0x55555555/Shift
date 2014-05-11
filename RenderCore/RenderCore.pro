@@ -10,7 +10,7 @@ QT += opengl
 
 include("../../Eks/EksCore/GeneralOptions.pri")
 
-INCLUDEPATH += $$ROOT/shift $$ROOT/shift/RenderCore $$ROOT/Eks/EksCore/include $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
+INCLUDEPATH += $$ROOT/shift $$ROOT/shift/RenderCore/include $$ROOT/Eks/EksCore/include $$ROOT/Eks/EksScript $$ROOT/Eks/Eks3D/include $$ROOT/Shift/ShiftCore/include
 
 LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript
 

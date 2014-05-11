@@ -11,17 +11,14 @@ void Solver::createTypeInformation(
     Shift::PropertyInformationTyped<Solver> *info,
     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto cb = info->createChildrenBlock(data);
+  auto cb = info->createChildrenBlock(data);
 
-    auto pts = cb.add(&Solver::points, "points");
-    pts->setCompute([](Solver *s) { s->solve(); } );
+  auto pts = cb.add(&Solver::points, "points");
+  pts->setCompute([](Solver *s) { s->solve(); } );
 
-    auto constrs = cb.add(&Solver::constraints, "constraints");
-    auto affects = cb.createAffects(&pts, 1);
-    constrs->setAffects(affects, true);
-    }
+  auto constrs = cb.add(&Solver::constraints, "constraints");
+  auto affects = cb.createAffects(&pts, 1);
+  constrs->setAffects(affects, true);
   }
 
 struct ConstraintSolve
@@ -99,7 +96,7 @@ Constraint::Solution solvePointSystem(
             }
           }
 
-        solution = xMax(solution, newSol);
+        solution = std::max(solution, newSol);
         }
       }
     }
@@ -154,7 +151,7 @@ void Solver::solve()
   auto end = pts.end();
   for(; it != end; ++it)
     {
-    Point::Solve &pt = it.value();
+    Point::Solve &pt = it->second;
     solvePointSystem(pt, pts, pointMap, this);
     }
 

@@ -25,33 +25,17 @@ S_IMPLEMENT_PROPERTY(RCScene, RenderCore)
 void RCScene::createTypeInformation(Shift::PropertyInformationTyped<RCScene> *info,
                                     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&RCScene::activeCamera, "activeCamera");
-    childBlock.add(&RCScene::cameraTransform, "cameraTransform");
-    childBlock.add(&RCScene::cameraProjection, "cameraProjection");
+  childBlock.add(&RCScene::activeCamera, "activeCamera");
+  childBlock.add(&RCScene::cameraTransform, "cameraTransform");
+  childBlock.add(&RCScene::cameraProjection, "cameraProjection");
 
-    auto ras = childBlock.add(&RCScene::_rasteriserState, "_rasteriserState");
-    ras->setCompute<computeRasteriser>();
+  auto ras = childBlock.add(&RCScene::_rasteriserState, "_rasteriserState");
+  ras->setCompute<computeRasteriser>();
 
-    auto render = childBlock.add(&RCScene::renderer, "renderer");
-    render->setAffects(data, ras);
-    }
-
-  if(data.registerInterfaces)
-    {
-    auto ifc = info->apiInterface();
-
-    static XScript::ClassDef<0,0,1> cls = {
-      {
-      ifc->method<void(RCViewableTransform*), &RCScene::setCamera>("setCamera"),
-      }
-    };
-
-    ifc->buildInterface(cls);
-    }
+  auto render = childBlock.add(&RCScene::renderer, "renderer");
+  render->setAffects(data, ras);
   }
 
 RCScene::RCScene() : Eks::CameraCanvasController(0)

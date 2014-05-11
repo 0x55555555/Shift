@@ -12,12 +12,9 @@ S_IMPLEMENT_PROPERTY(RCShadingGroup, RenderCore)
 void RCShadingGroup::createTypeInformation(Shift::PropertyInformationTyped<RCShadingGroup> *info,
                                            const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&RCShadingGroup::shader, "shader");
-    }
+  childBlock.add(&RCShadingGroup::shader, "shader");
   }
 
 RCShadingGroup::RCShadingGroup()

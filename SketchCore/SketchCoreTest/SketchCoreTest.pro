@@ -27,9 +27,10 @@ INCLUDEPATH += $$ROOT/shift/GraphicsCore \
     $$ROOT/Eks/Eks3D/include \
     $$ROOT/Eks/EksScript \
     $$ROOT/Shift/ShiftCore/include \
-    $$ROOT/Shift/SketchCore
+    $$ROOT/Shift/ShiftCoreTest \
+    $$ROOT/Shift/SketchCore/include
 
-LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lShiftGraphicsCore -lShiftSketchCore
+LIBS += -lShiftCore -lEksCore -lEks3D -lEksScript -lGraphicsCore -lShiftSketchCore
 
 HEADERS += \
     sketchtest.h

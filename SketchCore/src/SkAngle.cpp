@@ -9,16 +9,13 @@ void Angle::createTypeInformation(
     Shift::PropertyInformationTyped<Angle> *info,
     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto cb = info->createChildrenBlock(data);
+  auto cb = info->createChildrenBlock(data);
 
-    cb.add(&Angle::origin, "origin");
-    cb.add(&Angle::a, "a");
-    cb.add(&Angle::b, "b");
+  cb.add(&Angle::origin, "origin");
+  cb.add(&Angle::a, "a");
+  cb.add(&Angle::b, "b");
 
-    cb.add(&Angle::angle, "angle");
-    }
+  cb.add(&Angle::angle, "angle");
   }
 
 void Angle::gatherPoints(Eks::Vector<Point *> &p)

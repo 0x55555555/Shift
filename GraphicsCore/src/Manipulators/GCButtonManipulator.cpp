@@ -75,13 +75,10 @@ S_IMPLEMENT_PROPERTY(GCButtonManipulator, GraphicsCore)
 void GCButtonManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCButtonManipulator> *info,
                                                 const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&GCButtonManipulator::checked, "checked");
-    childBlock.add(&GCButtonManipulator::checkable, "checkable");
-    }
+  childBlock.add(&GCButtonManipulator::checked, "checked");
+  childBlock.add(&GCButtonManipulator::checkable, "checkable");
   }
 
 GCButtonManipulator::GCButtonManipulator()

@@ -6,6 +6,7 @@
 #include "Memory/XGlobalAllocator.h"
 #include "SkGlobal.h"
 #include "shifttestcommon.h"
+#include "shift/Properties/sattribute.inl"
 #include "shift/TypeInformation/styperegistry.h"
 
 

@@ -29,17 +29,14 @@ S_IMPLEMENT_PROPERTY(RCTransform, RenderCore)
 void RCTransform::createTypeInformation(Shift::PropertyInformationTyped<RCTransform> *info,
                                         const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto boundsInfo = childBlock.overrideChild(&RCTransform::bounds);
-    boundsInfo->setCompute<unionTransformedBounds>();
+  auto boundsInfo = childBlock.overrideChild(&RCTransform::bounds);
+  boundsInfo->setCompute<unionTransformedBounds>();
 
-    auto trInfo = childBlock.add(&RCTransform::transform, "transform");
-    trInfo->setDefault(Eks::Transform::Identity());
-    trInfo->setAffects(data, boundsInfo);
-    }
+  auto trInfo = childBlock.add(&RCTransform::transform, "transform");
+  trInfo->setDefault(Eks::Transform::Identity());
+  trInfo->setAffects(data, boundsInfo);
   }
 
 void RCTransform::render(Eks::Renderer *r, const RenderState &state) const

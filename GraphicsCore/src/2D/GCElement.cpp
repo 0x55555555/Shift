@@ -27,13 +27,10 @@ S_IMPLEMENT_PROPERTY(GCElementCentre, GraphicsCore)
 void GCElementCentre::createTypeInformation(Shift::PropertyInformationTyped<GCElementCentre> *info,
                                       const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto outInst = childBlock.overrideChild(&GCElementCentre::output);
-    outInst->setCompute<computeCentreOutput>();
-    }
+  auto outInst = childBlock.overrideChild(&GCElementCentre::output);
+  outInst->setCompute<computeCentreOutput>();
   }
 
 void computeUnCentreOutput(GCElementUnCentre *e)
@@ -48,13 +45,10 @@ S_IMPLEMENT_PROPERTY(GCElementUnCentre, GraphicsCore)
 void GCElementUnCentre::createTypeInformation(Shift::PropertyInformationTyped<GCElementUnCentre> *info,
                                       const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto outInst = childBlock.overrideChild(&GCElementUnCentre::output);
-    outInst->setCompute<computeUnCentreOutput>();
-    }
+  auto outInst = childBlock.overrideChild(&GCElementUnCentre::output);
+  outInst->setCompute<computeUnCentreOutput>();
   }
 
 void computeElementTransform(GCElement *e)
@@ -71,30 +65,27 @@ S_IMPLEMENT_PROPERTY(GCElement, GraphicsCore)
 void GCElement::createTypeInformation(Shift::PropertyInformationTyped<GCElement> *info,
                                       const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto tr = childBlock.overrideChild(&GCElement::transform);
-    tr->setCompute<computeElementTransform>();
+  auto tr = childBlock.overrideChild(&GCElement::transform);
+  tr->setCompute<computeElementTransform>();
 
-    auto affects = childBlock.createAffects(&tr, 1);
+  auto affects = childBlock.createAffects(&tr, 1);
 
-    auto vis = childBlock.add(&GCElement::visible, "visible");
-    vis->setDefaultValue(true);
+  auto vis = childBlock.add(&GCElement::visible, "visible");
+  vis->setDefaultValue(true);
 
-    auto w = childBlock.add(&GCElement::width, "width");
-    w->setAffects(affects, true);
-    auto h = childBlock.add(&GCElement::height, "height");
-    h->setAffects(affects, false);
+  auto w = childBlock.add(&GCElement::width, "width");
+  w->setAffects(affects, true);
+  auto h = childBlock.add(&GCElement::height, "height");
+  h->setAffects(affects, false);
 
-    auto l = childBlock.add(&GCElement::left, "left");
-    l->setAffects(affects, false);
-    auto b = childBlock.add(&GCElement::bottom, "bottom");
-    b->setAffects(affects, false);
+  auto l = childBlock.add(&GCElement::left, "left");
+  l->setAffects(affects, false);
+  auto b = childBlock.add(&GCElement::bottom, "bottom");
+  b->setAffects(affects, false);
 
-    childBlock.add(&GCElement::interactionHandler, "interactionHandler");
-    }
+  childBlock.add(&GCElement::interactionHandler, "interactionHandler");
   }
 
 const Shift::FloatProperty* GCElement::right()
@@ -212,12 +203,9 @@ S_IMPLEMENT_PROPERTY(GCElementArray, GraphicsCore)
 void GCElementArray::createTypeInformation(Shift::PropertyInformationTyped<GCElementArray> *info,
                                       const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    childBlock.add(&GCElementArray::elements, "elements");
-    }
+  childBlock.add(&GCElementArray::elements, "elements");
   }
 
 GCElement *GCElementArray::addAsChild(GCElementArray *parent, RCShadingGroup *, GCElementArray **arrOpt)
@@ -253,11 +241,8 @@ S_IMPLEMENT_PROPERTY(GCUnitElement, GraphicsCore)
 void GCUnitElement::createTypeInformation(Shift::PropertyInformationTyped<GCUnitElement> *info,
                                       const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto tr = childBlock.overrideChild(&GCElement::transform);
-    tr->setCompute<computeUnitElementTransform>();
-    }
+  auto tr = childBlock.overrideChild(&GCElement::transform);
+  tr->setCompute<computeUnitElementTransform>();
   }

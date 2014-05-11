@@ -1,4 +1,5 @@
 #include "Manipulators/GCManipulatable.h"
+#include "shift/Properties/sattribute.inl"
 #include "RCRenderable.h"
 
 void GCManipulatable::addManipulators(

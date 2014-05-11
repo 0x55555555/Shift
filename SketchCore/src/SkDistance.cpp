@@ -9,15 +9,12 @@ void Distance::createTypeInformation(
     Shift::PropertyInformationTyped<Distance> *info,
     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto cb = info->createChildrenBlock(data);
+  auto cb = info->createChildrenBlock(data);
 
-    cb.add(&Distance::a, "a");
-    cb.add(&Distance::b, "b");
+  cb.add(&Distance::a, "a");
+  cb.add(&Distance::b, "b");
 
-    cb.add(&Distance::distance, "distance");
-    }
+  cb.add(&Distance::distance, "distance");
   }
 
 void Distance::gatherPoints(Eks::Vector<Point *> &p)

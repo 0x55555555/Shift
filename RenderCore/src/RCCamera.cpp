@@ -54,66 +54,42 @@ void RCViewableTransform::createTypeInformation(
     Shift::PropertyInformationTyped<RCViewableTransform> *info,
     const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
+  auto childBlock = info->createChildrenBlock(data);
+
+  auto upInfo = childBlock.add(&RCViewableTransform::upVector, "upVector");
+  upInfo->setDefault(Eks::Vector3D(0.0f, 1.0f, 0.0f));
+
+  auto focalInfo = childBlock.add(&RCViewableTransform::focalDistance, "focalDistance");
+  focalInfo->setDefault(1.0f);
+
+  auto bnds = childBlock.add(&RCViewableTransform::viewBounds, "viewBounds");
+  bnds->setCompute<computeViewBounds>();
+
+  auto invProjInfo = childBlock.add(&RCViewableTransform::inverseProjection, "inverseProjection");
+  invProjInfo->setCompute<computeInverseProjection>();
+  invProjInfo->setAffects(data, bnds);
+
+  auto projInfo = childBlock.add(&RCViewableTransform::projection, "projection");
+  projInfo->setAffects(data, invProjInfo);
+
+  childBlock.add(&RCViewableTransform::viewportX, "viewportX");
+  childBlock.add(&RCViewableTransform::viewportY, "viewportY");
+  childBlock.add(&RCViewableTransform::viewportWidth, "viewportWidth");
+  childBlock.add(&RCViewableTransform::viewportHeight, "viewportHeight");
+
+
+  auto viewInfo = childBlock.add(&RCViewableTransform::viewTransform, "viewTransform");
+  viewInfo->setCompute<computeView>();
+
+  const Shift::EmbeddedPropertyInstanceInformation *affects[] =
     {
-    auto childBlock = info->createChildrenBlock(data);
-
-    auto upInfo = childBlock.add(&RCViewableTransform::upVector, "upVector");
-    upInfo->setDefault(Eks::Vector3D(0.0f, 1.0f, 0.0f));
-
-    auto focalInfo = childBlock.add(&RCViewableTransform::focalDistance, "focalDistance");
-    focalInfo->setDefault(1.0f);
-
-    auto bnds = childBlock.add(&RCViewableTransform::viewBounds, "viewBounds");
-    bnds->setCompute<computeViewBounds>();
-
-    auto invProjInfo = childBlock.add(&RCViewableTransform::inverseProjection, "inverseProjection");
-    invProjInfo->setCompute<computeInverseProjection>();
-    invProjInfo->setAffects(data, bnds);
-
-    auto projInfo = childBlock.add(&RCViewableTransform::projection, "projection");
-    projInfo->setAffects(data, invProjInfo);
-
-    childBlock.add(&RCViewableTransform::viewportX, "viewportX");
-    childBlock.add(&RCViewableTransform::viewportY, "viewportY");
-    childBlock.add(&RCViewableTransform::viewportWidth, "viewportWidth");
-    childBlock.add(&RCViewableTransform::viewportHeight, "viewportHeight");
-
-
-    auto viewInfo = childBlock.add(&RCViewableTransform::viewTransform, "viewTransform");
-    viewInfo->setCompute<computeView>();
-
-    const Shift::EmbeddedPropertyInstanceInformation *affects[] =
-      {
-      childBlock.child(&RCViewableTransform::bounds),
-      viewInfo,
-      bnds
-      };
-
-    auto transformInfo = childBlock.overrideChild(&RCViewableTransform::transform);
-    transformInfo->setAffects(data, affects, X_ARRAY_COUNT(affects));
-    }
-
-  if(data.registerInterfaces)
-    {
-    XScript::InterfaceBase *ifc = info->apiInterface();
-
-    typedef XScript::MethodToInCa<RCViewableTransform,
-                                  void(float, float, float),
-                                  &RCViewableTransform::setFocalPoint> FocalPointType;
-    typedef XScript::MethodToInCa<RCViewableTransform,
-                                  void(float, float, float),
-                                  &RCViewableTransform::setPosition> PositionType;
-
-    static XScript::ClassDef<0,0,2> cls = {
-      {
-      ifc->method<FocalPointType>("setFocalPoint"),
-      ifc->method<PositionType>("setPosition"),
-      }
+    childBlock.child(&RCViewableTransform::bounds),
+    viewInfo,
+    bnds
     };
 
-    ifc->buildInterface(cls);
-    }
+  auto transformInfo = childBlock.overrideChild(&RCViewableTransform::transform);
+  transformInfo->setAffects(data, affects, X_ARRAY_COUNT(affects));
   }
 
 RCViewableTransform::RCViewableTransform() : _rotateEnabled(true)
@@ -321,11 +297,11 @@ void RCViewableTransform::moveToFit(const Eks::BoundingBox &bnds)
   float centreY = pos.dot(up);
   float centreZ = pos.dot(look);
 
-  float axisX = xMax(centreX - minX, maxX - centreX) / aspectRatio();
-  float axisY = xMax(centreY - minY, maxY - centreY);
+  float axisX = std::max(centreX - minX, maxX - centreX) / aspectRatio();
+  float axisY = std::max(centreY - minY, maxY - centreY);
   float minDist = centreZ - minZ;
 
-  moveToFit(pos, lookDirection(), xMax(axisX, axisY), minDist);
+  moveToFit(pos, lookDirection(), std::max(axisX, axisY), minDist);
   }
 
 void RCViewableTransform::track(float x, float y)
@@ -385,10 +361,7 @@ S_IMPLEMENT_ABSTRACT_PROPERTY(RCCamera, RenderCore)
 void RCCamera::createTypeInformation(Shift::PropertyInformationTyped<RCCamera> *info,
                                      const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    info->createChildrenBlock(data);
-    }
+  info->createChildrenBlock(data);
   }
 
 S_IMPLEMENT_PROPERTY(RCPerspectiveCamera, RenderCore)
@@ -396,40 +369,37 @@ S_IMPLEMENT_PROPERTY(RCPerspectiveCamera, RenderCore)
 void RCPerspectiveCamera::createTypeInformation(Shift::PropertyInformationTyped<RCPerspectiveCamera> *info,
                                                 const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
+  auto childBlock = info->createChildrenBlock(data);
+
+  auto proj = childBlock.overrideChild(&RCCamera::projection);
+  proj->setCompute([](RCPerspectiveCamera *c)
     {
-    auto childBlock = info->createChildrenBlock(data);
+    c->projection.computeLock() = Eks::TransformUtilities::perspective(
+      c->fieldOfView(),
+      c->aspectRatio(),
+      c->nearClip(),
+      c->farClip());
+    });
 
-    auto proj = childBlock.overrideChild(&RCCamera::projection);
-    proj->setCompute([](RCPerspectiveCamera *c)
-      {
-      c->projection.computeLock() = Eks::TransformUtilities::perspective(
-        c->fieldOfView(),
-        c->aspectRatio(),
-        c->nearClip(),
-        c->farClip());
-      });
+  auto affectsProj = childBlock.createAffects(&proj, 1);
 
-    auto affectsProj = childBlock.createAffects(&proj, 1);
+  auto width = childBlock.overrideChild(&RCCamera::viewportWidth);
+  width->setAffects(affectsProj, true);
 
-    auto width = childBlock.overrideChild(&RCCamera::viewportWidth);
-    width->setAffects(affectsProj, true);
+  auto height = childBlock.overrideChild(&RCCamera::viewportHeight);
+  height->setAffects(affectsProj, false);
 
-    auto height = childBlock.overrideChild(&RCCamera::viewportHeight);
-    height->setAffects(affectsProj, false);
+  auto fov = childBlock.add(&RCPerspectiveCamera::fieldOfView, "fieldOfView");
+  fov->setDefault(Eks::degreesToRadians(45.0f));
+  fov->setAffects(affectsProj, false);
 
-    auto fov = childBlock.add(&RCPerspectiveCamera::fieldOfView, "fieldOfView");
-    fov->setDefault(Eks::degreesToRadians(45.0f));
-    fov->setAffects(affectsProj, false);
+  auto nC = childBlock.add(&RCPerspectiveCamera::nearClip, "nearClip");
+  nC->setDefault(0.1f);
+  nC->setAffects(affectsProj, false);
 
-    auto nC = childBlock.add(&RCPerspectiveCamera::nearClip, "nearClip");
-    nC->setDefault(0.1f);
-    nC->setAffects(affectsProj, false);
-
-    auto fC = childBlock.add(&RCPerspectiveCamera::farClip, "farClip");
-    fC->setDefault(100.0f);
-    fC->setAffects(affectsProj, false);
-    }
+  auto fC = childBlock.add(&RCPerspectiveCamera::farClip, "farClip");
+  fC->setDefault(100.0f);
+  fC->setAffects(affectsProj, false);
   }
 
 Eks::Vector3D RCPerspectiveCamera::worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const

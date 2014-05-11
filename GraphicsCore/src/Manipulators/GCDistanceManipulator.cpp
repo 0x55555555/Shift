@@ -82,25 +82,22 @@ void computeAbsDisp(GCDistanceManipulator *d)
 void GCDistanceManipulator::createTypeInformation(Shift::PropertyInformationTyped<GCDistanceManipulator> *info,
                                                   const Shift::PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto childBlock = info->createChildrenBlock(data);
+  auto childBlock = info->createChildrenBlock(data);
 
-    auto absDispInfo = childBlock.add(&GCDistanceManipulator::absoluteDisplacement, "absoluteDisplacement");
-    absDispInfo->setCompute<computeAbsDisp>();
+  auto absDispInfo = childBlock.add(&GCDistanceManipulator::absoluteDisplacement, "absoluteDisplacement");
+  absDispInfo->setCompute<computeAbsDisp>();
 
-    auto affectsAbsDisp = childBlock.createAffects(&absDispInfo, 1);
+  auto affectsAbsDisp = childBlock.createAffects(&absDispInfo, 1);
 
-    auto dirInfo = childBlock.overrideChild(&GCDistanceManipulator::lockDirection);
-    dirInfo->setAffects(affectsAbsDisp, true);
+  auto dirInfo = childBlock.overrideChild(&GCDistanceManipulator::lockDirection);
+  dirInfo->setAffects(affectsAbsDisp, true);
 
-    auto distInfo = childBlock.add(&GCDistanceManipulator::distance, "distance");
-    distInfo->setAffects(affectsAbsDisp, false);
+  auto distInfo = childBlock.add(&GCDistanceManipulator::distance, "distance");
+  distInfo->setAffects(affectsAbsDisp, false);
 
-    auto sfInfo = childBlock.add(&GCDistanceManipulator::scaleFactor, "scaleFactor");
-    sfInfo->setAffects(affectsAbsDisp, false);
-    sfInfo->setDefaultValue(1.0f);
-    }
+  auto sfInfo = childBlock.add(&GCDistanceManipulator::scaleFactor, "scaleFactor");
+  sfInfo->setAffects(affectsAbsDisp, false);
+  sfInfo->setDefaultValue(1.0f);
   }
 
 GCDistanceManipulator::GCDistanceManipulator()
