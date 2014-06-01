@@ -7,6 +7,7 @@
 #include "Memory/XGlobalAllocator.h"
 #include "../ShiftCoreTest/shifttestcommon.h"
 #include "shift/sentity.h"
+#include "shift/Properties/sattribute.inl"
 #include "shift/Properties/sarray.h"
 #include "shift/Properties/sbaseproperties.h"
 

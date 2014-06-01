@@ -15,6 +15,4 @@ Eks.Library {
     Depends { name: "cpp" }
     cpp.includePaths: [ "./include" ]
   }
-
-  Eks.TestDependency { name: "SketchCoreTest" }
 }
