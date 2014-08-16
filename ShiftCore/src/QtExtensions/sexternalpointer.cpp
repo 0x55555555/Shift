@@ -1,7 +1,4 @@
 #include "shift/QtExtensions/sexternalpointer.h"
-
-#if X_QT_INTEROP
-
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Serialisation/sattributeio.h"
 #include "shift/Properties/sdata.inl"
@@ -57,18 +54,6 @@ const Property *ExternalPointer::resolve(ResolveResult *resultOpt) const
   return prop;
   }
 
-TypedSerialisationValue<QUuid>::TypedSerialisationValue(const QUuid *t) : _val(t)
-  {
-  }
-
-Eks::String TypedSerialisationValue<QUuid>::asUtf8(Eks::AllocatorBase *a) const
-  {
-  Eks::String ret(a);
-
-  ret = _val->toByteArray().constData();
-  return ret;
-  }
-
 class ExternalUuidPointer::Traits : public detail::PropertyBaseTraits
   {
 public:
@@ -113,13 +98,8 @@ S_IMPLEMENT_PROPERTY(UuidEntity, Shift)
 void UuidEntity::createTypeInformation(PropertyInformationTyped<UuidEntity> *info,
                                             const PropertyInformationCreateData &data)
   {
-  if(data.registerAttributes)
-    {
-    auto children = info->createChildrenBlock(data);
+  auto children = info->createChildrenBlock(data);
 
-    children.add(&UuidEntity::_uuid, "uuid");
-    }
+  children.add(&UuidEntity::_uuid, "uuid");
   }
 }
-
-#endif

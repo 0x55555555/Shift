@@ -19,7 +19,7 @@ public:
   struct Shader
     {
     Eks::Shader *shader;
-    Eks::ShaderFragmentComponent *fragment;
+    Eks::ShaderComponent *fragment;
     Eks::ShaderVertexComponent *vertex;
     Eks::ShaderVertexLayout *layout;
     };
@@ -105,7 +105,7 @@ class RENDERCORE_EXPORT RCStaticShader : public RCShader
   S_ABSTRACT_ENTITY(RCStaticShader, RCShader)
 
 private:
-  Eks::ShaderFragmentComponent fragment;
+  Eks::ShaderComponent fragment;
   Eks::ShaderVertexComponent vertex;
 
   static void computeShaderRuntime(RCStaticShader *cont);

@@ -113,6 +113,9 @@ public:
     return inheritsFromType(T::staticTypeInformation());
     }
 
+  // can the information be instantiated?
+  bool isAbstract() const;
+
   // are the children of this object indexed, not uniquely named?
   bool hasIndexedChildren() const;
 

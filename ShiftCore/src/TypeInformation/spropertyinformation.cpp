@@ -49,6 +49,11 @@ void PropertyInformation::initiate(PropertyInformation *info, const PropertyInfo
   info->_typeName = from->typeName();
   }
 
+bool PropertyInformation::isAbstract() const
+  {
+  return functions().create == nullptr;
+  }
+
 bool PropertyInformation::hasIndexedChildren() const
   {
   return (dynamicChildMode() & IndexedChildren) != 0;

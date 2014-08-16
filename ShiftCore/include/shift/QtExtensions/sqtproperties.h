@@ -2,16 +2,22 @@
 #define SQTPROPERTIES_H
 
 #include "shift/sglobal.h"
-
-#if X_QT_INTEROP
-
+#include "shift/Properties/sdata.h"
+#include "shift/Utilities/smetatype.h"
+#include "shift/Serialisation/sattributeio.h"
+#include "shift/TypeInformation/spropertyinstanceinformation.h"
 #include "QtCore/QByteArray"
 #include "QtCore/QUuid"
+
+SHIFT_EXPORT Eks::String::IStream &operator>>(Eks::String::IStream &str, const QUuid &u);
 
 namespace Shift
 {
 
+namespace detail
+{
 SHIFT_EXPORT void assignTo(const Attribute *f, Data<QUuid> *to);
+}
 
 template <> class SHIFT_EXPORT TypedSerialisationValue<QUuid> :  public SerialisationValue
   {
@@ -64,11 +70,19 @@ public:
   };
 }
 
-S_DECLARE_METATYPE(Shift::Data<QUuid>, "Uuid");
-
+S_DECLARE_METATYPE(Shift::Data<QUuid>, "uuid");
 
 }
 
-#endif
+namespace std
+{
+template<> struct hash<QUuid>
+  {
+  typedef QUuid argument_type;
+  typedef std::size_t result_type;
+
+  result_type operator()(argument_type const& s) const;
+  };
+}
 
 #endif // SQTPROPERTIES_H

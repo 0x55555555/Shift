@@ -10,11 +10,13 @@ Eks.SubModule {
     "ShiftCore/ShiftCore.qbs",
     "ShiftCoreTest/ShiftCoreTest.qbs",
     "RenderCore/RenderCore.qbs",
-    "RenderCoreTest/RenderCoreTest.qbs",
     "GraphicsCore/GraphicsCore.qbs",
     "MathsCore/MathsCore.qbs",
-    //"MeshCore/MeshCore.qbs",
     "SketchCore/SketchCore.qbs",
     "SketchCore/SketchCoreTest/SketchCoreTest.qbs",
   ]
+
+
+  //"RenderCoreTest/RenderCoreTest.qbs",
+  //"MeshCore/MeshCore.qbs",
 }

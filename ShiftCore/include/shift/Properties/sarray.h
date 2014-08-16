@@ -22,7 +22,7 @@ public:
     return addAttribute(T::staticTypeInformation(), index, NameArg())->template castTo<T>();
     }
 
-  Attribute *add(const PropertyInformation *info, PropertyInstanceInformationInitialiser *init=0, xsize index=std::numeric_limits<xsize>::max())
+  Attribute *add(const PropertyInformation *info, PropertyInstanceInformationInitialiser *init, xsize index=std::numeric_limits<xsize>::max())
     {
     return Container::addAttribute(info, index, NameArg(), init);
     }

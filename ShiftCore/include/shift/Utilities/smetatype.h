@@ -15,7 +15,7 @@ class SHIFT_EXPORT MetaType
   {
 public:
   template <typename T> static xuint32 id()
-    {
+    {	
     static xuint32 id = newId();
     return id;
     }
@@ -29,7 +29,7 @@ template <typename T> class MetaTypeHelper
 public:
   static inline void getTypeName(Eks::String &str)
     {
-    xAssertFail();
+    xAssertFail(typeid(T).name());
 
     str.appendType(MetaType::id<T>());
     }

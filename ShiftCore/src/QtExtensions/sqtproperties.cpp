@@ -1,13 +1,17 @@
 #include "shift/QtExtensions/sqtproperties.h"
-
-#if X_QT_INTEROP
-
 #include "shift/Properties/sdata.inl"
+
+Eks::String::IStream &operator>>(Eks::String::IStream &str, const QUuid &u)
+  {
+  str >> u.toByteArray().data();
+
+  return str;
+  }
 
 namespace Shift
 {
 
-IMPLEMENT_POD_SHIFT_PROPERTY(QUuid, FullData)
+IMPLEMENT_POD_PROPERTY(SHIFT_EXPORT, Shift, QUuid, FullData, QUuid)
 
 namespace detail
 {
@@ -33,9 +37,33 @@ void detail::UuidPropertyInstanceInformation::initiateAttribute(
   auto obj = propertyToInitiate->uncheckedCastTo<Data<QUuid>>();
   obj->computeLock() = QUuid::createUuid();
   }
+}
+
+TypedSerialisationValue<QUuid>::TypedSerialisationValue(const QUuid *t)
+    : _val(t)
+  {
+  }
+
+Eks::String TypedSerialisationValue<QUuid>::asUtf8(Eks::AllocatorBase *a) const
+  {
+  Eks::String ret(a);
+
+  ret = _val->toByteArray().constData();
+  return ret;
+  }
 
 }
 
-}
+std::hash<QUuid>::result_type std::hash<QUuid>::operator()(argument_type const& s) const
+  {
+  auto h1 = hash<uint>()(s.data1);
+  auto h2 = hash<ushort>()(s.data2);
+  auto h3 = hash<ushort>()(s.data3);
+  auto h41 = hash<uchar>()(s.data4[0]);
+  auto h42 = hash<uchar>()(s.data4[1]);
+  auto h43 = hash<uchar>()(s.data4[2]);
+  auto h44 = hash<uchar>()(s.data4[3]);
 
-#endif
+  return h1 ^ h2 ^ h3 ^ h41 ^ h42 ^ h43 ^ h44;
+  }
+

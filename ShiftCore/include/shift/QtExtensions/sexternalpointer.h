@@ -2,13 +2,11 @@
 #define SEXTERNALPOINTER_H
 
 #include "shift/sglobal.h"
-
-#if X_QT_INTEROP
-
 #include "shift/Properties/sproperty.h"
 #include "shift/Properties/sbaseproperties.h"
 #include "shift/sentity.h"
 #include "shift/TypeInformation/spropertyinstanceinformation.h"
+#include "shift/QtExtensions/sqtproperties.h"
 #include "QtCore/QUuid"
 
 namespace Shift
@@ -115,7 +113,5 @@ private:
 S_PROPERTY_INTERFACE(Shift::ExternalPointer)
 S_PROPERTY_INTERFACE(Shift::ExternalUuidPointer)
 S_PROPERTY_INTERFACE(Shift::UuidEntity)
-
-#endif
 
 #endif // SEXTERNALPOINTER_H
