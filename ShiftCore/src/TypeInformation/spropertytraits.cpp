@@ -102,6 +102,11 @@ Attribute *PropertyBaseTraits::load(Container *parent, AttributeLoader &l)
 
 bool PropertyBaseTraits::shouldSaveValue(const Attribute *p)
   {
+  if(p->baseInstanceInformation()->neverSave())
+    {
+    return false;
+    }
+
   if(const Property *prop = p->castTo<Property>())
     {
     if(prop->parentHasInput())
@@ -125,6 +130,11 @@ bool PropertyBaseTraits::shouldSaveValue(const Attribute *p)
 
 bool PropertyBaseTraits::shouldSave(const Attribute *p)
   {
+  if(p->baseInstanceInformation()->neverSave())
+    {
+    return false;
+    }
+
   if(p->isDynamic())
     {
     return true;

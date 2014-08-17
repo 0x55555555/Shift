@@ -84,6 +84,7 @@ XProperties:
   XPropertyMember(xuint8, mode);
   XROProperty(xuint8, isDynamic);
   XProperty(xuint8, referenceCount, setReferenceCount);
+  XProperty(xuint8, neverSave, setNeverSave);
 
 public:
   PropertyInstanceInformation(bool dynamic);
