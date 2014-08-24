@@ -6,6 +6,7 @@
 #include "shift/Properties/sproperty.h"
 #include "shift/Properties/sattribute.inl"
 #include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sdata.inl"
 #include "QtWidgets/QCheckBox"
 #include "QtWidgets/QToolButton"
 #include "QtWidgets/QSpinBox"
@@ -24,7 +25,7 @@ namespace Shift
 
 namespace PropertyDefaultUI
 {
-template <typename WIDG, typename T> class SUIBase : public WIDG, public DirtyObserver
+template <typename WIDG, typename T> class SUIBase : public WIDG, Observer
   {
 XProperties:
   XProperty(bool, isAlreadySetting, setAlreadySetting);
@@ -34,6 +35,7 @@ public:
     {
     xAssert(_value);
     _entity = _value->entity();
+    _entity->addObserver(this);
     xAssert(_entity);
     }
   ~SUIBase()
@@ -44,17 +46,10 @@ public:
   virtual void syncGUI() = 0;
 
 private:
-  virtual void onPropertyDirtied(const Property* prop)
-    {
-    if(prop == _value)
-      {
-      _dirty = true;
-      }
-    }
   virtual void actOnChanges()
     {
     SProfileFunction
-    if(_dirty && !_isAlreadySetting && WIDG::isVisible())
+    if(!_isAlreadySetting && WIDG::isVisible())
       {
       _isAlreadySetting = true;
       syncGUI();
@@ -291,12 +286,11 @@ private:
   void syncGUI() { setColour( propertyValue()->value() ); }
   };
 
-#if 0
-class Filename : public SUIBase<QWidget, FilenameProperty>
+class Filename : public SUIBase<QWidget, StringProperty>
   {
   Q_OBJECT
 public:
-  Filename(Property *prop, bool X_UNUSED(readOnly), QWidget *parent) : SUIBase<QWidget, FilenameProperty>(parent, prop),
+  Filename(Property *prop, bool X_UNUSED(readOnly), QWidget *parent) : SUIBase<QWidget, StringProperty>(parent, prop),
       _layout( new QHBoxLayout( this ) ), _label( new QLineEdit( this ) ),
       _button( new QToolButton( this ) )
     {
@@ -315,16 +309,16 @@ private Q_SLOTS:
   virtual void guiChanged( )
     {
     //QSettings settings;
-    QString file( QFileDialog::getOpenFileName( 0, "Select File for " + propertyValue()->identifier().toQString() ) );
+    QString file( QFileDialog::getOpenFileName( 0, tr("Select File for %1").arg(propertyValue()->identifier().data()) ) );
 
-    propertyValue()->assign(file);
+    propertyValue()->assign(file.toUtf8().data());
 
     //QFileInfo fileInfo( file );
     //settings.setValue( "lastDirAccessed", fileInfo.absoluteDir().absolutePath() );
     }
   virtual void syncGUI()
     {
-    _label->setText(propertyValue()->value().toQString());
+    _label->setText(propertyValue()->value().data());
     }
 private:
   QHBoxLayout *_layout;
@@ -332,6 +326,47 @@ private:
   QToolButton *_button;
   };
 
+class Directory : public SUIBase<QWidget, StringProperty>
+  {
+  Q_OBJECT
+public:
+  Directory(Property *prop, bool X_UNUSED(readOnly), QWidget *parent) : SUIBase<QWidget, StringProperty>(parent, prop),
+      _layout( new QHBoxLayout( this ) ), _label( new QLineEdit( this ) ),
+      _button( new QToolButton( this ) )
+    {
+    _layout->setContentsMargins( 0, 0, 0, 0 );
+    _layout->addWidget( _label );
+    _layout->addWidget( _button );
+
+    _label->setReadOnly( true );
+    _label->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
+    _button->setText( "..." );
+
+    connect( _button, SIGNAL(clicked()), this, SLOT(guiChanged()) );
+    syncGUI();
+    }
+private Q_SLOTS:
+  virtual void guiChanged( )
+    {
+    //QSettings settings;
+    QString file( QFileDialog::getExistingDirectory(this, tr("Select Directory for %1").arg(propertyValue()->identifier().data()) ) );
+
+    propertyValue()->assign(file.toUtf8().data());
+
+    //QFileInfo fileInfo( file );
+    //settings.setValue( "lastDirAccessed", fileInfo.absoluteDir().absolutePath() );
+    }
+  virtual void syncGUI()
+    {
+    _label->setText(propertyValue()->value().data());
+    }
+private:
+  QHBoxLayout *_layout;
+  QLineEdit *_label;
+  QToolButton *_button;
+  };
+
+#if 0
   /** \brief APrivateVector2DProperty Sets and displays a GUI for a 3D vector.
     */
   class APrivateVector2DProperty : public QWidget
@@ -585,7 +620,7 @@ private:
       virtual void guiChanged( )
           {
           QSettings settings;
-          QString file( AFileDialog::getExistingDirectory( "Select Directory for " + data->displayName() ) );
+          QString file( AFileDialog::getExistingDirectory( "Select Directory for %1" + data->displayName() ) );
           *data = file;
           settings.setValue( "lastDirAccessed", file );
           }

@@ -1,4 +1,4 @@
-#include "shift/QtExtensions/sexternalpointer.h"
+#include "sexternalpointer.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "shift/Serialisation/sattributeio.h"
 #include "shift/Properties/sdata.inl"

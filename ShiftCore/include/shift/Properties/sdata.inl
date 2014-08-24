@@ -25,10 +25,10 @@ template <typename T> class PODComputeChange : public Property::DataChange
   S_CHANGE_TYPED(PODComputeChange, Property::DataChange, Change::ComputeChange, PODType);
 
 public:
-  PODComputeChange(T *prop)
+  PODComputeChange(T *prop, bool allowStateChange=false)
     : Property::DataChange(prop)
     {
-    xAssert(!prop->database()->stateStorageEnabled());
+    xAssert(allowStateChange || !prop->database()->stateStorageEnabled());
     }
 
   bool apply()
@@ -65,7 +65,7 @@ XProperties:
 
 public:
   PODChange(const PODType &b, const PODType &a, T *prop)
-    : PODComputeChange<T>(prop), _before(b), _after(a)
+    : PODComputeChange<T>(prop, true), _before(b), _after(a)
     { }
 
   bool apply()
@@ -74,6 +74,7 @@ public:
     T* d = prop->uncheckedCastTo<T>();
     d->_value = after();
     PODComputeChange<T>::property()->postSet();
+    prop->entity()->informBaseObservers();
     return true;
     }
 
@@ -83,6 +84,7 @@ public:
     T* d = prop->uncheckedCastTo<T>();
     d->_value = before();
     PODComputeChange<T>::property()->postSet();
+    prop->entity()->informBaseObservers();
     return true;
     }
   };
@@ -329,10 +331,15 @@ public:
       {
       using ::operator!=;
 
+      if(ptr->isDynamic())
+        {
+        return true;
+        }
+        
       const typename T::PODType &def = ptr->embeddedInstanceInformation()->defaultValue();
       const typename T::PODType &val = ptr->value();
 
-      if(ptr->isDynamic() || val != def)
+      if(val != def)
         {
         return true;
         }

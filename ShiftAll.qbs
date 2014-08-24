@@ -8,6 +8,7 @@ Eks.SubModule {
 
   references: [
     "ShiftCore/ShiftCore.qbs",
+    "ShiftCore/ShiftQt.qbs",
     "ShiftCoreTest/ShiftCoreTest.qbs",
     "RenderCore/RenderCore.qbs",
     "GraphicsCore/GraphicsCore.qbs",

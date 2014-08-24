@@ -2,9 +2,6 @@
 #define SINTERFACES_H
 
 #include "shift/sglobal.h"
-
-#if X_QT_INTEROP
-
 #include "Math/XMathVector.h"
 #include "shift/TypeInformation/sinterface.h"
 #include "Math/XColour.h"
@@ -106,7 +103,5 @@ public:
   };
 #endif
 }
-
-#endif
 
 #endif // SINTERFACES_H

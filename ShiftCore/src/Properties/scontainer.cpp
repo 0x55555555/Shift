@@ -11,6 +11,7 @@
 #include "shift/Properties/scontainerinternaliterators.h"
 #include "Containers/XStringBuffer.h"
 #include "Containers/XIntrusiveLinkedList.h"
+#include <iostream>
 
 namespace Shift
 {

@@ -8,7 +8,6 @@
 #include "shift/Properties/sdata.inl"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "shift/Changes/sobserver.h"
-#include "shift/QtExtensions/sinterfaces.h"
 #include "Memory/XTemporaryAllocator.h"
 #include "Containers/XUnorderedMap.h"
 #include "Utilities/XTemplateHelpers.h"
@@ -224,7 +223,19 @@ const InterfaceBaseFactory *TypeRegistry::interfaceFactory(
     const PropertyInformation *info,
     xuint32 typeId)
   {
-  return _internalTypes->interfaces.value(TypeData::InterfaceKey(info, typeId), 0);
+  auto factory = _internalTypes->interfaces.value(TypeData::InterfaceKey(info, typeId), 0);
+  if(factory)
+    {
+    return factory;
+    }
+
+  auto parentType = info->parentTypeInformation();
+  if(!parentType)
+    {
+    return nullptr;
+    }
+
+  return interfaceFactory(parentType, typeId);
   }
 
 }
@@ -233,10 +244,6 @@ const InterfaceBaseFactory *TypeRegistry::interfaceFactory(
 S_IMPLEMENT_MODULE_WITH_INTERFACES(Shift)
   {
   using namespace Shift;
-#if X_QT_INTEROP
-  module.addStaticInterface<Entity, SBasicPositionInterface>();
-  module.addStaticInterface<Property, SBasicColourInterface>();
-#endif
 
   module.addInheritedInterface<Database, Handler>();
   }

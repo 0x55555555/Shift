@@ -1,7 +1,4 @@
-#include "shift/QtExtensions/UI/sdebugger.h"
-
-#if X_QT_INTEROP
-
+#include "UI/sdebugger.h"
 #include "QtWidgets/QToolBar"
 #include "QtWidgets/QVBoxLayout"
 #include "QtWidgets/QGraphicsView"
@@ -13,8 +10,9 @@
 #include "shift/Properties/scontainer.inl"
 #include "shift/Properties/scontaineriterators.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
-#include "shift/TypeInformation/sinterfaces.h"
+#include "sinterfaces.h"
 #include "Memory/XTemporaryAllocator.h"
+#include "Containers/XUnorderedMap.h"
 
 namespace Shift
 {
@@ -65,19 +63,19 @@ void Debugger::connectProperties(const Eks::UnorderedMap<Attribute *, DebugPrope
   Eks::UnorderedMap<Attribute *, DebugPropertyItem *>::const_iterator end = itemsOut.end();
   for(; it != end; ++it)
     {
-    Attribute *p = it.key();
+    Attribute *p = it->first;
     if(Property *prop = p->castTo<Property>())
       {
       if(prop->input())
         {
-        const auto &inItem = itemsOut[prop->input()];
+        const auto &inItem = itemsOut.value(prop->input());
         xAssert(inItem);
-        xAssert(it.value());
+        xAssert(it->second);
 
-        connect(it.value(), SIGNAL(showConnected()), inItem, SLOT(show()));
-        connect(inItem, SIGNAL(showConnected()), it.value(), SLOT(show()));
+        connect(it->second, SIGNAL(showConnected()), inItem, SLOT(show()));
+        connect(inItem, SIGNAL(showConnected()), it->second, SLOT(show()));
 
-        new ConnectionItem(inItem, it.value(), true, Qt::red);
+        new ConnectionItem(inItem, it->second, true, Qt::red);
         }
       }
 
@@ -90,12 +88,12 @@ void Debugger::connectProperties(const Eks::UnorderedMap<Attribute *, DebugPrope
       auto walker = child->affectsWalker(p->parent());
       xForeach(Property *affectsProp, walker)
         {
-        const auto &affectItem = itemsOut[affectsProp];
+        const auto &affectItem = itemsOut.value(affectsProp);
 
-        new ConnectionItem(it.value(), affectItem, true, Qt::blue);
+        new ConnectionItem(it->second, affectItem, true, Qt::blue);
 
-        connect(it.value(), SIGNAL(showConnected()), affectItem, SLOT(show()));
-        connect(affectItem, SIGNAL(showConnected()), it.value(), SLOT(show()));
+        connect(it->second, SIGNAL(showConnected()), affectItem, SLOT(show()));
+        connect(affectItem, SIGNAL(showConnected()), it->second, SLOT(show()));
         }
       }
     }
@@ -103,13 +101,16 @@ void Debugger::connectProperties(const Eks::UnorderedMap<Attribute *, DebugPrope
 
 DebugPropertyItem *Debugger::createItemForProperty(Attribute *prop, Eks::UnorderedMap<Attribute *, DebugPropertyItem *> *itemsOut)
   {
-  QString text = "identifier: " + prop->identifier().toQString() + "<br>type: " + prop->typeInformation()->typeName().toQString();
-  PropertyVariantInterface *ifc = prop->findInterface<PropertyVariantInterface>();
+  QString text = "identifier: ";
+  text += prop->identifier().data();
+  text += "<br>type: ";
+  text += prop->typeInformation()->typeName().data();
+  /*PropertyVariantInterface *ifc = prop->findInterface<PropertyVariantInterface>();
   if(ifc)
     {
     NoUpdateBlock b(prop);
     text += "<br>value: " + ifc->asString(prop).toQString();
-    }
+    }*/
 
   if(Property *p = prop->castTo<Property>())
     {
@@ -293,7 +294,7 @@ void DebugPropertyItem::layout()
       QRectF bnds = boundingRectWithChildProperties();
 
       childWidth += bnds.width();
-      childHeight = xMax(childHeight, (float)bnds.height());
+      childHeight = std::max(childHeight, (float)bnds.height());
       ++children;
       }
     }
@@ -305,7 +306,7 @@ void DebugPropertyItem::layout()
     };
 
   float fullWidth =
-      xMax((float)boundingRect().width(), childWidth + (float)(xMin(children-1, (xsize)0) * GapX));
+      std::max((float)boundingRect().width(), childWidth + (float)(std::min(children-1, (xsize)0) * GapX));
 
   childHeight += GapY;
 
@@ -403,5 +404,3 @@ void ConnectionItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, 
   }
 
 }
-
-#endif

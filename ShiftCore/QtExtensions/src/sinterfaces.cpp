@@ -1,21 +1,20 @@
-#include "shift/QtExtensions/sinterfaces.h"
-
-#if X_QT_INTEROP
-
+#include "sinterfaces.h"
 #include "shift/TypeInformation/spropertyinformation.h"
 #include "shift/Properties/sbaseproperties.h"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "shift/Changes/shandler.inl"
+#include "shift/Utilities/spropertyname.h"
 #include "shift/sentity.h"
 #include "QtGui/QColor"
 #include "QtCore/QString"
+#include "QtCore/QHash"
 
 namespace Shift
 {
 
-const QString g_positionName("__position");
-const QString g_inputsPositionName("__inputsPosition");
-const QString g_outputsPositionName("__outputsPosition");
+const Eks::StringBase<Eks::Char, 32> g_positionName("__position");
+const Eks::StringBase<Eks::Char, 32> g_inputsPositionName("__inputsPosition");
+const Eks::StringBase<Eks::Char, 32> g_outputsPositionName("__outputsPosition");
 
 Eks::Vector3D SBasicPositionInterface::positionGeneric(const Property * p, const NameArg &name) const
   {
@@ -96,7 +95,7 @@ Eks::Colour SBasicColourInterface::colour(const PropertyInformation *t) const
     //return colour(pointedTo);
     }
 
-  xuint32 h = qHash(t->typeName());
+  xuint32 h = qHash(t->typeName().data());
 
   float lightness = (float)(h & 0xFF) / 0xFF;
   float saturation = (float)((h >> 8) & 0xFF) / 0xFF;
@@ -108,9 +107,7 @@ Eks::Colour SBasicColourInterface::colour(const PropertyInformation *t) const
 
   QColor col = QColor::fromHsl(hueI, satI, ligI);
 
-  return Eks::Colour(col);
+  return Eks::Colour(col.redF(), col.greenF(), col.blueF(), col.alphaF());
   }
 
 }
-
-#endif

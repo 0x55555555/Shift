@@ -28,7 +28,7 @@ bool Attribute::NameChange::inform(bool backwards)
   {
   SProfileFunction
   xAssert(attribute()->entity());
-  attribute()->entity()->informTreeObservers(this, backwards );
+  attribute()->entity()->informTreeObservers(this, backwards);
   return true;
   }
 
@@ -181,6 +181,8 @@ void Property::ConnectionChange::clearParentHasOutputConnection(Property *prop)
 ContainerTreeChange::ContainerTreeChange(Container *b, Container *a, Attribute *ent, xsize index)
   : _before(b), _after(a), _attribute(ent), _index(index), _owner(false)
   {
+  _database = _after ? _after->database() : _before->database();
+  memset(_pad, sizeof(_pad), 0);
   }
 
 ContainerTreeChange::~ContainerTreeChange()
@@ -189,11 +191,11 @@ ContainerTreeChange::~ContainerTreeChange()
     {
     if(after(false))
       {
-      after(false)->database()->deleteDynamicAttribute(_attribute);
+      _database->deleteDynamicAttribute(_attribute);
       }
     else if(before(false))
       {
-      before(false)->database()->deleteDynamicAttribute(_attribute);
+      _database->deleteDynamicAttribute(_attribute);
       }
     else
       {

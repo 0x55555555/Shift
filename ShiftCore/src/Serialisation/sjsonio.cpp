@@ -1,4 +1,4 @@
-#include "shift/Serialisation/sjsonio.h"
+	#include "shift/Serialisation/sjsonio.h"
 #include "shift/Properties/sattribute.inl"
 #include "shift/sentity.h"
 #include "shift/TypeInformation/spropertyinformation.h"
@@ -684,7 +684,15 @@ bool attrVal(JSONLoaderImpl *loader, int, const JSON_value *val)
   const PropertyInformation *info = nullptr;
   if(loader->_specialLoading == JSONLoaderImpl::Type)
     {
-    info = TypeRegistry::findType(val->vu.str.value);
+    NameArg name = val->vu.str.value;
+    if (!name.isEmpty())
+      {
+      info = TypeRegistry::findType(name);
+      if (!info)
+        {
+        return false;
+        }
+      }
     }
 
   if(!back.attribute)
@@ -863,7 +871,6 @@ int JSONLoaderImpl::callback(void *ctx, int type, const JSON_value *value)
   const StateFunctions& stateFunctions = functions[ldr->_current];
 
   bool result = stateFunctions[type](ldr, type, value) ? 1 : 0;
-  xAssert(result);
   return result;
   }
 
@@ -892,8 +899,7 @@ void JSONLoader::load(Eks::String *device, AttributeInterface *ifc)
 
     if(!JSON_parser_char(impl->_jc, c))
       {
-      std::cerr << "JSON_parser_char: syntax error" << std::endl;
-      xAssertFail();
+      std::cerr << "JSON_parser_char: error in json" << std::endl;
       return;
       }
     }

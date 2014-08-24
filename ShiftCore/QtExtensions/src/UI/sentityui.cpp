@@ -1,8 +1,5 @@
-#include "shift/QtExtensions/UI/sentityui.h"
-
-#if X_QT_INTEROP
-
-#include "shift/QtExtensions/UI/spropertydefaultui.h"
+#include "UI/sentityui.h"
+#include "UI/spropertydefaultui.h"
 #include "shift/Properties/scontaineriterators.h"
 #include "shift/Properties/sproperty.h"
 #include "shift/Properties/scontainer.inl"
@@ -16,6 +13,8 @@ namespace Shift
 {
 
 EntityUI::EntityUI(xuint32 options)
+    : _types(Eks::Core::defaultAllocator()),
+      _uiTypes(Eks::Core::defaultAllocator())
   {
   if((options&NoDefaultUIHandlers) != true)
     {
@@ -42,7 +41,7 @@ xuint64 EntityUI::widgetType(const Attribute *p) const
   const PropertyInformation *actualType(p->typeInformation());
   if(_uiTypes.contains(actualType))
     {
-    return _uiTypes[actualType];
+    return _uiTypes.value(actualType);
     }
   return std::numeric_limits<xuint64>::max();
   }
@@ -60,7 +59,7 @@ QWidget *EntityUI::createControlWidget(Entity *ent, QWidget *parent, bool *added
       QWidget *widget = createControlWidget(child);
       if(widget)
         {
-        layout->addRow(child->identifier().toQString(), widget);
+        layout->addRow(child->identifier().data(), widget);
         if(added)
           {
           *added = true;
@@ -104,5 +103,3 @@ void EntityUI::setUIType(const PropertyInformation *type, int widgetType)
   }
 
 }
-
-#endif

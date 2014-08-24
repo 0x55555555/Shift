@@ -167,6 +167,7 @@ public:
 
   /// \defgroup Observers Add and remove Observers of this Entity.
   /// @{
+  void addObserver(Observer *);
   void addTreeObserver(TreeObserver *);
   void addConnectionObserver(ConnectionObserver *);
 
@@ -174,6 +175,7 @@ public:
   void removeConnectionObserver(ConnectionObserver *);
   void removeObserver(Observer *);
 
+  void informBaseObservers();
   void informTreeObservers(const Change *event, bool backwards);
   void informConnectionObservers(const Change *event, bool backwards);
   /// @}
@@ -196,7 +198,7 @@ private:
     {
     enum
       {
-      Dirty,
+      Base,
       Tree,
       Connection
       };

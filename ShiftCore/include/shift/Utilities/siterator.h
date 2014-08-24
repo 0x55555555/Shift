@@ -90,8 +90,8 @@ public:
 
     inline Iterator& operator++(int)
       {
-        IteratorType::next(*this);
-        return *this;
+      IteratorType::next(*this);
+      return *this;
       }
 
     inline ExtraData& data()
@@ -351,14 +351,21 @@ public:
         return;
         }
       }
-
+      
+    if(i.data()._root == *i)
+      {
+      i.setAttribute(nullptr);
+      return;
+      }
+      
     auto walker = d._currentParent->walkerFrom(current);
     auto walkerIt = ++walker.begin();
     Attribute *n = *walkerIt;
-
+      
     while(!n && d._currentParent != i.data()._root)
       {
       Container *parent = d._currentParent->parent();
+      xAssert(parent);
 
       auto walker = parent->walkerFrom(d._currentParent);
       auto walkerIt = ++walker.begin();

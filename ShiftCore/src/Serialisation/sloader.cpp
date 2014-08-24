@@ -319,7 +319,7 @@ void LoadBuilder::onValuesComplete(AttributeData *attr, ValueData *)
 
     const SerialisationValue& readValue(const Symbol &id) X_OVERRIDE
       {
-      return static_cast<const LoadData::LoadSymbol &>(id);
+      return static_cast<const LoadData::LoadSymbol&>(id);
       }
 
     Eks::AllocatorBase *tempAlloc;
@@ -347,6 +347,7 @@ void LoadBuilder::onValuesComplete(AttributeData *attr, ValueData *)
     }
   else
     {
+    std::cerr << "Failed to read non-dynamic attribute " << attrData->name << std::endl;
     xAssertFail();
     return;
     }

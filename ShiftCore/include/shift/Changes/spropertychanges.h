@@ -8,6 +8,7 @@ namespace Shift
 {
 
 class Container;
+class Database;
 
 class PropertyDataChange : public Change
   {
@@ -104,6 +105,7 @@ class ContainerTreeChange : public Change
 public:
   ContainerTreeChange(Container *b, Container *a, Attribute *ent, xsize index);
   ~ContainerTreeChange();
+
   Container *before(bool back=false)
     {
     if(back)
@@ -144,8 +146,15 @@ private:
   Container *_before;
   Container *_after;
   Attribute *_attribute;
+  Database *_database;
   xsize _index;
-  bool _owner;
+  xuint8 _owner;
+#if X_POINTER_SIZE == 8
+  xuint8 _pad[15];
+#else
+  xuint8 _pad[7];
+#endif
+
   bool apply();
   bool unApply();
   bool inform(bool back);

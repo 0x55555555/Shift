@@ -1,14 +1,12 @@
-#include "shift/QtExtensions/UI/sdatabasemodel.h"
-
-#if X_QT_INTEROP
-
+#include "UI/sdatabasemodel.h"
 #include "shift/Properties/scontaineriterators.h"
 #include "shift/Properties/scontainer.inl"
 #include "shift/Properties/sattribute.inl"
 #include "shift/Properties/sbasepointerproperties.h"
-#include "shift/TypeInformation/sinterfaces.h"
+#include "sinterfaces.h"
 #include "shift/sentity.h"
 #include "shift/sdatabase.h"
+#include "sinterfaces.h"
 #include "shift/Changes/spropertychanges.h"
 #include "QtWidgets/QPushButton"
 #include "QtWidgets/QStyleOptionViewItem"
@@ -106,7 +104,7 @@ int CommonModel::columnCount( const QModelIndex &parent ) const
     const Container *cont = prop->castTo<Container>();
     if(cont)
       {
-      xForeach(auto child, cont->walker())
+      /*xForeach(auto child, cont->walker())
         {
         // this could maybe be improved, but we dont want to show the values for complex widgets...
         const PropertyVariantInterface *ifc = child->findInterface<PropertyVariantInterface>();
@@ -115,7 +113,7 @@ int CommonModel::columnCount( const QModelIndex &parent ) const
           columns = 2;
           break;
           }
-        }
+        }*/
       }
     return columns;
     }
@@ -261,7 +259,7 @@ bool CommonModel::setData(const QModelIndex &index, const QVariant &val, int rol
         }
       else
         {
-        prop->setName(val.toString());
+        prop->setName(val.toString().toUtf8().data());
         return true;
         }
       }
@@ -536,7 +534,7 @@ QModelIndex DatabaseModel::index( int row, int column, const QModelIndex &parent
       xAssert(container != _currentTreeChange->property());
       if(container == _currentTreeChange->before())
         {
-        xsize oldRow = xMin(container->size(), _currentTreeChange->index());
+        xsize oldRow = std::min(container->size(), _currentTreeChange->index());
         if((xsize)row == oldRow)
           {
           return createIndex(row, column, _currentTreeChange->property());
@@ -548,7 +546,7 @@ QModelIndex DatabaseModel::index( int row, int column, const QModelIndex &parent
         }
       else if(container == _currentTreeChange->after())
         {
-        int newRow = xMin((int)(container->size()-1), (int)_currentTreeChange->index());
+        int newRow = std::min((int)(container->size()-1), (int)_currentTreeChange->index());
         if(row >= newRow)
           {
           ++row;
@@ -633,7 +631,7 @@ void DatabaseModel::onTreeChange(const Change *c, bool back)
       const Container *parent = tC->after(back);
       xAssert(parent);
 
-      int i = (int)xMin(parent->size()-1, tC->index());
+      int i = (int)std::min(parent->size()-1, tC->index());
       Q_EMIT beginInsertRows(createIndex((int)parent->parent()->index(parent), 0, (Property*)parent), (int)i, (int)i);
       _currentTreeChange = 0;
       Q_EMIT endInsertRows();
@@ -1000,5 +998,3 @@ void InputModel::actOnChanges()
 
 
 }
-
-#endif

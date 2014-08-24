@@ -2,11 +2,12 @@
 #define SENTITYUI_H
 
 #include "shift/sglobal.h"
-
-#if X_QT_INTEROP
-
 #include "Utilities/XProperty.h"
+#include "Containers/XVector.h"
 #include "Containers/XUnorderedMap.h"
+#include "shift/Properties/sdata.h"
+#include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sdata.inl"
 
 class QWidget;
 
@@ -58,7 +59,5 @@ private:
   };
 
 }
-
-#endif
 
 #endif // SENTITYUI_H

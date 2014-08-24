@@ -24,9 +24,10 @@ class SHIFT_EXPORT Handler : public InterfaceBase
 
 XProperties:
   XWOProperty(Database *, database, setDatabase);
+  XROProperty(xsize, revision)
 
 public:
-  Handler();
+  Handler(bool stateStorageEnabled=true);
   ~Handler();
 
   void clearChanges();
@@ -65,7 +66,7 @@ private:
 
   void undoTo(xsize p);
 
-  void inform();
+  void onChangeComplete();
   Eks::Vector<Observer *> _blockObservers;
   std::mutex _doChange;
 

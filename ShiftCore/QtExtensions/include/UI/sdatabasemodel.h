@@ -1,13 +1,13 @@
 #ifndef SDATABASEMODEL_H
 #define SDATABASEMODEL_H
 
+#include "QColor"
 #include "shift/sglobal.h"
-
-#if X_QT_INTEROP
-
 #include "shift/Utilities/sentityweakpointer.h"
-#include "shift/QtExtensions/UI/sentityui.h"
 #include "shift/Changes/sobserver.h"
+#include "shift/Properties/sbaseproperties.h"
+#include "shift/Properties/sdata.inl"
+#include "UI/sentityui.h"
 #include "QtCore/QAbstractItemModel"
 #include "QtWidgets/QStyledItemDelegate"
 #include "Utilities/XFlags.h"
@@ -153,7 +153,5 @@ private:
   };
 
 }
-
-#endif
 
 #endif // SDATABASEMODEL_H

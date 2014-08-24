@@ -115,13 +115,13 @@ Observer *Entity::ObserverStruct::getObserver()
     {
     return (TreeObserver*)observer;
     }
-  else if(mode == ObserverStruct::Dirty)
-    {
-    return (DirtyObserver*)observer;
-    }
   else if(mode == ObserverStruct::Connection)
     {
     return (ConnectionObserver*)observer;
+    }
+  else if(mode == ObserverStruct::Base)
+    {
+    return (Observer*)observer;
     }
   return 0;
   }
@@ -132,6 +132,18 @@ void Entity::setupObservers()
     {
     _observers.allocator() = generalPurposeAllocator();
     }
+  }
+
+void Entity::addObserver(Observer *in)
+  {
+  setupObservers();
+
+  xAssert(in);
+  ObserverStruct s;
+  s.mode = ObserverStruct::Base;
+  s.observer = in;
+  in->_entities << this;
+  _observers << s;
   }
 
 void Entity::addTreeObserver(TreeObserver *in)
@@ -177,6 +189,19 @@ void Entity::removeObserver(Observer *in)
       xRemoveAll(obs->_entities, this);
       _observers.removeAt(x);
       --x;
+      }
+    }
+  }
+
+void Entity::informBaseObservers()
+  {
+  SProfileFunction
+  xForeach(const ObserverStruct &obs, _observers)
+    {
+    if(obs.mode == ObserverStruct::Base)
+      {
+      Observer *observer = ((Observer*)obs.observer);
+      handler()->currentBlockObserverList() << observer;
       }
     }
   }

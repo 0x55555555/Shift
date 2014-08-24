@@ -15,7 +15,6 @@ void Module::install(Shift::ModuleBuilder *builder, Eks::AllocatorBase *alloc)
   SProfileFunction
 
   _interfaces.allocator() = alloc;
-  initialiseInterfaces(*this);
 
   for(Information *i = _first; i; i = i->next)
     {
@@ -25,6 +24,9 @@ void Module::install(Shift::ModuleBuilder *builder, Eks::AllocatorBase *alloc)
 
     builder->addType(i->information);
     }
+  
+  initialiseInterfaces(*this);
+    
   xForeach(const Module::InterfaceData &fac, interfaces())
     {
     builder->addInterfaceFactory(fac.type, fac.factory.get());

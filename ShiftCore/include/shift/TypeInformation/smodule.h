@@ -3,6 +3,7 @@
 
 #include "Containers/XVector.h"
 #include "Memory/XUniquePointer.h"
+#include "shift/sentity.h"
 #include "shift/Properties/sproperty.h"
 #include "shift/TypeInformation/sinterface.h"
 
@@ -39,8 +40,11 @@ XProperties:
     {
     auto t = TypeRegistry::interfaceAllocator()->createUnique<T>();
 
+    auto info = PropType::staticTypeInformation();
+    xAssert(info);
+      
     T *val = t.get();
-    _interfaces.emplaceBack(PropType::staticTypeInformation(), std::move(t));
+    _interfaces.emplaceBack(info, std::move(t));
     return val;
     }
 

@@ -5,12 +5,14 @@
 namespace Shift
 {
 
-Handler::Handler()
+Handler::Handler(bool stateStorageEnabled)
   : _database(0),
+    _revision(0),
     _blockLevel(0),
     _blockObservers(TypeRegistry::generalPurposeAllocator()),
+    _done(TypeRegistry::generalPurposeAllocator()),
     _blockSize(TypeRegistry::generalPurposeAllocator()),
-    _stateStorageEnabled(false)
+    _stateStorageEnabled(stateStorageEnabled)
   {
   }
 
@@ -87,7 +89,7 @@ void Handler::endBlock(bool cancel)
   // wrap everything into one inform block
   if(_blockLevel == 0)
     {
-    inform();
+    onChangeComplete();
     }
   }
 
@@ -102,19 +104,28 @@ void Handler::undoTo(xsize p)
       c->unApply() && c->inform(true);
     xAssert(result);
 
-    // todo dont need this here, when undo fully implemented.B
+    // todo dont need this here, when undo fully implemented.
     _done.popBack();
+    --_revision;
+    xAssert(_revision >= 0);
     }
   }
 
-void Handler::inform()
+void Handler::onChangeComplete()
   {
   SProfileFunction
+  std::sort(_blockObservers.begin(), _blockObservers.end());
+  _blockObservers.erase(
+    std::unique(_blockObservers.begin(), _blockObservers.end() ),
+    _blockObservers.end());
+
   xForeach(Observer *obs, _blockObservers)
     {
     obs->actOnChanges();
     }
   _blockObservers.clear();
+
+  ++_revision;
   }
 
 }

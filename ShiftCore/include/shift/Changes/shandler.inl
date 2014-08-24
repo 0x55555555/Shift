@@ -37,7 +37,7 @@ template <typename CLS, typename... CLSARGS> void Handler::doChange(CLSARGS&&...
 
   if(_blockLevel == 0)
     {
-    inform();
+    onChangeComplete();
     }
   }
 #else
@@ -58,7 +58,7 @@ template <typename CLS, typename... CLSARGS> void Handler::doChange(CLSARGS&&...
     } else { \
       xAssertFailMessage("Change failed"); \
     } } \
-  if(_blockLevel == 0) { inform(); } \
+  if(_blockLevel == 0) { onChangeComplete(); } \
   }
 
 template <typename CLS, typename T0> void Handler::doChange(const T0 &t0)

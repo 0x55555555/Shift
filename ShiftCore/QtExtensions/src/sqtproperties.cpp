@@ -1,4 +1,4 @@
-#include "shift/QtExtensions/sqtproperties.h"
+#include "sqtproperties.h"
 #include "shift/Properties/sdata.inl"
 
 Eks::String::IStream &operator>>(Eks::String::IStream &str, const QUuid &u)

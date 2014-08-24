@@ -2,9 +2,6 @@
 #define SDEBUGGER_H
 
 #include "shift/sglobal.h"
-
-#if X_QT_INTEROP
-
 #include "Containers/XUnorderedMap.h"
 #include "QtWidgets/QWidget"
 #include "QtWidgets/QGraphicsItem"
@@ -105,7 +102,5 @@ private:
   };
 
 }
-
-#endif
 
 #endif // SDEBUGGER_H
