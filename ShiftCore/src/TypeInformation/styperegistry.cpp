@@ -68,9 +68,10 @@ TypeRegistry::TypeRegistry(Eks::AllocatorBase *baseAllocator)
 
 TypeRegistry::~TypeRegistry()
   {
-  for(xsize i = _internalTypes->modules.size()-1; i != Eks::maxFor(i); --i)
+  auto& modules = _internalTypes->modules;
+  for(xsize i = modules.size()-1; i != Eks::maxFor(i); --i)
     {
-    uninstallModule(*_internalTypes->modules[i]);
+    uninstallModule(*modules[i]);
     }
 
   xAssert(_internalTypes->modules.isEmpty());
@@ -121,7 +122,7 @@ class RegistryModuleBuilder : public ModuleBuilder
   void internalAddType(PropertyInformation *t)
     {
     xAssert(t);
-    xAssert(!TypeRegistry::findType(t->typeName()));
+    xAssert(!TypeRegistry::findType(t->typeName()), t->typeName().data());
     if (!_internalTypes->types.contains(t))
       {
       _internalTypes->types << t;

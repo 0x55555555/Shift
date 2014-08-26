@@ -49,10 +49,16 @@ S_DEFINE_INTERFACE_TYPE(PropertyPositionInterface, 3)
 S_DEFINE_INTERFACE_TYPE(PropertyColourInterface, 4)
 S_DEFINE_INTERFACE_TYPE(PropertyConnectionInterface, 5)
 
+#define S_MODULE_EXPORT shiftModule
+#define S_MODULE_EXPORT_NAME "shiftModule"
+
 #define S_MODULE_SIGNATURE Shift::Module &shiftModule()
 #define S_MODULE(EXP, moduleName) namespace moduleName { EXP S_MODULE_SIGNATURE; }
 
-#define S_IMPLEMENT_MODULE_EXPLICIT(moduleName, className) namespace moduleName { S_MODULE_SIGNATURE { static className grp; return grp; } }
+#define S_IMPLEMENT_MODULE_EXPLICIT(moduleName, className) \
+  namespace moduleName { S_MODULE_SIGNATURE { static className grp; return grp; } } \
+  X_DECL_EXPORT extern "C" Shift::Module *S_MODULE_EXPORT() { return &moduleName::shiftModule(); }
+
 #define S_IMPLEMENT_MODULE(moduleName) S_IMPLEMENT_MODULE_EXPLICIT(moduleName, Shift::Module)
 #define S_IMPLEMENT_MODULE_WITH_INTERFACES(moduleName) \
   class moduleName##Module : public Shift::Module { virtual void initialiseInterfaces(Module &module) X_OVERRIDE; }; \
@@ -66,6 +72,8 @@ class Attribute;
 class Property;
 class Observer;
 class Module;
+
+typedef Shift::Module *(*ModuleCSignature)();
 
 enum DataMode
   {

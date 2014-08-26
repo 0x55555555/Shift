@@ -37,7 +37,9 @@ void Module::uninstall(Shift::ModuleBuilder *builder, Eks::AllocatorBase *alloc)
   {
   for(Information *i = _first; i; i = i->next)
     {
-    builder->removeType(i->information);
+    auto info = i->information;
+    xAssert(info);
+    builder->removeType(info);
     PropertyInformation::destroyChildren(i->information, alloc);
     }
 
