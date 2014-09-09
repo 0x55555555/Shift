@@ -28,7 +28,7 @@ public:
   PODComputeChange(T *prop, bool allowStateChange=false)
     : Property::DataChange(prop)
     {
-    xAssert(allowStateChange || !prop->database()->stateStorageEnabled());
+    xAssert(allowStateChange || !prop->handler()->stateStorageEnabled());
     }
 
   bool apply()

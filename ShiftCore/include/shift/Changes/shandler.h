@@ -31,6 +31,7 @@ public:
   ~Handler();
 
   void clearChanges();
+  void clearUndo();
 
   static Handler *findHandler(Container *parent, Entity *prop);
 

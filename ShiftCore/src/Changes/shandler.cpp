@@ -23,6 +23,11 @@ Handler::~Handler()
 
 void Handler::clearChanges()
   {
+  clearUndo();
+  }
+
+void Handler::clearUndo()
+  {
   xForeach(Change *ch, _done)
     {
     changeAllocator()->destroy(ch);

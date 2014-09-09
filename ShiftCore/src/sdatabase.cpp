@@ -162,12 +162,16 @@ Attribute *Database::addDynamicAttribute(
 
   AttributeInitialiserHelperImpl helper(this);
 
-  // We call this after adding it to the tree so flags like ParentHasInput are setup at the root.
-  initiateAttribute(prop, &helper);
+    {
+    StateStorageBlock b(false, prop->handler());
 
-  helper.treeComplete();
-  xAssert(!prop->castTo<Property>() || prop->uncheckedCastTo<Property>()->isDirty());
+    // We call this after adding it to the tree so flags like ParentHasInput are setup at the root.
+    initiateAttribute(prop, &helper);
 
+
+    helper.treeComplete();
+    xAssert(!prop->castTo<Property>() || prop->uncheckedCastTo<Property>()->isDirty());
+    }
   return prop;
   }
 
