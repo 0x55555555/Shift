@@ -18,6 +18,7 @@ Eks.Library {
   Export {
     Depends { name: "cpp" }
     Depends { name: "EksCore" }
+    Depends { name: "EksGui" }
 
     cpp.includePaths: [ "./QtExtensions/include" ]
   }
