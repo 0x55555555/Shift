@@ -60,10 +60,15 @@ public:
   bool stateStorageEnabled() const { return _stateStorageEnabled; }
   void setStateStorageEnabled(bool enable) { _stateStorageEnabled = enable; }
 
+  bool revisionsEnabled() const { return _changeIncrease == 1; }
+  void setRevisionsEnabled(bool enable) { _changeIncrease = enable ? 1 : 0; }
+
 private:
   Eks::AllocatorBase *changeAllocator();
 
   xuint32 _blockLevel;
+  xuint32 _blockChangeCount;
+  xuint8 _changeIncrease;
 
   void undoTo(xsize p);
 
@@ -136,6 +141,17 @@ private:
   Handler *_handler;
   bool _oldValue;
 #endif
+  };
+
+class SHIFT_EXPORT RevisionHoldBlock
+  {
+public:
+  RevisionHoldBlock(Handler *h);
+  ~RevisionHoldBlock();
+
+private:
+  Handler *_handler;
+  bool _old;
   };
 
 }

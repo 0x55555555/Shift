@@ -9,6 +9,7 @@ Handler::Handler(bool stateStorageEnabled)
   : _database(0),
     _revision(0),
     _blockLevel(0),
+    _changeIncrease(1),
     _blockObservers(TypeRegistry::generalPurposeAllocator()),
     _done(TypeRegistry::generalPurposeAllocator()),
     _blockSize(TypeRegistry::generalPurposeAllocator()),
@@ -75,6 +76,8 @@ Eks::AllocatorBase *Handler::generalPurposeAllocator() const
 
 void Handler::beginBlock()
   {
+  xAssert(_blockLevel != 0 || _blockChangeCount == 0);
+
   _blockLevel++;
   _blockSize << _done.size();
   }
@@ -91,8 +94,8 @@ void Handler::endBlock(bool cancel)
     undoTo(previousPoint);
     }
 
-  // wrap everything into one inform block
-  if(_blockLevel == 0)
+  // wrap everything into one inform block (ignore if no changes applied)
+  if(_blockLevel == 0 && _blockChangeCount > 0)
     {
     onChangeComplete();
     }
@@ -101,7 +104,7 @@ void Handler::endBlock(bool cancel)
 void Handler::undoTo(xsize p)
   {
   xAssert(p <= (xsize)_done.size());
-  for(xptrdiff i=(_done.size()-1); i>=(xptrdiff)p; --i)
+  for(xptrdiff i = (_done.size()-1); i >= (xptrdiff)p; --i)
     {
     Change *c = _done[i];
 
@@ -130,7 +133,23 @@ void Handler::onChangeComplete()
     }
   _blockObservers.clear();
 
-  ++_revision;
+  if (_blockChangeCount != 0)
+    {
+    ++_revision;
+    }
+  _blockChangeCount = 0;
+  }
+
+RevisionHoldBlock::RevisionHoldBlock(Handler *h)
+    : _handler(h),
+      _old(_handler->revisionsEnabled())
+  {
+  _handler->setRevisionsEnabled(false);
+  }
+
+RevisionHoldBlock::~RevisionHoldBlock()
+  {
+  _handler->setRevisionsEnabled(_old);
   }
 
 }

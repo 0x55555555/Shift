@@ -28,6 +28,7 @@ template <typename CLS, typename... CLSARGS> void Handler::doChange(CLSARGS&&...
     if(result)
       {
       _done << change;
+      _blockChangeCount += _changeIncrease;
       }
     else
       {
@@ -55,6 +56,7 @@ template <typename CLS, typename... CLSARGS> void Handler::doChange(CLSARGS&&...
     bool result = change->apply() && change->inform(false); \
     if(result) { \
       _done << change; \
+      _blockChangeCount += _changeIncrease; \
     } else { \
       xAssertFailMessage("Change failed"); \
     } } \

@@ -1,10 +1,11 @@
 #include "sqtproperties.h"
 #include "shift/Properties/sdata.inl"
 
-Eks::String::IStream &operator>>(Eks::String::IStream &str, const QUuid &u)
+Eks::String::IStream &operator>>(Eks::String::IStream &str, QUuid &u)
   {
-  str >> u.toByteArray().data();
-
+  std::string data;
+  str >> data;
+  u = QUuid(data.data());
   return str;
   }
 

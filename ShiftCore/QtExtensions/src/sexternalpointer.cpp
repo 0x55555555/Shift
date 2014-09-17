@@ -33,6 +33,7 @@ Property *ExternalPointer::resolve(ResolveResult *resultOpt)
   xAssert(resFn);
 
   const Property *prop = resFn(this, inst, resultOpt);
+  Shift::RevisionHoldBlock b(handler());
   setInput(prop);
 
   return input();
@@ -101,5 +102,10 @@ void UuidEntity::createTypeInformation(PropertyInformationTyped<UuidEntity> *inf
   auto children = info->createChildrenBlock(data);
 
   children.add(&UuidEntity::_uuid, "uuid");
+  }
+
+void UuidEntity::setUuid(const QUuid &u)
+  {
+  _uuid = u;
   }
 }

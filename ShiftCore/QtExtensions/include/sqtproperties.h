@@ -9,7 +9,7 @@
 #include "QtCore/QByteArray"
 #include "QtCore/QUuid"
 
-SHIFT_EXPORT Eks::String::IStream &operator>>(Eks::String::IStream &str, const QUuid &u);
+SHIFT_EXPORT Eks::String::IStream &operator>>(Eks::String::IStream &str, QUuid &u);
 
 namespace Shift
 {
