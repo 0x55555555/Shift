@@ -90,7 +90,7 @@ void ExternalUuidPointer::createTypeInformation(PropertyInformationTyped<Externa
 
 void ExternalUuidPointer::setPointed(const UuidEntity *entity)
   {
-  _id = entity->_uuid();
+  _id = entity ? entity->_uuid() : QUuid();
   setInput(entity);
   }
 
