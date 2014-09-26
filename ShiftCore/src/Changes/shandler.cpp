@@ -121,6 +121,8 @@ void Handler::undoTo(xsize p)
 
 void Handler::onChangeComplete()
   {
+  auto changeCount = _blockChangeCount;
+  _blockChangeCount = 0;
   SProfileFunction
   std::sort(_blockObservers.begin(), _blockObservers.end());
   _blockObservers.erase(
@@ -133,11 +135,10 @@ void Handler::onChangeComplete()
     }
   _blockObservers.clear();
 
-  if (_blockChangeCount != 0)
+  if (changeCount != 0)
     {
     ++_revision;
     }
-  _blockChangeCount = 0;
   }
 
 RevisionHoldBlock::RevisionHoldBlock(Handler *h)
