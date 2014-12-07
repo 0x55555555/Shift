@@ -5,7 +5,7 @@
 #include "RCTransform.h"
 #include "shift/Properties/sbasepointerproperties.h"
 #include "XCameraCanvasController.h"
-#include "Math/XFrame.h"
+#include "XFrame.h"
 
 namespace Eks
 {

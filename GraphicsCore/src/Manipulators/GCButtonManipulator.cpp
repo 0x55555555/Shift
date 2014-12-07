@@ -91,5 +91,4 @@ GCButtonManipulator::~GCButtonManipulator()
 
 void GCButtonManipulator::onClick()
   {
-  qDebug() << "Click";
   }

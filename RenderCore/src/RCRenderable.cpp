@@ -68,7 +68,6 @@ void RCRenderArray::render(Eks::Renderer *renderer, const RenderState &state) co
     const RCRenderable* ptd = r->pointed();
     if(!ptd)
       {
-      qWarning() << "Null renderable";
       continue;
       }
     

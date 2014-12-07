@@ -210,20 +210,23 @@ void JSONSaver::emitJson(Eks::AllocatorBase *allocator, AttributeData *rootData,
     auto type = it->first;
     const auto& data = it->second;
 
-    writer.beginObjectElement(type->typeName().data());
+    if (data.dynamicCount != 0)
+      {
+      writer.beginObjectElement(type->typeName().data());
 
-    writer.beginObject();
+      writer.beginObject();
 
-    tempString.clear();
-    tempString.appendType(data.dynamicCount);
+      tempString.clear();
+      tempString.appendType(data.dynamicCount);
 
-    writer.beginObjectElement(DYNAMIC_COUNT_KEY);
-    writer.addValueForElement(tempString.data());
-    writer.endElement();
+      writer.beginObjectElement(DYNAMIC_COUNT_KEY);
+      writer.addValueForElement(tempString.data());
+      writer.endElement();
 
-    writer.end();
+      writer.end();
 
-    writer.endElement();
+      writer.endElement();
+      }
     }
 
   writer.end();

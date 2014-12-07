@@ -158,7 +158,7 @@ Attribute *Database::addDynamicAttribute(
   // this allows things like connections to be made in initiate attribute.
   parent->makeUniqueName(prop, name, ((PropertyInstanceInformation*)prop->_instanceInfo)->name());
 
-  PropertyDoChange(ContainerTreeChange, (Container*)0, parent, prop, index);
+  PropertyDoChangeNonLocal(ContainerTreeChange, parent, (Container*)0, parent, prop, index);
 
   AttributeInitialiserHelperImpl helper(this);
 

@@ -1,4 +1,4 @@
-#ifndef SPROPERTY_INL
+	#ifndef SPROPERTY_INL
 #define SPROPERTY_INL
 
 #include "Math/XMathHelpers.h"

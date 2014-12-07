@@ -155,6 +155,10 @@ template <typename Res, typename T, typename Cont> Res makeWalker(Cont *c)
 
   xsize idx = 0;
   info->firstChild<T>(&idx);
+  if (idx == Eks::maxFor(idx))
+    {
+    idx = info->childCount();
+    }
 
   return Res(
       c,

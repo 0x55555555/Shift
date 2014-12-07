@@ -228,7 +228,6 @@ void GCElementArray::render(Eks::Renderer *renderer, const RenderState &state) c
     const RCRenderable* ptd = r->pointed();
     if(!ptd)
       {
-      qWarning() << "Null element";
       continue;
       }
 

@@ -2,6 +2,7 @@
 #include "shift/TypeInformation/spropertyinformationhelpers.h"
 #include "SkGlobal.h"
 #include "shift/Properties/sdata.inl"
+#include "QtGlobal"
 
 S_IMPLEMENT_PROPERTY(Distance, SketchCore)
 

@@ -6,7 +6,7 @@
 #include "RCRenderable.h"
 #include "XPlane.h"
 #include "XLine.h"
-#include "Math/XFrame.h"
+#include "XFrame.h"
 
 S_IMPLEMENT_ABSTRACT_PROPERTY(GCVisualManipulator, GraphicsCore)
 

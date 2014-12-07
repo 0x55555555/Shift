@@ -1,4 +1,5 @@
 #include "RCGlobal.h"
+#include "Math/XMathVector.h"
 #include "Utilities/RCBaseProperties.h"
 #include "shift/sdatabase.h"
 #include "shift/TypeInformation/spropertyinformationhelpers.h"

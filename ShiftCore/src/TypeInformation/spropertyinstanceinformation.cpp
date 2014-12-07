@@ -12,6 +12,7 @@ PropertyInstanceInformation::PropertyInstanceInformation(bool dynamic)
   _referenceCount = 0;
   _mode = Default;
   _isDynamic = dynamic;
+  _neverSave = false;
   }
 
 PropertyInstanceInformation::PropertyInstanceInformation(const PropertyInstanceInformation &c)
@@ -20,6 +21,7 @@ PropertyInstanceInformation::PropertyInstanceInformation(const PropertyInstanceI
   _name = c.name();
   _mode = c.mode();
   _isDynamic = c.isDynamic();
+  _neverSave = false;
 
   _referenceCount = 0;
   }

@@ -30,7 +30,6 @@ void GCPlate::render(Eks::Renderer *renderer, const RenderState &state) const
     const RCRenderable* ptd = r->pointed();
     if(!ptd)
       {
-      qWarning() << "Null element";
       continue;
       }
 
