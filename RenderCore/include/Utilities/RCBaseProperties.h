@@ -93,8 +93,14 @@ RENDERCORE_EXPORT void assignTo(const Shift::Attribute *f, RCBoundingBox *to);
 
 S_TYPED_POINTER_TYPE(RENDERCORE_EXPORT, RCVertexLayoutPointer, RCVertexLayout)
 
+S_DECLARE_METATYPE(TransformProperty, "TransformProperty");
+S_DECLARE_METATYPE(ComplexTransformProperty, "ComplexTransformProperty");
+S_DECLARE_METATYPE(Matrix3x3Property, "Matrix3x3Property");
 S_DECLARE_METATYPE(RCRuntimeShader, "RuntimeShader");
 S_DECLARE_METATYPE(RCRuntimeShaderInstance, "RuntimeShaderInstance");
+S_DECLARE_METATYPE(RCShaderRuntimeConstantData, "ShaderRuntimeConstantData");
+S_DECLARE_METATYPE(RCRuntimeRasteriserState, "RuntimeRasteriserState");
+S_DECLARE_METATYPE(RCVertexLayout, "VertexLayout");
 S_DECLARE_METATYPE(RCRenderer, "Renderer");
 S_DECLARE_METATYPE(RCBoundingBox, "BoundingBox");
 S_DECLARE_METATYPE(RCRuntimeIndexGeometry, "IndexGeometry");

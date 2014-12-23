@@ -42,6 +42,11 @@ public:
 template <typename T> class TypedPropertyArray : public Container
   {
 public:
+  enum
+    {
+    DynamicChildMode = Container::DynamicChildMode | Shift::IndexedChildren
+    };
+
   typedef T ElementType;
 
   ElementType *add()

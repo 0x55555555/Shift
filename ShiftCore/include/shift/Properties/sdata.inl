@@ -216,11 +216,11 @@ template <typename T, DataMode Mode>
   const char *modeType = "Full";
   if(Mode == ComputedData)
     {
-    modeType = "Computed";
+    modeType = "Comp";
     }
   else if(Mode == AttributeData)
     {
-    modeType = "Attribute";
+    modeType = "Attr";
     }
 
   name.appendType(modeType);

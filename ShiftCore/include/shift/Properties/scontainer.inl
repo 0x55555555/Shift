@@ -42,7 +42,21 @@ template <typename T> T *Container::firstDynamicChild()
       }
     prop = nextDynamicSibling(prop);
     }
-  return 0;
+  return nullptr;
+  }
+
+template <typename T> const T *Container::firstChild() const
+  {
+  return ((Container*)this)->firstChild<T>();
+  }
+
+template <typename T> T *Container::firstChild()
+  {
+  xForeach(auto child, walker<T>())
+    {
+    return child;
+    }
+  return nullptr;
   }
 
 Attribute *Container::firstDynamicChild()

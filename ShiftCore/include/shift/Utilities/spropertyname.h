@@ -3,6 +3,7 @@
 
 #include "shift/sglobal.h"
 #include "Containers/XStringSimple.h"
+#include "Utilities/XStringRef.h"
 
 namespace Shift
 {
@@ -14,12 +15,15 @@ enum
 
 typedef Eks::StringBase<Eks::Char, NamePreallocSize> Name;
 
-class SHIFT_EXPORT NameArg
+class SHIFT_EXPORT NameArg : public Eks::StringRef
   {
 public:
-  NameArg();
-  NameArg(NameArg &&);
-  NameArg& operator=(NameArg&& other);
+  NameArg() { }
+
+  NameArg(NameArg &&n)
+    : StringRef(std::move(n))
+    {
+    }
 
 #if X_QT_INTEROP
   NameArg(const QString &);
@@ -27,47 +31,19 @@ public:
 
   template <typename C, xsize S, typename A>
   NameArg(const Eks::StringBase<C, S, A> &in)
+      : StringRef(in)
     {
-    xCompileTimeAssert(sizeof(C) == sizeof(Eks::Char));
-
-    _type = TypeEks;
-    _data.eks = in.data();
-    _length = in.length();
     }
 
   NameArg(const Eks::Char *in)
+      : StringRef(in)
     {
-    _type = TypeEks;
-    _data.eks = in;
-    _length = Eks::StringBase<Eks::Char>::Traits::length(in);
     }
 
-  void toName(Name &out) const;
-
-  bool isEmpty() const;
-
-  bool operator==(const NameArg &oth) const;
-  bool operator==(const Name &oth) const;
-
-private:
-  X_DISABLE_COPY(NameArg)
-
-  enum
+  void toName(Name &out) const
     {
-    TypeEks,
-#if X_QT_INTEROP
-    TypeQt
-#endif
-    } _type;
-
-  xsize _length;
-  union
-    {
-    const Eks::Char *eks;
-#if X_QT_INTEROP
-    const QString *qt;
-#endif
-    } _data;
+    toString(out);
+    }
   };
 
 }

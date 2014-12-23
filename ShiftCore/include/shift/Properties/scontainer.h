@@ -48,6 +48,9 @@ public:
   Attribute *lastChild();
   const Attribute *lastChild() const;
 
+  template <typename T> inline const T *firstChild() const;
+  template <typename T> inline T *firstChild();
+
   void disconnectTree();
 
   inline Attribute *firstDynamicChild();
