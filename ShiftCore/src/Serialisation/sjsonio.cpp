@@ -899,7 +899,6 @@ void JSONLoader::load(Eks::String *device, AttributeInterface *ifc)
 
   xForeach(auto c, *device)
     {
-
     if(!JSON_parser_char(impl->_jc, c))
       {
       std::cerr << "JSON_parser_char: error in json" << std::endl;

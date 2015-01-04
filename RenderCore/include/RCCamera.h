@@ -120,6 +120,7 @@ class RENDERCORE_EXPORT RCPerspectiveCamera : public RCCamera
 public:
   Eks::Vector3D worldSpaceAtDepthFromScreenSpace(xuint32 x, xuint32 y, float depth) const;
 
+  using RCCamera::moveToFit;
   void moveToFit(
       const Eks::Vector3D &centre,
       const Eks::Vector3D &lookDir,
